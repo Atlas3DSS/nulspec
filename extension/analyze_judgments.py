@@ -5,10 +5,6 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-import matplotlib
-
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
 
@@ -159,6 +155,11 @@ def write_markdown(
 
 
 def write_plot(path: Path, summaries: dict[str, dict], calibration: str) -> None:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
     labels = [label for label in summaries if label != calibration]
     values = [summaries[label]["ppo_win_rate_ties_half"] for label in labels]
     intervals = [

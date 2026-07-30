@@ -1,0 +1,196 @@
+Some weights of GPTNeoXForSequenceClassification were not initialized from the model checkpoint at EleutherAI/pythia-70m-deduped and are newly initialized: ['score.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:266: UserWarning: No dataset is provided. Make sure to set config.batch_size to the correct value before training.
+  warnings.warn(
+You're using a GPTNeoXTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+PPO_STEP 1/250 reward=7.496094 kl=0.000000 best=7.496094
+PPO_STEP 2/250 reward=7.413086 kl=-0.868457 best=7.496094
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -1.27 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 3/250 reward=7.597656 kl=-1.267965 best=7.597656
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -1.89 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 4/250 reward=7.136719 kl=-1.889599 best=7.597656
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.87 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 5/250 reward=7.408203 kl=-2.868454 best=7.597656
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (39.05) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (11.36) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.77 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 6/250 reward=7.522461 kl=-2.772269 best=7.597656
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.46 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 7/250 reward=7.427734 kl=-2.457310 best=7.597656
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -5.80 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 8/250 reward=7.455566 kl=-5.796689 best=7.597656
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (84.02) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -4.89 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 9/250 reward=7.361328 kl=-4.886755 best=7.597656
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -4.08 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 10/250 reward=7.724609 kl=-4.076923 best=7.724609
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (11.84) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -5.16 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 11/250 reward=7.720703 kl=-5.164018 best=7.724609
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -4.57 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 12/250 reward=7.323242 kl=-4.574574 best=7.724609
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.74 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 13/250 reward=7.803711 kl=-3.743857 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -5.70 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 14/250 reward=7.658203 kl=-5.695915 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -5.60 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 15/250 reward=7.334961 kl=-5.601056 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (37808970768842752.00) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -6.09 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 16/250 reward=7.499023 kl=-6.090920 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.14 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 17/250 reward=7.537109 kl=-3.136380 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.65 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 18/250 reward=7.586914 kl=-3.645114 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -4.92 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 19/250 reward=7.485352 kl=-4.919222 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (96857432064.00) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -5.84 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 20/250 reward=7.579102 kl=-5.835752 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.32 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 21/250 reward=7.688477 kl=-3.315763 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (10.88) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (18.82) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (41.97) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.77 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 22/250 reward=7.447266 kl=-3.767361 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (44446616.00) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.38 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 23/250 reward=7.607422 kl=-2.384495 best=7.803711
+PPO_STEP 24/250 reward=7.696289 kl=-3.773236 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.74 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 25/250 reward=7.777344 kl=-2.738609 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -1.53 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 26/250 reward=7.605469 kl=-1.530362 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (62.03) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (8577207089228860101176066048.00) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (5.09) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (5029.32) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.13 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 27/250 reward=7.462891 kl=-3.130133 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.16 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 28/250 reward=7.681641 kl=-3.159277 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.53 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 29/250 reward=7.478516 kl=-2.529335 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.93 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 30/250 reward=7.370117 kl=-2.929499 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (89.61) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (138779.20) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (1327.44) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -5.51 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 31/250 reward=7.565918 kl=-5.508245 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.48 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 32/250 reward=7.489258 kl=-3.484038 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (120591.45) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.34 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 33/250 reward=7.710938 kl=-3.336939 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (11548.58) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.27 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 34/250 reward=7.498047 kl=-3.265653 best=7.803711
+PPO_STEP 35/250 reward=7.446289 kl=0.020446 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -1.16 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 36/250 reward=7.748047 kl=-1.159072 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -4.52 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 37/250 reward=7.562500 kl=-4.516764 best=7.803711
+PPO_STEP 38/250 reward=7.584961 kl=-0.668226 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (3810761447312299260349775872.00) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -5.15 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 39/250 reward=7.619141 kl=-5.147430 best=7.803711
+PPO_STEP 40/250 reward=7.755859 kl=-0.756721 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.50 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 41/250 reward=7.452148 kl=-2.502998 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (5.67) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -1.94 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 42/250 reward=7.562500 kl=-1.937726 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (22704.21) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.57 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 43/250 reward=7.351562 kl=-3.566007 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (22.22) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -3.58 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 44/250 reward=7.559570 kl=-3.577024 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -1.81 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+PPO_STEP 45/250 reward=7.790039 kl=-1.809439 best=7.803711
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1237: UserWarning: The average ratio of batch (inf) exceeds threshold 5.00. Skipping batch.
+  warnings.warn(
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -5.62 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+WARNING:__main__:Corrupted parameter detected: pretrained_model.base_model.model.gpt_neox.layers.0.attention.query_key_value.lora_A.default.weight
+WARNING:__main__:Step 45: weights corrupted after PPO step — rolling back (1/5)
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.82 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+WARNING:__main__:Corrupted parameter detected: pretrained_model.base_model.model.gpt_neox.layers.0.attention.query_key_value.lora_A.default.weight
+WARNING:__main__:Step 46: weights corrupted after PPO step — rolling back (2/5)
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.60 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+WARNING:__main__:Corrupted parameter detected: pretrained_model.base_model.model.gpt_neox.layers.0.attention.query_key_value.lora_A.default.weight
+WARNING:__main__:Step 47: weights corrupted after PPO step — rolling back (3/5)
+WARNING:__main__:Corrupted parameter detected: pretrained_model.base_model.model.gpt_neox.layers.0.attention.query_key_value.lora_A.default.weight
+WARNING:__main__:Step 48: weights corrupted after PPO step — rolling back (4/5)
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -2.62 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+  warnings.warn(
+WARNING:__main__:Corrupted parameter detected: pretrained_model.base_model.model.gpt_neox.layers.0.attention.query_key_value.lora_A.default.weight
+WARNING:__main__:Step 49: weights corrupted after PPO step — rolling back (5/5)
+ERROR:__main__:Too many rollbacks — stopping PPO with last healthy weights.
+[W730 01:18:37.887067202 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

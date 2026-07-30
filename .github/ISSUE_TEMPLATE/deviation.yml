@@ -1,0 +1,41 @@
+name: Protocol deviation or failure
+description: Record an ambiguity, failed run, or necessary protocol amendment.
+title: "[deviation] "
+labels: ["deviation"]
+body:
+  - type: input
+    id: arm
+    attributes:
+      label: Arm or artifact
+      placeholder: R-pythia-70m-tinystories-s42
+    validations:
+      required: true
+  - type: textarea
+    id: observation
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence paths and hashes
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Effect on interpretation
+    validations:
+      required: true
+  - type: dropdown
+    id: action
+    attributes:
+      label: Proposed disposition
+      options:
+        - Preserve failure; no rerun
+        - New attempt under unchanged protocol
+        - Protocol amendment required
+        - Extension-only correction
+    validations:
+      required: true

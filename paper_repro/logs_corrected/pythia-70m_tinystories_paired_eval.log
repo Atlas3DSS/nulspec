@@ -1,0 +1,40 @@
+{
+  "protocol": {
+    "samples": 200,
+    "generation": "greedy paired generation",
+    "max_new_tokens": 96,
+    "prompt_extraction": "first 200 characters, matching upstream evaluate.py",
+    "bootstrap_replicates": 10000,
+    "reward_dtype": "float32"
+  },
+  "reward": {
+    "sft_mean": 1.4989661793410778,
+    "sft_std": 3.364598472983612,
+    "ppo_mean": 1.4153376065194607,
+    "ppo_std": 3.428737198647259,
+    "paired_delta_mean": -0.08362857282161712,
+    "paired_delta_std": 2.974343919817903,
+    "paired_t_95_ci": [
+      -0.4983662838430137,
+      0.33110913819977944
+    ],
+    "paired_t_pvalue": 0.6913295746216573,
+    "paired_bootstrap_95_ci": [
+      -0.5010163816958666,
+      0.3340717275142668
+    ],
+    "empirical_wins": 44,
+    "empirical_losses": 59,
+    "empirical_ties": 97,
+    "empirical_win_rate": 0.4625,
+    "sign_test_pvalue": 0.1674443344120587,
+    "paper_style_analytic_marginal_win_rate": 0.49305526972795277
+  },
+  "diversity": {
+    "sft_distinct_1": 0.054763031573254004,
+    "sft_distinct_2": 0.11884038105681584,
+    "ppo_distinct_1": 0.04966200388193561,
+    "ppo_distinct_2": 0.10887999457295977
+  }
+}
+[W730 02:05:59.564780096 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

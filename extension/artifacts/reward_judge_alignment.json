@@ -1,0 +1,190 @@
+{
+  "protocol": {
+    "reward_dtype": "float32",
+    "reward_scoring": "single example",
+    "qwen_filter": "both A/B orders must map to the same outcome",
+    "purpose": "post-PPO diagnostic only; never used as training reward"
+  },
+  "arms": {
+    "exact-70m": {
+      "pairs_scored": 200,
+      "qwen_position_consistent_pairs": 181,
+      "qwen_position_inconsistent_or_incomplete_pairs": 19,
+      "reward_delta_mean": 0.07197529196739197,
+      "reward_prefers_ppo_rate": 0.21,
+      "qwen_non_tie_directional_pairs": 6,
+      "reward_qwen_directional_agreement": 0.6666666666666666,
+      "reward_qwen_spearman_including_ties": 0.10105388624015643,
+      "by_qwen_outcome": {
+        "ppo": {
+          "pairs": 4,
+          "mean_reward_delta": 0.2462395429611206,
+          "median_reward_delta": 0.2679779529571533,
+          "reward_prefers_ppo_rate": 0.5
+        },
+        "sft": {
+          "pairs": 2,
+          "mean_reward_delta": -0.8613409996032715,
+          "median_reward_delta": -0.8613409996032715,
+          "reward_prefers_ppo_rate": 0.0
+        },
+        "tie": {
+          "pairs": 175,
+          "mean_reward_delta": 0.07371792520795549,
+          "median_reward_delta": 0.0,
+          "reward_prefers_ppo_rate": 0.17142857142857143
+        }
+      }
+    },
+    "corrected-70m": {
+      "pairs_scored": 200,
+      "qwen_position_consistent_pairs": 181,
+      "qwen_position_inconsistent_or_incomplete_pairs": 19,
+      "reward_delta_mean": -0.08362857282161712,
+      "reward_prefers_ppo_rate": 0.22,
+      "qwen_non_tie_directional_pairs": 11,
+      "reward_qwen_directional_agreement": 0.5454545454545454,
+      "reward_qwen_spearman_including_ties": 0.03538510872394803,
+      "by_qwen_outcome": {
+        "ppo": {
+          "pairs": 7,
+          "mean_reward_delta": 1.309324060167585,
+          "median_reward_delta": 0.42266154289245605,
+          "reward_prefers_ppo_rate": 0.5714285714285714
+        },
+        "sft": {
+          "pairs": 4,
+          "mean_reward_delta": -2.087328165769577,
+          "median_reward_delta": -1.1760789155960083,
+          "reward_prefers_ppo_rate": 0.5
+        },
+        "tie": {
+          "pairs": 170,
+          "mean_reward_delta": 0.03155507129781386,
+          "median_reward_delta": 0.0,
+          "reward_prefers_ppo_rate": 0.19411764705882353
+        }
+      }
+    },
+    "exact-410m": {
+      "pairs_scored": 200,
+      "qwen_position_consistent_pairs": 148,
+      "qwen_position_inconsistent_or_incomplete_pairs": 52,
+      "reward_delta_mean": -0.24846721068024635,
+      "reward_prefers_ppo_rate": 0.545,
+      "qwen_non_tie_directional_pairs": 121,
+      "reward_qwen_directional_agreement": 0.5041322314049587,
+      "reward_qwen_spearman_including_ties": 0.0068548467765183665,
+      "by_qwen_outcome": {
+        "ppo": {
+          "pairs": 61,
+          "mean_reward_delta": -0.40947367763910136,
+          "median_reward_delta": 0.20345693826675415,
+          "reward_prefers_ppo_rate": 0.5409836065573771
+        },
+        "sft": {
+          "pairs": 60,
+          "mean_reward_delta": -0.2282422641913096,
+          "median_reward_delta": 0.19933611154556274,
+          "reward_prefers_ppo_rate": 0.5333333333333333
+        },
+        "tie": {
+          "pairs": 27,
+          "mean_reward_delta": -0.43503852243776675,
+          "median_reward_delta": 0.6186670064926147,
+          "reward_prefers_ppo_rate": 0.5555555555555556
+        }
+      }
+    },
+    "corrected-410m": {
+      "pairs_scored": 200,
+      "qwen_position_consistent_pairs": 147,
+      "qwen_position_inconsistent_or_incomplete_pairs": 53,
+      "reward_delta_mean": -0.034364094361662864,
+      "reward_prefers_ppo_rate": 0.48,
+      "qwen_non_tie_directional_pairs": 138,
+      "reward_qwen_directional_agreement": 0.4492753623188406,
+      "reward_qwen_spearman_including_ties": -0.09233606811996577,
+      "by_qwen_outcome": {
+        "ppo": {
+          "pairs": 55,
+          "mean_reward_delta": -0.552368717843836,
+          "median_reward_delta": -0.07270550727844238,
+          "reward_prefers_ppo_rate": 0.4727272727272727
+        },
+        "sft": {
+          "pairs": 83,
+          "mean_reward_delta": 0.4597317621291402,
+          "median_reward_delta": 0.6373538970947266,
+          "reward_prefers_ppo_rate": 0.5662650602409639
+        },
+        "tie": {
+          "pairs": 9,
+          "mean_reward_delta": 0.07569873332977295,
+          "median_reward_delta": -0.35105228424072266,
+          "reward_prefers_ppo_rate": 0.4444444444444444
+        }
+      }
+    },
+    "exact-160m": {
+      "pairs_scored": 200,
+      "qwen_position_consistent_pairs": 186,
+      "qwen_position_inconsistent_or_incomplete_pairs": 14,
+      "reward_delta_mean": 0.3313731372356415,
+      "reward_prefers_ppo_rate": 0.125,
+      "qwen_non_tie_directional_pairs": 6,
+      "reward_qwen_directional_agreement": 0.6666666666666666,
+      "reward_qwen_spearman_including_ties": 0.15807080452691766,
+      "by_qwen_outcome": {
+        "ppo": {
+          "pairs": 1,
+          "mean_reward_delta": 3.3756399154663086,
+          "median_reward_delta": 3.3756399154663086,
+          "reward_prefers_ppo_rate": 1.0
+        },
+        "sft": {
+          "pairs": 5,
+          "mean_reward_delta": 0.5573585987091064,
+          "median_reward_delta": -0.6490945816040039,
+          "reward_prefers_ppo_rate": 0.4
+        },
+        "tie": {
+          "pairs": 180,
+          "mean_reward_delta": 0.12504066096411812,
+          "median_reward_delta": 0.0,
+          "reward_prefers_ppo_rate": 0.06111111111111111
+        }
+      }
+    },
+    "corrected-160m": {
+      "pairs_scored": 200,
+      "qwen_position_consistent_pairs": 161,
+      "qwen_position_inconsistent_or_incomplete_pairs": 39,
+      "reward_delta_mean": -0.21082828298211098,
+      "reward_prefers_ppo_rate": 0.285,
+      "qwen_non_tie_directional_pairs": 13,
+      "reward_qwen_directional_agreement": 0.38461538461538464,
+      "reward_qwen_spearman_including_ties": -0.09699979460504021,
+      "by_qwen_outcome": {
+        "ppo": {
+          "pairs": 9,
+          "mean_reward_delta": -1.412061055501302,
+          "median_reward_delta": -1.075181484222412,
+          "reward_prefers_ppo_rate": 0.3333333333333333
+        },
+        "sft": {
+          "pairs": 4,
+          "mean_reward_delta": -1.9769257605075836,
+          "median_reward_delta": -3.012487769126892,
+          "reward_prefers_ppo_rate": 0.5
+        },
+        "tie": {
+          "pairs": 148,
+          "mean_reward_delta": -0.09521614176196021,
+          "median_reward_delta": 0.0,
+          "reward_prefers_ppo_rate": 0.22297297297297297
+        }
+      }
+    }
+  }
+}

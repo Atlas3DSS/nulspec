@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "source_results_sha256": "d3897ef87632643b28b076b9d904df918e8b0a40bb6b5f74440e32d771645fbf",
+  "sample_size_assumed": 200,
+  "formula": {
+    "delta": "ppo_mean - sft_mean",
+    "standard_error": "sqrt((sft_std^2 + ppo_std^2) / 200)",
+    "ci95": "delta +/- 1.96 * standard_error",
+    "p_two_sided": "2 * (1 - Phi(abs(delta / standard_error)))",
+    "analytic_win_rate": "Phi(delta / sqrt(sft_std^2 + ppo_std^2))"
+  },
+  "conclusions": [
+    "All 15 reported deltas are exactly reconstructable from the rounded means.",
+    "The four intervals and significance claims highlighted in the release are reproduced by an independent-samples z formula using marginal standard deviations.",
+    "The released analytic win rates are distribution-overlap probabilities, not empirical paired wins.",
+    "The calculation ignores same-prompt covariance even though SFT and PPO are evaluated on the same 200 prompts.",
+    "Four rows are significant at uncorrected alpha 0.05; three remain significant after Holm correction across 15 rows. SmolLM2-360M/Wikitext does not."
+  ],
+  "rows": [
+    {
+      "model": "pythia-70m",
+      "dataset": "tinystories",
+      "delta": -0.0754,
+      "ci95": [-0.3748896153, 0.2240896153],
+      "p_two_sided": 0.6216926573,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.4860827765
+    },
+    {
+      "model": "pythia-70m",
+      "dataset": "cnn_dailymail",
+      "delta": -0.1874,
+      "ci95": [-0.4265387402, 0.0517387402],
+      "p_two_sided": 0.1245518212,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.456756816
+    },
+    {
+      "model": "pythia-70m",
+      "dataset": "wikitext",
+      "delta": -0.0618,
+      "ci95": [-0.3109289255, 0.1873289255],
+      "p_two_sided": 0.6268210561,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.486287081
+    },
+    {
+      "model": "pythia-160m",
+      "dataset": "tinystories",
+      "delta": 0.2377,
+      "ci95": [-0.2368261055, 0.7122261055],
+      "p_two_sided": 0.3261960314,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.5276739697
+    },
+    {
+      "model": "pythia-160m",
+      "dataset": "cnn_dailymail",
+      "delta": -0.1976,
+      "ci95": [-0.4435729416, 0.0483729416],
+      "p_two_sided": 0.1153610045,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.4556744397
+    },
+    {
+      "model": "pythia-160m",
+      "dataset": "wikitext",
+      "delta": 0.0435,
+      "ci95": [-0.4463297272, 0.5333297272],
+      "p_two_sided": 0.8618179273,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.5049100317
+    },
+    {
+      "model": "pythia-410m",
+      "dataset": "tinystories",
+      "delta": 1.3549,
+      "ci95": [0.6061557854, 2.1036442146],
+      "p_two_sided": 0.0003900235,
+      "p_holm_15": 0.005460329,
+      "analytic_win_rate": 0.5990127949
+    },
+    {
+      "model": "pythia-410m",
+      "dataset": "cnn_dailymail",
+      "delta": -0.2586,
+      "ci95": [-0.6066386071, 0.0894386071],
+      "p_two_sided": 0.1453038491,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.4589904304
+    },
+    {
+      "model": "pythia-410m",
+      "dataset": "wikitext",
+      "delta": -1.0429,
+      "ci95": [-1.604901432, -0.480898568],
+      "p_two_sided": 0.0002756705,
+      "p_holm_15": 0.0041350575,
+      "analytic_win_rate": 0.3985178252
+    },
+    {
+      "model": "smollm2-135m",
+      "dataset": "tinystories",
+      "delta": 0.2255,
+      "ci95": [-0.1884460466, 0.6394460466],
+      "p_two_sided": 0.2856451694,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.5300913388
+    },
+    {
+      "model": "smollm2-135m",
+      "dataset": "cnn_dailymail",
+      "delta": -0.1937,
+      "ci95": [-0.5663940021, 0.1789940021],
+      "p_two_sided": 0.3083599133,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.4712886949
+    },
+    {
+      "model": "smollm2-135m",
+      "dataset": "wikitext",
+      "delta": 0.0151,
+      "ci95": [-0.2723904365, 0.3025904365],
+      "p_two_sided": 0.9180058026,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.5029040283
+    },
+    {
+      "model": "smollm2-360m",
+      "dataset": "tinystories",
+      "delta": 0.7236,
+      "ci95": [0.3162884312, 1.1309115688],
+      "p_two_sided": 0.0004976968,
+      "p_holm_15": 0.0064700584,
+      "analytic_win_rate": 0.5972417419
+    },
+    {
+      "model": "smollm2-360m",
+      "dataset": "cnn_dailymail",
+      "delta": -0.0008,
+      "ci95": [-0.2099627561, 0.2083627561],
+      "p_two_sided": 0.9940186709,
+      "p_holm_15": 1.0,
+      "analytic_win_rate": 0.4997885261
+    },
+    {
+      "model": "smollm2-360m",
+      "dataset": "wikitext",
+      "delta": 0.2721,
+      "ci95": [0.0417363297, 0.5024636703],
+      "p_two_sided": 0.0206072067,
+      "p_holm_15": 0.2472864804,
+      "analytic_win_rate": 0.5650173719
+    }
+  ]
+}

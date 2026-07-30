@@ -1,0 +1,585 @@
+{
+  "protocol": {
+    "name": "qwen-reviewer-outer-audit-v1",
+    "boundary": "Contains only Qwen reviewer records. No story prompt, small-policy output, checkpoint, reward, or training state.",
+    "selection": "Position-inconsistent and incomplete records first, then weak reasons, then a stable pseudorandom consistent sample.",
+    "sample_size_requested": 20,
+    "sample_size_realized": 20,
+    "source_record_counts": {
+      "calibration": 100,
+      "exact-70m": 400,
+      "corrected-70m": 400,
+      "exact-410m": 400,
+      "corrected-410m": 400,
+      "exact-160m": 400,
+      "corrected-160m": 400
+    },
+    "population_summary": {
+      "calibration": {
+        "pairs": 50,
+        "records": 100,
+        "incomplete_pairs": 0,
+        "position_inconsistent_pairs": 0,
+        "raw_a_choices": 50,
+        "raw_b_choices": 50,
+        "raw_ties": 0
+      },
+      "exact-70m": {
+        "pairs": 200,
+        "records": 400,
+        "incomplete_pairs": 0,
+        "position_inconsistent_pairs": 19,
+        "raw_a_choices": 21,
+        "raw_b_choices": 10,
+        "raw_ties": 369
+      },
+      "corrected-70m": {
+        "pairs": 200,
+        "records": 400,
+        "incomplete_pairs": 0,
+        "position_inconsistent_pairs": 19,
+        "raw_a_choices": 29,
+        "raw_b_choices": 13,
+        "raw_ties": 358
+      },
+      "exact-410m": {
+        "pairs": 200,
+        "records": 400,
+        "incomplete_pairs": 0,
+        "position_inconsistent_pairs": 52,
+        "raw_a_choices": 185,
+        "raw_b_choices": 128,
+        "raw_ties": 87
+      },
+      "corrected-410m": {
+        "pairs": 200,
+        "records": 400,
+        "incomplete_pairs": 0,
+        "position_inconsistent_pairs": 53,
+        "raw_a_choices": 203,
+        "raw_b_choices": 150,
+        "raw_ties": 47
+      },
+      "exact-160m": {
+        "pairs": 200,
+        "records": 400,
+        "incomplete_pairs": 0,
+        "position_inconsistent_pairs": 14,
+        "raw_a_choices": 21,
+        "raw_b_choices": 7,
+        "raw_ties": 372
+      },
+      "corrected-160m": {
+        "pairs": 200,
+        "records": 400,
+        "incomplete_pairs": 0,
+        "position_inconsistent_pairs": 39,
+        "raw_a_choices": 55,
+        "raw_b_choices": 17,
+        "raw_ties": 328
+      }
+    }
+  },
+  "pairs": [
+    {
+      "label": "calibration",
+      "pair_id": "0569cbf81a99aab701dc5351",
+      "selection_reason": "routine_consistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "calibration",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "0569cbf81a99aab701dc5351",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A is coherent, complete, and age-appropriate; B is fragmented and repetitive."
+        },
+        {
+          "winner": "B",
+          "label": "calibration",
+          "orientation": "sft_first",
+          "mapped_winner": "ppo",
+          "pair_id": "0569cbf81a99aab701dc5351",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "B is coherent, complete, and age-appropriate; A is fragmented and repetitive."
+        }
+      ]
+    },
+    {
+      "label": "corrected-160m",
+      "pair_id": "daaeadfe1865c2f6caee223a",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "TIE",
+          "label": "corrected-160m",
+          "orientation": "ppo_first",
+          "mapped_winner": "tie",
+          "pair_id": "daaeadfe1865c2f6caee223a",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are repetitive, incoherent, and fail to properly continue the story."
+        },
+        {
+          "winner": "A",
+          "label": "corrected-160m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "daaeadfe1865c2f6caee223a",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A is shorter and less repetitive, though both are flawed."
+        }
+      ]
+    },
+    {
+      "label": "corrected-410m",
+      "pair_id": "b9b01fa50339dc0f10a2cd3c",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "corrected-410m",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "b9b01fa50339dc0f10a2cd3c",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A is shorter and less repetitive; B is excessively repetitive and incoherent."
+        },
+        {
+          "winner": "A",
+          "label": "corrected-410m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "b9b01fa50339dc0f10a2cd3c",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues the story; B is empty."
+        }
+      ]
+    },
+    {
+      "label": "corrected-70m",
+      "pair_id": "d3de7c9bdfd0294dc099c62b",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "TIE",
+          "label": "corrected-70m",
+          "orientation": "ppo_first",
+          "mapped_winner": "tie",
+          "pair_id": "d3de7c9bdfd0294dc099c62b",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both candidates are incoherent and fail as continuations."
+        },
+        {
+          "winner": "A",
+          "label": "corrected-70m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "d3de7c9bdfd0294dc099c62b",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues coherently; B is repetitive and nonsensical."
+        }
+      ]
+    },
+    {
+      "label": "exact-160m",
+      "pair_id": "e5f27219d4ce496d69fb1d9d",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "TIE",
+          "label": "exact-160m",
+          "orientation": "ppo_first",
+          "mapped_winner": "tie",
+          "pair_id": "e5f27219d4ce496d69fb1d9d",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are repetitive, incoherent, and fail to continue the story meaningfully."
+        },
+        {
+          "winner": "A",
+          "label": "exact-160m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "e5f27219d4ce496d69fb1d9d",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues the prompt more coherently and is less repetitive than B."
+        }
+      ]
+    },
+    {
+      "label": "exact-410m",
+      "pair_id": "0cce63fbd4f9d826a9692ddb",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "TIE",
+          "label": "exact-410m",
+          "orientation": "ppo_first",
+          "mapped_winner": "tie",
+          "pair_id": "0cce63fbd4f9d826a9692ddb",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are repetitive, incoherent, and fail to continue the story meaningfully."
+        },
+        {
+          "winner": "A",
+          "label": "exact-410m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "0cce63fbd4f9d826a9692ddb",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues more coherently with fewer repetitions and clearer narrative progression."
+        }
+      ]
+    },
+    {
+      "label": "exact-70m",
+      "pair_id": "183138ca4386dc960b4d16d4",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "TIE",
+          "label": "exact-70m",
+          "orientation": "ppo_first",
+          "mapped_winner": "tie",
+          "pair_id": "183138ca4386dc960b4d16d4",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are repetitive, incoherent, and fail to continue the story meaningfully."
+        },
+        {
+          "winner": "B",
+          "label": "exact-70m",
+          "orientation": "sft_first",
+          "mapped_winner": "ppo",
+          "pair_id": "183138ca4386dc960b4d16d4",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "B continues the sentence coherently; A is repetitive and nonsensical."
+        }
+      ]
+    },
+    {
+      "label": "calibration",
+      "pair_id": "edfe36d998d4a6c09a6478db",
+      "selection_reason": "routine_consistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "calibration",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "edfe36d998d4a6c09a6478db",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Coherent, fluent, age-appropriate; B is fragmented and illogical."
+        },
+        {
+          "winner": "B",
+          "label": "calibration",
+          "orientation": "sft_first",
+          "mapped_winner": "ppo",
+          "pair_id": "edfe36d998d4a6c09a6478db",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "B is coherent, causal, fluent, and age-appropriate; A is disjointed and repetitive."
+        }
+      ]
+    },
+    {
+      "label": "corrected-160m",
+      "pair_id": "7a64c07c4b4b9a3d83a1a7f9",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "TIE",
+          "label": "corrected-160m",
+          "orientation": "ppo_first",
+          "mapped_winner": "tie",
+          "pair_id": "7a64c07c4b4b9a3d83a1a7f9",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are repetitive, incoherent, and fail as age-appropriate continuations."
+        },
+        {
+          "winner": "A",
+          "label": "corrected-160m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "7a64c07c4b4b9a3d83a1a7f9",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A is less repetitive and slightly more coherent than B."
+        }
+      ]
+    },
+    {
+      "label": "corrected-410m",
+      "pair_id": "0b346d098a49cc126aaa865a",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "corrected-410m",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "0b346d098a49cc126aaa865a",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues coherently; B is repetitive and escalates conflict unrealistically."
+        },
+        {
+          "winner": "A",
+          "label": "corrected-410m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "0b346d098a49cc126aaa865a",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues coherently; B is repetitive, fragmented, and ends abruptly."
+        }
+      ]
+    },
+    {
+      "label": "exact-410m",
+      "pair_id": "f45019eb24426368816ee62f",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "exact-410m",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "f45019eb24426368816ee62f",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues more coherently; B is repetitive and logically inconsistent."
+        },
+        {
+          "winner": "TIE",
+          "label": "exact-410m",
+          "orientation": "sft_first",
+          "mapped_winner": "tie",
+          "pair_id": "f45019eb24426368816ee62f",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are incoherent, repetitive, and fail to continue the story logically."
+        }
+      ]
+    },
+    {
+      "label": "corrected-160m",
+      "pair_id": "7a9935ab59dacc1f8f93fcb9",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "corrected-160m",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "7a9935ab59dacc1f8f93fcb9",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A is less repetitive and slightly more coherent, though both are flawed."
+        },
+        {
+          "winner": "A",
+          "label": "corrected-160m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "7a9935ab59dacc1f8f93fcb9",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues coherently; B is repetitive and cuts off mid-sentence."
+        }
+      ]
+    },
+    {
+      "label": "corrected-410m",
+      "pair_id": "3f2baff5840b23ea8260d19f",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "corrected-410m",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "3f2baff5840b23ea8260d19f",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues more coherently and age-appropriately; B is repetitive and abruptly introduces an odd tavern scene."
+        },
+        {
+          "winner": "TIE",
+          "label": "corrected-410m",
+          "orientation": "sft_first",
+          "mapped_winner": "tie",
+          "pair_id": "3f2baff5840b23ea8260d19f",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are incoherent, repetitive, and age-inappropriate; neither properly continues the prompt."
+        }
+      ]
+    },
+    {
+      "label": "exact-410m",
+      "pair_id": "36a2a634ee5b26c5c4462af4",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "TIE",
+          "label": "exact-410m",
+          "orientation": "ppo_first",
+          "mapped_winner": "tie",
+          "pair_id": "36a2a634ee5b26c5c4462af4",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are repetitive, incoherent, and fail to meaningfully continue the story."
+        },
+        {
+          "winner": "A",
+          "label": "exact-410m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "36a2a634ee5b26c5c4462af4",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Slightly less repetitive and more coherent continuation."
+        }
+      ]
+    },
+    {
+      "label": "corrected-160m",
+      "pair_id": "d7300b7b6413a48a66ec05a9",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "corrected-160m",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "d7300b7b6413a48a66ec05a9",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A is less repetitive and slightly more coherent than B."
+        },
+        {
+          "winner": "A",
+          "label": "corrected-160m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "d7300b7b6413a48a66ec05a9",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Slightly less repetitive; introduces curiosity, though both are poor."
+        }
+      ]
+    },
+    {
+      "label": "corrected-410m",
+      "pair_id": "f58cf32a6b0e067082b36ebd",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "TIE",
+          "label": "corrected-410m",
+          "orientation": "ppo_first",
+          "mapped_winner": "tie",
+          "pair_id": "f58cf32a6b0e067082b36ebd",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are repetitive, incoherent, and fail to continue the story meaningfully."
+        },
+        {
+          "winner": "A",
+          "label": "corrected-410m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "f58cf32a6b0e067082b36ebd",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A is more coherent and less repetitive than B."
+        }
+      ]
+    },
+    {
+      "label": "exact-410m",
+      "pair_id": "2050cdab2e866beb10606aa3",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "exact-410m",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "2050cdab2e866beb10606aa3",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues more coherently with fewer repetitions and clearer narrative flow."
+        },
+        {
+          "winner": "TIE",
+          "label": "exact-410m",
+          "orientation": "sft_first",
+          "mapped_winner": "tie",
+          "pair_id": "2050cdab2e866beb10606aa3",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are incoherent, repetitive, and fail to continue the story logically."
+        }
+      ]
+    },
+    {
+      "label": "exact-410m",
+      "pair_id": "045e4be2dca5d326ce60db5b",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "exact-410m",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "045e4be2dca5d326ce60db5b",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues the prompt\u2019s warning more coherently than B\u2019s repetitive, nonsensical dialogue."
+        },
+        {
+          "winner": "TIE",
+          "label": "exact-410m",
+          "orientation": "sft_first",
+          "mapped_winner": "tie",
+          "pair_id": "045e4be2dca5d326ce60db5b",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are incoherent, repetitive, and fail to complete the prompt meaningfully."
+        }
+      ]
+    },
+    {
+      "label": "corrected-160m",
+      "pair_id": "ac070967be598d2fc0cee1e6",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "A",
+          "label": "corrected-160m",
+          "orientation": "ppo_first",
+          "mapped_winner": "ppo",
+          "pair_id": "ac070967be598d2fc0cee1e6",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A continues the story with actions; B is repetitive and adds nothing."
+        },
+        {
+          "winner": "TIE",
+          "label": "corrected-160m",
+          "orientation": "sft_first",
+          "mapped_winner": "tie",
+          "pair_id": "ac070967be598d2fc0cee1e6",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are repetitive, incoherent, and fail as age-appropriate continuations."
+        }
+      ]
+    },
+    {
+      "label": "exact-160m",
+      "pair_id": "c2899bde4c74c631421570b9",
+      "selection_reason": "position_inconsistent",
+      "qwen_reviews": [
+        {
+          "winner": "TIE",
+          "label": "exact-160m",
+          "orientation": "ppo_first",
+          "mapped_winner": "tie",
+          "pair_id": "c2899bde4c74c631421570b9",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "Both are repetitive, incoherent, and fail to continue the story meaningfully."
+        },
+        {
+          "winner": "A",
+          "label": "exact-160m",
+          "orientation": "sft_first",
+          "mapped_winner": "sft",
+          "pair_id": "c2899bde4c74c631421570b9",
+          "model": "qwen3.6-heretic2-27b-q4-k-m-pro6000",
+          "reason": "A is less repetitive and slightly more coherent than B."
+        }
+      ]
+    }
+  ]
+}

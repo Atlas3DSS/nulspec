@@ -1,0 +1,41 @@
+Some weights of GPTNeoXForSequenceClassification were not initialized from the model checkpoint at EleutherAI/pythia-70m-deduped and are newly initialized: ['score.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+{
+  "protocol": {
+    "samples": 200,
+    "generation": "greedy paired generation",
+    "max_new_tokens": 96,
+    "prompt_extraction": "first 200 characters, matching upstream evaluate.py",
+    "bootstrap_replicates": 10000
+  },
+  "reward": {
+    "sft_mean": 6.45765625,
+    "sft_std": 1.4339294906583404,
+    "ppo_mean": 6.504609375,
+    "ppo_std": 1.4395499967403822,
+    "paired_delta_mean": 0.046953125,
+    "paired_delta_std": 1.1434824699086126,
+    "paired_t_95_ci": [
+      -0.11249222326760235,
+      0.20639847326760236
+    ],
+    "paired_t_pvalue": 0.5621013485156274,
+    "paired_bootstrap_95_ci": [
+      -0.11000390624999999,
+      0.207890625
+    ],
+    "empirical_wins": 42,
+    "empirical_losses": 40,
+    "empirical_ties": 118,
+    "empirical_win_rate": 0.505,
+    "sign_test_pvalue": 0.9121566075526032,
+    "paper_style_analytic_marginal_win_rate": 0.5092181120568179
+  },
+  "diversity": {
+    "sft_distinct_1": 0.054763031573254004,
+    "sft_distinct_2": 0.11884038105681584,
+    "ppo_distinct_1": 0.05384248859846164,
+    "ppo_distinct_2": 0.11883237871782486
+  }
+}
+[W730 01:19:59.039128030 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

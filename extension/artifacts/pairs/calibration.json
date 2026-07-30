@@ -1,0 +1,461 @@
+{
+  "label": "calibration",
+  "protocol": {
+    "samples": 50,
+    "source": "/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/data_release/datasets/tinystories/preference_eval.json",
+    "selection_seed": 20260730,
+    "role_mapping": "sft=rejected, ppo=chosen"
+  },
+  "pairs": [
+    {
+      "pair_id": "e5a7625c6452a624b1355cfa",
+      "index": 0,
+      "source_index": 179,
+      "prompt": "Once upon a time, there was a little red car.",
+      "sft": "The car liked to do lots of things, like drive fast and visit new places. But one day, the car got tired and needed to rest. The tire was soft and comfortable, and the car fell asleep right away",
+      "ppo": "The car liked to do lots of things, like drive fast and visit new places. But one day, the car got tired and needed to rest. \n\nThe car saw a big tire and decided to take a nap on it. The tire was soft and comfortable, and the car fell asleep right away. \n\nAfter a while, the car woke up feeling refreshed and ready to do more things. It thanked the tire for being such a good bed and drove off into the sunset, excited for all the adventures to come.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "e9db699bfd8d075ded04ea83",
+      "index": 1,
+      "source_index": 153,
+      "prompt": "Once upon a time, there was a little bird named Tweety.",
+      "sft": "\n\nFrom that day on, Tweety and Max became best friends. The end.. Max saw the hawk and knew he had to protect Tweety. They lived happily ever after. The hawk wanted to eat Tweety for lunch! Tweety was so scared and felt helpless.\n\nBut then, Tweety saw a kind and brave dog named Max",
+      "ppo": "Tweety loved to fly high in the sky and sing songs. One day, Tweety was flying when a big and scary hawk appeared. The hawk wanted to eat Tweety for lunch! Tweety was so scared and felt helpless.\n\nBut then, Tweety saw a kind and brave dog named Max. Max saw the hawk and knew he had to protect Tweety. Max barked loudly and chased the hawk away. Tweety was so grateful and happy that Max helped protect him. \n\nFrom that day on, Tweety and Max became best friends. Tweety would sing songs for Max, and Max would protect Tweety from any danger in the sky. They lived happily ever after. The end.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "38c22add2a7ee58bb8f0c087",
+      "index": 2,
+      "source_index": 244,
+      "prompt": "Once upon a time, there was a little kid named Tom.",
+      "sft": "Tom was three-years-old and very curious about the world. Then, Tom did something magical; he set out his hand with some birdseed in it, and the bird flew down and ate the food!\n\nTom was amazed by his discovery and soon, he and the bird were friends. Tom was scared, but the bird remained still. One day, Tom wanted to explore the woods",
+      "ppo": "Tom was three-years-old and very curious about the world. One day, Tom wanted to explore the woods. So, he set off on an adventure.\n\nAs he entered the woods, he noticed that it was very silent. It was rare to find such silence, especially in the woods! Tom explored further, discovering all sorts of animals and plants.\n\nAs he walked around the woods, Tom saw a huge red bird staring at him. Tom was scared, but the bird remained still. Then, Tom did something magical; he set out his hand with some birdseed in it, and the bird flew down and ate the food!\n\nTom was amazed by his discovery and soon, he and the bird were friends. They played together in the woods every day. Tom enjoyed spending time in the woods and never forgot how beautiful the rare silence was.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "789f7a5bca1a915151643228",
+      "index": 3,
+      "source_index": 44,
+      "prompt": "Once upon a time there was a cute, little witch.",
+      "sft": "It will be a bumpy ride!\"\n\nThe rabbit happily hopped onto the witch's shoulders and off they flew. Just make sure you balance on my shoulders. They flew across the sky and even traveled to the moon. Everywhere they went the witch balanced things with ease!\n\nFinally, the little witch and the furry rabbit returned to the pond",
+      "ppo": "She was able to balance anything she touched. She was playing near a pond and noticed a flower right at the edge of the pond. She quickly balanced the flower on top of her head and began to flutter away.\n\nAs she flew away, a small, furry rabbit hopped up to her and asked, \"Where are you going, Witch?\"\n\nThe witch replied, \"I am going to a special place to use my gift of balancing things.\"\n\nThe little rabbit was surprised and asked, \"Can I come with you?\"\n\nThe witch replied, \"Yes, you may. Just make sure you balance on my shoulders. It will be a bumpy ride!\"\n\nThe rabbit happily hopped onto the witch's shoulders and off they flew. They flew across the sky and even traveled to the moon. Everywhere they went the witch balanced things with ease!\n\nFinally, the little witch and the furry rabbit returned to the pond. They looked back and saw their gift of balancing things had made everything look more beautiful than ever before.\n\nThe end.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "0569cbf81a99aab701dc5351",
+      "index": 4,
+      "source_index": 65,
+      "prompt": "One day, a boy named Joe saw something exciting.",
+      "sft": "Suddenly, a wave came and the raft started to move away from the beach. He counted 1,2,3,4,5. Joe and his mom jumped into the raft and he started to count",
+      "ppo": "He saw a red raft floating on the sea! Joe was so excited that he quickly ran down to the beach. Joe and his mom jumped into the raft and he started to count. He counted 1,2,3,4,5. Joe was having a great time counting and playing in the red raft. Suddenly, a wave came and the raft started to move away from the beach. Joe and his mom, laughed and kept counting all the way back to the shore. When they got back to the beach, they hugged and said that they had a lot of fun counting together!",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "648a0af469cbc5175aca1d63",
+      "index": 5,
+      "source_index": 136,
+      "prompt": "Once upon a time, there was a team of brave and adventurous explorers.",
+      "sft": "But they continued on. Everyone was excited about the adventure.\n\nOn the day of the journey, the team packed their backpacks with all the stuff they needed for the trip. They went on a hike, looking at the big trees, strange plants and chirping birds. At night, they camped and made a fire. The team wanted to explore a faraway land",
+      "ppo": "The team wanted to explore a faraway land. So, they sent a message to their friends to ask them to join. Everyone was excited about the adventure.\n\nOn the day of the journey, the team packed their backpacks with all the stuff they needed for the trip. They filled their water bottles and snacks and set off. \n\nThe team walked and walked. At first it was fun and exciting, but after a while they started to get tired. But they continued on. Finally, they reached the faraway land.\n\nThe team was amazed by all they saw. They went on a hike, looking at the big trees, strange plants and chirping birds. At night, they camped and made a fire. Then, they sent a message back home to tell their friends about the amazing adventure.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "70dbf4e86923952630308fc0",
+      "index": 6,
+      "source_index": 43,
+      "prompt": "The day was still, and the sun shone brightly.",
+      "sft": "Lucy saw a big tree and said, \"Look Peter, let's go and explore the tree!\"\n\nCurious, Peter jumped at the chance. He wanted to know if he could reach the top. Together, they ran to the tree, and looked up at all the leaves that were swaying in the breeze. He couldn't believe he had done it.\n\nLucy shouted up to him, \"Did you see the view?\" She was so proud of him. She whispered something again, and this time he clearly heard her. When he finally made it to the top, he let out a sigh of relief. He looked around in wonder as the leaves rustled and birds flew above him. Lucy smiled and reassured him",
+      "ppo": "Two children, Lucy and Peter, were walking together in the park. Lucy saw a big tree and said, \"Look Peter, let's go and explore the tree!\"\n\nCurious, Peter jumped at the chance. Together, they ran to the tree, and looked up at all the leaves that were swaying in the breeze. Lucy whispered something to Peter, but he couldn't make out what she said.\n\nShe leaned close to him and cupped her mouth with her hand. She whispered something again, and this time he clearly heard her. \"Let's climb the tree!\" she said.\n\nPeter looked up at the branches and was amazed. He wanted to know if he could reach the top. He was excited, but also scared. Lucy smiled and reassured him. She said, \"I'll be right behind you, and we can take it slow.\"\n\nHe closed his eyes and began climbing. He could feel Lucy's hand on his back, pushing him up. When he finally made it to the top, he let out a sigh of relief. He couldn't believe he had done it.\n\nLucy shouted up to him, \"Did you see the view?\" She was so proud of hi",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "598f7a92a6569a2c91387dc6",
+      "index": 7,
+      "source_index": 8,
+      "prompt": "Once there was a little girl named Emily.",
+      "sft": "She had spent the night before studying, but she was still scared.\n\nAt school, she was so deep in thought about the test. Everyday Emily went to school to learn and play.\n\nEmily was worried because she had a test at school",
+      "ppo": "Everyday Emily went to school to learn and play.\n\nEmily was worried because she had a test at school. She had spent the night before studying, but she was still scared.\n\nAt school, she was so deep in thought about the test. But then she remembered all the things she had learned and smiled.\n\nEmily did her best on the test and soon it was over. She felt relieved and happy that she had done well.\n\nEmily learned that she should never worry too much. She could always do her best and that was enough.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "20d45023a6a843e81c1552ca",
+      "index": 8,
+      "source_index": 187,
+      "prompt": "Anna and Ben are twins.",
+      "sft": "They look at Mom. It will make your bone heal faster.\"\n\nBen kneels on the couch. It will make you happy.\"\n\nAnna wraps Ben's arm with the bandages and tape. She sees Anna holding the toy x-ray machine. She sees Ben's arm wrapped in bandages and tape. I want to play something else.\"\n\nAnna says, \"No, Ben. Anna has a toy x-ray machine. Now you have a cast. I will wrap your arm with the bandages and tape. You have to wait until your bone is fixed.\"\n\nBen says, \"Anna, this is not a game. They say, \"Sorry, Mom.\". She says, \"There. You are a brave patient, Ben.\"\n\nBen feels his arm. He wants to stop. It is part of the game. You are making me unhappy, Ben.\"\n\nAnna and Ben start to argue. But don't hurt me.\"\n\nAnna says, \"Don't worry, Ben. They know they are in trouble. You have to wear the cast. It is very stiff. He does not want a cast. It will just make a beep sound.\"\n\nAnna presses a button and the x-ray machine makes a beep sound. She looks at the screen and says, \"Oh no, Ben. They raise their v",
+      "ppo": "They like to play doctor and patient. Anna has a toy x-ray machine. She puts it on Ben's arm and says, \"Let me see your bones, Ben.\"\n\nBen says, \"Okay, Anna. But don't hurt me.\"\n\nAnna says, \"Don't worry, Ben. It will not hurt. It will just make a beep sound.\"\n\nAnna presses a button and the x-ray machine makes a beep sound. She looks at the screen and says, \"Oh no, Ben. You have a broken bone. You need a cast.\"\n\nBen says, \"A broken bone? But I don't feel any pain.\"\n\nAnna says, \"Trust me, Ben. I am the doctor. You need a cast. Come with me to the couch. I have some bandages and tape.\"\n\nBen follows Anna to the couch. He is scared. He does not want a cast. He thinks Anna is playing a trick on him.\n\nAnna says, \"Kneel on the couch, Ben. I will wrap your arm with the bandages and tape. It will make your bone heal faster.\"\n\nBen kneels on the couch. He does not like this game. He wants to stop. He says, \"Anna, please. I don't want a cast. I want to play something else.\"\n\nAnna says, \"No, Ben. You",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "d749abb93b406035f97bacec",
+      "index": 9,
+      "source_index": 144,
+      "prompt": "Lily and Ben are friends.",
+      "sft": "\"It was my best squash! Now it is ruined!\"\n\n\"I'm sorry, Mr. Brown says. It breaks. He knows he did a bad thing.\n\nLily feels sorry for Ben. He runs to the squash. Brown clean the mess. He sees Mr. \"The squash is not ours. We can say sorry to the squash.\"\n\nMr. He is scared. We will not do it again.\"\n\nThey help Mr. But you should not play with things that are not yours. Brown. Brown!\" Ben says. Brown coming. They see a big squash. We can pick up the pieces. He is angry.\n\n\"What have you done to my squash?\" Mr. They say, \"We are sorry, Mr. It falls on the ground. He tries to lift it. It makes a mess.\n\n\"Oh no!\" Ben says",
+      "ppo": "They like to play in the garden. They see a big squash. It is green and round.\n\n\"Wow, look at the squash!\" Lily says. \"It is so big and nice!\"\n\n\"I want to touch it!\" Ben says. He runs to the squash. He puts his hand on it.\n\n\"Be careful, Ben!\" Lily says. \"The squash is not ours. It belongs to Mr. Brown. He grows it for his soup.\"\n\nBen does not listen. He teases Lily. He says, \"You are scared of the squash! You are a baby!\"\n\nHe laughs and pulls the squash. He tries to lift it. But the squash is too heavy. It falls on the ground. It breaks. It makes a mess.\n\n\"Oh no!\" Ben says. He is scared. He sees Mr. Brown coming. He is angry.\n\n\"What have you done to my squash?\" Mr. Brown says. \"It was my best squash! Now it is ruined!\"\n\n\"I'm sorry, Mr. Brown!\" Ben says. He is sad. He knows he did a bad thing.\n\nLily feels sorry for Ben. She says, \"We can help you, Mr. Brown. We can clean the mess. We can pick up the pieces. We can say sorry to the squash.\"\n\nMr. Brown sighs. He says, \"Thank you, Lily. Th",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "9d818ff989d2393dc55d2a19",
+      "index": 10,
+      "source_index": 102,
+      "prompt": "Once upon a time, there was a little girl named Lily.",
+      "sft": "She was so excited to try it out!\n\nLily took the potion and poured it on her toys. She picked them up and put them in her pocket.\n\nAs she was walking back to her house, she saw her mom. One day, she found a magic potion that made everything shrink. They had so much fun and Lily was happy that she found the magic potion",
+      "ppo": "She loved to play in her garden with her favorite toys. One day, she found a magic potion that made everything shrink. She was so excited to try it out!\n\nLily took the potion and poured it on her toys. Suddenly, they started to shrink! She was amazed at how small they had become. She picked them up and put them in her pocket.\n\nAs she was walking back to her house, she saw her mom. \"Look, Mommy! My toys shrunk!\" she exclaimed. Her mom was surprised and a little bit ashamed that she didn't notice the magic potion before.\n\nLily showed her mom the way to the garden and they both played with the tiny toys together. They had so much fun and Lily was happy that she found the magic potion. From that day on, Lily and her mom always played with the shrunken toys in the garden.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "a76e8c15a6bf47317f4a5b12",
+      "index": 11,
+      "source_index": 143,
+      "prompt": "Once there was a powerful lion.",
+      "sft": "He wore it everywhere - to the market, to school, even to bed.\n\nOne day, the lion was out for a walk and he saw a little girl. The lion nodded and smiled at the girl.\n\nThe girl nodded back and said, \"Your hat looks nice too!\" The lion was so happy that someone else had noticed his hat. She was wearing a pretty hat too. He had a big hat and his mane was golden",
+      "ppo": "He had a big hat and his mane was golden. Everywhere he went, people would nod and say, \"Oh look, there goes the powerful lion!\" \n\nThe powerful lion liked his hat so much that he never wanted to take it off. He wore it everywhere - to the market, to school, even to bed.\n\nOne day, the lion was out for a walk and he saw a little girl. She was wearing a pretty hat too. The lion nodded and smiled at the girl.\n\nThe girl nodded back and said, \"Your hat looks nice too!\" The lion was so happy that someone else had noticed his hat. He smiled and thanked the girl. \n\nFrom then on, the lion and the girl became good friends. They would wear their hats together and exchange nods and smiles whenever they'd meet.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "2a68af4f4eabf4585d1d5516",
+      "index": 12,
+      "source_index": 151,
+      "prompt": "Once upon a time, in a faraway land, there lived a small girl.",
+      "sft": "She jumped out of the car and ran towards the boat. She was excited and asked her parents where they were. Her parents said, \"We are here so we can take a boat across the lake! You'll get to use your brain and guess what the other side holds!\"\n\nThe girl was so excited she couldn't take it. The girl was very excited as she tried to guess what the adventure could be.\n\nWhen the car stopped, the girl opened her eyes and saw a lake",
+      "ppo": "The girl was very excited to go on a journey with her family. On the day of the journey, the girl put on her clothes and hopped into the car.\n\nHer parents told her they would be closing her eyes so she had to close her eyes and guess where they were going. The girl was very excited as she tried to guess what the adventure could be.\n\nWhen the car stopped, the girl opened her eyes and saw a lake. She was excited and asked her parents where they were. Her parents said, \"We are here so we can take a boat across the lake! You'll get to use your brain and guess what the other side holds!\"\n\nThe girl was so excited she couldn't take it. She jumped out of the car and ran towards the boat. When they arrived to the other side, the girl hugged her parents and thanked them for taking her on the great adventure. She felt so excited for the new discoveries that were waiting for her.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "7189e869445a0bc36b4d0c3f",
+      "index": 13,
+      "source_index": 15,
+      "prompt": "Once upon a time, there was a little boy named Timmy.",
+      "sft": "Timmy loved to play in the bathtub with his rubber duckies and his favorite soap. She realized that sometimes, things that seem fun can be dangerous.. Timmy had a rare reaction to the soap and passed away. It was a puzzle with lots of pieces that Timmy had to solve. He had accidentally swallowed his special soap and it was stuck in his throat.\n\nTimmy's mommy tried to help him but it was too late",
+      "ppo": "Timmy loved to play in the bathtub with his rubber duckies and his favorite soap. The soap was special because it smelled like strawberries and made lots of bubbles.\n\nOne day, Timmy's mommy bought him a new toy. It was a puzzle with lots of pieces that Timmy had to solve. Timmy was very excited and spent all day trying to put the puzzle together. He was so happy when he finally solved it!\n\nThat night, Timmy went to bed with his rubber duckies and his special soap. He was so tired from solving the puzzle that he fell asleep right away. But in the middle of the night, Timmy woke up because he couldn't breathe. He had accidentally swallowed his special soap and it was stuck in his throat.\n\nTimmy's mommy tried to help him but it was too late. Timmy had a rare reaction to the soap and passed away. Timmy's mommy was very sad and wished she had never bought him the puzzle. She realized that sometimes, things that seem fun can be dangerous.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "d60f8ba94d1a01af027c33f5",
+      "index": 14,
+      "source_index": 245,
+      "prompt": "Once there was a caterpillar named Lou.",
+      "sft": "He felt very sick and dizzy. He loved to explore and each day he would go off on a new adventure through the forest.\n\nOne day, Lou saw a beautiful blue leaf. He tried to crawl away, but he felt too weak.\n\nBy the time Lou made it back to his house, he was too late. \n\nThe moral of the story is that Lou should not have been so curious. Lou had been poisoned by the blue leaf",
+      "ppo": "He loved to explore and each day he would go off on a new adventure through the forest.\n\nOne day, Lou saw a beautiful blue leaf. He crawled up to it and started to eat it. He thought it was the best leaf he had ever tasted. \n\nSoon Lou didn't feel well. He felt very sick and dizzy. He tried to crawl away, but he felt too weak.\n\nBy the time Lou made it back to his house, he was too late. Lou had been poisoned by the blue leaf. \n\nThe moral of the story is that Lou should not have been so curious. He should have been more careful when tasting new things. Even if something looks or tastes nice, it might not be safe.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "9684d36b78196ff67b37f62d",
+      "index": 15,
+      "source_index": 138,
+      "prompt": "It was late in the evening and Johnny was very tired.",
+      "sft": "He had a good dream where he was picking flowers and rocks from a big tree.. He went outside and saw a nice big tree. \n\nHe then bent down and picked up a small rock and said, \"Can I pick this rock Mom? Can I keep it?\" His Mom said, \"Yes, you can pick the rock, but remember to leave the flowers alone.\" Johnny smiled and was happy to have the rock",
+      "ppo": "He went outside and saw a nice big tree. He said to his Mom, \"I want to pick the flowers from the tree, please?\" His Mom said, \"I'm sorry Johnny, you can't pick the flowers; it's getting late and Mommy is tired.\" Johnny looked disappointed, but he understood. \n\nHe then bent down and picked up a small rock and said, \"Can I pick this rock Mom? Can I keep it?\" His Mom said, \"Yes, you can pick the rock, but remember to leave the flowers alone.\" Johnny smiled and was happy to have the rock. He hugged his Mom tightly and they went inside. \n\nThat evening, Johnny was so tired that he quickly fell asleep. He had a good dream where he was picking flowers and rocks from a big tree.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "edfe36d998d4a6c09a6478db",
+      "index": 16,
+      "source_index": 84,
+      "prompt": "Once upon a time, there was a little girl named Lily.",
+      "sft": "She picked it and took it to her mom. One day, she found a hidden spot in her garden. Lily liked to play in her backyard. The soup was very hot, so they had to wait for it to cool down",
+      "ppo": "Lily liked to play in her backyard. One day, she found a hidden spot in her garden. She wanted to reveal what was hiding there.\n\nLily moved the dirt and found a new herb. It was green and smelled good. She picked it and took it to her mom. Her mom was happy and said, \"This is a special herb that can make our food taste better!\"\n\nTogether, they cooked a hot soup with the herb. The soup was very hot, so they had to wait for it to cool down. They shared the soup with their family and everyone loved it. The herb made the soup taste yummy, and Lily was proud of her discovery.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "cd93022a90e9b193ee62c73b",
+      "index": 17,
+      "source_index": 145,
+      "prompt": "Once upon a time there was a little boy.",
+      "sft": "He had never seen anything like this before and he really wanted to play with it. She shouted, \"Go away! That is my TV, it's not for playing!\"\n\nThe poor little boy was so scared that he ran away. He started to cry.\n\nAn old woman came out from her house",
+      "ppo": "He was walking to the park, so he could play with his friends.\n\nOn his way, he stumble upon a cold TV. He had never seen anything like this before and he really wanted to play with it. So, he tried to turn it on. When he pressed the button, it made a scary noise and the movements scared him. He started to cry.\n\nAn old woman came out from her house. She shouted, \"Go away! That is my TV, it's not for playing!\"\n\nThe poor little boy was so scared that he ran away. He stumbled into the park and started to cry.\n\nThe end.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "696b1dda3a2747b5427a4bc2",
+      "index": 18,
+      "source_index": 236,
+      "prompt": "Once upon a time there was a knight who had a special sword.",
+      "sft": "He said he needed the knight's sword to complete his mission. This sword is mine and it is too fine to part with.\"\n\nThe wizard smiled and said, \"Well, looks like we have a problem.\"\n\nThe wizard and the knight battled for hours, using spells and the knight's sword. He was very tired but was very happy that he was able to keep his special sword.. In the end the knight emerged victorious",
+      "ppo": "Every day he used to take it out and admire how nice it was. He was very proud of it.\n\nOne day, a wizard appeared from nowhere. He said he needed the knight's sword to complete his mission. The knight said no. He said he was not ready to let go of his fine sword.\n\nThe wizard replied, \"Not even if I need it very badly?\"\n\nThe knight thought for a minute and then said, \"No. This sword is mine and it is too fine to part with.\"\n\nThe wizard smiled and said, \"Well, looks like we have a problem.\"\n\nThe wizard and the knight battled for hours, using spells and the knight's sword. In the end the knight emerged victorious. He was very tired but was very happy that he was able to keep his special sword.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "16d3664b77751430d2f41685",
+      "index": 19,
+      "source_index": 128,
+      "prompt": "One day, a girl named Sue saw an unusual big iron in her house.",
+      "sft": "She did not know what it was for. They were happy and safe together.. Sue asked her mom, \"What is this big thing?\"\n\nHer mom said, \"That is an iron. She helped her mom clean other things in the house",
+      "ppo": "She did not know what it was for. Sue asked her mom, \"What is this big thing?\"\n\nHer mom said, \"That is an iron. We use it to make clothes flat and nice.\"\n\nSue wanted to help her mom. She tried to clean the iron, but it was very hot. She cried out, \"Ouch! It's hot!\"\n\nHer mom heard her and came running. \"Sue, you must be careful! The iron can hurt you when it's hot.\"\n\nSue learned to be careful with the iron. She helped her mom clean other things in the house. They were happy and safe together.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "6640b541955af97d2d40b9c6",
+      "index": 20,
+      "source_index": 119,
+      "prompt": "Sara was a very talented musician.",
+      "sft": "They clapped and shouted with joy!\n\nSara was so happy and proud of herself. Her mom and dad were so proud of her.\n\nOne day, when Sara was playing her family heard the doorbell ring. It was the mailman and he had a special delivery. When the time came, she stepped on the stage and started playing. Sara was a little nervous but she was sure that they would love her music",
+      "ppo": "She loved to play the piano and when she sat down at the keys everyone stopped to listen. She would play her songs slowly but with great value. Her mom and dad were so proud of her.\n\nOne day, when Sara was playing her family heard the doorbell ring. It was the mailman and he had a special delivery. He handed Sara a package with a note saying \u00e2\u20ac\u0153Congratulations! You have been chosen to perform in the city park show!\u00e2\u20ac\n\nSara was so excited! She told her family she would practice her song every day until it was perfect and she could show everyone her musical talent.\n\nShe practiced and practiced until the day of the show. Sara was a little nervous but she was sure that they would love her music. When the time came, she stepped on the stage and started playing. Everyone loved Sara\u00e2\u20ac\u2122s playing. They clapped and shouted with joy!\n\nSara was so happy and proud of herself. Everyone in the park had valued her music and that made her feel really good. From then on, she kept practicing and becoming",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "51783e18ca144c5ea58d66d8",
+      "index": 21,
+      "source_index": 209,
+      "prompt": "Once upon a time, there was a little black ant.",
+      "sft": "One day, Anty crawled into a big, scary house. Anty loved to crawl around and explore. \n\nInside the house, Anty saw a yummy piece of candy. He crawled up walls, down hills, and through tunnels. The end.",
+      "ppo": "His name was Anty. Anty loved to crawl around and explore. He crawled up walls, down hills, and through tunnels. One day, Anty crawled into a big, scary house. \n\nInside the house, Anty saw a yummy piece of candy. He crawled towards it, but then he saw a big, scary spider. The spider saw Anty too and started to chase him. Anty tried to crawl away, but the spider was too fast. The spider caught Anty and ate him up. \n\nPoor Anty didn't make it out of the scary house. The end.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "7ab4b2f17660466e01cb8f13",
+      "index": 22,
+      "source_index": 91,
+      "prompt": "Once upon a time, there was a little girl named Lily.",
+      "sft": "But we can play some games inside.\"\n\nLily was still a little restless, but she was excited to play games with her mom. They had a great time playing on the swings and slides. But first, we have to finish our breakfast.\"\n\nLily finished her breakfast quickly and asked again, \"Can we go now?\"\n\nHer mom laughed and said, \"No, Lily. We can go outside on Wednesday.\"\n\nLily was so happy to hear that. But we can definitely do it again.\". We have to check the calendar first.\"\n\nLily asked, \"What's a calendar?\"\n\n\"It's a paper with all the days of the year on it,\" her mom explained.\n\nLily's mom checked the calendar and said, \"Today is Monday",
+      "ppo": "She was very restless because she wanted to go outside and play. But her mom said, \"Not yet, Lily. We have to check the calendar first.\"\n\nLily asked, \"What's a calendar?\"\n\n\"It's a paper with all the days of the year on it,\" her mom explained.\n\nLily's mom checked the calendar and said, \"Today is Monday. We can go outside on Wednesday.\"\n\nLily was so happy to hear that. She asked, \"Can we go to the park?\"\n\nHer mom replied, \"Of course, we can. But first, we have to finish our breakfast.\"\n\nLily finished her breakfast quickly and asked again, \"Can we go now?\"\n\nHer mom laughed and said, \"No, Lily. We have to wait until Wednesday. But we can play some games inside.\"\n\nLily was still a little restless, but she was excited to play games with her mom. They played together and had a lot of fun. Finally, Wednesday came and they went to the park. They had a great time playing on the swings and slides. Lily was so happy that she asked her mom, \"Can we do this again tomorrow?\"\n\nHer mom smiled and said,",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "95ee2cdddea253026226ab9a",
+      "index": 23,
+      "source_index": 18,
+      "prompt": "Once upon a time, there was a boy called Ben and he was very stubborn.",
+      "sft": "They all enjoyed playing together and doing things together. It was a network of special friends who enjoyed doing the same things as Ben. Ben was so happy to have all the new friends that he never wanted to leave them.\n\nEvery day, Ben went back to the network to keep playing with his new friends",
+      "ppo": "He always wanted to do things his own way, no matter what his parents said.\n\nOne day, Ben's parents decided to introduce him to a special place. It was a network of special friends who enjoyed doing the same things as Ben. When Ben found out, he was excited to meet all the new people.\n\nBen went to the network and he soon made lots of new friends. They all enjoyed playing together and doing things together. Ben was so happy to have all the new friends that he never wanted to leave them.\n\nEvery day, Ben went back to the network to keep playing with his new friends. He was very stubborn and wouldn't listen to his parents when they told him to come home. In the end, Ben's parents were very pleased that Ben had found such a happy place.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "1773b4e335d29738afd23610",
+      "index": 24,
+      "source_index": 196,
+      "prompt": "Lily liked to play with her horse toy.",
+      "sft": "Do you want to pet him?\"\n\nLily nodded. It said, \"Neigh, neigh. It was confused too. She saw a big brown horse in the garden. It was not her horse toy. They did not understand each other. Let's play.\"\n\nShe played with her horse toy. Come on, let's go back.\"\n\nThe man opened the gate and walked towards the horse. Lily waved goodbye. She liked to make it run and jump and neigh. I came from the farm. But please don't eat my flowers.\"\n\nThe horse said, \"Neigh, neigh. You ran away from the farm. She went back to her box and looked for her horse toy. He saw Lily and said, \"Hello, little girl. She made it run and jump and neigh. She looked and looked, but she only saw her doll, her ball, her car and her bear. Who are you? Where did you come from? Where is my horse toy?\"\n\nThe horse looked at Lily. She petted his nose and said, \"Bye, horse. It was a real horse. He likes to wander around. She said, \"There you are. It was a man. She liked the horse. She was not confused anymore.. Let's go home.\"\n\nHe",
+      "ppo": "She liked to make it run and jump and neigh. She had a big box where she kept all her toys. One day, she wanted to play with her horse, but she could not find it in the box. She looked and looked, but she only saw her doll, her ball, her car and her bear. Where was her horse?\n\nShe asked her mom, \"Mom, where is my horse? I want to play with it.\"\n\nHer mom said, \"I don't know, Lily. Maybe you left it somewhere else. Did you play with it outside?\"\n\nLily thought hard. She remembered that she played with her horse in the garden yesterday. She ran outside and looked for her horse. She saw a big brown horse in the garden. It was not her horse toy. It was a real horse. It was eating grass and flowers.\n\nLily was confused. She said, \"Hello, horse. Who are you? Where did you come from? Where is my horse toy?\"\n\nThe horse looked at Lily. It was confused too. It said, \"Neigh, neigh. I am a horse. I came from the farm. I don't know where your horse toy is.\"\n\nLily and the horse stared at each other. Th",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "53a56e0c0c785102388d83c2",
+      "index": 25,
+      "source_index": 132,
+      "prompt": "Once upon a time there was a very rich man.",
+      "sft": "He owned lots of things and had many wonderful things in his house. He was excited and he quickly cast the spell.\n\nBut, it didn't work the way he wanted it to",
+      "ppo": "He owned lots of things and had many wonderful things in his house. One day, he wanted to find something special, so he looked through a very old page in a book.\n\nHe found what he was looking for! It was an ancient spell that would restore his youth and make him rich again. He was excited and he quickly cast the spell.\n\nBut, it didn't work the way he wanted it to. The spell restored him to a 3 year old boy! He was very sad and he wanted to change back to being rich, but he couldn't. He was stuck being a 3 year old forever.\n\nThe End.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "e3f8fcede3766179d2cb9f04",
+      "index": 26,
+      "source_index": 63,
+      "prompt": "Once there was a lazy bin.",
+      "sft": "They were not lazy like it had been. It never wanted to help out or do anything. There it was surrounded by all sorts of other bins. They were all working together and helping to clear up the trash. Every day it would just sit in the corner and do nothing.\n\nOne day the bin's owner got very fed up with it",
+      "ppo": "It never wanted to help out or do anything. Every day it would just sit in the corner and do nothing.\n\nOne day the bin's owner got very fed up with it. They decided to remove it and throw it away. The bin cried and begged to stay but the owner still removed it.\n\nThe bin found itself in the trash heap outside. There it was surrounded by all sorts of other bins. They were not lazy like it had been. They were all working together and helping to clear up the trash. \n\nThe bin felt ashamed of itself and quickly joined in. In no time at all it was working along side the other bins, helping to clean up the garbage.\n\nIn the end the bin was happy that it had been removed. It was no longer lazy and was now helping those around it.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "c465ddff78cab65c3c6d2006",
+      "index": 27,
+      "source_index": 193,
+      "prompt": "Once upon a time, there was a man who was very wealthy.",
+      "sft": "The puppy made him very happy and he loved it very much.\n\nBut one day, the man got very sick and he had to go to the hospital. He decided to own the puppy and take care of it. But he was not happy because he did not have anyone to love.\n\nOne day, he saw a puppy and he fell in love with it. It missed him very much.\n\nEventually, the man died and the puppy was left alone",
+      "ppo": "He had a big house, a fancy car, and lots of money. But he was not happy because he did not have anyone to love.\n\nOne day, he saw a puppy and he fell in love with it. He decided to own the puppy and take care of it. The puppy made him very happy and he loved it very much.\n\nBut one day, the man got very sick and he had to go to the hospital. He could not take care of the puppy anymore. The puppy was sad and lonely without the man. It missed him very much.\n\nEventually, the man died and the puppy was left alone. It did not have anyone to love or take care of it anymore. The puppy was very sad and it missed the man who had loved it very much.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "2a4ce0aa3461f4200ea95c65",
+      "index": 28,
+      "source_index": 75,
+      "prompt": "One day, Tommy went for a walk.",
+      "sft": "On the way he noticed something strange. Tommy thought that was so cool! From then on he went to take his nap near the billboard every day.. There was a billboard he had never seen before! He wondered what it was for.\n\nThe next day, Tommy went back to the spot to take a look. But the pictures were of something special. He napped for a long time and when he opened his eyes again it was already dark",
+      "ppo": "He thought it was fun to look at the billboards. They had funny colors and shapes. Tommy was tired, so he found a nice spot to take a nap.\n\nHe closed his eyes and soon he was snoring like a bear. He napped for a long time and when he opened his eyes again it was already dark. He felt much better.\n\nTommy started walking home. On the way he noticed something strange. There was a billboard he had never seen before! He wondered what it was for.\n\nThe next day, Tommy went back to the spot to take a look. It was a regular billboard, with pictures and words. But the pictures were of something special. It said \"Tommy's Ice Cream Factory\". Tommy thought that was so cool! From then on he went to take his nap near the billboard every day.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "a9a2a37115cc52667d5d6420",
+      "index": 29,
+      "source_index": 92,
+      "prompt": "Sara and Ben were playing in the park.",
+      "sft": "They forgot about the snake. How about the swings?\" Mom suggested.\n\n\"Okay, that sounds fun,\" Ben agreed.\n\nSara and Ben went to the swings. It was like a hiss. They shivered and backed away slowly. \"The snake is scary and mean.\"\n\nThey turned around and ran down the hill. They saw many bugs and birds and squirrels. They liked to run and jump and slide. They ran to them and hugged them.\n\n\"Mom, Dad, we saw a snake!\" Sara said.\n\n\"A snake? Where?\" Mom asked.\n\n\"On the hill, by the trees. They liked the park. They felt happy and safe. They heard a funny sound. They did not stop until they reached the playground",
+      "ppo": "They liked to run and jump and slide. They saw a big hill with many trees and flowers. They wanted to climb the hill and see what was on the other side.\n\nThey held hands and started to walk up the hill. They saw many bugs and birds and squirrels. They heard a funny sound. It was like a hiss. They looked around and saw a long, brown snake on a rock. The snake had black spots and a forked tongue. It looked at them with small, shiny eyes.\n\nSara and Ben were scared. They did not like snakes. They shivered and backed away slowly. They did not want to make the snake angry.\n\n\"Let's go back, Sara,\" Ben whispered. \"I don't want to play here anymore.\"\n\n\"Me neither, Ben,\" Sara whispered back. \"The snake is scary and mean.\"\n\nThey turned around and ran down the hill. They did not stop until they reached the playground. They saw their mom and dad sitting on a bench. They ran to them and hugged them.\n\n\"Mom, Dad, we saw a snake!\" Sara said.\n\n\"A snake? Where?\" Mom asked.\n\n\"On the hill, by the trees. It",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "427b39ecb484f4f7d1a6a30b",
+      "index": 30,
+      "source_index": 50,
+      "prompt": "Lily and Ben were on the same team for the big race.",
+      "sft": "You are mean and bad. They liked to help each other and have fun.\n\nBefore the race, they saw another team that looked very crazy. They had funny hats, loud noises, and silly faces. We are fast and strong. They tried to scare Lily and Ben and make them lose. We will win and you will smile.\"\n\nThe race started and Lily and Ben ran as fast as they could. They threw their hats and noises and faces. They said, \"We are not slow and weak. The crazy team was very sad and mad. They hugged each other and smiled. We will win and you will cry.\"\n\nLily and Ben did not like the crazy team. They said, \"You are not fair and nice",
+      "ppo": "They had to run, jump, and step over many things to get to the end. Lily was very fast and Ben was very strong. They liked to help each other and have fun.\n\nBefore the race, they saw another team that looked very crazy. They had funny hats, loud noises, and silly faces. They tried to scare Lily and Ben and make them lose. They said, \"You are too slow and weak. We will win and you will cry.\"\n\nLily and Ben did not like the crazy team. They felt angry and scared. But they did not give up. They said, \"We are not slow and weak. We are fast and strong. We will win and you will smile.\"\n\nThe race started and Lily and Ben ran as fast as they could. They jumped over logs, stepped over rocks, and dodged the funny hats. The crazy team tried to catch them and stop them, but they were too late. Lily and Ben reached the end and won the race.\n\nThey were very happy and proud. They hugged each other and smiled. The crazy team was very sad and mad. They threw their hats and noises and faces. They said, \"",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "b9d8afb7bd30ca42846d8edc",
+      "index": 31,
+      "source_index": 57,
+      "prompt": "Jim was a young boy who always went for walks in the park with his mum.",
+      "sft": "After that, Jim and his mum continued their walk, Jim proudly wearing the beautiful scarf around his neck.. One day, as Jim and his mum were walking, Jim noticed a beautiful scarf blowing in the wind. But then he had an idea.\n\nJim decided to wear the scarf and remind people that if they had lost their scarf they should come to the park office to see if it was still available",
+      "ppo": "One day, as Jim and his mum were walking, Jim noticed a beautiful scarf blowing in the wind. He ran over to it and picked it up, admiring the colours and patterns.\n\nJim's mum reminded him that someone may have dropped it, so he should take it to the park office and see if the owner had left their contact details. Jim was excited to help, so he ran off with the scarf.\n\nWhen he got to the park office, Jim was told that the scarf didn't have any contact information and the owner was not yet available. Jim was sad because he wanted to give the scarf back to the owner. But then he had an idea.\n\nJim decided to wear the scarf and remind people that if they had lost their scarf they should come to the park office to see if it was still available. After that, Jim and his mum continued their walk, Jim proudly wearing the beautiful scarf around his neck.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "bb16e24dd610e89e4a24d8d2",
+      "index": 32,
+      "source_index": 103,
+      "prompt": "Once upon a time, there was a girl named Lily.",
+      "sft": "She had a big red apple that she wanted to eat. She took a bite and it tasted very yummy. The end.",
+      "ppo": "She had a big red apple that she wanted to eat. She took a bite and it tasted very yummy. Then she cut the apple into small pieces with a sharp knife. She shared the apple with her friends and they all said thank you. Lily's mom said the knife was very useful for cutting the apple. The end.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "01ccf4c31b99fa3066982a19",
+      "index": 33,
+      "source_index": 180,
+      "prompt": "Once upon a time, there was a dog named Max.",
+      "sft": "Max loved his job because he got to play with his owner and other dogs at the park.\n\nOne day, Max noticed a cat following them. Max was sad because he couldn't do his job. But the cat didn't go away, and Max started feeling uncomfortable.\n\nThe next day, Max's owner didn't feel well and couldn't go to the park. Max had a job where he had to lead his owner to the park every day. Max went to find the cat and asked him to help",
+      "ppo": "Max had a job where he had to lead his owner to the park every day. Max loved his job because he got to play with his owner and other dogs at the park.\n\nOne day, Max noticed a cat following them. Max didn't like the cat because he thought the cat was going to take his job. Max started barking at the cat to scare it away. But the cat didn't go away, and Max started feeling uncomfortable.\n\nThe next day, Max's owner didn't feel well and couldn't go to the park. Max was sad because he couldn't do his job. But then he remembered the cat from yesterday. Max thought maybe the cat could lead him and his owner to the park. Max went to find the cat and asked him to help. The cat was happy to help, and Max and his owner had a great time at the park. Max realized that sometimes it's okay to ask for help, and that sharing his job made him even happier.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "5c08c680ff396c8eb500ca09",
+      "index": 34,
+      "source_index": 71,
+      "prompt": "Once upon a time, there was a little bird, who had never left its nest.",
+      "sft": "\n\nThe moral of the story is to never be too ambitious, and remember to save a little bit of energy for the journey home.. \u00e2\u20ac\u0153Do not use all your energy exploring, you don\u00e2\u20ac\u2122t know how far the post may be. One day, the bird was feeling very brave and decided it was time to explore the world. Save some for the journey back!\u00e2\u20ac \n\nThe little bird listened to its parents, and decided it was best to go back to the nest and rest. \n\nAs the bird flew, it saw a tall post in the distance",
+      "ppo": "One day, the bird was feeling very brave and decided it was time to explore the world. \n\nSo, with a hop and a flutter, it left the nest. Its parents watched as it flew away, both of them feeling a little bit worried about what would happen. \n\nAs the bird flew, it saw a tall post in the distance. Excitedly it flew towards it, wanting to examine it more closely. As the bird got closer, it started to feel a little bit dizzy, and its wings began to feel weak. \n\nJust then, its parents flew in from the distance and shouted out a warning. \u00e2\u20ac\u0153Do not use all your energy exploring, you don\u00e2\u20ac\u2122t know how far the post may be. Save some for the journey back!\u00e2\u20ac \n\nThe little bird listened to its parents, and decided it was best to go back to the nest and rest. \n\nThe moral of the story is to never be too ambitious, and remember to save a little bit of energy for the journey home.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "1332b42f3caf64743bea5b2f",
+      "index": 35,
+      "source_index": 62,
+      "prompt": "Mama was cooking food in the kitchen.",
+      "sft": "\"Are you okay?\" she asked, concerned. \"We need to get the computer fixed,\" she said. \"Ouch!\" he yelled. \n\n\"I'm alright,\" he said, rubbing his back. \"But the computer is hot now.\"\n\nMama quickly unplugged the computer",
+      "ppo": "Daddy was sitting in front of the computer typing some important work. Suddenly, he slipped and fell off the chair. \"Ouch!\" he yelled. \n\nMama rushed to see what happened. \"Are you okay?\" she asked, concerned. \n\n\"I'm alright,\" he said, rubbing his back. \"But the computer is hot now.\"\n\nMama quickly unplugged the computer. Then, she quickly cooled it down with some cold water. \"We need to get the computer fixed,\" she said. \n\nDaddy agreed and said, \"It looks like my work has to wait until we figure out what happened.\" \n\nMama laughed and said, \"That's too bad. But at least you didn't slip again!\" \n\nDaddy smiled and said, \"That's true!\"",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "90cda705a64c7e2712636c3b",
+      "index": 36,
+      "source_index": 17,
+      "prompt": "Once upon a time, there was a cute puppy named Max.",
+      "sft": "Max was happy to see her but he noticed that Lily didn't have a football to play with.\n\nMax thought of selling one of his footballs to buy a new one for Lily. But he loved his footballs so much that he didn't want to let go of any. This made Lily sad and she started to cry.\n\nMax didn't like to see his friend cry, so he decided to give one of his footballs to Lily instead of selling it",
+      "ppo": "Max loved to play with his football all day long. One day, Max's friend, a cute kitten named Lily, came to play with him. Max was happy to see her but he noticed that Lily didn't have a football to play with.\n\nMax thought of selling one of his footballs to buy a new one for Lily. But he loved his footballs so much that he didn't want to let go of any. This made Lily sad and she started to cry.\n\nMax didn't like to see his friend cry, so he decided to give one of his footballs to Lily instead of selling it. Lily was so happy and they played with the football together all day long. Max realized that making his friend happy was more important than keeping his footballs.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "f09f3996bea72861be1612ed",
+      "index": 37,
+      "source_index": 177,
+      "prompt": "Mia was feeling very frightened.",
+      "sft": "Everywhere she looked she saw something she didn't like. She wanted to go home but mum said they had to finish their visit first.\n\nShe held her mommy's hand tight and kept walking. Mia was very proud of herself for being brave.. \n\nMia's mommy must have seen how scared she was. Suddenly, she heard a noise coming from a dark corner. It was a little kitty! It was meowing and Mia felt much better. So Mia held her mommy's hand even tighter and they slowly walked over to the corner",
+      "ppo": "She was walking through the museum and the big paintings on the walls were making her scared. Her mommy was with her but it didn't make her feel any less scared. She wanted to go home but mum said they had to finish their visit first.\n\nShe held her mommy's hand tight and kept walking. Everywhere she looked she saw something she didn't like. Suddenly, she heard a noise coming from a dark corner. She was so surprised and frightened she wanted to run and hide. \n\nMia's mommy must have seen how scared she was. She told Mia it would be alright and they just had to find out what was making that noise. So Mia held her mommy's hand even tighter and they slowly walked over to the corner. \n\nIt was dark, but soon Mia saw what was making the noise. It was a little kitty! It was meowing and Mia felt much better. She smiled and asked her mommy if she could call the kitty and make it feel less scared. Her mommy said yes and Mia called the kitty over and stroked it until it purred. Mia was very proud o",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "f9623dd275f2a31bedeacd20",
+      "index": 38,
+      "source_index": 16,
+      "prompt": "Once upon a time there was a little girl who loved tea.",
+      "sft": "The little girl seemed naughty.\n\nShe started to cry and all she could think of was tea. She was glad that Grandpa had found something to make the little girl happy. Suddenly, the door opened and in walked her Grandpa. She thanked Grandpa and he gave her a hug. She looked around but there was no tea to be seen",
+      "ppo": "Every morning she'd ask for tea. One morning, her mum said no. The little girl seemed naughty.\n\nShe started to cry and all she could think of was tea. She looked around but there was no tea to be seen. Suddenly, the door opened and in walked her Grandpa. He had a nice cup of tea for her.\n\nThe little girl was so happy. She thanked Grandpa and he gave her a hug. Grandpa said that he had brought her a special treat: a mug full of yummy hot tea.\n\nThe girl's mum smiled. She was glad that Grandpa had found something to make the little girl happy. From then on, whenever she seemed naughty, her Grandpa would take her out for some special tea!",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "f5a56117385188ccfdf42b21",
+      "index": 39,
+      "source_index": 122,
+      "prompt": "Once upon a time, there was a fierce mask.",
+      "sft": "It guarded a secret hiding spot filled with fun toys! One day, a bad person came along and tried to destroy the mask with a hammer. With a wave of his hand, the bad person disappeared and the mask was safe!\n\nThe hero had saved the day! After the heroes happy dance, everyone thanked him for his help",
+      "ppo": "It guarded a secret hiding spot filled with fun toys! One day, a bad person came along and tried to destroy the mask with a hammer. But the mask was too strong! The fierce mask protected the toys and kept them safe.\n\nThe next day, a brave hero came to help the mask. He used his super strength and a magic spell to destroy the bad person. With a wave of his hand, the bad person disappeared and the mask was safe!\n\nThe hero had saved the day! After the heroes happy dance, everyone thanked him for his help. Even the mask smiled at the hero in thanks! From that day forward, the mask protected the secret spot from all bad people.\n\nThe end!",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "0fdccc1f7bd8d6d9692c603a",
+      "index": 40,
+      "source_index": 97,
+      "prompt": "One day, a little girl named Lucy found a shiny diamond in her garden.",
+      "sft": "They played with the diamond all day and had a lot of fun. Lucy was happy that she didn't need to worry anymore.. They all loved it and thought it was very useful for their games",
+      "ppo": "She was very happy and thought it was so pretty. Lucy wanted to show her friends the diamond because she thought it would be useful to play with.\n\nLucy was walking to her friend's house when she started to worry. She thought, \"What if my friends don't like the diamond? What if they think it's not useful?\" But she kept walking, hoping her friends would like it.\n\nWhen Lucy got to her friend's house, she showed them the diamond. They all loved it and thought it was very useful for their games. They played with the diamond all day and had a lot of fun. Lucy was happy that she didn't need to worry anymore.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "0ace51503b2921797f52dc0b",
+      "index": 41,
+      "source_index": 100,
+      "prompt": "Once there was a boy named Jack.",
+      "sft": "\"I'm slow and tired,\" he said.\n\nHis teacher shook her head. Eventually, he got into trouble and had to leave the class. He was too tired and slow to think. \n\nThis was a sad ending for Jack, who never was able to rest and learn.. \"No, you can't rest here",
+      "ppo": "He was a very slow learner, so he was always in the same class with the younger kids. Today, he was tired and wanted to rest, but his teacher said he had to stay in class.\n\n\"Jack, why can't you be like the rest of the kids and stay focused?\" she said.\n\nJack felt sad and wanted to cry. He tried to explain the best he could. \"I'm slow and tired,\" he said.\n\nHis teacher shook her head. \"No, you can't rest here. You need to focus and learn.\"\n\nJack sadly stayed in class, but he couldn't understand anything the teacher said. He was too tired and slow to think. Eventually, he got into trouble and had to leave the class. He was never allowed back. \n\nThis was a sad ending for Jack, who never was able to rest and learn.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "100d158af9714df762c98bca",
+      "index": 42,
+      "source_index": 58,
+      "prompt": "Once upon a time, there was a brave boy.",
+      "sft": "His name was Tom. \n\nTom pressed the button to take the elevator up. Then he stepped forwards and kicked the crack. He kept kicking until the wall broke. He would kick the crack until it broke, then the doors could open. \n\nTom felt scared, but he was brave. He needed to find a way out! \n\nTom spotted a crack in one of the walls of the elevator",
+      "ppo": "His name was Tom. Tom was very brave, and he liked to play kickball. So one day, he wanted to try kicking in an elevator. \n\nTom pressed the button to take the elevator up. As he went, he kicked the walls. Suddenly, the elevator stopped. \n\nTom felt scared, but he was brave. He needed to find a way out! \n\nTom spotted a crack in one of the walls of the elevator. He made a plan. He would kick the crack until it broke, then the doors could open. \n\nTom took a step back. Then he stepped forwards and kicked the crack. He kept kicking until the wall broke. Now, he could get out! \n\nTom stepped out of the elevator, smiling. He had been brave and he was proud.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "9eff65867cdbb2f12a38e62d",
+      "index": 43,
+      "source_index": 106,
+      "prompt": "One day there was a musician who played the guitar.",
+      "sft": "Sam reminded the girl of how she was captivated by his dedication to playing music as a child. His name was Sam. Everyone liked Sam's music. On her very first day of class, a friendly voice called out to her. It was Sam, the musician she remembered from when she was a child.\n\nThe two were shocked to see each other. She was three years old",
+      "ppo": "His name was Sam. Everyone liked Sam's music. Sam was a very competitive musician because he wanted to be the best guitar player in town.\n\nSam would often practice and play for hours. He was so passionate about music. The other musicians admired him for his dedication.\n\nOne day when Sam was playing, a young girl was watching him. She was three years old. The little girl always felt happy when she watched Sam play. She remembered the way Sam moved his hands when he played.\n\nWhen the little girl grew older, she pursued a career in music. On her very first day of class, a friendly voice called out to her. It was Sam, the musician she remembered from when she was a child.\n\nThe two were shocked to see each other. Sam reminded the girl of how she was captivated by his dedication to playing music as a child. She thanked Sam for inspiring her to pursue her dreams.\n\nThe little girl grew up to be a successful musician just like Sam. She often remembered Sam and found comfort in the idea that he ",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "ba62eaf8cfbfdc95daeb9d81",
+      "index": 44,
+      "source_index": 101,
+      "prompt": "Once upon a time, there was a rabbit who loved to design things.",
+      "sft": "He became very sad.\n\nThe rabbit thought he couldn't design anything ever again when his best friend, a bee, came to check on him. Let's design something together. He would spend his days with his materials making fun and beautiful creations. Then one day, something changed",
+      "ppo": "He would spend his days with his materials making fun and beautiful creations. Then one day, something changed. He became very sad.\n\nThe rabbit thought he couldn't design anything ever again when his best friend, a bee, came to check on him. \n\nThe bee asked, \"Why are you so sad?\"\n\nThe rabbit replied, \"I don't know if I can design anything anymore.\"\n\nThe bee smiled and said, \"I can help you with that. Let's design something together. You can use your materials and I will cheer you on.\" \n\nThe rabbit's face lit up as he got to work. Soon enough, the rabbit had designed the perfect thing.\n\nThe rabbit was happy again and thanked the bee for helping him. They celebrated by designing something even more beautiful and enjoyed the rest of their day.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "fe65387a9d84cc1437ad6f7a",
+      "index": 45,
+      "source_index": 173,
+      "prompt": "Tim and Lily are playing with their toys in the living room.",
+      "sft": "Maybe it is Mommy's or Daddy's. They promise to be careful next time. It could be dangerous or break,\" Daddy says.\n\nTim and Lily nod. They see a big box with a shiny button on it. We didn't know it was a horn,\" Tim says.\n\nMommy and Daddy are not angry. They see Tim and Lily and the box.\n\n\"What are you doing with the box?\" Mommy asks.\n\n\"We are sorry, Mommy. They wonder what it is.\n\n\"Can we use the button?\" Tim asks Lily.\n\n\"I don't know. They hug Tim and Lily.\n\n\"It's okay, Tim and Lily. He runs to the box and pushes the button.\n\nSuddenly, a loud noise comes from the box. They cover their ears.\n\nMommy and Daddy hear the noise and come to the living room",
+      "ppo": "They see a big box with a shiny button on it. They wonder what it is.\n\n\"Can we use the button?\" Tim asks Lily.\n\n\"I don't know. Maybe it is Mommy's or Daddy's. We should be careful,\" Lily says.\n\nBut Tim is curious. He wants to see what the button does. He runs to the box and pushes the button.\n\nSuddenly, a loud noise comes from the box. It is a horn that makes a honking sound. Tim and Lily are scared. They cover their ears.\n\nMommy and Daddy hear the noise and come to the living room. They see Tim and Lily and the box.\n\n\"What are you doing with the box?\" Mommy asks.\n\n\"We are sorry, Mommy. We wanted to use the button. We didn't know it was a horn,\" Tim says.\n\nMommy and Daddy are not angry. They hug Tim and Lily.\n\n\"It's okay, Tim and Lily. We are glad you are safe. But you should always ask before you use something that is not yours. You never know what it might do. It could be dangerous or break,\" Daddy says.\n\nTim and Lily nod. They understand. They say sorry to Mommy and Daddy. They prom",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "3c9a1eb7bab8b1bd52f309ae",
+      "index": 46,
+      "source_index": 181,
+      "prompt": "One day, there was a puddle in the town square.",
+      "sft": "You can't get rich from it!\"\n\nThe little girl thought about it, and then finally jumped in! She had a lot of fun splashing around. It was a very rich puddle and she was afraid to jump in.\n\nThe little boy saw her and said, \"Why don't you jump in? It's just a puddle!\"\n\nThe little girl shook her head and said, \"No, I don't want to. But the little girl was worried",
+      "ppo": "All the children came out of their houses to play. But the little girl was worried. It was a very rich puddle and she was afraid to jump in.\n\nThe little boy saw her and said, \"Why don't you jump in? It's just a puddle!\"\n\nThe little girl shook her head and said, \"No, I don't want to. It's too rich!\"\n\nThe little boy smiled and said, \"Don't worry! It's just a puddle. You can't get rich from it!\"\n\nThe little girl thought about it, and then finally jumped in! She had a lot of fun splashing around. She didn't worry anymore and the puddle was just a fun puddle after all!",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "50f8375c61290af05b148e74",
+      "index": 47,
+      "source_index": 124,
+      "prompt": "Mia was so excited.",
+      "sft": "She would have to wait until tomorrow to finally tie her noodles..  She wanted to learn to tie the noodles right now. Her mom agreed and smiled as Mia tried, but she was too nervous to get it right. But Mia was still frustrated and didn't feel very happy. Mia was so disappointed and started crying.\n\n\"It's okay, sweetheart\", her mom said, \"we can practice tying the spaghetti the next time we go out to eat\". \n\nMia's mom gave her a hug while they walked to the car",
+      "ppo": "She was going out to eat with her family for the first time. When they arrived at the restaurant, the menu was so big and Mia couldn't read the words. She asked her mom what she should choose.\n\n\"Mia\", her mom said, \"you should get the spaghetti\". Mia smiled. She was so happy that her mom was helping her.\n\nAfter dinner, Mia asked her mom if she could tie her spaghetti noodles around her fork. Her mom agreed and smiled as Mia tried, but she was too nervous to get it right. It was getting late and her mom said they had to go home. Mia was so disappointed and started crying.\n\n\"It's okay, sweetheart\", her mom said, \"we can practice tying the spaghetti the next time we go out to eat\". But Mia was still frustrated and didn't feel very happy.  She wanted to learn to tie the noodles right now. \n\nMia's mom gave her a hug while they walked to the car. As they drove away, Mia was feeling even more nervous now. She would have to wait until tomorrow to finally tie her noodles.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "cf654733c32227824bef3318",
+      "index": 48,
+      "source_index": 137,
+      "prompt": "Once upon a time there was a chubby giraffe who loved to explore.",
+      "sft": "Every time she felt tired or thirsty she thought of the oasis and it made her feel better.\n\nThe end.. But the giraffe couldn't quite stay there. She had the urge to explore more.\n\nSo the giraffe kept going and soon the desert was behind her. She ate her fill and rested under a palm tree",
+      "ppo": "She trotted through the desert and searched for new things to see. Suddenly, she saw something in the distance. It was a lush green oasis!\n\nThe giraffe hurried over and was filled with joy when she saw it was full of delicious food. She ate her fill and rested under a palm tree. But the giraffe couldn't quite stay there. She had the urge to explore more.\n\nSo the giraffe kept going and soon the desert was behind her. But she kept the memory of the oasis close in her heart. Every time she felt tired or thirsty she thought of the oasis and it made her feel better.\n\nThe end.",
+      "expected_winner": "ppo"
+    },
+    {
+      "pair_id": "bb3bd42aa8441c1c9783e0b0",
+      "index": 49,
+      "source_index": 168,
+      "prompt": "Tim and Mia liked to play with their toy rocket.",
+      "sft": "He saw the mess they made in the garage. They thought it was brilliant. He said they had to clean up everything and go to their rooms.\n\nTim and Mia felt very sad and scared. They pretended it could fly to the moon and the stars. They made noises like zoom and boom and whoosh.\n\nOne day, they decided to discuss how to make their rocket better. He saw the rocket, which looked nothing like a rocket.\n\nHe was very angry and shouted at them. He saw the cardboard, the glue, the scissors, and the paint. They only wanted to play with their rocket. They cried and said they were sorry",
+      "ppo": "They pretended it could fly to the moon and the stars. They made noises like zoom and boom and whoosh.\n\nOne day, they decided to discuss how to make their rocket better. They thought of brilliant ideas, like adding more wings, or stickers, or a parachute. They agreed to share their ideas and work together.\n\nThey went to the garage, where they found some cardboard, glue, scissors, and paint. They started to cut and stick and paint their rocket. They were very happy and proud of their work.\n\nBut then, they heard a loud noise. It was their dad, who came home from work. He saw the mess they made in the garage. He saw the cardboard, the glue, the scissors, and the paint. He saw the rocket, which looked nothing like a rocket.\n\nHe was very angry and shouted at them. He said they were naughty and careless. He said they ruined his tools and his car. He said they had to clean up everything and go to their rooms.\n\nTim and Mia felt very sad and scared. They cried and said they were sorry. They did",
+      "expected_winner": "ppo"
+    }
+  ]
+}

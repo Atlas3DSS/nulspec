@@ -1,0 +1,202 @@
+{
+  "arms": [
+    {
+      "arm_id": "pythia-70m-seed42-exact",
+      "model": "pythia-70m",
+      "seed": 42,
+      "protocol": "exact",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": null,
+      "existing_run_root": "paper_repro/outputs/pythia-70m/tinystories"
+    },
+    {
+      "arm_id": "pythia-70m-seed42-paper-faithful",
+      "model": "pythia-70m",
+      "seed": 42,
+      "protocol": "paper-faithful",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": "pythia-70m-seed42-exact",
+      "existing_run_root": "paper_repro/outputs_corrected/pythia-70m/tinystories"
+    },
+    {
+      "arm_id": "pythia-70m-seed123-exact",
+      "model": "pythia-70m",
+      "seed": 123,
+      "protocol": "exact",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": null,
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-70m-seed123-paper-faithful",
+      "model": "pythia-70m",
+      "seed": 123,
+      "protocol": "paper-faithful",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": "pythia-70m-seed123-exact",
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-70m-seed777-exact",
+      "model": "pythia-70m",
+      "seed": 777,
+      "protocol": "exact",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": null,
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-70m-seed777-paper-faithful",
+      "model": "pythia-70m",
+      "seed": 777,
+      "protocol": "paper-faithful",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": "pythia-70m-seed777-exact",
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-160m-seed42-exact",
+      "model": "pythia-160m",
+      "seed": 42,
+      "protocol": "exact",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": null,
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-160m-seed42-paper-faithful",
+      "model": "pythia-160m",
+      "seed": 42,
+      "protocol": "paper-faithful",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": "pythia-160m-seed42-exact",
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-160m-seed123-exact",
+      "model": "pythia-160m",
+      "seed": 123,
+      "protocol": "exact",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": null,
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-160m-seed123-paper-faithful",
+      "model": "pythia-160m",
+      "seed": 123,
+      "protocol": "paper-faithful",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": "pythia-160m-seed123-exact",
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-160m-seed777-exact",
+      "model": "pythia-160m",
+      "seed": 777,
+      "protocol": "exact",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": null,
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-160m-seed777-paper-faithful",
+      "model": "pythia-160m",
+      "seed": 777,
+      "protocol": "paper-faithful",
+      "host": "workstation",
+      "gpu_selector": "0",
+      "expected_gpu": "RTX 4090",
+      "depends_on": "pythia-160m-seed777-exact",
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-410m-seed42-exact",
+      "model": "pythia-410m",
+      "seed": 42,
+      "protocol": "exact",
+      "host": "dev-box",
+      "gpu_selector": "GPU-d739b9c5-bfbb-e95a-bbf1-7122f38c2cf1",
+      "expected_gpu": "RTX PRO 6000",
+      "depends_on": null,
+      "existing_run_root": "paper_repro/outputs/pythia-410m/tinystories"
+    },
+    {
+      "arm_id": "pythia-410m-seed42-paper-faithful",
+      "model": "pythia-410m",
+      "seed": 42,
+      "protocol": "paper-faithful",
+      "host": "dev-box",
+      "gpu_selector": "GPU-d739b9c5-bfbb-e95a-bbf1-7122f38c2cf1",
+      "expected_gpu": "RTX PRO 6000",
+      "depends_on": "pythia-410m-seed42-exact",
+      "existing_run_root": "paper_repro/outputs_corrected/pythia-410m/tinystories"
+    },
+    {
+      "arm_id": "pythia-410m-seed123-exact",
+      "model": "pythia-410m",
+      "seed": 123,
+      "protocol": "exact",
+      "host": "dev-box",
+      "gpu_selector": "GPU-d739b9c5-bfbb-e95a-bbf1-7122f38c2cf1",
+      "expected_gpu": "RTX PRO 6000",
+      "depends_on": null,
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-410m-seed123-paper-faithful",
+      "model": "pythia-410m",
+      "seed": 123,
+      "protocol": "paper-faithful",
+      "host": "dev-box",
+      "gpu_selector": "GPU-d739b9c5-bfbb-e95a-bbf1-7122f38c2cf1",
+      "expected_gpu": "RTX PRO 6000",
+      "depends_on": "pythia-410m-seed123-exact",
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-410m-seed777-exact",
+      "model": "pythia-410m",
+      "seed": 777,
+      "protocol": "exact",
+      "host": "dev-box",
+      "gpu_selector": "GPU-d739b9c5-bfbb-e95a-bbf1-7122f38c2cf1",
+      "expected_gpu": "RTX PRO 6000",
+      "depends_on": null,
+      "existing_run_root": null
+    },
+    {
+      "arm_id": "pythia-410m-seed777-paper-faithful",
+      "model": "pythia-410m",
+      "seed": 777,
+      "protocol": "paper-faithful",
+      "host": "dev-box",
+      "gpu_selector": "GPU-d739b9c5-bfbb-e95a-bbf1-7122f38c2cf1",
+      "expected_gpu": "RTX PRO 6000",
+      "depends_on": "pythia-410m-seed777-exact",
+      "existing_run_root": null
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "captured_utc": "2026-07-30",
+  "python": "3.10.12",
+  "packages": {
+    "torch": "2.5.1+cu121",
+    "transformers": "4.45.2",
+    "trl": "0.9.6",
+    "peft": "0.18.1"
+  },
+  "cli_help_exit_codes": {
+    "train_sft.py": 0,
+    "train_reward.py": 0,
+    "train_ppo.py": 0,
+    "evaluate.py": 0
+  },
+  "cuda": {
+    "available": true,
+    "build": "12.1",
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "compute_capability": [
+      8,
+      9
+    ],
+    "kernel_smoke_value": 2.0
+  },
+  "errors": []
+}

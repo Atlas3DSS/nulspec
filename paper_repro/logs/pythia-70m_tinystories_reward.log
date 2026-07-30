@@ -1,0 +1,389 @@
+`low_cpu_mem_usage` was None, now set to True since model is quantized.
+Some weights of GPTNeoXForSequenceClassification were not initialized from the model checkpoint at EleutherAI/pythia-70m-deduped and are newly initialized: ['score.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Map:   0%|          | 0/4749 [00:00<?, ? examples/s]Map:   3%|▎         | 161/4749 [00:00<00:02, 1593.09 examples/s]Map:   7%|▋         | 327/4749 [00:00<00:02, 1624.42 examples/s]Map:  10%|█         | 493/4749 [00:00<00:02, 1637.58 examples/s]Map:  14%|█▍        | 657/4749 [00:00<00:02, 1629.75 examples/s]Map:  19%|█▊        | 886/4749 [00:00<00:02, 1578.18 examples/s]Map:  23%|██▎       | 1076/4749 [00:00<00:03, 1052.74 examples/s]Map:  26%|██▌       | 1232/4749 [00:00<00:03, 1158.70 examples/s]Map:  29%|██▉       | 1399/4749 [00:01<00:02, 1277.44 examples/s]Map:  33%|███▎      | 1569/4749 [00:01<00:02, 1381.89 examples/s]Map:  36%|███▋      | 1731/4749 [00:01<00:02, 1441.08 examples/s]Map:  40%|███▉      | 1895/4749 [00:01<00:01, 1494.33 examples/s]Map:  44%|████▍     | 2086/4749 [00:01<00:02, 1068.08 examples/s]Map:  47%|████▋     | 2250/4749 [00:01<00:02, 1187.87 examples/s]Map:  51%|█████     | 2413/4749 [00:01<00:01, 1287.81 examples/s]Map:  54%|█████▍    | 2577/4749 [00:01<00:01, 1373.90 examples/s]Map:  58%|█████▊    | 2742/4749 [00:02<00:01, 1442.42 examples/s]Map:  61%|██████▏   | 2910/4749 [00:02<00:01, 1503.26 examples/s]Map:  65%|██████▍   | 3080/4749 [00:02<00:01, 1004.30 examples/s]Map:  68%|██████▊   | 3241/4749 [00:02<00:01, 1125.99 examples/s]Map:  72%|███████▏  | 3403/4749 [00:02<00:01, 1236.38 examples/s]Map:  75%|███████▌  | 3565/4749 [00:02<00:00, 1327.29 examples/s]Map:  79%|███████▊  | 3734/4749 [00:02<00:00, 1418.13 examples/s]Map:  82%|████████▏ | 3901/4749 [00:02<00:00, 1481.88 examples/s]Map:  86%|████████▌ | 4086/4749 [00:03<00:00, 1078.85 examples/s]Map:  90%|████████▉ | 4257/4749 [00:03<00:00, 1212.49 examples/s]Map:  93%|█████████▎| 4427/4749 [00:03<00:00, 1324.94 examples/s]Map:  97%|█████████▋| 4586/4749 [00:03<00:00, 1387.93 examples/s]Map: 100%|██████████| 4749/4749 [00:03<00:00, 958.82 examples/s] Map: 100%|██████████| 4749/4749 [00:03<00:00, 1247.67 examples/s]
+Map:   0%|          | 0/249 [00:00<?, ? examples/s]Map:  67%|██████▋   | 166/249 [00:00<00:00, 1641.84 examples/s]Map: 100%|██████████| 249/249 [00:00<00:00, 1300.31 examples/s]
+/home/orwel/dev_genius/venv/lib/python3.12/site-packages/peft/mapping_func.py:72: UserWarning: You are trying to modify a model with PEFT for a second time. If you want to reload the model with a different config, make sure to call `.unload()` before.
+  warnings.warn(
+/home/orwel/dev_genius/venv/lib/python3.12/site-packages/peft/tuners/tuners_utils.py:285: UserWarning: Already found a `peft_config` attribute in the model. This will lead to having multiple adapters in the model. Make sure to know what you are doing!
+  warnings.warn(
+  0%|          | 0/594 [00:00<?, ?it/s]You're using a GPTNeoXTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/transformers/tokenization_utils_base.py:2847: UserWarning: `max_length` is ignored when `padding`=`True` and there is no truncation strategy. To pad to max length, use `padding='max_length'`.
+  warnings.warn(
+`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`...
+/home/orwel/dev_genius/venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1044: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+Could not estimate the number of tokens of the input, floating-point operations will not be computed
+  0%|          | 1/594 [00:01<11:02,  1.12s/it]  0%|          | 2/594 [00:01<06:04,  1.62it/s]  1%|          | 3/594 [00:01<04:28,  2.20it/s]  1%|          | 4/594 [00:01<03:53,  2.53it/s]  1%|          | 5/594 [00:02<03:21,  2.92it/s]  1%|          | 6/594 [00:02<03:11,  3.08it/s]  1%|          | 7/594 [00:02<03:00,  3.25it/s]  1%|▏         | 8/594 [00:03<02:53,  3.38it/s]  2%|▏         | 9/594 [00:03<02:47,  3.50it/s]  2%|▏         | 10/594 [00:03<02:52,  3.38it/s]  2%|▏         | 11/594 [00:03<02:51,  3.40it/s]  2%|▏         | 12/594 [00:04<02:50,  3.40it/s]  2%|▏         | 13/594 [00:04<02:46,  3.49it/s]  2%|▏         | 14/594 [00:04<02:43,  3.55it/s]  3%|▎         | 15/594 [00:05<02:45,  3.51it/s]  3%|▎         | 16/594 [00:05<02:37,  3.66it/s]  3%|▎         | 17/594 [00:05<02:33,  3.76it/s]  3%|▎         | 18/594 [00:05<02:29,  3.85it/s]  3%|▎         | 19/594 [00:06<02:31,  3.80it/s]  3%|▎         | 20/594 [00:06<02:36,  3.68it/s]                                                  3%|▎         | 20/594 [00:06<02:36,  3.68it/s]  4%|▎         | 21/594 [00:06<02:35,  3.67it/s]  4%|▎         | 22/594 [00:06<02:30,  3.79it/s]  4%|▍         | 23/594 [00:07<02:34,  3.69it/s]  4%|▍         | 24/594 [00:07<02:36,  3.64it/s]  4%|▍         | 25/594 [00:07<02:35,  3.65it/s]  4%|▍         | 26/594 [00:07<02:37,  3.62it/s]  5%|▍         | 27/594 [00:08<02:34,  3.66it/s]  5%|▍         | 28/594 [00:08<02:33,  3.70it/s]  5%|▍         | 29/594 [00:08<02:28,  3.79it/s]  5%|▌         | 30/594 [00:09<02:28,  3.79it/s]  5%|▌         | 31/594 [00:09<02:31,  3.71it/s]  5%|▌         | 32/594 [00:09<02:30,  3.73it/s]  6%|▌         | 33/594 [00:09<02:26,  3.83it/s]  6%|▌         | 34/594 [00:10<02:27,  3.81it/s]  6%|▌         | 35/594 [00:10<02:26,  3.82it/s]  6%|▌         | 36/594 [00:10<02:39,  3.50it/s]  6%|▌         | 37/594 [00:10<02:35,  3.58it/s]  6%|▋         | 38/594 [00:11<02:37,  3.52it/s]  7%|▋         | 39/594 [00:11<02:31,  3.67it/s]  7%|▋         | 40/594 [00:11<02:26,  3.77it/s]                                                  7%|▋         | 40/594 [00:11<02:26,  3.77it/s]  7%|▋         | 41/594 [00:11<02:24,  3.82it/s]  7%|▋         | 42/594 [00:12<02:25,  3.79it/s]  7%|▋         | 43/594 [00:12<02:29,  3.68it/s]  7%|▋         | 44/594 [00:12<02:25,  3.78it/s]  8%|▊         | 45/594 [00:13<02:22,  3.84it/s]  8%|▊         | 46/594 [00:13<02:22,  3.85it/s]  8%|▊         | 47/594 [00:13<02:20,  3.91it/s]  8%|▊         | 48/594 [00:13<02:17,  3.96it/s]  8%|▊         | 49/594 [00:14<02:16,  4.01it/s]  8%|▊         | 50/594 [00:14<02:25,  3.74it/s]  9%|▊         | 51/594 [00:14<02:23,  3.79it/s]  9%|▉         | 52/594 [00:14<02:33,  3.54it/s]  9%|▉         | 53/594 [00:15<02:28,  3.64it/s]  9%|▉         | 54/594 [00:15<02:36,  3.45it/s]  9%|▉         | 55/594 [00:15<02:41,  3.33it/s]  9%|▉         | 56/594 [00:16<02:45,  3.24it/s] 10%|▉         | 57/594 [00:16<02:40,  3.34it/s] 10%|▉         | 58/594 [00:16<02:35,  3.44it/s] 10%|▉         | 59/594 [00:17<02:37,  3.39it/s] 10%|█         | 60/594 [00:17<02:40,  3.33it/s]                                                 10%|█         | 60/594 [00:17<02:40,  3.33it/s] 10%|█         | 61/594 [00:17<02:36,  3.40it/s] 10%|█         | 62/594 [00:17<02:36,  3.40it/s] 11%|█         | 63/594 [00:18<02:34,  3.44it/s] 11%|█         | 64/594 [00:18<02:35,  3.41it/s] 11%|█         | 65/594 [00:18<02:35,  3.40it/s] 11%|█         | 66/594 [00:19<02:38,  3.34it/s] 11%|█▏        | 67/594 [00:19<02:31,  3.48it/s] 11%|█▏        | 68/594 [00:19<02:33,  3.43it/s] 12%|█▏        | 69/594 [00:20<02:42,  3.23it/s] 12%|█▏        | 70/594 [00:20<02:44,  3.18it/s] 12%|█▏        | 71/594 [00:20<02:35,  3.37it/s] 12%|█▏        | 72/594 [00:20<02:39,  3.27it/s] 12%|█▏        | 73/594 [00:21<02:39,  3.27it/s] 12%|█▏        | 74/594 [00:21<02:41,  3.22it/s] 13%|█▎        | 75/594 [00:21<02:36,  3.32it/s] 13%|█▎        | 76/594 [00:22<02:29,  3.48it/s] 13%|█▎        | 77/594 [00:22<02:22,  3.62it/s] 13%|█▎        | 78/594 [00:22<02:18,  3.72it/s] 13%|█▎        | 79/594 [00:22<02:26,  3.51it/s] 13%|█▎        | 80/594 [00:23<02:31,  3.39it/s]                                                 13%|█▎        | 80/594 [00:23<02:31,  3.39it/s] 14%|█▎        | 81/594 [00:23<02:30,  3.41it/s] 14%|█▍        | 82/594 [00:23<02:26,  3.48it/s] 14%|█▍        | 83/594 [00:24<02:21,  3.62it/s] 14%|█▍        | 84/594 [00:24<02:20,  3.62it/s] 14%|█▍        | 85/594 [00:24<02:26,  3.47it/s] 14%|█▍        | 86/594 [00:24<02:33,  3.30it/s] 15%|█▍        | 87/594 [00:25<02:36,  3.25it/s] 15%|█▍        | 88/594 [00:25<02:29,  3.39it/s] 15%|█▍        | 89/594 [00:25<02:24,  3.50it/s] 15%|█▌        | 90/594 [00:26<02:17,  3.66it/s] 15%|█▌        | 91/594 [00:26<02:19,  3.62it/s] 15%|█▌        | 92/594 [00:26<02:23,  3.51it/s] 16%|█▌        | 93/594 [00:26<02:24,  3.48it/s] 16%|█▌        | 94/594 [00:27<02:19,  3.59it/s] 16%|█▌        | 95/594 [00:27<02:14,  3.72it/s] 16%|█▌        | 96/594 [00:27<02:18,  3.58it/s] 16%|█▋        | 97/594 [00:28<02:20,  3.53it/s] 16%|█▋        | 98/594 [00:28<02:17,  3.60it/s] 17%|█▋        | 99/594 [00:28<02:19,  3.55it/s] 17%|█▋        | 100/594 [00:28<02:18,  3.58it/s]                                                  17%|█▋        | 100/594 [00:28<02:18,  3.58it/s] 17%|█▋        | 101/594 [00:29<02:13,  3.69it/s] 17%|█▋        | 102/594 [00:29<02:15,  3.62it/s] 17%|█▋        | 103/594 [00:29<02:18,  3.54it/s] 18%|█▊        | 104/594 [00:29<02:18,  3.54it/s] 18%|█▊        | 105/594 [00:30<02:21,  3.46it/s] 18%|█▊        | 106/594 [00:30<02:22,  3.43it/s] 18%|█▊        | 107/594 [00:30<02:23,  3.39it/s] 18%|█▊        | 108/594 [00:31<02:19,  3.49it/s] 18%|█▊        | 109/594 [00:31<02:14,  3.61it/s] 19%|█▊        | 110/594 [00:31<02:10,  3.72it/s] 19%|█▊        | 111/594 [00:31<02:06,  3.81it/s] 19%|█▉        | 112/594 [00:32<02:05,  3.83it/s] 19%|█▉        | 113/594 [00:32<02:04,  3.85it/s] 19%|█▉        | 114/594 [00:32<02:11,  3.66it/s] 19%|█▉        | 115/594 [00:33<02:16,  3.50it/s] 20%|█▉        | 116/594 [00:33<02:21,  3.39it/s] 20%|█▉        | 117/594 [00:33<02:14,  3.54it/s] 20%|█▉        | 118/594 [00:33<02:10,  3.66it/s] 20%|██        | 119/594 [00:34<02:08,  3.69it/s] 20%|██        | 120/594 [00:34<02:06,  3.76it/s]                                                  20%|██        | 120/594 [00:34<02:06,  3.76it/s] 20%|██        | 121/594 [00:34<02:07,  3.71it/s] 21%|██        | 122/594 [00:34<02:05,  3.75it/s] 21%|██        | 123/594 [00:35<02:09,  3.64it/s] 21%|██        | 124/594 [00:35<02:13,  3.53it/s] 21%|██        | 125/594 [00:35<02:15,  3.45it/s] 21%|██        | 126/594 [00:36<02:17,  3.40it/s] 21%|██▏       | 127/594 [00:36<02:14,  3.47it/s] 22%|██▏       | 128/594 [00:36<02:16,  3.43it/s] 22%|██▏       | 129/594 [00:36<02:13,  3.47it/s] 22%|██▏       | 130/594 [00:37<02:09,  3.57it/s] 22%|██▏       | 131/594 [00:37<02:06,  3.65it/s] 22%|██▏       | 132/594 [00:37<02:07,  3.61it/s] 22%|██▏       | 133/594 [00:38<02:09,  3.56it/s] 23%|██▎       | 134/594 [00:38<02:10,  3.53it/s] 23%|██▎       | 135/594 [00:38<02:09,  3.54it/s] 23%|██▎       | 136/594 [00:38<02:11,  3.47it/s] 23%|██▎       | 137/594 [00:39<02:05,  3.63it/s] 23%|██▎       | 138/594 [00:39<02:02,  3.71it/s] 23%|██▎       | 139/594 [00:39<02:07,  3.56it/s] 24%|██▎       | 140/594 [00:40<02:10,  3.49it/s]                                                  24%|██▎       | 140/594 [00:40<02:10,  3.49it/s] 24%|██▎       | 141/594 [00:40<02:09,  3.50it/s] 24%|██▍       | 142/594 [00:40<02:07,  3.54it/s] 24%|██▍       | 143/594 [00:40<02:05,  3.58it/s] 24%|██▍       | 144/594 [00:41<02:02,  3.68it/s] 24%|██▍       | 145/594 [00:41<01:59,  3.77it/s] 25%|██▍       | 146/594 [00:41<01:57,  3.82it/s] 25%|██▍       | 147/594 [00:41<02:01,  3.67it/s] 25%|██▍       | 148/594 [00:42<02:03,  3.61it/s] 25%|██▌       | 149/594 [00:42<02:03,  3.59it/s] 25%|██▌       | 150/594 [00:42<02:03,  3.59it/s] 25%|██▌       | 151/594 [00:43<02:01,  3.65it/s] 26%|██▌       | 152/594 [00:43<02:05,  3.52it/s] 26%|██▌       | 153/594 [00:43<02:02,  3.59it/s] 26%|██▌       | 154/594 [00:43<02:01,  3.61it/s] 26%|██▌       | 155/594 [00:44<02:00,  3.63it/s] 26%|██▋       | 156/594 [00:44<02:05,  3.49it/s] 26%|██▋       | 157/594 [00:44<02:00,  3.64it/s] 27%|██▋       | 158/594 [00:44<01:57,  3.72it/s] 27%|██▋       | 159/594 [00:45<01:58,  3.69it/s] 27%|██▋       | 160/594 [00:45<02:03,  3.53it/s]                                                  27%|██▋       | 160/594 [00:45<02:03,  3.53it/s] 27%|██▋       | 161/594 [00:45<02:01,  3.57it/s] 27%|██▋       | 162/594 [00:46<02:00,  3.58it/s] 27%|██▋       | 163/594 [00:46<02:00,  3.58it/s] 28%|██▊       | 164/594 [00:46<02:06,  3.39it/s] 28%|██▊       | 165/594 [00:47<02:08,  3.35it/s] 28%|██▊       | 166/594 [00:47<02:09,  3.31it/s] 28%|██▊       | 167/594 [00:47<02:04,  3.44it/s] 28%|██▊       | 168/594 [00:47<01:58,  3.59it/s] 28%|██▊       | 169/594 [00:48<01:54,  3.71it/s] 29%|██▊       | 170/594 [00:48<01:53,  3.73it/s] 29%|██▉       | 171/594 [00:48<01:51,  3.81it/s] 29%|██▉       | 172/594 [00:48<01:48,  3.88it/s] 29%|██▉       | 173/594 [00:49<01:51,  3.78it/s] 29%|██▉       | 174/594 [00:49<01:54,  3.67it/s] 29%|██▉       | 175/594 [00:49<01:54,  3.66it/s] 30%|██▉       | 176/594 [00:49<01:52,  3.73it/s] 30%|██▉       | 177/594 [00:50<01:49,  3.79it/s] 30%|██▉       | 178/594 [00:50<01:51,  3.72it/s] 30%|███       | 179/594 [00:50<01:50,  3.77it/s] 30%|███       | 180/594 [00:51<01:48,  3.82it/s]                                                  30%|███       | 180/594 [00:51<01:48,  3.82it/s] 30%|███       | 181/594 [00:51<01:46,  3.88it/s] 31%|███       | 182/594 [00:51<01:49,  3.75it/s] 31%|███       | 183/594 [00:51<01:55,  3.56it/s] 31%|███       | 184/594 [00:52<01:53,  3.60it/s] 31%|███       | 185/594 [00:52<01:52,  3.64it/s] 31%|███▏      | 186/594 [00:52<01:50,  3.71it/s] 31%|███▏      | 187/594 [00:52<01:47,  3.79it/s] 32%|███▏      | 188/594 [00:53<01:47,  3.79it/s] 32%|███▏      | 189/594 [00:53<01:49,  3.72it/s] 32%|███▏      | 190/594 [00:53<01:52,  3.58it/s] 32%|███▏      | 191/594 [00:54<01:53,  3.54it/s] 32%|███▏      | 192/594 [00:54<01:55,  3.48it/s] 32%|███▏      | 193/594 [00:54<01:54,  3.49it/s] 33%|███▎      | 194/594 [00:54<01:51,  3.57it/s] 33%|███▎      | 195/594 [00:55<01:49,  3.63it/s] 33%|███▎      | 196/594 [00:55<01:48,  3.66it/s] 33%|███▎      | 197/594 [00:55<01:45,  3.76it/s] 33%|███▎      | 198/594 [00:55<01:44,  3.78it/s] 34%|███▎      | 199/594 [00:56<01:45,  3.73it/s] 34%|███▎      | 200/594 [00:56<01:48,  3.64it/s]                                                  34%|███▎      | 200/594 [00:56<01:48,  3.64it/s]/home/orwel/dev_genius/venv/lib/python3.12/site-packages/torch/utils/checkpoint.py:85: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn(
+{'loss': 0.9995, 'grad_norm': 531.0924682617188, 'learning_rate': 3.3333333333333333e-06, 'epoch': 0.07}
+{'loss': 0.915, 'grad_norm': 486.81866455078125, 'learning_rate': 6.666666666666667e-06, 'epoch': 0.13}
+{'loss': 0.8364, 'grad_norm': 422.61297607421875, 'learning_rate': 1e-05, 'epoch': 0.2}
+{'loss': 0.7303, 'grad_norm': 561.5321655273438, 'learning_rate': 9.965428667076687e-06, 'epoch': 0.27}
+{'loss': 0.6711, 'grad_norm': 353.9142150878906, 'learning_rate': 9.86219273913078e-06, 'epoch': 0.34}
+{'loss': 0.5993, 'grad_norm': 376.4150390625, 'learning_rate': 9.691719817616148e-06, 'epoch': 0.4}
+{'loss': 0.4823, 'grad_norm': 219.94635009765625, 'learning_rate': 9.45636729298243e-06, 'epoch': 0.47}
+{'loss': 0.3655, 'grad_norm': 163.5589141845703, 'learning_rate': 9.159389745423003e-06, 'epoch': 0.54}
+{'loss': 0.3419, 'grad_norm': 207.23403930664062, 'learning_rate': 8.804893938804839e-06, 'epoch': 0.61}
+{'loss': 0.3138, 'grad_norm': 684.7595825195312, 'learning_rate': 8.397782030148147e-06, 'epoch': 0.67}
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃ chosen_text                 ┃ rejected_text               ┃ logits           ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│ Once upon a time, there was │ Once upon a time, there was │ [0.9724, 0.0276] │
+│ a little girl named Lily.   │ a little girl named Lily.   │                  │
+│                             │                             │                  │
+│ She was very smart and her  │ She was very smart and her  │                  │
+│ teacher said she was        │ teacher said she was        │                  │
+│ gifted. One day, Lily went  │ gifted. She couldn't wait   │                  │
+│ to school with her          │ to use her new notebook and │                  │
+│ notebook. She loved to draw │ draw more pictures. From    │                  │
+│ and write in it. During     │ that day on, Lily always    │                  │
+│ class, Lily's friend wanted │ kept her notebook close and │                  │
+│ to borrow her notebook.     │ never let anyone else grab  │                  │
+│ Lily was happy to share and │ it without asking first..   │                  │
+│ let her friend grab it.     │ Lily was happy to share and │                  │
+│                             │ let her friend grab it.     │                  │
+│ After school, Lily's mom    │ Lily was so happy and       │                  │
+│ surprised her with a gift.  │ hugged her mom tight        │                  │
+│ It was a new notebook with  │                             │                  │
+│ a picture of her favorite   │                             │                  │
+│ animal on it. Lily was so   │                             │                  │
+│ happy and hugged her mom    │                             │                  │
+│ tight. She couldn't wait to │                             │                  │
+│ use her new notebook and    │                             │                  │
+│ draw more pictures. From    │                             │                  │
+│ that day on, Lily always    │                             │                  │
+│ kept her notebook close and │                             │                  │
+│ never let anyone else grab  │                             │                  │
+│ it without asking first.    │                             │                  │
+├─────────────────────────────┼─────────────────────────────┼──────────────────┤
+│ Once upon a time, there was │ Once upon a time, there was │ [0.6298, 0.3702] │
+│ a little girl named Sue.    │ a little girl named Sue.    │                  │
+│                             │                             │                  │
+│ Sue loved to play in the    │ Sue and her friends were    │                  │
+│ kitchen. She liked to make  │ sad. They laughed and had   │                  │
+│ easy treats for her         │ fun in the kitchen.         │                  │
+│ friends. One day, Sue had a │                             │                  │
+│ great idea. She wanted to   │ The day of the fair came.   │                  │
+│ win a prize at the fair.    │ Her friends helped her. One │                  │
+│                             │ day, Sue had a great idea.  │                  │
+│ Sue worked hard in the      │ Sue loved to play in the    │                  │
+│ kitchen. She made easy      │ kitchen. They went home and │                  │
+│ treats for the fair. Her    │ tried to feel better in the │                  │
+│ friends helped her. They    │ kitchen.. They all wanted   │                  │
+│ all wanted to win the       │ to win the prize            │                  │
+│ prize. They laughed and had │                             │                  │
+│ fun in the kitchen.         │                             │                  │
+│                             │                             │                  │
+│ The day of the fair came.   │                             │                  │
+│ Sue and her friends were    │                             │                  │
+│ excited. But then,          │                             │                  │
+│ something bad happened. A   │                             │                  │
+│ big wind came and blew all  │                             │                  │
+│ their treats away. Sue and  │                             │                  │
+│ her friends were sad. They  │                             │                  │
+│ did not win the prize. They │                             │                  │
+│ went home and tried to feel │                             │                  │
+│ better in the kitchen.      │                             │                  │
+├─────────────────────────────┼─────────────────────────────┼──────────────────┤
+│ Once upon a time, there was │ Once upon a time, there was │ [0.9846, 0.0154] │
+│ a little girl named Lily.   │ a little girl named Lily.   │                  │
+│                             │                             │                  │
+│ She loved to play in the    │ She loved to play in the    │                  │
+│ garden with her friends.    │ garden with her friends.    │                  │
+│ One day, she saw a little   │ One day, she saw a little   │                  │
+│ apple on the tree. She      │ apple on the tree           │                  │
+│ wanted to eat it, but she   │                             │                  │
+│ didn't know how to reach    │                             │                  │
+│ it.                         │                             │                  │
+│                             │                             │                  │
+│ Then her friend, Timmy,     │                             │                  │
+│ came along and said, "I can │                             │                  │
+│ help you, Lily. I learned   │                             │                  │
+│ how to climb trees last     │                             │                  │
+│ summer." Timmy climbed the  │                             │                  │
+│ tree and picked the little  │                             │                  │
+│ apple for Lily. She was so  │                             │                  │
+│ happy and thanked Timmy.    │                             │                  │
+│                             │                             │                  │
+│ Lily learned that sometimes │                             │                  │
+│ it's okay to ask for help,  │                             │                  │
+│ and that little things can  │                             │                  │
+│ bring big happiness.        │                             │                  │
+├─────────────────────────────┼─────────────────────────────┼──────────────────┤
+│ Tim and Mia are friends.    │ Tim and Mia are friends.    │ [0.133, 0.867]   │
+│                             │                             │                  │
+│ They like to play in the    │ It is too heavy.            │                  │
+│ park. One day, they see a   │                             │                  │
+│ big board near the slide.   │ "Let's try together," Tim   │                  │
+│ The board is brown and has  │ says. They push the board   │                  │
+│ some letters on it.         │ with their hands, but it    │                  │
+│                             │ does not move. The board is │                  │
+│ "What is that?" Tim asks.   │ brown and has some letters  │                  │
+│ He is curious.              │ on it.                      │                  │
+│                             │                             │                  │
+│ "I don't know," Mia says.   │ "What is that?" Tim asks.   │                  │
+│ "Let's go and see."         │ He is curious.              │                  │
+│                             │                             │                  │
+│ They run to the board and   │ "I don't know," Mia says.   │                  │
+│ touch it. It feels hard and │ He pushes the stick down    │                  │
+│ smooth. They try to read    │ and the board lifts up a    │                  │
+│ the letters, but they are   │ little bit.                 │                  │
+│ too big and strange.        │                             │                  │
+│                             │ "Quick, look!" he says to   │                  │
+│ "Maybe it is a sign," Tim   │ Mia.                        │                  │
+│ says. "Maybe it tells us    │                             │                  │
+│ something."                 │ Mia bends down and peeks    │                  │
+│                             │ under the board. They are   │                  │
+│ "Or maybe it is a secret,"  │ amazed by the treasure.     │                  │
+│ Mia says. "Maybe someone is │ They have more fun that     │                  │
+│ hiding something behind     │ way.. They don't understand │                  │
+│ it."                        │ the big boy. He leaves the  │                  │
+│                             │ park.                       │                  │
+│ They look at each other and │                             │                  │
+│ smile. They want to find    │ Tim and Mia stand up. She   │                  │
+│ out the secret. They push   │ looks around and sees a     │                  │
+│ the board with their hands, │ stick on the ground. He is  │                  │
+│ but it does not move. It is │ angry. They decide to       │                  │
+│ too heavy.                  │ forget about the treasure   │                  │
+│                             │ and play on the slide       │                  │
+│ "Let's try together," Tim   │ instead. They wanted to     │                  │
+│ says. He grabs one side of  │ play with the treasure.     │                  │
+│ the board and Mia grabs the │                             │                  │
+│ other. They pull and pull,  │ "Maybe he is a pirate," Tim │                  │
+│ but the board still does    │ says. He glares at Tim and  │                  │
+│ not move.                   │ Mia.                        │                  │
+│                             │                             │                  │
+│ "Maybe we need something to │ "Go away," he says. They    │                  │
+│ help us," Mia says. She     │ pull and pull, but the      │                  │
+│ looks around and sees a     │ board still does not move.  │                  │
+│ stick on the ground. She    │                             │                  │
+│ picks it up and gives it to │ "Maybe we need something to │                  │
+│ Tim.                        │ help us," Mia says. She     │                  │
+│                             │ sees something shiny and    │                  │
+│ "Here, use this," she says. │ colorful. "That's my        │                  │
+│                             │ treasure! Leave it alone!"  │                  │
+│ Tim takes the stick and     │                             │                  │
+│ puts it under the board. He │ They look up and see a big  │                  │
+│ pus                         │ boy standing over them.     │                  │
+│                             │ "Maybe h                    │                  │
+└─────────────────────────────┴─────────────────────────────┴──────────────────┘
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/transformers/tokenization_utils_base.py:2847: UserWarning: `max_length` is ignored when `padding`=`True` and there is no truncation strategy. To pad to max length, use `padding='max_length'`.
+  warnings.warn(
+
+  0%|          | 0/32 [00:00<?, ?it/s][A
+ 12%|█▎        | 4/32 [00:00<00:00, 29.84it/s][A
+ 22%|██▏       | 7/32 [00:00<00:00, 25.33it/s][A
+ 31%|███▏      | 10/32 [00:00<00:00, 23.88it/s][A
+ 41%|████      | 13/32 [00:00<00:00, 23.13it/s][A
+ 50%|█████     | 16/32 [00:00<00:00, 22.59it/s][A
+ 59%|█████▉    | 19/32 [00:00<00:00, 22.63it/s][A
+ 69%|██████▉   | 22/32 [00:00<00:00, 22.75it/s][A
+ 78%|███████▊  | 25/32 [00:01<00:00, 21.96it/s][A
+ 88%|████████▊ | 28/32 [00:01<00:00, 22.22it/s][A
+ 97%|█████████▋| 31/32 [00:01<00:00, 22.57it/s][A/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/utils.py:657: UserWarning: There are 2 out of 249 instances where the predictions for both options are equal. As a consequence the accuracy can be misleading.
+  warnings.warn(
+                                                 
+                                               [A 34%|███▎      | 200/594 [00:58<01:48,  3.64it/s]
+100%|██████████| 32/32 [00:01<00:00, 22.57it/s][A
+                                               [A/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/transformers/tokenization_utils_base.py:2847: UserWarning: `max_length` is ignored when `padding`=`True` and there is no truncation strategy. To pad to max length, use `padding='max_length'`.
+  warnings.warn(
+/home/orwel/dev_genius/venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1044: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+ 34%|███▍      | 201/594 [00:58<05:33,  1.18it/s] 34%|███▍      | 202/594 [00:58<04:24,  1.48it/s] 34%|███▍      | 203/594 [00:59<03:37,  1.79it/s] 34%|███▍      | 204/594 [00:59<03:05,  2.11it/s] 35%|███▍      | 205/594 [00:59<02:43,  2.39it/s] 35%|███▍      | 206/594 [01:00<02:29,  2.59it/s] 35%|███▍      | 207/594 [01:00<02:14,  2.89it/s] 35%|███▌      | 208/594 [01:00<02:05,  3.08it/s] 35%|███▌      | 209/594 [01:00<01:57,  3.27it/s] 35%|███▌      | 210/594 [01:01<01:51,  3.44it/s] 36%|███▌      | 211/594 [01:01<01:48,  3.54it/s] 36%|███▌      | 212/594 [01:01<01:43,  3.68it/s] 36%|███▌      | 213/594 [01:01<01:42,  3.73it/s] 36%|███▌      | 214/594 [01:02<01:45,  3.59it/s] 36%|███▌      | 215/594 [01:02<01:42,  3.69it/s] 36%|███▋      | 216/594 [01:02<01:46,  3.55it/s] 37%|███▋      | 217/594 [01:03<01:48,  3.47it/s] 37%|███▋      | 218/594 [01:03<01:52,  3.34it/s] 37%|███▋      | 219/594 [01:03<01:51,  3.37it/s] 37%|███▋      | 220/594 [01:04<01:48,  3.45it/s]                                                  37%|███▋      | 220/594 [01:04<01:48,  3.45it/s] 37%|███▋      | 221/594 [01:04<01:43,  3.61it/s] 37%|███▋      | 222/594 [01:04<01:42,  3.62it/s] 38%|███▊      | 223/594 [01:04<01:41,  3.64it/s] 38%|███▊      | 224/594 [01:05<01:42,  3.60it/s] 38%|███▊      | 225/594 [01:05<01:41,  3.63it/s] 38%|███▊      | 226/594 [01:05<01:47,  3.43it/s] 38%|███▊      | 227/594 [01:05<01:43,  3.56it/s] 38%|███▊      | 228/594 [01:06<01:42,  3.57it/s] 39%|███▊      | 229/594 [01:06<01:41,  3.58it/s] 39%|███▊      | 230/594 [01:06<01:39,  3.67it/s] 39%|███▉      | 231/594 [01:07<01:37,  3.72it/s] 39%|███▉      | 232/594 [01:07<01:40,  3.62it/s] 39%|███▉      | 233/594 [01:07<01:44,  3.44it/s] 39%|███▉      | 234/594 [01:07<01:43,  3.47it/s] 40%|███▉      | 235/594 [01:08<01:47,  3.35it/s] 40%|███▉      | 236/594 [01:08<01:49,  3.26it/s] 40%|███▉      | 237/594 [01:08<01:44,  3.42it/s] 40%|████      | 238/594 [01:09<01:39,  3.59it/s] 40%|████      | 239/594 [01:09<01:40,  3.53it/s] 40%|████      | 240/594 [01:09<01:43,  3.43it/s]                                                  40%|████      | 240/594 [01:09<01:43,  3.43it/s] 41%|████      | 241/594 [01:09<01:39,  3.54it/s] 41%|████      | 242/594 [01:10<01:36,  3.66it/s] 41%|████      | 243/594 [01:10<01:33,  3.74it/s] 41%|████      | 244/594 [01:10<01:33,  3.75it/s] 41%|████      | 245/594 [01:11<01:38,  3.53it/s] 41%|████▏     | 246/594 [01:11<01:36,  3.62it/s] 42%|████▏     | 247/594 [01:11<01:37,  3.57it/s] 42%|████▏     | 248/594 [01:11<01:33,  3.70it/s] 42%|████▏     | 249/594 [01:12<01:34,  3.67it/s] 42%|████▏     | 250/594 [01:12<01:40,  3.43it/s] 42%|████▏     | 251/594 [01:12<01:39,  3.43it/s] 42%|████▏     | 252/594 [01:12<01:35,  3.57it/s] 43%|████▎     | 253/594 [01:13<01:33,  3.63it/s] 43%|████▎     | 254/594 [01:13<01:31,  3.70it/s] 43%|████▎     | 255/594 [01:13<01:29,  3.79it/s] 43%|████▎     | 256/594 [01:13<01:27,  3.85it/s] 43%|████▎     | 257/594 [01:14<01:28,  3.82it/s] 43%|████▎     | 258/594 [01:14<01:29,  3.74it/s] 44%|████▎     | 259/594 [01:14<01:33,  3.57it/s] 44%|████▍     | 260/594 [01:15<01:33,  3.56it/s]                                                  44%|████▍     | 260/594 [01:15<01:33,  3.56it/s] 44%|████▍     | 261/594 [01:15<01:32,  3.61it/s] 44%|████▍     | 262/594 [01:15<01:29,  3.70it/s] 44%|████▍     | 263/594 [01:15<01:28,  3.73it/s] 44%|████▍     | 264/594 [01:16<01:26,  3.82it/s] 45%|████▍     | 265/594 [01:16<01:30,  3.64it/s] 45%|████▍     | 266/594 [01:16<01:34,  3.45it/s] 45%|████▍     | 267/594 [01:17<01:32,  3.53it/s] 45%|████▌     | 268/594 [01:17<01:35,  3.42it/s] 45%|████▌     | 269/594 [01:17<01:34,  3.45it/s] 45%|████▌     | 270/594 [01:17<01:36,  3.36it/s] 46%|████▌     | 271/594 [01:18<01:38,  3.29it/s] 46%|████▌     | 272/594 [01:18<01:39,  3.23it/s] 46%|████▌     | 273/594 [01:18<01:40,  3.21it/s] 46%|████▌     | 274/594 [01:19<01:37,  3.28it/s] 46%|████▋     | 275/594 [01:19<01:37,  3.28it/s] 46%|████▋     | 276/594 [01:19<01:36,  3.31it/s] 47%|████▋     | 277/594 [01:20<01:35,  3.33it/s] 47%|████▋     | 278/594 [01:20<01:31,  3.45it/s] 47%|████▋     | 279/594 [01:20<01:30,  3.48it/s] 47%|████▋     | 280/594 [01:20<01:26,  3.63it/s]                                                  47%|████▋     | 280/594 [01:20<01:26,  3.63it/s] 47%|████▋     | 281/594 [01:21<01:29,  3.49it/s] 47%|████▋     | 282/594 [01:21<01:34,  3.29it/s] 48%|████▊     | 283/594 [01:21<01:30,  3.44it/s] 48%|████▊     | 284/594 [01:22<01:26,  3.58it/s] 48%|████▊     | 285/594 [01:22<01:29,  3.44it/s] 48%|████▊     | 286/594 [01:22<01:33,  3.31it/s] 48%|████▊     | 287/594 [01:23<01:35,  3.22it/s] 48%|████▊     | 288/594 [01:23<01:34,  3.24it/s] 49%|████▊     | 289/594 [01:23<01:32,  3.30it/s] 49%|████▉     | 290/594 [01:23<01:28,  3.42it/s] 49%|████▉     | 291/594 [01:24<01:24,  3.58it/s] 49%|████▉     | 292/594 [01:24<01:21,  3.70it/s] 49%|████▉     | 293/594 [01:24<01:19,  3.79it/s] 49%|████▉     | 294/594 [01:24<01:21,  3.69it/s] 50%|████▉     | 295/594 [01:25<01:25,  3.50it/s] 50%|████▉     | 296/594 [01:25<01:21,  3.64it/s] 50%|█████     | 297/594 [01:25<01:19,  3.75it/s] 50%|█████     | 298/594 [01:26<01:17,  3.82it/s] 50%|█████     | 299/594 [01:26<01:15,  3.89it/s] 51%|█████     | 300/594 [01:26<01:18,  3.74it/s]                                                  51%|█████     | 300/594 [01:26<01:18,  3.74it/s] 51%|█████     | 301/594 [01:26<01:19,  3.70it/s] 51%|█████     | 302/594 [01:27<01:18,  3.73it/s] 51%|█████     | 303/594 [01:27<01:18,  3.72it/s] 51%|█████     | 304/594 [01:27<01:16,  3.79it/s] 51%|█████▏    | 305/594 [01:27<01:16,  3.80it/s] 52%|█████▏    | 306/594 [01:28<01:14,  3.87it/s] 52%|█████▏    | 307/594 [01:28<01:14,  3.85it/s] 52%|█████▏    | 308/594 [01:28<01:14,  3.84it/s] 52%|█████▏    | 309/594 [01:28<01:15,  3.79it/s] 52%|█████▏    | 310/594 [01:29<01:13,  3.84it/s] 52%|█████▏    | 311/594 [01:29<01:16,  3.70it/s] 53%|█████▎    | 312/594 [01:29<01:18,  3.59it/s] 53%|█████▎    | 313/594 [01:30<01:20,  3.49it/s] 53%|█████▎    | 314/594 [01:30<01:22,  3.38it/s] 53%|█████▎    | 315/594 [01:30<01:20,  3.48it/s] 53%|█████▎    | 316/594 [01:30<01:18,  3.53it/s] 53%|█████▎    | 317/594 [01:31<01:15,  3.68it/s] 54%|█████▎    | 318/594 [01:31<01:13,  3.73it/s] 54%|█████▎    | 319/594 [01:31<01:16,  3.62it/s] 54%|█████▍    | 320/594 [01:32<01:15,  3.62it/s]                                                  54%|█████▍    | 320/594 [01:32<01:15,  3.62it/s] 54%|█████▍    | 321/594 [01:32<01:15,  3.64it/s] 54%|█████▍    | 322/594 [01:32<01:15,  3.60it/s] 54%|█████▍    | 323/594 [01:32<01:16,  3.55it/s] 55%|█████▍    | 324/594 [01:33<01:13,  3.69it/s] 55%|█████▍    | 325/594 [01:33<01:11,  3.75it/s] 55%|█████▍    | 326/594 [01:33<01:12,  3.70it/s] 55%|█████▌    | 327/594 [01:33<01:13,  3.62it/s] 55%|█████▌    | 328/594 [01:34<01:11,  3.72it/s] 55%|█████▌    | 329/594 [01:34<01:09,  3.81it/s] 56%|█████▌    | 330/594 [01:34<01:07,  3.89it/s] 56%|█████▌    | 331/594 [01:34<01:06,  3.94it/s] 56%|█████▌    | 332/594 [01:35<01:07,  3.90it/s] 56%|█████▌    | 333/594 [01:35<01:07,  3.85it/s] 56%|█████▌    | 334/594 [01:35<01:07,  3.87it/s] 56%|█████▋    | 335/594 [01:35<01:06,  3.92it/s] 57%|█████▋    | 336/594 [01:36<01:06,  3.87it/s] 57%|█████▋    | 337/594 [01:36<01:05,  3.91it/s] 57%|█████▋    | 338/594 [01:36<01:04,  3.96it/s] 57%|█████▋    | 339/594 [01:37<01:07,  3.77it/s] 57%|█████▋    | 340/594 [01:37<01:06,  3.80it/s]                                                  57%|█████▋    | 340/594 [01:37<01:06,  3.80it/s] 57%|█████▋    | 341/594 [01:37<01:09,  3.64it/s] 58%|█████▊    | 342/594 [01:37<01:07,  3.76it/s] 58%|█████▊    | 343/594 [01:38<01:05,  3.81it/s] 58%|█████▊    | 344/594 [01:38<01:06,  3.76it/s] 58%|█████▊    | 345/594 [01:38<01:07,  3.70it/s] 58%|█████▊    | 346/594 [01:38<01:07,  3.68it/s] 58%|█████▊    | 347/594 [01:39<01:07,  3.65it/s] 59%|█████▊    | 348/594 [01:39<01:07,  3.67it/s] 59%|█████▉    | 349/594 [01:39<01:08,  3.58it/s] 59%|█████▉    | 350/594 [01:40<01:06,  3.67it/s] 59%|█████▉    | 351/594 [01:40<01:05,  3.73it/s] 59%|█████▉    | 352/594 [01:40<01:03,  3.79it/s] 59%|█████▉    | 353/594 [01:40<01:03,  3.78it/s] 60%|█████▉    | 354/594 [01:41<01:06,  3.61it/s] 60%|█████▉    | 355/594 [01:41<01:05,  3.63it/s] 60%|█████▉    | 356/594 [01:41<01:03,  3.72it/s] 60%|██████    | 357/594 [01:41<01:01,  3.82it/s] 60%|██████    | 358/594 [01:42<01:00,  3.87it/s] 60%|██████    | 359/594 [01:42<01:00,  3.89it/s] 61%|██████    | 360/594 [01:42<01:02,  3.76it/s]                                                  61%|██████    | 360/594 [01:42<01:02,  3.76it/s] 61%|██████    | 361/594 [01:42<01:00,  3.84it/s] 61%|██████    | 362/594 [01:43<00:59,  3.88it/s] 61%|██████    | 363/594 [01:43<01:02,  3.69it/s] 61%|██████▏   | 364/594 [01:43<01:00,  3.79it/s] 61%|██████▏   | 365/594 [01:43<01:01,  3.74it/s] 62%|██████▏   | 366/594 [01:44<01:01,  3.70it/s] 62%|██████▏   | 367/594 [01:44<01:02,  3.61it/s] 62%|██████▏   | 368/594 [01:44<01:03,  3.57it/s] 62%|██████▏   | 369/594 [01:45<01:04,  3.48it/s] 62%|██████▏   | 370/594 [01:45<01:05,  3.41it/s] 62%|██████▏   | 371/594 [01:45<01:06,  3.36it/s] 63%|██████▎   | 372/594 [01:46<01:05,  3.40it/s] 63%|██████▎   | 373/594 [01:46<01:04,  3.41it/s] 63%|██████▎   | 374/594 [01:46<01:03,  3.46it/s] 63%|██████▎   | 375/594 [01:46<01:02,  3.48it/s] 63%|██████▎   | 376/594 [01:47<01:03,  3.43it/s] 63%|██████▎   | 377/594 [01:47<01:01,  3.53it/s] 64%|██████▎   | 378/594 [01:47<00:59,  3.64it/s] 64%|██████▍   | 379/594 [01:47<00:58,  3.66it/s] 64%|██████▍   | 380/594 [01:48<01:00,  3.52it/s]                                                  64%|██████▍   | 380/594 [01:48<01:00,  3.52it/s] 64%|██████▍   | 381/594 [01:48<00:59,  3.57it/s] 64%|██████▍   | 382/594 [01:48<01:00,  3.51it/s] 64%|██████▍   | 383/594 [01:49<01:01,  3.40it/s] 65%|██████▍   | 384/594 [01:49<01:02,  3.37it/s] 65%|██████▍   | 385/594 [01:49<00:59,  3.52it/s] 65%|██████▍   | 386/594 [01:50<01:01,  3.39it/s] 65%|██████▌   | 387/594 [01:50<01:02,  3.32it/s] 65%|██████▌   | 388/594 [01:50<01:03,  3.24it/s] 65%|██████▌   | 389/594 [01:50<01:02,  3.26it/s] 66%|██████▌   | 390/594 [01:51<01:01,  3.29it/s] 66%|██████▌   | 391/594 [01:51<01:00,  3.36it/s] 66%|██████▌   | 392/594 [01:51<01:01,  3.28it/s] 66%|██████▌   | 393/594 [01:52<01:00,  3.30it/s] 66%|██████▋   | 394/594 [01:52<00:58,  3.45it/s] 66%|██████▋   | 395/594 [01:52<00:58,  3.41it/s] 67%|██████▋   | 396/594 [01:53<01:00,  3.28it/s] 67%|██████▋   | 397/594 [01:53<00:59,  3.31it/s] 67%|██████▋   | 398/594 [01:53<00:58,  3.32it/s] 67%|██████▋   | 399/594 [01:54<00:59,  3.25it/s] 67%|██████▋   | 400/594 [01:54<01:00,  3.19it/s]                                                  67%|██████▋   | 400/594 [01:54<01:00,  3.19it/s]/home/orwel/dev_genius/venv/lib/python3.12/site-packages/torch/utils/checkpoint.py:85: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn(
+{'eval_loss': 0.23967020213603973, 'eval_accuracy': 0.927710843373494, 'eval_runtime': 1.4503, 'eval_samples_per_second': 171.688, 'eval_steps_per_second': 22.064, 'epoch': 0.67}
+{'loss': 0.2562, 'grad_norm': 892.6441650390625, 'learning_rate': 7.943683779985412e-06, 'epoch': 0.74}
+{'loss': 0.2205, 'grad_norm': 362.24005126953125, 'learning_rate': 7.4488787010311425e-06, 'epoch': 0.81}
+{'loss': 0.1929, 'grad_norm': 141.4731903076172, 'learning_rate': 6.920209221732007e-06, 'epoch': 0.88}
+{'loss': 0.1868, 'grad_norm': 376.1598205566406, 'learning_rate': 6.364986065518106e-06, 'epoch': 0.94}
+{'loss': 0.2528, 'grad_norm': 328.4363708496094, 'learning_rate': 5.790887154221521e-06, 'epoch': 1.01}
+{'loss': 0.1894, 'grad_norm': 312.96441650390625, 'learning_rate': 5.20585143367959e-06, 'epoch': 1.08}
+{'loss': 0.1955, 'grad_norm': 210.5528106689453, 'learning_rate': 4.617969089759066e-06, 'epoch': 1.14}
+{'loss': 0.1517, 'grad_norm': 367.3905334472656, 'learning_rate': 4.035369672952516e-06, 'epoch': 1.21}
+{'loss': 0.1555, 'grad_norm': 227.001708984375, 'learning_rate': 3.466109678619681e-06, 'epoch': 1.28}
+{'loss': 0.1809, 'grad_norm': 168.4435577392578, 'learning_rate': 2.9180611374741623e-06, 'epoch': 1.35}
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃ chosen_text                 ┃ rejected_text               ┃ logits           ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│ Once upon a time, there was │ Once upon a time, there was │ [0.9929, 0.0071] │
+│ a little girl named Lily.   │ a little girl named Lily.   │                  │
+│                             │                             │                  │
+│ She was very smart and her  │ She was very smart and her  │                  │
+│ teacher said she was        │ teacher said she was        │                  │
+│ gifted. One day, Lily went  │ gifted. She couldn't wait   │                  │
+│ to school with her          │ to use her new notebook and │                  │
+│ notebook. She loved to draw │ draw more pictures. From    │                  │
+│ and write in it. During     │ that day on, Lily always    │                  │
+│ class, Lily's friend wanted │ kept her notebook close and │                  │
+│ to borrow her notebook.     │ never let anyone else grab  │                  │
+│ Lily was happy to share and │ it without asking first..   │                  │
+│ let her friend grab it.     │ Lily was happy to share and │                  │
+│                             │ let her friend grab it.     │                  │
+│ After school, Lily's mom    │ Lily was so happy and       │                  │
+│ surprised her with a gift.  │ hugged her mom tight        │                  │
+│ It was a new notebook with  │                             │                  │
+│ a picture of her favorite   │                             │                  │
+│ animal on it. Lily was so   │                             │                  │
+│ happy and hugged her mom    │                             │                  │
+│ tight. She couldn't wait to │                             │                  │
+│ use her new notebook and    │                             │                  │
+│ draw more pictures. From    │                             │                  │
+│ that day on, Lily always    │                             │                  │
+│ kept her notebook close and │                             │                  │
+│ never let anyone else grab  │                             │                  │
+│ it without asking first.    │                             │                  │
+├─────────────────────────────┼─────────────────────────────┼──────────────────┤
+│ Once upon a time, there was │ Once upon a time, there was │ [0.8872, 0.1128] │
+│ a little girl named Sue.    │ a little girl named Sue.    │                  │
+│                             │                             │                  │
+│ Sue loved to play in the    │ Sue and her friends were    │                  │
+│ kitchen. She liked to make  │ sad. They laughed and had   │                  │
+│ easy treats for her         │ fun in the kitchen.         │                  │
+│ friends. One day, Sue had a │                             │                  │
+│ great idea. She wanted to   │ The day of the fair came.   │                  │
+│ win a prize at the fair.    │ Her friends helped her. One │                  │
+│                             │ day, Sue had a great idea.  │                  │
+│ Sue worked hard in the      │ Sue loved to play in the    │                  │
+│ kitchen. She made easy      │ kitchen. They went home and │                  │
+│ treats for the fair. Her    │ tried to feel better in the │                  │
+│ friends helped her. They    │ kitchen.. They all wanted   │                  │
+│ all wanted to win the       │ to win the prize            │                  │
+│ prize. They laughed and had │                             │                  │
+│ fun in the kitchen.         │                             │                  │
+│                             │                             │                  │
+│ The day of the fair came.   │                             │                  │
+│ Sue and her friends were    │                             │                  │
+│ excited. But then,          │                             │                  │
+│ something bad happened. A   │                             │                  │
+│ big wind came and blew all  │                             │                  │
+│ their treats away. Sue and  │                             │                  │
+│ her friends were sad. They  │                             │                  │
+│ did not win the prize. They │                             │                  │
+│ went home and tried to feel │                             │                  │
+│ better in the kitchen.      │                             │                  │
+├─────────────────────────────┼─────────────────────────────┼──────────────────┤
+│ Once upon a time, there was │ Once upon a time, there was │ [0.9986, 0.0014] │
+│ a little girl named Lily.   │ a little girl named Lily.   │                  │
+│                             │                             │                  │
+│ She loved to play in the    │ She loved to play in the    │                  │
+│ garden with her friends.    │ garden with her friends.    │                  │
+│ One day, she saw a little   │ One day, she saw a little   │                  │
+│ apple on the tree. She      │ apple on the tree           │                  │
+│ wanted to eat it, but she   │                             │                  │
+│ didn't know how to reach    │                             │                  │
+│ it.                         │                             │                  │
+│                             │                             │                  │
+│ Then her friend, Timmy,     │                             │                  │
+│ came along and said, "I can │                             │                  │
+│ help you, Lily. I learned   │                             │                  │
+│ how to climb trees last     │                             │                  │
+│ summer." Timmy climbed the  │                             │                  │
+│ tree and picked the little  │                             │                  │
+│ apple for Lily. She was so  │                             │                  │
+│ happy and thanked Timmy.    │                             │                  │
+│                             │                             │                  │
+│ Lily learned that sometimes │                             │                  │
+│ it's okay to ask for help,  │                             │                  │
+│ and that little things can  │                             │                  │
+│ bring big happiness.        │                             │                  │
+├─────────────────────────────┼─────────────────────────────┼──────────────────┤
+│ Tim and Mia are friends.    │ Tim and Mia are friends.    │ [0.0927, 0.9073] │
+│                             │                             │                  │
+│ They like to play in the    │ It is too heavy.            │                  │
+│ park. One day, they see a   │                             │                  │
+│ big board near the slide.   │ "Let's try together," Tim   │                  │
+│ The board is brown and has  │ says. They push the board   │                  │
+│ some letters on it.         │ with their hands, but it    │                  │
+│                             │ does not move. The board is │                  │
+│ "What is that?" Tim asks.   │ brown and has some letters  │                  │
+│ He is curious.              │ on it.                      │                  │
+│                             │                             │                  │
+│ "I don't know," Mia says.   │ "What is that?" Tim asks.   │                  │
+│ "Let's go and see."         │ He is curious.              │                  │
+│                             │                             │                  │
+│ They run to the board and   │ "I don't know," Mia says.   │                  │
+│ touch it. It feels hard and │ He pushes the stick down    │                  │
+│ smooth. They try to read    │ and the board lifts up a    │                  │
+│ the letters, but they are   │ little bit.                 │                  │
+│ too big and strange.        │                             │                  │
+│                             │ "Quick, look!" he says to   │                  │
+│ "Maybe it is a sign," Tim   │ Mia.                        │                  │
+│ says. "Maybe it tells us    │                             │                  │
+│ something."                 │ Mia bends down and peeks    │                  │
+│                             │ under the board. They are   │                  │
+│ "Or maybe it is a secret,"  │ amazed by the treasure.     │                  │
+│ Mia says. "Maybe someone is │ They have more fun that     │                  │
+│ hiding something behind     │ way.. They don't understand │                  │
+│ it."                        │ the big boy. He leaves the  │                  │
+│                             │ park.                       │                  │
+│ They look at each other and │                             │                  │
+│ smile. They want to find    │ Tim and Mia stand up. She   │                  │
+│ out the secret. They push   │ looks around and sees a     │                  │
+│ the board with their hands, │ stick on the ground. He is  │                  │
+│ but it does not move. It is │ angry. They decide to       │                  │
+│ too heavy.                  │ forget about the treasure   │                  │
+│                             │ and play on the slide       │                  │
+│ "Let's try together," Tim   │ instead. They wanted to     │                  │
+│ says. He grabs one side of  │ play with the treasure.     │                  │
+│ the board and Mia grabs the │                             │                  │
+│ other. They pull and pull,  │ "Maybe he is a pirate," Tim │                  │
+│ but the board still does    │ says. He glares at Tim and  │                  │
+│ not move.                   │ Mia.                        │                  │
+│                             │                             │                  │
+│ "Maybe we need something to │ "Go away," he says. They    │                  │
+│ help us," Mia says. She     │ pull and pull, but the      │                  │
+│ looks around and sees a     │ board still does not move.  │                  │
+│ stick on the ground. She    │                             │                  │
+│ picks it up and gives it to │ "Maybe we need something to │                  │
+│ Tim.                        │ help us," Mia says. She     │                  │
+│                             │ sees something shiny and    │                  │
+│ "Here, use this," she says. │ colorful. "That's my        │                  │
+│                             │ treasure! Leave it alone!"  │                  │
+│ Tim takes the stick and     │                             │                  │
+│ puts it under the board. He │ They look up and see a big  │                  │
+│ pus                         │ boy standing over them.     │                  │
+│                             │ "Maybe h                    │                  │
+└─────────────────────────────┴─────────────────────────────┴──────────────────┘
+/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/transformers/tokenization_utils_base.py:2847: UserWarning: `max_length` is ignored when `padding`=`True` and there is no truncation strategy. To pad to max length, use `padding='max_length'`.
+  warnings.warn(
+
+  0%|          | 0/32 [00:00<?, ?it/s][A
+ 12%|█▎        | 4/32 [00:00<00:01, 27.41it/s][A
+ 22%|██▏       | 7/32 [00:00<00:01, 23.58it/s][A
+ 31%|███▏      | 10/32 [00:00<00:00, 22.34it/s][A
+ 41%|████      | 13/32 [00:00<00:00, 21.39it/s][A
+ 50%|█████     | 16/32 [00:00<00:00, 21.07it/s][A
+ 59%|█████▉    | 19/32 [00:00<00:00, 20.83it/s][A
+ 69%|██████▉   | 22/32 [00:01<00:00, 20.39it/s][A
+ 78%|███████▊  | 25/32 [00:01<00:00, 20.51it/s][A
+ 88%|████████▊ | 28/32 [00:01<00:00, 20.48it/s][A
+ 97%|█████████▋| 31/32 [00:01<00:00, 20.82it/s][A/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/utils.py:657: UserWarning: There are 2 out of 249 instances where the predictions for both options are equal. As a consequence the accuracy can be misleading.
+  warnings.warn(
+                                                 
+                                               [A 67%|██████▋   | 400/594 [01:55<01:00,  3.19it/s]
+100%|██████████| 32/32 [00:01<00:00, 20.82it/s][A
+                                               [A/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/transformers/tokenization_utils_base.py:2847: UserWarning: `max_length` is ignored when `padding`=`True` and there is no truncation strategy. To pad to max length, use `padding='max_length'`.
+  warnings.warn(
+/home/orwel/dev_genius/venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1044: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+ 68%|██████▊   | 401/594 [01:56<02:52,  1.12it/s] 68%|██████▊   | 402/594 [01:56<02:17,  1.40it/s] 68%|██████▊   | 403/594 [01:57<01:52,  1.69it/s] 68%|██████▊   | 404/594 [01:57<01:35,  1.98it/s] 68%|██████▊   | 405/594 [01:57<01:24,  2.22it/s] 68%|██████▊   | 406/594 [01:58<01:18,  2.40it/s] 69%|██████▊   | 407/594 [01:58<01:11,  2.62it/s] 69%|██████▊   | 408/594 [01:58<01:04,  2.89it/s] 69%|██████▉   | 409/594 [01:59<01:01,  3.01it/s] 69%|██████▉   | 410/594 [01:59<00:59,  3.12it/s] 69%|██████▉   | 411/594 [01:59<00:59,  3.10it/s] 69%|██████▉   | 412/594 [01:59<00:55,  3.30it/s] 70%|██████▉   | 413/594 [02:00<00:55,  3.23it/s] 70%|██████▉   | 414/594 [02:00<00:55,  3.25it/s] 70%|██████▉   | 415/594 [02:00<00:53,  3.36it/s] 70%|███████   | 416/594 [02:01<00:50,  3.53it/s] 70%|███████   | 417/594 [02:01<00:49,  3.61it/s] 70%|███████   | 418/594 [02:01<00:49,  3.53it/s] 71%|███████   | 419/594 [02:01<00:52,  3.34it/s] 71%|███████   | 420/594 [02:02<00:52,  3.34it/s]                                                  71%|███████   | 420/594 [02:02<00:52,  3.34it/s] 71%|███████   | 421/594 [02:02<00:52,  3.27it/s] 71%|███████   | 422/594 [02:02<00:49,  3.46it/s] 71%|███████   | 423/594 [02:03<00:48,  3.56it/s] 71%|███████▏  | 424/594 [02:03<00:47,  3.58it/s] 72%|███████▏  | 425/594 [02:03<00:49,  3.44it/s] 72%|███████▏  | 426/594 [02:03<00:50,  3.34it/s] 72%|███████▏  | 427/594 [02:04<00:50,  3.31it/s] 72%|███████▏  | 428/594 [02:04<00:50,  3.32it/s] 72%|███████▏  | 429/594 [02:04<00:49,  3.35it/s] 72%|███████▏  | 430/594 [02:05<00:47,  3.47it/s] 73%|███████▎  | 431/594 [02:05<00:45,  3.55it/s] 73%|███████▎  | 432/594 [02:05<00:46,  3.48it/s] 73%|███████▎  | 433/594 [02:06<00:47,  3.41it/s] 73%|███████▎  | 434/594 [02:06<00:46,  3.42it/s] 73%|███████▎  | 435/594 [02:06<00:47,  3.36it/s] 73%|███████▎  | 436/594 [02:06<00:46,  3.43it/s] 74%|███████▎  | 437/594 [02:07<00:44,  3.56it/s] 74%|███████▎  | 438/594 [02:07<00:44,  3.47it/s] 74%|███████▍  | 439/594 [02:07<00:43,  3.60it/s] 74%|███████▍  | 440/594 [02:07<00:41,  3.72it/s]                                                  74%|███████▍  | 440/594 [02:07<00:41,  3.72it/s] 74%|███████▍  | 441/594 [02:08<00:40,  3.78it/s] 74%|███████▍  | 442/594 [02:08<00:42,  3.58it/s] 75%|███████▍  | 443/594 [02:08<00:44,  3.37it/s] 75%|███████▍  | 444/594 [02:09<00:45,  3.30it/s] 75%|███████▍  | 445/594 [02:09<00:45,  3.26it/s] 75%|███████▌  | 446/594 [02:09<00:44,  3.36it/s] 75%|███████▌  | 447/594 [02:10<00:41,  3.51it/s] 75%|███████▌  | 448/594 [02:10<00:42,  3.46it/s] 76%|███████▌  | 449/594 [02:10<00:42,  3.42it/s] 76%|███████▌  | 450/594 [02:10<00:41,  3.49it/s] 76%|███████▌  | 451/594 [02:11<00:40,  3.56it/s] 76%|███████▌  | 452/594 [02:11<00:40,  3.55it/s] 76%|███████▋  | 453/594 [02:11<00:39,  3.55it/s] 76%|███████▋  | 454/594 [02:11<00:38,  3.66it/s] 77%|███████▋  | 455/594 [02:12<00:38,  3.59it/s] 77%|███████▋  | 456/594 [02:12<00:38,  3.61it/s] 77%|███████▋  | 457/594 [02:12<00:37,  3.61it/s] 77%|███████▋  | 458/594 [02:13<00:38,  3.55it/s] 77%|███████▋  | 459/594 [02:13<00:40,  3.33it/s] 77%|███████▋  | 460/594 [02:13<00:38,  3.47it/s]                                                  77%|███████▋  | 460/594 [02:13<00:38,  3.47it/s] 78%|███████▊  | 461/594 [02:14<00:38,  3.49it/s] 78%|███████▊  | 462/594 [02:14<00:36,  3.64it/s] 78%|███████▊  | 463/594 [02:14<00:35,  3.74it/s] 78%|███████▊  | 464/594 [02:14<00:34,  3.78it/s] 78%|███████▊  | 465/594 [02:15<00:35,  3.65it/s] 78%|███████▊  | 466/594 [02:15<00:34,  3.71it/s] 79%|███████▊  | 467/594 [02:15<00:33,  3.75it/s] 79%|███████▉  | 468/594 [02:15<00:33,  3.79it/s] 79%|███████▉  | 469/594 [02:16<00:32,  3.84it/s] 79%|███████▉  | 470/594 [02:16<00:33,  3.75it/s] 79%|███████▉  | 471/594 [02:16<00:33,  3.71it/s] 79%|███████▉  | 472/594 [02:16<00:32,  3.70it/s] 80%|███████▉  | 473/594 [02:17<00:32,  3.71it/s] 80%|███████▉  | 474/594 [02:17<00:32,  3.67it/s] 80%|███████▉  | 475/594 [02:17<00:32,  3.67it/s] 80%|████████  | 476/594 [02:18<00:33,  3.51it/s] 80%|████████  | 477/594 [02:18<00:32,  3.59it/s] 80%|████████  | 478/594 [02:18<00:32,  3.56it/s] 81%|████████  | 479/594 [02:18<00:32,  3.54it/s] 81%|████████  | 480/594 [02:19<00:31,  3.57it/s]                                                  81%|████████  | 480/594 [02:19<00:31,  3.57it/s] 81%|████████  | 481/594 [02:19<00:32,  3.48it/s] 81%|████████  | 482/594 [02:19<00:32,  3.50it/s] 81%|████████▏ | 483/594 [02:20<00:33,  3.36it/s] 81%|████████▏ | 484/594 [02:20<00:32,  3.34it/s] 82%|████████▏ | 485/594 [02:20<00:31,  3.52it/s] 82%|████████▏ | 486/594 [02:20<00:29,  3.63it/s] 82%|████████▏ | 487/594 [02:21<00:28,  3.75it/s] 82%|████████▏ | 488/594 [02:21<00:28,  3.73it/s] 82%|████████▏ | 489/594 [02:21<00:28,  3.73it/s] 82%|████████▏ | 490/594 [02:21<00:28,  3.61it/s] 83%|████████▎ | 491/594 [02:22<00:27,  3.71it/s] 83%|████████▎ | 492/594 [02:22<00:27,  3.78it/s] 83%|████████▎ | 493/594 [02:22<00:27,  3.72it/s] 83%|████████▎ | 494/594 [02:23<00:26,  3.73it/s] 83%|████████▎ | 495/594 [02:23<00:27,  3.58it/s] 84%|████████▎ | 496/594 [02:23<00:26,  3.64it/s] 84%|████████▎ | 497/594 [02:23<00:25,  3.75it/s] 84%|████████▍ | 498/594 [02:24<00:24,  3.84it/s] 84%|████████▍ | 499/594 [02:24<00:25,  3.75it/s] 84%|████████▍ | 500/594 [02:24<00:24,  3.81it/s]                                                  84%|████████▍ | 500/594 [02:24<00:24,  3.81it/s] 84%|████████▍ | 501/594 [02:24<00:23,  3.88it/s] 85%|████████▍ | 502/594 [02:25<00:24,  3.74it/s] 85%|████████▍ | 503/594 [02:25<00:24,  3.79it/s] 85%|████████▍ | 504/594 [02:25<00:23,  3.77it/s] 85%|████████▌ | 505/594 [02:25<00:23,  3.81it/s] 85%|████████▌ | 506/594 [02:26<00:22,  3.88it/s] 85%|████████▌ | 507/594 [02:26<00:22,  3.92it/s] 86%|████████▌ | 508/594 [02:26<00:22,  3.77it/s] 86%|████████▌ | 509/594 [02:26<00:22,  3.76it/s] 86%|████████▌ | 510/594 [02:27<00:22,  3.81it/s] 86%|████████▌ | 511/594 [02:27<00:21,  3.86it/s] 86%|████████▌ | 512/594 [02:27<00:21,  3.87it/s] 86%|████████▋ | 513/594 [02:28<00:21,  3.69it/s] 87%|████████▋ | 514/594 [02:28<00:21,  3.67it/s] 87%|████████▋ | 515/594 [02:28<00:21,  3.74it/s] 87%|████████▋ | 516/594 [02:28<00:21,  3.61it/s] 87%|████████▋ | 517/594 [02:29<00:21,  3.58it/s] 87%|████████▋ | 518/594 [02:29<00:20,  3.64it/s] 87%|████████▋ | 519/594 [02:29<00:20,  3.74it/s] 88%|████████▊ | 520/594 [02:29<00:19,  3.74it/s]                                                  88%|████████▊ | 520/594 [02:29<00:19,  3.74it/s] 88%|████████▊ | 521/594 [02:30<00:20,  3.51it/s] 88%|████████▊ | 522/594 [02:30<00:20,  3.45it/s] 88%|████████▊ | 523/594 [02:30<00:20,  3.45it/s] 88%|████████▊ | 524/594 [02:31<00:19,  3.50it/s] 88%|████████▊ | 525/594 [02:31<00:18,  3.64it/s] 89%|████████▊ | 526/594 [02:31<00:18,  3.68it/s] 89%|████████▊ | 527/594 [02:31<00:17,  3.78it/s] 89%|████████▉ | 528/594 [02:32<00:17,  3.75it/s] 89%|████████▉ | 529/594 [02:32<00:17,  3.64it/s] 89%|████████▉ | 530/594 [02:32<00:17,  3.73it/s] 89%|████████▉ | 531/594 [02:32<00:16,  3.81it/s] 90%|████████▉ | 532/594 [02:33<00:16,  3.68it/s] 90%|████████▉ | 533/594 [02:33<00:17,  3.52it/s] 90%|████████▉ | 534/594 [02:33<00:17,  3.49it/s] 90%|█████████ | 535/594 [02:34<00:17,  3.45it/s] 90%|█████████ | 536/594 [02:34<00:16,  3.45it/s] 90%|█████████ | 537/594 [02:34<00:16,  3.54it/s] 91%|█████████ | 538/594 [02:34<00:15,  3.62it/s] 91%|█████████ | 539/594 [02:35<00:15,  3.57it/s] 91%|█████████ | 540/594 [02:35<00:15,  3.55it/s]                                                  91%|█████████ | 540/594 [02:35<00:15,  3.55it/s] 91%|█████████ | 541/594 [02:35<00:14,  3.68it/s] 91%|█████████ | 542/594 [02:36<00:13,  3.79it/s] 91%|█████████▏| 543/594 [02:36<00:13,  3.85it/s] 92%|█████████▏| 544/594 [02:36<00:12,  3.89it/s] 92%|█████████▏| 545/594 [02:36<00:13,  3.73it/s] 92%|█████████▏| 546/594 [02:37<00:12,  3.70it/s] 92%|█████████▏| 547/594 [02:37<00:12,  3.74it/s] 92%|█████████▏| 548/594 [02:37<00:12,  3.68it/s] 92%|█████████▏| 549/594 [02:37<00:11,  3.77it/s] 93%|█████████▎| 550/594 [02:38<00:11,  3.85it/s] 93%|█████████▎| 551/594 [02:38<00:11,  3.87it/s] 93%|█████████▎| 552/594 [02:38<00:11,  3.66it/s] 93%|█████████▎| 553/594 [02:39<00:11,  3.55it/s] 93%|█████████▎| 554/594 [02:39<00:11,  3.47it/s] 93%|█████████▎| 555/594 [02:39<00:10,  3.61it/s] 94%|█████████▎| 556/594 [02:39<00:10,  3.63it/s] 94%|█████████▍| 557/594 [02:40<00:10,  3.40it/s] 94%|█████████▍| 558/594 [02:40<00:10,  3.36it/s] 94%|█████████▍| 559/594 [02:40<00:10,  3.34it/s] 94%|█████████▍| 560/594 [02:41<00:09,  3.46it/s]                                                  94%|█████████▍| 560/594 [02:41<00:09,  3.46it/s] 94%|█████████▍| 561/594 [02:41<00:09,  3.58it/s] 95%|█████████▍| 562/594 [02:41<00:09,  3.48it/s] 95%|█████████▍| 563/594 [02:41<00:09,  3.40it/s] 95%|█████████▍| 564/594 [02:42<00:08,  3.55it/s] 95%|█████████▌| 565/594 [02:42<00:08,  3.54it/s] 95%|█████████▌| 566/594 [02:42<00:07,  3.67it/s] 95%|█████████▌| 567/594 [02:42<00:07,  3.76it/s] 96%|█████████▌| 568/594 [02:43<00:06,  3.83it/s] 96%|█████████▌| 569/594 [02:43<00:06,  3.83it/s] 96%|█████████▌| 570/594 [02:43<00:06,  3.54it/s] 96%|█████████▌| 571/594 [02:44<00:07,  3.25it/s] 96%|█████████▋| 572/594 [02:44<00:06,  3.30it/s] 96%|█████████▋| 573/594 [02:44<00:06,  3.50it/s] 97%|█████████▋| 574/594 [02:45<00:05,  3.46it/s] 97%|█████████▋| 575/594 [02:45<00:05,  3.53it/s] 97%|█████████▋| 576/594 [02:45<00:05,  3.43it/s] 97%|█████████▋| 577/594 [02:45<00:05,  3.23it/s] 97%|█████████▋| 578/594 [02:46<00:04,  3.26it/s] 97%|█████████▋| 579/594 [02:46<00:04,  3.34it/s] 98%|█████████▊| 580/594 [02:46<00:04,  3.36it/s]                                                  98%|█████████▊| 580/594 [02:46<00:04,  3.36it/s] 98%|█████████▊| 581/594 [02:47<00:03,  3.31it/s] 98%|█████████▊| 582/594 [02:47<00:03,  3.44it/s] 98%|█████████▊| 583/594 [02:47<00:03,  3.49it/s] 98%|█████████▊| 584/594 [02:47<00:02,  3.39it/s] 98%|█████████▊| 585/594 [02:48<00:02,  3.32it/s] 99%|█████████▊| 586/594 [02:48<00:02,  3.28it/s] 99%|█████████▉| 587/594 [02:48<00:02,  3.17it/s] 99%|█████████▉| 588/594 [02:49<00:01,  3.34it/s] 99%|█████████▉| 589/594 [02:49<00:01,  3.40it/s] 99%|█████████▉| 590/594 [02:49<00:01,  3.32it/s] 99%|█████████▉| 591/594 [02:50<00:00,  3.28it/s]100%|█████████▉| 592/594 [02:50<00:00,  3.43it/s]100%|█████████▉| 593/594 [02:50<00:00,  3.51it/s]100%|██████████| 594/594 [02:50<00:00,  3.46it/s]                                                 100%|██████████| 594/594 [02:51<00:00,  3.46it/s]100%|██████████| 594/594 [02:51<00:00,  3.47it/s]
+{'eval_loss': 0.1451924443244934, 'eval_accuracy': 0.9437751004016064, 'eval_runtime': 1.5596, 'eval_samples_per_second': 159.66, 'eval_steps_per_second': 20.519, 'epoch': 1.35}
+{'loss': 0.131, 'grad_norm': 56.7509651184082, 'learning_rate': 2.3988027569455895e-06, 'epoch': 1.41}
+{'loss': 0.1676, 'grad_norm': 32.20732879638672, 'learning_rate': 1.915515118772555e-06, 'epoch': 1.48}
+{'loss': 0.1622, 'grad_norm': 2335.19873046875, 'learning_rate': 1.4748813820898554e-06, 'epoch': 1.55}
+{'loss': 0.1597, 'grad_norm': 105.26152038574219, 'learning_rate': 1.0829948651407374e-06, 'epoch': 1.62}
+{'loss': 0.1542, 'grad_norm': 398.935546875, 'learning_rate': 7.452747836234392e-07, 'epoch': 1.68}
+{'loss': 0.1655, 'grad_norm': 287.05963134765625, 'learning_rate': 4.663913108871726e-07, 'epoch': 1.75}
+{'loss': 0.159, 'grad_norm': 392.1044921875, 'learning_rate': 2.5020099628504603e-07, 'epoch': 1.82}
+{'loss': 0.1459, 'grad_norm': 98.70695495605469, 'learning_rate': 9.969343475342285e-08, 'epoch': 1.89}
+{'loss': 0.1785, 'grad_norm': 191.40968322753906, 'learning_rate': 1.69499250991767e-08, 'epoch': 1.95}
+{'train_runtime': 171.3226, 'train_samples_per_second': 55.439, 'train_steps_per_second': 3.467, 'train_loss': 0.32812471622569794, 'epoch': 2.0}
+***** train metrics *****
+  epoch                    =        2.0
+  total_flos               =        0GF
+  train_loss               =     0.3281
+  train_runtime            = 0:02:51.32
+  train_samples_per_second =     55.439
+  train_steps_per_second   =      3.467
+[W730 00:57:32.709124111 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

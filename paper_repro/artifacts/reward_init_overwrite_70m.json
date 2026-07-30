@@ -1,0 +1,13 @@
+{
+  "operation": "AutoModelForSequenceClassification.from_pretrained(SFT adapter), then get_peft_model(..., adapter_name='default')",
+  "module": "gpt_neox.layers.0.attention.dense",
+  "sft_lora_a_norm_before": 1.634549856185913,
+  "sft_lora_b_norm_before": 0.023271337151527405,
+  "lora_a_norm_after": 1.6354275941848755,
+  "lora_b_norm_after": 0.0,
+  "lora_a_max_absolute_change": 0.0873308777809143,
+  "lora_b_max_absolute_change": 0.0013578074285760522,
+  "sft_a_preserved": false,
+  "sft_b_preserved": false,
+  "conclusion": "The release path overwrites the loaded SFT adapter before reward training; the new LoRA B matrix is reinitialized to zero."
+}

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export GPU_UUID="${GPU_UUID:-GPU-caf6a1ca-616a-3427-7833-157477cd59f6}"
+export EXPECTED_GPU_NAME="${EXPECTED_GPU_NAME:-RTX 3090}"
+export GPU_NAME="${GPU_NAME:-3090}"
+export PORT="${PORT:-8080}"
+export ALIAS="${ALIAS:-qwen3.6-heretic2-27b-q4-k-m-3090}"
+export CTX_SIZE="${CTX_SIZE:-50000}"
+export THREADS="${THREADS:-8}"
+export THREADS_BATCH="${THREADS_BATCH:-8}"
+export MMPROJ_PATH="${MMPROJ_PATH-$HOME/dev_genius/models/gguf/unsloth-qwen36/mmproj-F16.gguf}"
+
+exec "$HOME/dev_genius/engines/llama.cpp/scripts/remote_start_qwen36_gpu.sh"

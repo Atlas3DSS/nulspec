@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "source_repository": "mr3haque/SLM-RL-Agents",
+  "source_revision": "1c74b58663ae3a97117abe60661c72915a6150ed",
+  "method": "zipfile + pickletools opcode inspection; pickle payloads were not executed",
+  "file_count": 15,
+  "all_files_share": {
+    "bf16": true,
+    "fp16": false,
+    "gradient_accumulation_steps": 4,
+    "learning_rate": 2e-05,
+    "lr_scheduler_type": "cosine",
+    "max_seq_length": 512,
+    "neftune_noise_alpha": 5.0,
+    "num_train_epochs": 5,
+    "optim": "adamw_torch",
+    "per_device_train_batch_size": 8,
+    "seed": 42,
+    "warmup_ratio": 0.06
+  },
+  "sha256": {
+    "sft/pythia-160m/cnn_dailymail/training_args.bin": "afa1c151b5ddbd47ac7f89ba6cf40ef820ff9d85d3189a56ed0c5f2b7ae75416",
+    "sft/pythia-160m/tinystories/training_args.bin": "d0a790a0c1ad153554c27c30535357f4d62f6b672c4a9e39d3c8ba35f5735f75",
+    "sft/pythia-160m/wikitext/training_args.bin": "d47d39b33a0e11c83765470896bb1526460fbdf7fef5df12fd54d45c7ebd2eca",
+    "sft/pythia-410m/cnn_dailymail/training_args.bin": "447156b1e228400775144114e138bbbac103e5f6d714be485fcf1a6e6463b1a9",
+    "sft/pythia-410m/tinystories/training_args.bin": "312b142fff3752b15e2e74d6d7924427ec006ec30b2199afacf1bcfa608a097b",
+    "sft/pythia-410m/wikitext/training_args.bin": "4e0baf79d64a09a7e046be89af810c8fb0fb94a1f72dacf634e23f4d613c9812",
+    "sft/pythia-70m/cnn_dailymail/training_args.bin": "ee9864277a4d2614dac9ca74ad53cbce34a6136cc7088047417e8112e9fbdcc9",
+    "sft/pythia-70m/tinystories/training_args.bin": "ab39ffd5377ea465e36119851547876d8076362a10d4256c862e05c517ef3bd4",
+    "sft/pythia-70m/wikitext/training_args.bin": "99e6b7dd3ee3d7b16ae2037c06bd0210f871df34ef3d3bbd695047ef1c33c457",
+    "sft/smollm2-135m/cnn_dailymail/training_args.bin": "172476a7e6b0946a85c289e7895158afe0fd96cd7c7ffb6f8fed2bd8cfe09045",
+    "sft/smollm2-135m/tinystories/training_args.bin": "007e7aaceac2c007fb2de2c09138e87bd85198ed2f9ab266339cdf7b8190363d",
+    "sft/smollm2-135m/wikitext/training_args.bin": "40da579c6fbae14877902df14b138b7c74b86d00cab1ccc0b5820c74f4a8cbb3",
+    "sft/smollm2-360m/cnn_dailymail/training_args.bin": "8e41690ffab78ac301ff58123b747660f2b1c5c6f449c946509571b6c910d9f3",
+    "sft/smollm2-360m/tinystories/training_args.bin": "da18d5f2467c6dea7d3265d66668289d643a1e1e8ce8e73586bb399c928920e2",
+    "sft/smollm2-360m/wikitext/training_args.bin": "938efd0db719800ee60815c68a7a2f7d32d3ede1e9d2ab2a0796413cbb351f51"
+  }
+}

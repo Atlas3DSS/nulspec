@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Pin by UUID so CUDA's enumeration order cannot silently select the 3090.
+export GPU_UUID="${GPU_UUID:-GPU-d739b9c5-bfbb-e95a-bbf1-7122f38c2cf1}"
+export EXPECTED_GPU_NAME="${EXPECTED_GPU_NAME:-RTX PRO 6000}"
+export GPU_NAME="${GPU_NAME:-pro6000}"
+export SERVER_BIN="${SERVER_BIN:-$HOME/dev_genius/engines/llama.cpp/build-cuda-pro6000/bin/llama-server}"
+export PORT="${PORT:-8081}"
+export ALIAS="${ALIAS:-qwen3.6-heretic2-27b-q4-k-m-pro6000}"
+export CTX_SIZE="${CTX_SIZE:-50000}"
+export THREADS="${THREADS:-8}"
+export THREADS_BATCH="${THREADS_BATCH:-8}"
+export MMPROJ_PATH="${MMPROJ_PATH-$HOME/dev_genius/models/gguf/unsloth-qwen36/mmproj-F16.gguf}"
+
+exec "$HOME/dev_genius/engines/llama.cpp/scripts/remote_start_qwen36_gpu.sh"

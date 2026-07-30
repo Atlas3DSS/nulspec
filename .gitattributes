@@ -8,6 +8,11 @@
 *.yml text eol=lf
 *.yaml text eol=lf
 
+# Raw terminal logs and upstream-compatible patches may legitimately preserve
+# progress-bar carriage returns or whitespace-only context lines.
+*.log -whitespace
+*.patch -whitespace
+
 *.png binary
 *.jpg binary
 *.jpeg binary

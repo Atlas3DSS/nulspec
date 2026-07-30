@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If this reproduction helped your work, please cite this repository and the original paper."
+title: "Reproduction and audit of SLM-RL-Agents"
+type: software
+authors:
+  - name: "Atlas3DSS"
+repository-code: "https://github.com/Atlas3DSS/slm-rl-agents-reproduction"
+license: MIT
+version: 0.1.0
+date-released: 2026-07-30
+preferred-citation:
+  type: generic
+  title: "Reproduction and audit of Towards Robust Reinforcement Learning for Small-Scale Language Model Agents"
+  authors:
+    - name: "Atlas3DSS"
+  year: 2026
+  url: "https://github.com/Atlas3DSS/slm-rl-agents-reproduction"

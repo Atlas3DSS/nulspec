@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Editors and operating systems
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Upstream checkout. Recreate it from the pinned commit and patch manifest.
+/paper_repro/SLM-RL-Agents/
+
+# Historical pilot compatibility overlay copied third-party packages wholesale.
+# New runs reconstruct environments from the tracked lock instead.
+/paper_repro/compat/
+
+# Released datasets are fetched by checksum, not duplicated in Git.
+/paper_repro/data_release/
+
+# Model weights, optimizer state, and generated run directories.
+/paper_repro/outputs/
+/paper_repro/outputs_corrected/
+/paper_repro/full_matrix_runs/
+/extension/matrix_runs/
+*.safetensors
+*.pt
+*.pth
+*.bin
+*.gguf
+
+# Hugging Face and experiment caches.
+/.cache/
+**/.cache/
+/wandb/
+/runs/
+
+# Local scheduler/process state.
+*.pid
+*.lock
+*.tmp

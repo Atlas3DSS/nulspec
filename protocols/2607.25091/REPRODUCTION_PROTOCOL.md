@@ -200,6 +200,12 @@ Every configuration receives separate judgments:
   capacity-headroom pattern.
 
 No single arbitrary tolerance determines the overall conclusion.
+`scripts/analyze_2607_25091_matrix.py` implements this frozen consolidation:
+it uses prompt-aligned release-evaluator scores, a deterministic 10,000-sample
+bootstrap, absolute discrepancy, interval inclusion, directional assessment,
+and a 15-test Holm family within each track. Missing interim arms enter the
+Holm family with p=1; claim-level interpretation remains locked until all 15
+arms in that track complete.
 
 ## 8. Existing pilot evidence
 

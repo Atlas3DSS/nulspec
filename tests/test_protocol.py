@@ -12,6 +12,7 @@ from reprolab.protocol import (
     validate_matrix,
 )
 from scripts.audit_reported_statistics import audit, holm_adjust
+from scripts.analyze_2607_25091_matrix import direction_assessment
 
 
 def test_primary_matrix_is_complete_and_unique() -> None:
@@ -119,3 +120,11 @@ def test_protocol_binds_upstream_patch_and_results() -> None:
     assert len(upstream["revision"]) == 40
     assert len(upstream["results_sha256"]) == 64
     assert len(upstream["patch_sha256"]) == 64
+
+
+def test_direction_assessment_is_interval_based() -> None:
+    assert direction_assessment(1.0, 0.2, [-0.1, 0.5]) == (
+        "practically_indistinguishable_from_zero"
+    )
+    assert direction_assessment(1.0, 0.2, [0.1, 0.3]) == "agrees"
+    assert direction_assessment(1.0, -0.2, [-0.3, -0.1]) == "disagrees"

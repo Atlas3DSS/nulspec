@@ -19,9 +19,11 @@ preserved as results.
   released implementation.
 - All three released corpus bundles have now been located at an immutable Hub
   revision and verified; the paper-era dataset namespace is stale.
-- The complete 5-model × 3-corpus × 2-track registry is defined but remains
-  pending until protocol v1.0.0 is validated, committed, and tagged.
-- No full-matrix result will be reported as confirmatory until that freeze.
+- Protocol v1.0.0 is frozen at the
+  `2607.25091-protocol-v1.0.0` Git tag.
+- Execution of the complete 5-model × 3-corpus × 2-track registry is active.
+- Full-matrix results remain provisional until every terminal state and
+  exclusion is consolidated against the frozen registry.
 
 Start with the
 [frozen protocol](protocols/2607.25091/REPRODUCTION_PROTOCOL.md) and
@@ -88,6 +90,19 @@ The runner:
 - refuses unguarded execution on the Palworld dev box.
 
 Track M refuses to start until the matching Track R arm has completed.
+
+Run an explicit sequence of arms on one GPU:
+
+```bash
+bash scripts/run_2607_25091_queue.sh 0 "RTX 4090" \
+  R-pythia-70m-tinystories-s42 \
+  R-pythia-70m-wikitext-s42
+```
+
+The queue validates every arm before launch, rejects duplicate IDs, skips
+already completed arms, and calls the same guarded runner serially. It stops
+on the first failed arm by default. Set `CONTINUE_ON_FAILURE=1` only for a
+deliberate unattended sweep; failed attempts remain immutable either way.
 
 Run the complete source/data/environment/GPU/resource preflight without
 creating an attempt directory or starting training:

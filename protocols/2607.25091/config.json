@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "paper_id": "2607.25091",
+  "protocol_version": "1.0.0",
+  "upstream": {
+    "repository": "https://github.com/rezwanh001/SLM-RL-Agents.git",
+    "revision": "64acb621037c711395f2d77516bee70d8a49b819",
+    "results_sha256": "d3897ef87632643b28b076b9d904df918e8b0a40bb6b5f74440e32d771645fbf",
+    "patch": "patches/2607.25091/reproduction.patch",
+    "patch_sha256": "02aa29a330adaf748dca9f62480748024ac7716b0907309ea060f486383007f1"
+  },
+  "released_data": {
+    "repository": "mr3haque/SLM-RL-Agents-Data",
+    "revision": "2cee50d2989aadebfd5af529937c99f7d539287a"
+  },
+  "released_models": {
+    "repository": "mr3haque/SLM-RL-Agents",
+    "revision": "1c74b58663ae3a97117abe60661c72915a6150ed"
+  },
+  "models": {
+    "pythia-70m": {
+      "hf_id": "EleutherAI/pythia-70m-deduped",
+      "lora_rank": 8
+    },
+    "pythia-160m": {
+      "hf_id": "EleutherAI/pythia-160m-deduped",
+      "lora_rank": 16
+    },
+    "pythia-410m": {
+      "hf_id": "EleutherAI/pythia-410m-deduped",
+      "lora_rank": 32
+    },
+    "smollm2-135m": {
+      "hf_id": "HuggingFaceTB/SmolLM2-135M",
+      "lora_rank": 16
+    },
+    "smollm2-360m": {
+      "hf_id": "HuggingFaceTB/SmolLM2-360M",
+      "lora_rank": 32
+    }
+  },
+  "datasets": [
+    "tinystories",
+    "cnn_dailymail",
+    "wikitext"
+  ],
+  "tracks": {
+    "R": {
+      "label": "released-code-250",
+      "merge_sft_before_reward": false,
+      "reward_dtype": "bfloat16",
+      "reset_optimizer_on_rollback": false
+    },
+    "M": {
+      "label": "manuscript-method",
+      "merge_sft_before_reward": true,
+      "reward_dtype": "float32",
+      "reset_optimizer_on_rollback": true
+    }
+  },
+  "training": {
+    "sft": {
+      "epochs": 5,
+      "batch_size": 8,
+      "gradient_accumulation_steps": 4,
+      "learning_rate": 2e-05,
+      "warmup_ratio": 0.06,
+      "max_seq_length": 512,
+      "neftune_noise_alpha": 5.0
+    },
+    "reward": {
+      "epochs": 2,
+      "batch_size": 8,
+      "gradient_accumulation_steps": 2,
+      "learning_rate": 1e-05,
+      "warmup_ratio": 0.1,
+      "max_seq_length": 512
+    },
+    "ppo": {
+      "steps": 250,
+      "batch_size": 32,
+      "mini_batch_size": 4,
+      "ppo_epochs": 2,
+      "learning_rate": 5e-06,
+      "kl_penalty": 0.2,
+      "target_kl": 6.0,
+      "clip_range": 0.2,
+      "gamma": 1.0,
+      "gae_lambda": 0.95,
+      "max_new_tokens": 96,
+      "temperature": 0.9,
+      "top_p": 0.95
+    },
+    "evaluation": {
+      "samples": 200,
+      "max_new_tokens": 128,
+      "temperature": 0.8,
+      "batch_size": 16
+    }
+  }
+}

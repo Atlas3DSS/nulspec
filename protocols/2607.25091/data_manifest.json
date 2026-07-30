@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "repository": "mr3haque/SLM-RL-Agents-Data",
+  "revision": "2cee50d2989aadebfd5af529937c99f7d539287a",
+  "license": "apache-2.0",
+  "row_counts": {
+    "datasets/cnn_dailymail/preference_eval.json": 250,
+    "datasets/cnn_dailymail/preference_train.json": 4750,
+    "datasets/cnn_dailymail/sft_eval.json": 500,
+    "datasets/cnn_dailymail/sft_train.json": 9500,
+    "datasets/tinystories/preference_eval.json": 249,
+    "datasets/tinystories/preference_train.json": 4749,
+    "datasets/tinystories/sft_eval.json": 499,
+    "datasets/tinystories/sft_train.json": 9499,
+    "datasets/wikitext/preference_eval.json": 210,
+    "datasets/wikitext/preference_train.json": 3996,
+    "datasets/wikitext/sft_eval.json": 500,
+    "datasets/wikitext/sft_train.json": 9500
+  },
+  "files": {
+    "datasets/cnn_dailymail/preference_eval.json": "144d88392934a4379647e161d9cd35d6e7dfddfe0ca0987bbd6ed7b500dd33b5",
+    "datasets/cnn_dailymail/preference_train.json": "92a45678f13dd0704ad33a75f48e29e307c98326fb9f831d047df7a156f58b93",
+    "datasets/cnn_dailymail/sft_eval.json": "53f9e0fe67aedd15272a1259b06c3f1cac82f160e3a8d0e02beafbddfac60b07",
+    "datasets/cnn_dailymail/sft_train.json": "695614241ea6c30e181dc4a997ed14d018a28ff76f26b7668db25e31de6dd3f1",
+    "datasets/tinystories/preference_eval.json": "524b764b610ba2ae869e82cf49a27fcfc7881a00c94c439c76ad95044980818f",
+    "datasets/tinystories/preference_train.json": "dbc643b0df5193d37410bb12b2b67e2354e4124e889bbada761675959921a37c",
+    "datasets/tinystories/sft_eval.json": "f9e47dc87a0c33c643d052a03852c615685e6101224b589daed393805cd8ea57",
+    "datasets/tinystories/sft_train.json": "0d20c25930caa5c1622d488af41846d4f88918183311578dd76f92afa8764f09",
+    "datasets/wikitext/preference_eval.json": "fd4291121cd9198817d7230902354072b335af7ecc310f57e0334116e04fb612",
+    "datasets/wikitext/preference_train.json": "1ffdb1119fe8576dec5404a42926c64fc1cd767c74e810090659feabb5bcf05d",
+    "datasets/wikitext/sft_eval.json": "4abe0a0c3967b322a5c75a74560923b8312ee2ca18b6d09aa3b8799539565c0c",
+    "datasets/wikitext/sft_train.json": "fd6f7c83202e26996505cb5b67676b5a3d9d9a6aa771fdef28f97935f6fc30a1",
+    "results/all_results.json": "282920365491ffb758469ee39ed079975266bbfba1445ef5367a244a3edd96d9"
+  }
+}

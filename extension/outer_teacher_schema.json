@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "scope_confirmation": {"type": "string", "enum": ["qwen_records_only"]},
+    "overall_assessment": {
+      "type": "string",
+      "enum": ["pass", "warn", "fail"]
+    },
+    "reviewer_reliability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pair_id": {"type": "string"},
+          "label": {
+            "type": "string",
+            "description": "Exact source label copied from the packet pair"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["info", "warning", "critical"]
+          },
+          "issue": {"type": "string"},
+          "rationale": {"type": "string"},
+          "recommended_action": {"type": "string"}
+        },
+        "required": [
+          "pair_id",
+          "label",
+          "severity",
+          "issue",
+          "rationale",
+          "recommended_action"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "systemic_patterns": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "summary": {"type": "string"}
+  },
+  "required": [
+    "scope_confirmation",
+    "overall_assessment",
+    "reviewer_reliability",
+    "findings",
+    "systemic_patterns",
+    "summary"
+  ],
+  "additionalProperties": false
+}

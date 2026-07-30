@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "repository": "mr3haque/SLM-RL-Agents",
+  "revision": "1c74b58663ae3a97117abe60661c72915a6150ed",
+  "metadata_source": "Hugging Face Hub model_info(files_metadata=True)",
+  "repository_inventory": {
+    "file_count": 213,
+    "total_bytes": 15811783037,
+    "lfs_count": 47,
+    "lfs_bytes": 15686390904,
+    "canonical_sha256": "0a591c7db93d2945b0a2601bd553675a4cba96705e724021144c7da6c606955f"
+  },
+  "notes": [
+    "The canonical digest covers path, byte size, Git blob ID, and Git-LFS SHA-256 for every file at the pinned commit.",
+    "The primary matrix has 15 SFT adapters and 15 merged PPO models.",
+    "The repository also contains one full agentic_sft Pythia-410M TinyStories model outside the primary directory convention.",
+    "No released reward-model checkpoint is present."
+  ],
+  "checkpoints": [
+    {
+      "path": "agentic_sft/pythia-410m/task_a_tinystories/model.safetensors",
+      "role": "orphan",
+      "size": 1621370224,
+      "lfs_sha256": "96ed9499a1ef5b37fcfe7d900ee3f434466fbe24988742f2745575076b580bec"
+    },
+    {
+      "path": "ppo/pythia-160m/cnn_dailymail/model.safetensors",
+      "role": "ppo_merged",
+      "size": 649308728,
+      "lfs_sha256": "4a320493abf326a4e7a3da1871ffdf9227f7210e87a93abe02a5063ec475ecaa"
+    },
+    {
+      "path": "ppo/pythia-160m/tinystories/model.safetensors",
+      "role": "ppo_merged",
+      "size": 649308728,
+      "lfs_sha256": "ff0f06c6eb29946065d8a525dfe2a5723f549a84fa8d0c196260f36483dfa232"
+    },
+    {
+      "path": "ppo/pythia-160m/wikitext/model.safetensors",
+      "role": "ppo_merged",
+      "size": 649308728,
+      "lfs_sha256": "6aaa6ec8e3ddf8e5a211df16f58aaba308d4c112c440293b654965559322caf4"
+    },
+    {
+      "path": "ppo/pythia-410m/cnn_dailymail/model.safetensors",
+      "role": "ppo_merged",
+      "size": 1621370224,
+      "lfs_sha256": "a84b0b6b4e652b6d57261c9d9e5f381b8842e53726f653de4cc2a16dc95ffe88"
+    },
+    {
+      "path": "ppo/pythia-410m/tinystories/model.safetensors",
+      "role": "ppo_merged",
+      "size": 1621370224,
+      "lfs_sha256": "ce4fbcd06d8711c5177be905042094389c7cfd3b7d69638a0fea0bb58051a233"
+    },
+    {
+      "path": "ppo/pythia-410m/wikitext/model.safetensors",
+      "role": "ppo_merged",
+      "size": 1621370224,
+      "lfs_sha256": "ea22b99ed65fff84f07f02c5a46e1d74bcb1ba5036ffdadabd663fb5639aef65"
+    },
+    {
+      "path": "ppo/pythia-70m/cnn_dailymail/model.safetensors",
+      "role": "ppo_merged",
+      "size": 281715176,
+      "lfs_sha256": "4866b2f92a9a00740bf1cc73f39c5d0b9fb5f610254516fa0a61c6dbc404115f"
+    },
+    {
+      "path": "ppo/pythia-70m/tinystories/model.safetensors",
+      "role": "ppo_merged",
+      "size": 281715176,
+      "lfs_sha256": "9a58cebba7251414ab784a5baa7ca91900e14e263cc0b25ba7bc39259cd43950"
+    },
+    {
+      "path": "ppo/pythia-70m/wikitext/model.safetensors",
+      "role": "ppo_merged",
+      "size": 281715176,
+      "lfs_sha256": "295ee8d1d71d557b8701163004caa9de9d368c696fe99b76161cd05678ee6a9a"
+    },
+    {
+      "path": "ppo/smollm2-135m/cnn_dailymail/model.safetensors",
+      "role": "ppo_merged",
+      "size": 538090408,
+      "lfs_sha256": "22464963f31df4cd18d3e5152028716f4c84c2742e8195dedc5a9cb576991811"
+    },
+    {
+      "path": "ppo/smollm2-135m/tinystories/model.safetensors",
+      "role": "ppo_merged",
+      "size": 538090408,
+      "lfs_sha256": "67f0667c8ebff19c604317683e2e83be7c0200ae2d76de80325aed7290fd1d76"
+    },
+    {
+      "path": "ppo/smollm2-135m/wikitext/model.safetensors",
+      "role": "ppo_merged",
+      "size": 538090408,
+      "lfs_sha256": "f1812f716eea4ecf40096a485fdf28aa72ec80661f2fa25b294f105de7ef0ef8"
+    },
+    {
+      "path": "ppo/smollm2-360m/cnn_dailymail/model.safetensors",
+      "role": "ppo_merged",
+      "size": 1447317080,
+      "lfs_sha256": "418c4ec643375c70f9a067d9d5e64ce7ad432ad0206bc257b771c2cf88abf021"
+    },
+    {
+      "path": "ppo/smollm2-360m/tinystories/model.safetensors",
+      "role": "ppo_merged",
+      "size": 1447317080,
+      "lfs_sha256": "907ea49c9d1df8464e9c20edbfaa17b095b46c5276e94fa7e76bea2f362774d2"
+    },
+    {
+      "path": "ppo/smollm2-360m/wikitext/model.safetensors",
+      "role": "ppo_merged",
+      "size": 1447317080,
+      "lfs_sha256": "bd62380e3359441c3a927910e836b6317435c16824f79b19f4c9c04b0cf35818"
+    },
+    {
+      "path": "sft/pythia-160m/cnn_dailymail/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 9450352,
+      "lfs_sha256": "54bbb95cc470262b32ff6d3718168ee78027c5e9e220ddfef79cc6ad5d162ccd"
+    },
+    {
+      "path": "sft/pythia-160m/tinystories/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 9450352,
+      "lfs_sha256": "a719db09557f132533683275c26e6503bf6d04905829c556352d15bda395d091"
+    },
+    {
+      "path": "sft/pythia-160m/wikitext/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 9450352,
+      "lfs_sha256": "4c622db342c122d209a97f492d562b050fba2c8d4c5aa34dc324ca64e1e15540"
+    },
+    {
+      "path": "sft/pythia-410m/cnn_dailymail/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 50358496,
+      "lfs_sha256": "6c2f4eb4164872d75eb8d49a98b0bfeb0a5e16bcda0c8a3887dc21e25ab6ba7b"
+    },
+    {
+      "path": "sft/pythia-410m/tinystories/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 50358496,
+      "lfs_sha256": "6b568a6022c0418f8b4a871621355c5eda4ff9667b8496d6c33e5df46204f7fd"
+    },
+    {
+      "path": "sft/pythia-410m/wikitext/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 50358496,
+      "lfs_sha256": "09a4bd4344671f2fcd166ee6feeb8d69441dd1abb5d8fbb6b495c70d51932d00"
+    },
+    {
+      "path": "sft/pythia-70m/cnn_dailymail/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 1579352,
+      "lfs_sha256": "33a4f56a89dcfc1e27df70cf7c808eea178672634fbdedff8d5759302bb8654c"
+    },
+    {
+      "path": "sft/pythia-70m/tinystories/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 1579352,
+      "lfs_sha256": "5bef290f96d8063c0b82a330a7fb2b701ef850d502d9089c601b69baaadbee59"
+    },
+    {
+      "path": "sft/pythia-70m/wikitext/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 1579352,
+      "lfs_sha256": "aff4ce68cc5c3195d6563389170a053cca3a50ef0520379486ba12edcc58eaa1"
+    },
+    {
+      "path": "sft/smollm2-135m/cnn_dailymail/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 19593064,
+      "lfs_sha256": "dc51746802b52190b400bf26c6f176443b8431984863653442d063f8c32456cd"
+    },
+    {
+      "path": "sft/smollm2-135m/tinystories/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 19593064,
+      "lfs_sha256": "50399b6d845e50253919e6d180cb7f57f7e3c7a2c59aa06b3ce74a4b4b804caa"
+    },
+    {
+      "path": "sft/smollm2-135m/wikitext/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 19593064,
+      "lfs_sha256": "7bd845e4593151ba2cb156d351eabb4cc4a7c63a5469f1683a6ea60eb8774932"
+    },
+    {
+      "path": "sft/smollm2-360m/cnn_dailymail/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 69527352,
+      "lfs_sha256": "e58cd43f371130c9d4daefd847d51e1f3cafd59c44d62a05758ef3710c3c253b"
+    },
+    {
+      "path": "sft/smollm2-360m/tinystories/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 69527352,
+      "lfs_sha256": "ea0e90ac458b6b9f73dc578f66693006fb6da2cb76e728f3f564cf5672e97bd3"
+    },
+    {
+      "path": "sft/smollm2-360m/wikitext/adapter_model.safetensors",
+      "role": "sft_adapter",
+      "size": 69527352,
+      "lfs_sha256": "aa2cb4de461e3e21bbf63f84ce1c40091737db945271ccc3f34180b57285dcd2"
+    }
+  ]
+}

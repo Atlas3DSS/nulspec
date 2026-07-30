@@ -1,0 +1,48 @@
+2026-07-30 01:18:40,234 | INFO     | __main__ | Loading model from /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs/pythia-70m/tinystories/sft/final
+2026-07-30 01:18:42,193 | INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2026-07-30 01:18:44,515 | INFO     | __main__ | Loading evaluation data from /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/data_release/datasets/tinystories/sft_eval.json
+2026-07-30 01:18:44,525 | INFO     | __main__ | Loaded 200 evaluation examples
+2026-07-30 01:18:44,527 | INFO     | __main__ | Computing perplexity...
+Computing perplexity:   0%|          | 0/13 [00:00<?, ?it/s]Computing perplexity:   8%|▊         | 1/13 [00:00<00:03,  3.15it/s]Computing perplexity:  23%|██▎       | 3/13 [00:00<00:01,  7.41it/s]Computing perplexity:  54%|█████▍    | 7/13 [00:00<00:00, 15.32it/s]Computing perplexity:  85%|████████▍ | 11/13 [00:00<00:00, 20.90it/s]Computing perplexity: 100%|██████████| 13/13 [00:00<00:00, 17.03it/s]
+2026-07-30 01:18:45,294 | INFO     | __main__ | Perplexity: 53.66
+2026-07-30 01:18:45,295 | INFO     | __main__ | Generating responses...
+Generating responses:   0%|          | 0/13 [00:00<?, ?it/s]Generating responses:   8%|▊         | 1/13 [00:01<00:15,  1.30s/it]Generating responses:  15%|█▌        | 2/13 [00:02<00:12,  1.14s/it]Generating responses:  23%|██▎       | 3/13 [00:03<00:11,  1.13s/it]Generating responses:  31%|███       | 4/13 [00:04<00:10,  1.14s/it]Generating responses:  38%|███▊      | 5/13 [00:05<00:09,  1.13s/it]Generating responses:  46%|████▌     | 6/13 [00:06<00:07,  1.11s/it]Generating responses:  54%|█████▍    | 7/13 [00:07<00:06,  1.11s/it]Generating responses:  62%|██████▏   | 8/13 [00:09<00:05,  1.12s/it]Generating responses:  69%|██████▉   | 9/13 [00:10<00:04,  1.14s/it]Generating responses:  77%|███████▋  | 10/13 [00:11<00:03,  1.15s/it]Generating responses:  85%|████████▍ | 11/13 [00:12<00:02,  1.17s/it]Generating responses:  92%|█████████▏| 12/13 [00:13<00:01,  1.20s/it]Generating responses: 100%|██████████| 13/13 [00:15<00:00,  1.20s/it]Generating responses: 100%|██████████| 13/13 [00:15<00:00,  1.16s/it]
+2026-07-30 01:19:00,373 | INFO     | __main__ | Computing diversity metrics...
+2026-07-30 01:19:00,385 | INFO     | __main__ | Distinct-1: 0.0481
+2026-07-30 01:19:00,385 | INFO     | __main__ | Distinct-2: 0.1154
+2026-07-30 01:19:00,385 | INFO     | __main__ | Computing BLEU scores...
+2026-07-30 01:19:00,503 | INFO     | __main__ | BLEU: 0.0192
+2026-07-30 01:19:00,503 | INFO     | __main__ | Computing ROUGE scores...
+2026-07-30 01:19:01,691 | INFO     | absl | Using default tokenizer.
+2026-07-30 01:19:02,261 | INFO     | __main__ | ROUGE-L F1: 0.1348
+2026-07-30 01:19:02,261 | INFO     | __main__ | Computing reward scores...
+2026-07-30 01:19:02,261 | INFO     | __main__ | Loading reward model from /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs/pythia-70m/tinystories/reward_model/final
+2026-07-30 01:19:02,554 | INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+Some weights of GPTNeoXForSequenceClassification were not initialized from the model checkpoint at EleutherAI/pythia-70m-deduped and are newly initialized: ['score.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Computing rewards:   0%|          | 0/200 [00:00<?, ?it/s]Computing rewards:   0%|          | 1/200 [00:00<00:31,  6.42it/s]Computing rewards:   6%|▌         | 12/200 [00:00<00:03, 55.08it/s]Computing rewards:  12%|█▎        | 25/200 [00:00<00:02, 83.73it/s]Computing rewards:  19%|█▉        | 38/200 [00:00<00:01, 98.94it/s]Computing rewards:  24%|██▍       | 49/200 [00:00<00:01, 97.51it/s]Computing rewards:  30%|███       | 60/200 [00:00<00:01, 96.10it/s]Computing rewards:  36%|███▌      | 72/200 [00:00<00:01, 103.00it/s]Computing rewards:  45%|████▌     | 90/200 [00:00<00:00, 125.49it/s]Computing rewards:  54%|█████▍    | 108/200 [00:01<00:00, 140.73it/s]Computing rewards:  63%|██████▎   | 126/200 [00:01<00:00, 151.73it/s]Computing rewards:  72%|███████▏  | 144/200 [00:01<00:00, 158.53it/s]Computing rewards:  80%|████████  | 161/200 [00:01<00:00, 161.41it/s]Computing rewards:  89%|████████▉ | 178/200 [00:01<00:00, 163.52it/s]Computing rewards:  98%|█████████▊| 196/200 [00:01<00:00, 166.59it/s]Computing rewards: 100%|██████████| 200/200 [00:01<00:00, 130.06it/s]
+2026-07-30 01:19:04,920 | INFO     | __main__ | Mean Reward: 6.4139
+2026-07-30 01:19:04,921 | INFO     | __main__ | Saved results to /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs/pythia-70m/tinystories/eval_sft/evaluation_results.json
+2026-07-30 01:19:04,921 | INFO     | __main__ | Saved sample generations to /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs/pythia-70m/tinystories/eval_sft/sample_generations.json
+2026-07-30 01:19:04,921 | INFO     | __main__ | 
+============================================================
+2026-07-30 01:19:04,921 | INFO     | __main__ | EVALUATION SUMMARY
+2026-07-30 01:19:04,921 | INFO     | __main__ | ============================================================
+2026-07-30 01:19:04,922 | INFO     | __main__ | perplexity: 53.6618
+2026-07-30 01:19:04,922 | INFO     | __main__ | distinct_1: 0.0481
+2026-07-30 01:19:04,922 | INFO     | __main__ | distinct_2: 0.1154
+2026-07-30 01:19:04,922 | INFO     | __main__ | distinct_3: 0.1583
+2026-07-30 01:19:04,922 | INFO     | __main__ | avg_response_length: 98.7600
+2026-07-30 01:19:04,922 | INFO     | __main__ | bleu: 0.0192
+2026-07-30 01:19:04,922 | INFO     | __main__ | bleu_1: 0.2287
+2026-07-30 01:19:04,922 | INFO     | __main__ | bleu_2: 0.0495
+2026-07-30 01:19:04,922 | INFO     | __main__ | bleu_4: 0.0035
+2026-07-30 01:19:04,922 | INFO     | __main__ | rouge1_f1: 0.1590
+2026-07-30 01:19:04,922 | INFO     | __main__ | rouge2_f1: 0.0254
+2026-07-30 01:19:04,922 | INFO     | __main__ | rougeL_f1: 0.1348
+2026-07-30 01:19:04,922 | INFO     | __main__ | reward_mean: 6.4139
+2026-07-30 01:19:04,922 | INFO     | __main__ | reward_std: 1.4934
+2026-07-30 01:19:04,922 | INFO     | __main__ | reward_min: 0.8828
+2026-07-30 01:19:04,922 | INFO     | __main__ | reward_max: 10.9375
+2026-07-30 01:19:04,922 | INFO     | __main__ | ============================================================
+[W730 01:19:05.774863071 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

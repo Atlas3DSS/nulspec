@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export GPU_NAME="${GPU_NAME:-pro6000}"
+
+exec "$HOME/dev_genius/engines/llama.cpp/scripts/remote_stop_qwen36_gpu.sh"

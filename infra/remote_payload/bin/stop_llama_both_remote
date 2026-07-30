@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+"$HOME/bin/stop_llama_3090"
+"$HOME/bin/stop_llama_pro6000"

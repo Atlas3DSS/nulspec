@@ -1,0 +1,79 @@
+{
+  "scope_confirmation": "qwen_records_only",
+  "overall_assessment": "fail",
+  "reviewer_reliability": 0.32,
+  "findings": [
+    {
+      "pair_id": "b9b01fa50339dc0f10a2cd3c",
+      "label": "corrected-410m",
+      "severity": "critical",
+      "issue": "Qwen chose raw A in both reversed orientations, producing opposite mapped winners.",
+      "rationale": "The rationales alternately condemn raw B as repetitive/incoherent and empty. Since the candidates were swapped, both judgments cannot consistently describe the same candidate ordering.",
+      "recommended_action": "Exclude or separately flag this pair-level review as orientation-unstable."
+    },
+    {
+      "pair_id": "0b346d098a49cc126aaa865a",
+      "label": "corrected-410m",
+      "severity": "critical",
+      "issue": "Qwen chose raw A in both orientations, reversing the mapped preference.",
+      "rationale": "Both rationales favor whichever response occupies position A, indicating direct first-position sensitivity.",
+      "recommended_action": "Flag as unreliable and investigate positional bias in the reviewer prompt or decoding."
+    },
+    {
+      "pair_id": "7a9935ab59dacc1f8f93fcb9",
+      "label": "corrected-160m",
+      "severity": "critical",
+      "issue": "Raw A wins after the candidates are swapped.",
+      "rationale": "The mapped winner changes from PPO to SFT, while each rationale claims the currently presented A is more coherent or less repetitive.",
+      "recommended_action": "Treat the review as orientation-inconsistent."
+    },
+    {
+      "pair_id": "d7300b7b6413a48a66ec05a9",
+      "label": "corrected-160m",
+      "severity": "critical",
+      "issue": "Raw A wins in both orientations despite reversal of candidate order.",
+      "rationale": "Both rationales use nearly the same comparative claim—slightly less repetitive—to justify opposite mapped winners.",
+      "recommended_action": "Flag as strong evidence of first-position bias."
+    },
+    {
+      "pair_id": "d3de7c9bdfd0294dc099c62b",
+      "label": "corrected-70m",
+      "severity": "warning",
+      "issue": "The assessment changes from both candidates being incoherent to a clear preference for SFT after reversal.",
+      "rationale": "The two rationales make materially incompatible quality distinctions for the same candidate pair.",
+      "recommended_action": "Mark the pair as orientation-unstable."
+    },
+    {
+      "pair_id": "183138ca4386dc960b4d16d4",
+      "label": "exact-70m",
+      "severity": "warning",
+      "issue": "The mapped result changes from tie to PPO across orientations.",
+      "rationale": "One review says both fail meaningfully; the reversed review says PPO is coherent while SFT is repetitive and nonsensical.",
+      "recommended_action": "Do not treat this review pair as a stable comparative judgment."
+    },
+    {
+      "pair_id": "3f2baff5840b23ea8260d19f",
+      "label": "corrected-410m",
+      "severity": "warning",
+      "issue": "The result changes from PPO to tie after swapping positions.",
+      "rationale": "Qwen first distinguishes PPO as coherent and age-appropriate, then characterizes both candidates as incoherent and age-inappropriate.",
+      "recommended_action": "Flag the judgment and its age-appropriateness rationale as orientation-sensitive."
+    },
+    {
+      "pair_id": "ac070967be598d2fc0cee1e6",
+      "label": "corrected-160m",
+      "severity": "warning",
+      "issue": "The result changes from PPO to tie after reversal.",
+      "rationale": "The first rationale credits PPO with story actions, whereas the second says both candidates fail as continuations.",
+      "recommended_action": "Mark as inconsistent and avoid relying on its stated distinction."
+    }
+  ],
+  "systemic_patterns": [
+    "The sampled packet contains 18 position-inconsistent pairs and only two routine calibration pairs; the enriched selection therefore demonstrates failure modes but is not a random estimate of their frequency.",
+    "Across the six non-calibration populations, Qwen selected raw A 514 times versus raw B 325 times, showing aggregate first-position bias among non-tie decisions.",
+    "Population position-inconsistency is substantial and model-dependent: 14–19 pairs in several 200-pair groups, 39 for corrected-160m, and 52–53 for the 410m groups.",
+    "Many inconsistent records follow a repeated template: one orientation declares both outputs incoherent, while the reversed orientation calls raw A less repetitive or more coherent. This suggests unstable thresholding combined with A-position preference.",
+    "The two calibration pairs are internally consistent after mapped-winner conversion, so opposite raw winners alone are not a defect; the flagged cases are based on disagreement in mapped outcomes and rationales."
+  ],
+  "summary": "Qwen’s review process is not reliably invariant to A/B order. The records show repeated mapped-winner reversals, strong raw-A preference, and contradictory tie-versus-preference rationales. These are audit flags only and do not establish which unseen candidate was actually better."
+}

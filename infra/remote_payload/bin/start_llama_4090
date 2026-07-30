@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "start_llama_4090 is now a compatibility alias for start_llama_pro6000" >&2
+exec "$HOME/bin/start_llama_pro6000" "$@"

@@ -1,0 +1,53 @@
+name: Experiment run
+description: Register a reproduction or extension run before compute begins.
+title: "[run] "
+labels: ["experiment"]
+body:
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options:
+        - Artifact verification
+        - Released-code reproduction
+        - Manuscript-method reproduction
+        - Extension
+    validations:
+      required: true
+  - type: input
+    id: protocol
+    attributes:
+      label: Protocol tag or commit
+      placeholder: 2607.25091-protocol-v1.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: arms
+    attributes:
+      label: Registered arms
+      description: List exact arm IDs, seeds, and intended hardware.
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Launch commands
+    validations:
+      required: true
+  - type: textarea
+    id: stopping
+    attributes:
+      label: Stopping and exclusion rules
+    validations:
+      required: true
+  - type: checkboxes
+    id: safeguards
+    attributes:
+      label: Safeguards
+      options:
+        - label: Source, data, and environment revisions are pinned.
+          required: true
+        - label: Existing run directories will not be overwritten.
+          required: true
+        - label: Dev-box resource guards protect Palworld.
+          required: true

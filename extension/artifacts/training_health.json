@@ -1,0 +1,93 @@
+{
+  "protocol": {
+    "attempted_updates": "healthy updates plus rolled-back updates",
+    "warning_counts": "regex counts over raw PPO logs",
+    "strict_integrity_pass": "target completed, zero corruptions, zero ratio-threshold warnings, and negative-KL warnings at most 1% of attempts"
+  },
+  "arms": {
+    "exact-70m": {
+      "healthy_updates": 45,
+      "attempted_updates": 50,
+      "last_healthy_progress_number": 45,
+      "corrupted_updates_rolled_back": 5,
+      "ratio_threshold_warnings": 24,
+      "negative_kl_warnings": 43,
+      "optimizer_resets": 0,
+      "rollback_stop": true,
+      "kl_early_stop": false,
+      "completed_target": false,
+      "strict_integrity_pass": false,
+      "log": "paper_repro/logs/pythia-70m_tinystories_ppo.log"
+    },
+    "corrected-70m": {
+      "healthy_updates": 249,
+      "attempted_updates": 250,
+      "last_healthy_progress_number": 250,
+      "corrupted_updates_rolled_back": 1,
+      "ratio_threshold_warnings": 146,
+      "negative_kl_warnings": 178,
+      "optimizer_resets": 1,
+      "rollback_stop": false,
+      "kl_early_stop": false,
+      "completed_target": true,
+      "strict_integrity_pass": false,
+      "log": "paper_repro/logs_corrected/pythia-70m_tinystories_ppo.log"
+    },
+    "exact-160m": {
+      "healthy_updates": 4,
+      "attempted_updates": 9,
+      "last_healthy_progress_number": 4,
+      "corrupted_updates_rolled_back": 5,
+      "ratio_threshold_warnings": 8,
+      "negative_kl_warnings": 1,
+      "optimizer_resets": 0,
+      "rollback_stop": true,
+      "kl_early_stop": false,
+      "completed_target": false,
+      "strict_integrity_pass": false,
+      "log": "extension/matrix_runs/seed-42/logs-exact/pythia-160m_tinystories_ppo.log"
+    },
+    "corrected-160m": {
+      "healthy_updates": 80,
+      "attempted_updates": 85,
+      "last_healthy_progress_number": 84,
+      "corrupted_updates_rolled_back": 5,
+      "ratio_threshold_warnings": 80,
+      "negative_kl_warnings": 57,
+      "optimizer_resets": 5,
+      "rollback_stop": true,
+      "kl_early_stop": false,
+      "completed_target": false,
+      "strict_integrity_pass": false,
+      "log": "extension/matrix_runs/seed-42/logs-paper-faithful/pythia-160m_tinystories_ppo.log"
+    },
+    "exact-410m": {
+      "healthy_updates": 250,
+      "attempted_updates": 250,
+      "last_healthy_progress_number": 250,
+      "corrupted_updates_rolled_back": 0,
+      "ratio_threshold_warnings": 0,
+      "negative_kl_warnings": 0,
+      "optimizer_resets": 0,
+      "rollback_stop": false,
+      "kl_early_stop": false,
+      "completed_target": true,
+      "strict_integrity_pass": true,
+      "log": "paper_repro/logs/pythia-410m_tinystories_ppo.log"
+    },
+    "corrected-410m": {
+      "healthy_updates": 250,
+      "attempted_updates": 250,
+      "last_healthy_progress_number": 250,
+      "corrupted_updates_rolled_back": 0,
+      "ratio_threshold_warnings": 0,
+      "negative_kl_warnings": 1,
+      "optimizer_resets": 0,
+      "rollback_stop": false,
+      "kl_early_stop": false,
+      "completed_target": true,
+      "strict_integrity_pass": true,
+      "log": "paper_repro/logs_corrected/pythia-410m_tinystories_ppo.log"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+"$HOME/bin/start_llama_3090"
+"$HOME/bin/start_llama_pro6000"
+
+echo "3090: http://$(hostname -I | awk '{print $1}'):8080"
+echo "RTX PRO 6000: http://$(hostname -I | awk '{print $1}'):8081"

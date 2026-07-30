@@ -1,0 +1,260 @@
+{
+  "protocol": {
+    "features_measured_before_ppo": true,
+    "reward_scoring": "single-example float32",
+    "numeric_audit_examples": 8,
+    "numeric_audit_batch_sizes": [
+      2,
+      4,
+      8
+    ]
+  },
+  "arms": {
+    "exact-70m": {
+      "sft_reference_text_perplexity": 53.66184616088867,
+      "preference_pairs": 249,
+      "reward_accuracy": 0.963855421686747,
+      "mean_chosen_minus_rejected_margin": 3.5554445795266023,
+      "median_margin": 4.003111839294434,
+      "margin_p10": 0.3963544845581055,
+      "mean_bradley_terry_chosen_probability": 0.9018948033885346,
+      "brier_to_chosen": 0.03944277605550367,
+      "score_separation_cohens_d": 1.8159057447012847,
+      "batch_shape_invariance": {
+        "float32": {
+          "2": {
+            "max_absolute_error": 0.0005903244018554688,
+            "mean_absolute_error": 0.00026166439056396484
+          },
+          "4": {
+            "max_absolute_error": 0.0007381439208984375,
+            "mean_absolute_error": 0.00034165382385253906
+          },
+          "8": {
+            "max_absolute_error": 0.0015125274658203125,
+            "mean_absolute_error": 0.0005350112915039062
+          }
+        },
+        "bfloat16": {
+          "2": {
+            "max_absolute_error": 1.3125,
+            "mean_absolute_error": 0.5
+          },
+          "4": {
+            "max_absolute_error": 1.5625,
+            "mean_absolute_error": 0.625
+          },
+          "8": {
+            "max_absolute_error": 1.15625,
+            "mean_absolute_error": 0.40625
+          }
+        }
+      }
+    },
+    "corrected-70m": {
+      "sft_reference_text_perplexity": 53.66184616088867,
+      "preference_pairs": 249,
+      "reward_accuracy": 0.8995983935742972,
+      "mean_chosen_minus_rejected_margin": 7.9474978073533755,
+      "median_margin": 9.10687255859375,
+      "margin_p10": 0.047797203063965066,
+      "mean_bradley_terry_chosen_probability": 0.8957868307264718,
+      "brier_to_chosen": 0.07319911214691119,
+      "score_separation_cohens_d": 1.5260226118472198,
+      "batch_shape_invariance": {
+        "float32": {
+          "2": {
+            "max_absolute_error": 0.0029754638671875,
+            "mean_absolute_error": 0.0006927847862243652
+          },
+          "4": {
+            "max_absolute_error": 0.0005712509155273438,
+            "mean_absolute_error": 0.000319063663482666
+          },
+          "8": {
+            "max_absolute_error": 0.0013937950134277344,
+            "mean_absolute_error": 0.0006793439388275146
+          }
+        },
+        "bfloat16": {
+          "2": {
+            "max_absolute_error": 3.0,
+            "mean_absolute_error": 1.472900390625
+          },
+          "4": {
+            "max_absolute_error": 3.375,
+            "mean_absolute_error": 1.4990234375
+          },
+          "8": {
+            "max_absolute_error": 3.0,
+            "mean_absolute_error": 1.371337890625
+          }
+        }
+      }
+    },
+    "exact-160m": {
+      "sft_reference_text_perplexity": 12.942307472229004,
+      "preference_pairs": 249,
+      "reward_accuracy": 0.963855421686747,
+      "mean_chosen_minus_rejected_margin": 5.279873835513869,
+      "median_margin": 5.970858573913574,
+      "margin_p10": 1.152269983291626,
+      "mean_bradley_terry_chosen_probability": 0.9373717318383544,
+      "brier_to_chosen": 0.02849679064718955,
+      "score_separation_cohens_d": 2.2427737676566935,
+      "batch_shape_invariance": {
+        "float32": {
+          "2": {
+            "max_absolute_error": 0.0002422332763671875,
+            "mean_absolute_error": 7.158517837524414e-05
+          },
+          "4": {
+            "max_absolute_error": 0.000164031982421875,
+            "mean_absolute_error": 6.669759750366211e-05
+          },
+          "8": {
+            "max_absolute_error": 0.00015926361083984375,
+            "mean_absolute_error": 6.443262100219727e-05
+          }
+        },
+        "bfloat16": {
+          "2": {
+            "max_absolute_error": 0.59375,
+            "mean_absolute_error": 0.2578125
+          },
+          "4": {
+            "max_absolute_error": 0.5,
+            "mean_absolute_error": 0.28125
+          },
+          "8": {
+            "max_absolute_error": 0.875,
+            "mean_absolute_error": 0.3359375
+          }
+        }
+      }
+    },
+    "corrected-160m": {
+      "sft_reference_text_perplexity": 12.942307472229004,
+      "preference_pairs": 249,
+      "reward_accuracy": 0.9799196787148594,
+      "mean_chosen_minus_rejected_margin": 7.495221666303505,
+      "median_margin": 8.360508918762207,
+      "margin_p10": 1.716529941558838,
+      "mean_bradley_terry_chosen_probability": 0.9530701763828995,
+      "brier_to_chosen": 0.02118348462784316,
+      "score_separation_cohens_d": 2.2190657866673065,
+      "batch_shape_invariance": {
+        "float32": {
+          "2": {
+            "max_absolute_error": 0.000396728515625,
+            "mean_absolute_error": 0.00014953315258026123
+          },
+          "4": {
+            "max_absolute_error": 0.0002627372741699219,
+            "mean_absolute_error": 7.46995210647583e-05
+          },
+          "8": {
+            "max_absolute_error": 0.0003724098205566406,
+            "mean_absolute_error": 0.0001720041036605835
+          }
+        },
+        "bfloat16": {
+          "2": {
+            "max_absolute_error": 1.46875,
+            "mean_absolute_error": 0.650390625
+          },
+          "4": {
+            "max_absolute_error": 0.71875,
+            "mean_absolute_error": 0.4658203125
+          },
+          "8": {
+            "max_absolute_error": 0.71875,
+            "mean_absolute_error": 0.404296875
+          }
+        }
+      }
+    },
+    "exact-410m": {
+      "sft_reference_text_perplexity": 6.4554033279418945,
+      "preference_pairs": 249,
+      "reward_accuracy": 0.9839357429718876,
+      "mean_chosen_minus_rejected_margin": 10.498694643079038,
+      "median_margin": 11.579922914505005,
+      "margin_p10": 3.2296072244644165,
+      "mean_bradley_terry_chosen_probability": 0.9725870286721249,
+      "brier_to_chosen": 0.011986194850667452,
+      "score_separation_cohens_d": 2.5565083161231854,
+      "batch_shape_invariance": {
+        "float32": {
+          "2": {
+            "max_absolute_error": 0.0005724430084228516,
+            "mean_absolute_error": 0.00018431246280670166
+          },
+          "4": {
+            "max_absolute_error": 0.0006955862045288086,
+            "mean_absolute_error": 0.00019368529319763184
+          },
+          "8": {
+            "max_absolute_error": 0.0005965232849121094,
+            "mean_absolute_error": 0.0002361685037612915
+          }
+        },
+        "bfloat16": {
+          "2": {
+            "max_absolute_error": 1.390625,
+            "mean_absolute_error": 0.391357421875
+          },
+          "4": {
+            "max_absolute_error": 0.78125,
+            "mean_absolute_error": 0.36669921875
+          },
+          "8": {
+            "max_absolute_error": 0.5625,
+            "mean_absolute_error": 0.29150390625
+          }
+        }
+      }
+    },
+    "corrected-410m": {
+      "sft_reference_text_perplexity": 6.4554033279418945,
+      "preference_pairs": 249,
+      "reward_accuracy": 0.9879518072289156,
+      "mean_chosen_minus_rejected_margin": 11.150992779248211,
+      "median_margin": 11.77574110031128,
+      "margin_p10": 5.382987928390503,
+      "mean_bradley_terry_chosen_probability": 0.9818300357722007,
+      "brier_to_chosen": 0.011104872825297858,
+      "score_separation_cohens_d": 2.570413350296634,
+      "batch_shape_invariance": {
+        "float32": {
+          "2": {
+            "max_absolute_error": 0.0004916191101074219,
+            "mean_absolute_error": 0.00013433396816253662
+          },
+          "4": {
+            "max_absolute_error": 0.0004658699035644531,
+            "mean_absolute_error": 0.00016464293003082275
+          },
+          "8": {
+            "max_absolute_error": 0.0008306503295898438,
+            "mean_absolute_error": 0.0001952648162841797
+          }
+        },
+        "bfloat16": {
+          "2": {
+            "max_absolute_error": 1.169921875,
+            "mean_absolute_error": 0.485107421875
+          },
+          "4": {
+            "max_absolute_error": 0.623046875,
+            "mean_absolute_error": 0.334228515625
+          },
+          "8": {
+            "max_absolute_error": 0.650390625,
+            "mean_absolute_error": 0.435791015625
+          }
+        }
+      }
+    }
+  }
+}

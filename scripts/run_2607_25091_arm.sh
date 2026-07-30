@@ -70,6 +70,9 @@ if [[ "$actual_gpu" != *"$EXPECTED_GPU"* ]]; then
   exit 2
 fi
 
+"$PYTHON_BIN" scripts/check_paper_environment.py \
+  --upstream "$UPSTREAM"
+
 available_kib="$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)"
 required_kib="$((MIN_AVAILABLE_GIB * 1024 * 1024))"
 if (( available_kib < required_kib )); then
@@ -95,6 +98,25 @@ if [[ "$(hostname)" == "wtatum84" ]]; then
     echo "another dev-box experiment is active; refusing concurrent launch" >&2
     exit 2
   fi
+fi
+
+if [[ "${PREFLIGHT_ONLY:-0}" == "1" ]]; then
+  jq -n \
+    --arg arm_id "$ARM_ID" \
+    --arg protocol "$PROTOCOL_VERSION" \
+    --arg gpu "$actual_gpu" \
+    --arg python "$PYTHON_BIN" \
+    --argjson available_memory_kib "$available_kib" \
+    '{
+      status: "preflight-passed",
+      arm_id: $arm_id,
+      protocol_version: $protocol,
+      gpu: $gpu,
+      python: $python,
+      available_memory_kib: $available_memory_kib,
+      training_started: false
+    }'
+  exit 0
 fi
 
 git_short="$(git rev-parse --short=12 HEAD)"

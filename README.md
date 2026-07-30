@@ -89,6 +89,15 @@ The runner:
 
 Track M refuses to start until the matching Track R arm has completed.
 
+Run the complete source/data/environment/GPU/resource preflight without
+creating an attempt directory or starting training:
+
+```bash
+PREFLIGHT_ONLY=1 \
+  bash scripts/run_guarded_2607_25091_arm.sh \
+  R-pythia-70m-tinystories-s42 0 "RTX 4090"
+```
+
 ## Existing pilot evidence
 
 The original overnight work remains available for audit:

@@ -57,12 +57,14 @@ export function ExtensionVoteForm({
 
       if (!response.ok) {
         if (response.status === 400 || response.status === 404 || response.status === 422) {
-          throw new Error("That extension option is no longer available. Refresh and try again.");
+          throw new Error("The selected extension option is no longer available. Refresh and try again.");
         }
         if (response.status === 429) {
-          throw new Error("A vote from this network was recently recorded. Try again later.");
+          throw new Error(
+            "A vote associated with this IP address was recently recorded. Try again later.",
+          );
         }
-        throw new Error("The vote relay is unavailable. Try again soon.");
+        throw new Error("Vote submission is temporarily unavailable. Try again.");
       }
 
       form.reset();
@@ -77,7 +79,7 @@ export function ExtensionVoteForm({
         message:
           error instanceof Error && error.name !== "AbortError"
             ? error.message
-            : "The vote relay timed out. Try again soon.",
+            : "The vote submission timed out. Try again.",
       });
     } finally {
       window.clearTimeout(timeout);
@@ -129,7 +131,7 @@ export function ExtensionVoteForm({
           disabled={submission.phase === "sending"}
           type="submit"
         >
-          {submission.phase === "sending" ? "Relaying…" : callToAction.button_label}
+          {submission.phase === "sending" ? "Submitting…" : callToAction.button_label}
         </button>
         <p
           className={`extension-vote__status extension-vote__status--${submission.phase}`}
@@ -141,7 +143,7 @@ export function ExtensionVoteForm({
               : `Vote recorded. Reference ${submission.reference}.`)}
           {submission.phase === "error" && submission.message}
           {(submission.phase === "idle" || submission.phase === "sending") &&
-            "No account or email. Your network address is used transiently for abuse prevention and is not sent to Discord."}
+            "This form does not require an account or email address. The service processes your IP address for rate limiting and does not send it to Discord."}
         </p>
       </div>
     </form>

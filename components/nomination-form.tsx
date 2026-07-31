@@ -56,15 +56,15 @@ export function NominationForm() {
       if (!response.ok) {
         if (response.status === 400 || response.status === 422) {
           throw new Error(
-            "Use a valid email and a full arxiv.org abstract or PDF link.",
+            "Use a valid email address and a complete arxiv.org abstract or PDF URL.",
           );
         }
         if (response.status === 429) {
           throw new Error(
-            "We have received several nominations from this address. Try again later.",
+            "The submission limit for this email address or IP address has been reached. Try again later.",
           );
         }
-        throw new Error("Submission failed. Try again soon.");
+        throw new Error("Submission failed. Try again.");
       }
 
       form.reset();
@@ -78,7 +78,7 @@ export function NominationForm() {
         message:
           error instanceof Error && error.name !== "AbortError"
             ? error.message
-            : "The relay timed out. Try again soon.",
+            : "The submission timed out. Try again.",
       });
     } finally {
       window.clearTimeout(timeout);
@@ -88,8 +88,8 @@ export function NominationForm() {
   return (
     <form className="nomination-form" onSubmit={handleSubmit}>
       <div className="nomination-form__topline">
-        <span>Paper intake</span>
-        <span>ARXIV ONLY</span>
+        <span>Paper nomination</span>
+        <span>ARXIV URL REQUIRED</span>
       </div>
 
       <div className="nomination-form__field">
@@ -105,8 +105,8 @@ export function NominationForm() {
           type="email"
         />
         <p>
-          If we publish this replication, we will email the result once. No
-          marketing.
+          If we complete a replication of this paper, we may send one email
+          with the result. We do not send marketing email.
         </p>
       </div>
 
@@ -142,7 +142,7 @@ export function NominationForm() {
         disabled={submission.phase === "sending"}
         type="submit"
       >
-        {submission.phase === "sending" ? "Relaying…" : "Nominate this paper"}
+        {submission.phase === "sending" ? "Submitting…" : "Submit nomination"}
       </button>
 
       <p
@@ -150,10 +150,10 @@ export function NominationForm() {
         role="status"
       >
         {submission.phase === "success" &&
-          `Received. Reference ${submission.reference}.`}
+          `Nomination received. Reference: ${submission.reference}.`}
         {submission.phase === "error" && submission.message}
         {(submission.phase === "idle" || submission.phase === "sending") &&
-          "A nomination is not a promise to replicate or reply."}
+          "Submission does not guarantee that NULSPEC will replicate the paper or respond."}
       </p>
     </form>
   );

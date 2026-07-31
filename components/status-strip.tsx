@@ -31,7 +31,7 @@ export function StatusStrip({ study }: { study: StudyDocument }) {
             {classificationLabel(study.verdict.classification)}
           </span>
         </p>
-        <Link href={`/studies/${study.study_id}`}>Open result →</Link>
+        <Link href={`/studies/${study.study_id}`}>View study →</Link>
       </div>
     </div>
   );

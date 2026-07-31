@@ -114,11 +114,14 @@ function ArmIntervalPlot({ arm }: { arm: StudyArm }) {
     <figure className="arm-interval-plot">
       <div className="arm-interval-plot__header">
         <div>
-          <p className="section-kicker">Conditional uncertainty plot</p>
+          <p className="section-kicker">Conditional interval comparison</p>
           <h3 id={"interval-plot-" + arm.arm_id}>
-            See the spread before reading the decimals.
+            Reward-difference estimates and conditional 95% intervals
           </h3>
-          <p>Longer whiskers mean a wider supplied conditional interval.</p>
+          <p>
+            Both estimates use the same horizontal scale; whisker length represents
+            interval width.
+          </p>
         </div>
         <div className="arm-interval-plot__legend" aria-hidden="true">
           <span><i className="is-interval" />95% interval</span>
@@ -174,9 +177,11 @@ function ArmIntervalPlot({ arm }: { arm: StudyArm }) {
         })}
       </div>
       <figcaption>
-        Points are the supplied endpoints; whiskers are their supplied conditional
-        95% intervals. The dashed ice line marks the published delta. This does not
-        estimate training-to-training variance.
+        The circle and square mark the release-sampled and paired-deterministic
+        estimates. Horizontal lines show their supplied conditional 95% intervals.
+        The dashed vertical line marks the published reward difference, and the solid
+        vertical line marks zero. These intervals do not estimate training-to-training
+        variance.
       </figcaption>
     </figure>
   );
@@ -297,8 +302,8 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
           <div className="shell study-section__grid">
             <div className="study-section__number">01</div>
             <div className="study-section__body">
-              <p className="section-kicker">Published versus rerun</p>
-              <h2>Numerical inclusion and direction are separate judgments.</h2>
+              <p className="section-kicker">Published and rerun estimates</p>
+              <h2>Interval inclusion and directional agreement are reported separately</h2>
               <div className="arm-metric-grid">
                 <article>
                   <span>Published reward Δ</span>
@@ -336,7 +341,7 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
                   <span>Directional assessment</span>
                   <strong>{directionLabels[arm.metrics.directional_assessment]}</strong>
                   <p>
-                    Published as{" "}
+                    The machine-readable arm record labels this result as{" "}
                     <code>{arm.metrics.directional_assessment}</code>; this arm-level
                     assessment does not replace the study verdict.
                   </p>
@@ -346,10 +351,10 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
               <div className="arm-paired-endpoint">
                 <div>
                   <p className="section-kicker">Independent paired endpoint</p>
-                  <h3>Deterministic comparison, reported independently.</h3>
+                  <h3>Independent deterministic paired comparison</h3>
                   <p>
-                    Its within-track Holm-adjusted p-value belongs to this paired
-                    endpoint, not to the sampled release endpoint above.
+                    The Holm-adjusted p-value is calculated for this paired endpoint
+                    within its track. It does not apply to the sampled release endpoint.
                   </p>
                 </div>
                 <dl>
@@ -385,7 +390,7 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
             <div className="study-section__number">02</div>
             <div className="study-section__body">
               <p className="section-kicker">Selected execution</p>
-              <h2>The terminal state and recovery flag stay visible.</h2>
+              <h2>Selected execution status and recovery use</h2>
               <dl className="arm-fact-list">
                 <div>
                   <dt>Selected outcome</dt>
@@ -413,13 +418,14 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
                 </div>
               </dl>
               <div className="arm-unavailable" id="attempts">
-                <span>ATTEMPT INDEX · NOT YET PUBLIC</span>
-                <h3>Deeper evidence is not yet public.</h3>
+                <span>DETAILED RUN RECORDS · NOT YET PUBLISHED</span>
+                <h3>Detailed attempt records are not yet public</h3>
                 <p>
-                  Attempt timelines, recovery parents, selection reasons, raw outputs,
-                  and per-attempt artifact URLs require the future sanitized{" "}
-                  <code>arm-evidence-index.json</code>. No missing history or URL is
-                  inferred on this page.
+                  The public release currently includes the selected arm result and
+                  study-level artifacts. It does not yet include attempt timelines,
+                  recovery lineage, selection reasons, raw outputs, or per-attempt
+                  artifact links. Those records require removal of
+                  infrastructure-specific data before publication.
                 </p>
               </div>
             </div>
@@ -431,7 +437,7 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
             <div className="study-section__number">03</div>
             <div className="study-section__body">
               <p className="section-kicker">Hardware and stack provenance</p>
-              <h2>Observed hardware, public aliases, explicit profile.</h2>
+              <h2>Observed hardware and software provenance</h2>
               <dl className="arm-fact-list">
                 <div>
                   <dt>GPU</dt>
@@ -471,8 +477,8 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
                 </div>
               </dl>
               <p className="study-note">
-                The public projection excludes device UUIDs, private paths, raw
-                hostnames, service identifiers, addresses, and credentials.
+                This page excludes device UUIDs, private paths, raw hostnames, service
+                identifiers, addresses, and credentials.
               </p>
             </div>
           </div>
@@ -486,11 +492,11 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
             <div className="study-section__number">04</div>
             <div className="study-section__body">
               <p className="section-kicker">Study-level evidence</p>
-              <h2>Hash-bound artifacts supporting this selected arm.</h2>
+              <h2>Study-level artifacts associated with this arm</h2>
               <p>
-                The current public projection joins this arm to the study bundle by its
-                exact <code>arm_id</code>. These are study-level artifacts; direct
-                per-attempt and raw-output links are not yet published.
+                The public release links this arm to the study bundle by its exact{" "}
+                <code>arm_id</code>. It currently provides study-level artifacts but
+                not per-attempt or raw-output links.
               </p>
               <div
                 className="arm-artifact-grid"
@@ -509,7 +515,7 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
             <div className="study-section__number">05</div>
             <div className="study-section__body">
               <p className="section-kicker">Interpretation limits</p>
-              <h2>This page narrows the evidence; it does not widen the claim.</h2>
+              <h2>Arm-level uncertainty and interpretation constraints</h2>
               <ul className="arm-limit-list">
                 <li>This arm contains one registered seed: {arm.seed}.</li>
                 <li>
@@ -523,8 +529,8 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
                   <strong>{studyClassification}</strong>.
                 </li>
                 <li>
-                  Attempt histories and direct raw-output evidence remain unavailable
-                  until a sanitized evidence index is published.
+                  The public release does not yet include attempt timelines or direct
+                  raw-output links.
                 </li>
               </ul>
 

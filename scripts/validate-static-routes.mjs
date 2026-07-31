@@ -35,7 +35,7 @@ for (const file of (await readdir(publicationsDirectory)).sort()) {
     const html = await readFile(page, "utf8");
     if (
       !html.includes(arm.arm_id) ||
-      !html.includes("Deeper evidence is not yet public")
+      !html.includes("Detailed attempt records are not yet public")
     ) {
       throw new Error("arm page does not identify its bound evidence: " + route);
     }

@@ -20,6 +20,8 @@ obtain a preferred result.
 9. Apply the
    [lab repository scope and hygiene policy](docs/REPOSITORY_SCOPE_POLICY.md)
    before publication.
+10. Apply the [public editorial style](docs/EDITORIAL_STYLE.md) to website copy,
+    metadata, accessibility labels, form states, and error messages.
 
 ## Pull requests
 

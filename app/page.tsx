@@ -16,28 +16,28 @@ import {
 const protocolSteps = [
   {
     number: "01",
-    title: "Freeze the specification",
-    text: "The protocol, comparison rules, and exclusions enter Git before the first full-matrix run.",
+    title: "Register the protocol",
+    text: "The protocol, comparison rules, decision criteria, and exclusions are committed before full-matrix execution begins.",
   },
   {
     number: "02",
-    title: "Reproduce before extending",
-    text: "Released code and manuscript-faithful interpretations stay separate. New ideas cannot rewrite the primary result.",
+    title: "Separate replication from extension",
+    text: "Released-code and manuscript-based reproductions are reported separately from new experiments. Extensions cannot alter the primary result.",
   },
   {
     number: "03",
-    title: "Number every deviation",
-    text: "Hardware, stack, and implementation substitutions get an ID, a reason, and an impact control.",
+    title: "Record material deviations",
+    text: "Hardware, software, and implementation substitutions receive an identifier, justification, and control for their effect on interpretation.",
   },
   {
     number: "04",
-    title: "Publish the miss",
-    text: "Failures, null results, and irreproducible recipes receive the same artifact trail as a match.",
+    title: "Report every outcome",
+    text: "Confirming, contradictory, null, failed, and inconclusive outcomes have the same evidence requirements.",
   },
   {
     number: "05",
-    title: "Make rerunning cheaper",
-    text: "Commands, digests, checkpoints, and analysis code are preserved so the next person starts ahead of us.",
+    title: "Support independent reruns",
+    text: "Commands, dependency locks, digests, checkpoints, and analysis code are retained so other teams can reproduce or extend the work efficiently.",
   },
 ];
 
@@ -55,28 +55,31 @@ export default function Home() {
             <div className="hero__copy">
               <p className="hero__eyebrow">
                 <span className="live-dot" aria-hidden="true" />
-                Independent research replication
+                Independent study replication
               </p>
-              <h1>We rerun the experiments.</h1>
+              <h1>No acceleration without replication.</h1>
               <p className="hero__lede">
-                NULSPEC independently replicates published AI research on
-                hardware we control—and publishes the run ledger in public
-                before we know how it ends.
+                NULSPEC currently reproduces published AI and machine-learning
+                studies on hardware operated by our team. We publish the
+                protocol, deviations, selected execution records, and results so
+                researchers and industry teams can evaluate findings and plan
+                further work more quickly.
               </p>
               <div className="button-row">
                 <a className="button button--primary" href={NOMINATE_URL}>
                   Nominate a paper
                 </a>
                 <a className="button button--secondary" href={KOFI_URL}>
-                  Fund GPU-hours
+                  Support replication work
                 </a>
               </div>
               <p className="hero__microcopy">
-                No pay-to-confirm. No hidden reruns. No success-only drawer.
+                Funding does not influence paper selection, protocols,
+                analysis, or verdicts.
               </p>
             </div>
 
-            <aside className="apparatus" aria-label="Current study apparatus">
+            <aside className="apparatus" aria-label="Current study summary">
               <div className="apparatus__topline">
                 <span>STUDY {study.study_id}</span>
                 <span>REPORTED</span>
@@ -111,7 +114,7 @@ export default function Home() {
                 ))}
               </div>
               <Link href={`/studies/${study.study_id}`}>
-                Inspect Study {study.study_id} →
+                View Study {study.study_id} →
               </Link>
             </aside>
           </div>
@@ -119,22 +122,30 @@ export default function Home() {
 
         <section className="statement" id="about">
           <div className="shell statement__grid">
-            <p className="section-kicker">What this is</p>
+            <p className="section-kicker">Purpose</p>
             <div>
               <h2>
-                Independent replication, done by people curious enough to
-                check.
+                We identify which published findings hold, fail, or remain
+                uncertain.
               </h2>
               <p>
-                NULSPEC is a small team of enthusiasts and{" "}
-                <strong>accelerationalists</strong>. We want the field to move
-                fast, and we think the fastest route runs through checking the
-                work.
+                NULSPEC is an international team of independent researchers
+                and <strong>accelerationalists</strong> working across multiple
+                countries. Our current program focuses on AI and machine
+                learning because compute is the experimental capacity we
+                operate directly. Each study publishes the evidence required to
+                assess its result.
               </p>
               <p>
-                We reproduce recent papers on our own machines, freeze the
-                protocol before the first run, and publish the ledger whether
-                or not the result cooperates.
+                The long-term objective is independent replication across
+                research fields, expanding only when the relevant expertise,
+                equipment, and funding are available. To reduce the replication
+                crisis, we test published findings before they shape new
+                research, products, benchmarks, or policy. We perform the
+                labor-intensive verification work early: register the protocol,
+                reproduce the study, document deviations, and publish every
+                outcome. This reduces duplicated effort and helps researchers
+                and industry teams decide what to test or build on next.
               </p>
             </div>
           </div>
@@ -143,11 +154,12 @@ export default function Home() {
         <section className="method-section" id="method">
           <div className="shell">
             <div className="section-heading">
-              <p className="section-kicker">Our operating protocol</p>
-              <h2>The artifact is the argument.</h2>
+              <p className="section-kicker">Replication workflow</p>
+              <h2>How each study is specified, executed, and reported</h2>
               <p>
-                A paper is not a vibe. A replication should leave enough
-                evidence for a stranger to disagree productively.
+                Each publication includes a registered protocol, execution
+                status for the selected runs, documented deviations, analysis
+                code, and a verdict tied to the available evidence.
               </p>
             </div>
             <ol className="protocol-list">
@@ -194,15 +206,21 @@ export default function Home() {
           <div className="shell principles__grid">
             <blockquote>
               <span aria-hidden="true">∅</span>
-              <p>A null result is a result.</p>
+              <p>Null and inconclusive outcomes are retained and published.</p>
             </blockquote>
             <blockquote>
               <span aria-hidden="true">D-</span>
-              <p>A deviation hidden is a claim faked.</p>
+              <p>
+                Material deviations are documented with their effect on
+                interpretation.
+              </p>
             </blockquote>
             <blockquote>
               <span aria-hidden="true">git</span>
-              <p>If you cannot rerun it, you are reading marketing.</p>
+              <p>
+                Commands, revisions, and artifact hashes support independent
+                verification.
+              </p>
             </blockquote>
           </div>
         </section>
@@ -210,18 +228,20 @@ export default function Home() {
         <section className="request-section" id="nominate">
           <div className="shell request-section__grid">
             <div>
-              <p className="section-kicker">Put a claim on the bench</p>
-              <h2>Seen a result you want tested?</h2>
+              <p className="section-kicker">Paper nominations</p>
+              <h2>Nominate an arXiv paper for replication</h2>
               <p>
-                Nominate it. We choose papers we can honestly attempt on local
-                compute and a fixed budget. If we take yours on, the protocol
-                goes public before the first arm launches—and so does every
-                deviation we are forced to make.
+                We currently prioritize recent AI and machine-learning studies
+                that can be evaluated with the available hardware, data, and
+                compute budget. For accepted nominations, we publish the
+                protocol before execution and document every material
+                deviation.
               </p>
               <p className="request-section__privacy">
-                Two fields, no account. We retain the nomination in a private
-                Atlas staff channel and use your email only if we choose to
-                respond.
+                The form requires an email address and an arXiv URL.
+                Nominations are sent to a private Discord channel accessible to
+                Atlas staff. If we complete and publish a replication, we may
+                use the address to send one email with the result.
               </p>
             </div>
             <NominationForm />
@@ -230,16 +250,16 @@ export default function Home() {
 
         <section className="support-section">
           <div className="shell support-section__inner">
-            <p className="section-kicker">Keep the apparatus alive</p>
-            <h2>Support buys compute, not conclusions.</h2>
+            <p className="section-kicker">Support replication work</p>
+            <h2>Funding increases replication capacity</h2>
             <p>
-              Donations go to GPU-hours, storage, and time. They cannot touch a
-              verdict: protocols and decision rules are frozen before analysis.
-              If you want more papers checked, faster, buy the lab monkey a
-              little more runway.
+              Contributions fund compute time, storage, and research labor.
+              Funding does not affect protocols, analysis, or verdicts.
+              Additional resources allow the team to replicate more papers and
+              complete follow-up experiments sooner.
             </p>
             <a className="button button--secondary" href={KOFI_URL}>
-              Fund GPU-hours on Ko-fi
+              Support NULSPEC on Ko-fi
             </a>
           </div>
         </section>

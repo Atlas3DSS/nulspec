@@ -92,6 +92,32 @@ export interface ExtensionCallToAction {
   options: ExtensionOption[];
 }
 
+export interface EvidenceNavigation {
+  requested: true;
+  implementation_owner: "website_team";
+  route_contract: {
+    arm_detail: string;
+    comparison_fragment: "#comparison";
+    execution_fragment: "#execution";
+    provenance_fragment: "#provenance";
+    evidence_fragment: "#evidence";
+    future_attempts_fragment: "#attempts";
+  };
+  matrix_interaction: {
+    explicit_link_label: string;
+    accessibility_requirement: string;
+  };
+  arm_page_mvp: {
+    status: "implementable_from_current_publication_bundle";
+    comparison_rules: string[];
+  };
+  phase_two_evidence_index: {
+    status: "not_yet_public";
+    proposed_artifact: string;
+    frontend_behavior_until_available: string;
+  };
+}
+
 export interface PublicationBundle {
   schema_version: 1;
   publication_status: "ready";
@@ -142,6 +168,7 @@ export interface PublicationBundle {
     description: string;
     control: string;
   }>;
+  evidence_navigation: EvidenceNavigation;
   extension_call_to_action?: ExtensionCallToAction;
   frozen_primary_result?: {
     registered_arms: number;
@@ -231,6 +258,29 @@ export function getStudy(id: string) {
   return getStudies().find((item) => item.study_id === id);
 }
 
+export function getStudyArm(studyId: string, armId: string) {
+  const study = getStudy(studyId);
+  if (!study) return undefined;
+  const arm = study.arms.find((item) => item.arm_id === armId);
+  return arm ? { study, arm } : undefined;
+}
+
+export type ArmEvidenceFragment =
+  | ""
+  | "#comparison"
+  | "#execution"
+  | "#provenance"
+  | "#evidence"
+  | "#attempts";
+
+export function armEvidenceUrl(
+  studyId: string,
+  armId: string,
+  fragment: ArmEvidenceFragment = "",
+) {
+  return `/studies/${encodeURIComponent(studyId)}/arms/${encodeURIComponent(armId)}${fragment}`;
+}
+
 export function getLatestStudy() {
   const latest = getStudies()[0];
   if (!latest) throw new Error("NULSPEC has no published studies");
@@ -300,4 +350,9 @@ export function formatAsOf(value: string) {
 
 export function formatSigned(value: number) {
   return `${value >= 0 ? "+" : ""}${value.toFixed(4)}`;
+}
+
+export function formatPValue(value: number) {
+  if (value > 0 && value < 0.0001) return value.toExponential(2);
+  return value.toFixed(4);
 }

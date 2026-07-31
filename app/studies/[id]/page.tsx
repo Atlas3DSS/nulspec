@@ -30,6 +30,7 @@ const artifactLabels: Record<string, string> = {
   machine_analysis: "Machine-readable analysis",
   extension_roadmap: "Extension roadmap",
   website_handoff: "Website handoff contract",
+  frontend_handoff: "Arm evidence specification",
 };
 
 export function generateStaticParams() {

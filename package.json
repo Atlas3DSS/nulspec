@@ -7,13 +7,14 @@
     "dev": "next dev",
     "start": "next start",
     "build": "npm run validate:data && next build",
-    "build:static": "NULSPEC_STATIC_EXPORT=1 npm run build",
+    "build:static": "NULSPEC_STATIC_EXPORT=1 npm run build && npm run validate:routes",
     "build:sites": "npm run build:static && node scripts/build-sites.mjs",
     "build:cloudflare": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint app components lib --max-warnings=0",
     "validate:data": "node scripts/validate-site-data.mjs",
+    "validate:routes": "node scripts/validate-static-routes.mjs",
     "test:browser": "node scripts/capture-site.mjs"
   },
   "dependencies": {

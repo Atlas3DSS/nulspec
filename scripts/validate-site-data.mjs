@@ -26,7 +26,9 @@ const requiredArtifactRoles = new Set([
   "machine_analysis",
   "extension_roadmap",
   "website_handoff",
+  "frontend_handoff",
 ]);
+const armRouteComponent = /^[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*$/;
 const privateText = new RegExp(
   String.raw`(?:/` +
     String.raw`home/|/Users/|[A-Za-z]:\\Users\\|BEGIN [A-Z ]*PRIVATE KEY|` +
@@ -53,6 +55,7 @@ const validInterval = (value) =>
   finiteNumber(value[0]) &&
   finiteNumber(value[1]) &&
   value[0] <= value[1];
+const detailRoutes = new Set();
 
 const files = (await readdir(publicationsDirectory))
   .filter((name) => /^study-[0-9]{3,}\.json$/.test(name))
@@ -79,6 +82,27 @@ for (const file of files) {
   }
   if (!classifications.has(bundle.verdict?.classification)) {
     fail(studyId, "invalid study classification");
+  }
+
+  const navigation = bundle.evidence_navigation;
+  if (
+    !isObject(navigation) ||
+    navigation.requested !== true ||
+    navigation.implementation_owner !== "website_team" ||
+    navigation.route_contract?.arm_detail !==
+      "/studies/{study_id}/arms/{arm_id}" ||
+    navigation.route_contract?.comparison_fragment !== "#comparison" ||
+    navigation.route_contract?.execution_fragment !== "#execution" ||
+    navigation.route_contract?.provenance_fragment !== "#provenance" ||
+    navigation.route_contract?.evidence_fragment !== "#evidence" ||
+    navigation.route_contract?.future_attempts_fragment !== "#attempts" ||
+    navigation.matrix_interaction?.explicit_link_label !== "View evidence" ||
+    navigation.arm_page_mvp?.status !==
+      "implementable_from_current_publication_bundle" ||
+    navigation.arm_page_mvp?.available_source?.join_key !== "arm_id" ||
+    navigation.phase_two_evidence_index?.status !== "not_yet_public"
+  ) {
+    fail(studyId, "arm evidence navigation contract is missing or malformed");
   }
 
   const extension = bundle.extension_call_to_action;
@@ -125,6 +149,18 @@ for (const file of files) {
 
   const arms = bundle.arms;
   if (!Array.isArray(arms) || arms.length === 0) fail(studyId, "arms are missing");
+  for (const arm of arms) {
+    if (
+      !isObject(arm) ||
+      typeof arm.arm_id !== "string" ||
+      !armRouteComponent.test(arm.arm_id)
+    ) {
+      fail(
+        studyId,
+        "unsafe arm route component " + (arm?.arm_id ?? "unknown"),
+      );
+    }
+  }
   const armIds = new Set(arms.map((arm) => arm.arm_id));
   if (armIds.size !== arms.length) fail(studyId, "arm ids are not unique");
   const completion = bundle.completion;
@@ -154,6 +190,11 @@ for (const file of files) {
 
   const actualTrackCounts = new Map();
   for (const [index, arm] of arms.entries()) {
+    const detailRoute = "/studies/" + studyId + "/arms/" + arm.arm_id;
+    if (detailRoutes.has(detailRoute)) {
+      fail(studyId, "duplicate arm detail route " + detailRoute);
+    }
+    detailRoutes.add(detailRoute);
     if (arm.ordinal !== index + 1) fail(studyId, `non-contiguous ordinal at ${arm.arm_id}`);
     if (!terminalExecutions.has(arm.execution)) fail(studyId, `non-terminal arm ${arm.arm_id}`);
     if (arm.claim_ready !== true) fail(studyId, `non-claim-ready arm ${arm.arm_id}`);

@@ -1,4 +1,5 @@
 import {
+  armEvidenceUrl,
   formatAsOf,
   formatSigned,
   stateMeta,
@@ -115,6 +116,7 @@ export function RunLedger({
               <th scope="col">Profile</th>
               <th scope="col">Release Δ [95% CI]</th>
               <th scope="col">Direction</th>
+              <th scope="col">Evidence</th>
             </tr>
           </thead>
           <tbody>
@@ -125,7 +127,12 @@ export function RunLedger({
                   <span className="track-label">{arm.track}</span>
                 </td>
                 <td>
-                  <StateLabel state={arm.state} />
+                  <a
+                    className="ledger-deep-link"
+                    href={armEvidenceUrl(study.study_id, arm.arm_id, "#execution")}
+                  >
+                    <StateLabel state={arm.state} />
+                  </a>
                 </td>
                 <td>
                   <strong>{arm.model_label}</strong>
@@ -136,13 +143,28 @@ export function RunLedger({
                   <span>{arm.host}</span>
                 </td>
                 <td>
-                  <ProvenanceLabel value={arm.provenance} />
+                  <a
+                    className="ledger-deep-link"
+                    href={armEvidenceUrl(study.study_id, arm.arm_id, "#provenance")}
+                  >
+                    <ProvenanceLabel value={arm.provenance} />
+                  </a>
                 </td>
                 <td>
                   <Effect arm={arm} />
                 </td>
                 <td className={`run-verdict run-verdict--${arm.verdict.toLowerCase()}`}>
-                  {arm.verdict}
+                  <a href={armEvidenceUrl(study.study_id, arm.arm_id, "#comparison")}>
+                    {arm.verdict}
+                  </a>
+                </td>
+                <td>
+                  <a
+                    className="run-evidence-link"
+                    href={armEvidenceUrl(study.study_id, arm.arm_id)}
+                  >
+                    View evidence <span aria-hidden="true">→</span>
+                  </a>
                 </td>
               </tr>
             ))}

@@ -16,7 +16,7 @@ MODELS = {
         "expected_gpu": "RTX 4090",
     },
     "pythia-410m": {
-        "host": "dev-box",
+        "host": "shared-host",
         "gpu_selector": "GPU-d739b9c5-bfbb-e95a-bbf1-7122f38c2cf1",
         "expected_gpu": "RTX PRO 6000",
     },
@@ -64,10 +64,10 @@ def arm_command(arm: dict) -> str:
         f"{arm['model']} {arm['seed']} {arm['protocol']} "
         f"'{arm['gpu_selector']}' '{arm['expected_gpu']}'"
     )
-    if arm["host"] == "dev-box":
+    if arm["host"] == "shared-host":
         return (
-            "ssh -tt wtatum84 \"cd "
-            "~/dev_genius/experiments/overnight_wierd && "
+            'ssh -tt "${NULSPEC_SHARED_HOST:?set NULSPEC_SHARED_HOST}" '
+            '"cd ${NULSPEC_REMOTE_REPO_ROOT:?set NULSPEC_REMOTE_REPO_ROOT} && '
             "systemd-run --user --scope -p MemoryHigh=12G "
             "-p MemoryMax=16G -p CPUQuota=800% nice -n 10 "
             f"ionice -c 2 -n 7 {command}\""

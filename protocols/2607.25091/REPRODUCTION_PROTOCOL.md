@@ -234,24 +234,24 @@ and does not determine primary exclusions.
 Available accelerators:
 
 - workstation: RTX 4090 24 GB;
-- dev box: RTX 3090 24 GB;
-- dev box: RTX PRO 6000 Blackwell 96 GB.
+- shared lab host: RTX 3090 24 GB;
+- shared lab host: RTX PRO 6000 Blackwell 96 GB.
 
 The original paper used two RTX A6000 48 GB GPUs. Hardware differences are
 reported per arm.
 
-Until the dev box receives its planned system-RAM upgrade:
+Until a new measured capacity audit supports a concurrency change:
 
-- only one experimental GPU workload may run on the dev box at a time;
-- the Palworld service is never stopped, signalled, reconfigured, or included
+- only one experimental GPU workload may run on a shared host at a time;
+- unrelated services are never stopped, signalled, reconfigured, or included
   in an experimental cgroup;
 - every job uses a fixed GPU UUID, `MemoryHigh`, `MemoryMax`, `CPUQuota`, nice,
   and I/O priority;
 - the runner refuses to start below the recorded free-memory threshold;
-- resource pressure terminates the experiment, not the server.
+- resource pressure terminates the experiment, not the host.
 
-After an upgrade, current hardware and memory are recaptured before concurrency
-limits change. Planned hardware is never written into a completed run manifest.
+Current hardware and memory are recaptured before concurrency limits change.
+Prospective hardware is never written into a completed run manifest.
 
 ## 11. Environment strategy
 

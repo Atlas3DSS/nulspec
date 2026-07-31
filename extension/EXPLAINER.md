@@ -43,8 +43,8 @@ conditions:
 
 This is an 18-arm matrix. Exact and paper-faithful arms for a given model/seed
 share the same SFT checkpoint. The workstation RTX 4090 is assigned 70M/160M;
-the dev-box RTX PRO 6000 is assigned 410M under the existing CPU, memory,
-nice/ionice, GPU-identity, and Palworld guardrails.
+the shared-host RTX PRO 6000 is assigned 410M under the existing CPU, memory,
+nice/ionice, GPU-identity, and service-isolation guardrails.
 
 The primary endpoint is a blinded external preference judgment, not the
 training reward. Qwen 27B receives the same prompt and the SFT/PPO continuations

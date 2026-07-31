@@ -8,8 +8,8 @@
     "seed": 1234
   },
   "checkpoints": {
-    "sft": "/home/orwel/dev_genius/experiments/overnight_wierd/extension/matrix_runs/seed-42/exact/pythia-160m/tinystories/sft/final",
-    "ppo": "/home/orwel/dev_genius/experiments/overnight_wierd/extension/matrix_runs/seed-42/paper-faithful/pythia-160m/tinystories/ppo/final"
+    "sft": "<repo>/extension/matrix_runs/seed-42/exact/pythia-160m/tinystories/sft/final",
+    "ppo": "<repo>/extension/matrix_runs/seed-42/paper-faithful/pythia-160m/tinystories/ppo/final"
   },
   "pairs": [
     {

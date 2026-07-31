@@ -17,6 +17,25 @@ nulspec.com {
 	@immutable path /_next/static/*
 	header @immutable Cache-Control "public, max-age=31536000, immutable"
 
+	@nomination_api {
+		method POST OPTIONS
+		path /api/nominations
+	}
+	handle @nomination_api {
+		request_body {
+			max_size 4KB
+		}
+		reverse_proxy 127.0.0.1:8080 {
+			header_up X-Nulspec-Client-IP {remote_host}
+		}
+	}
+
+	@nomination_api_wrong_method path /api/nominations
+	handle @nomination_api_wrong_method {
+		header Allow "POST, OPTIONS"
+		respond 405
+	}
+
 	@not_read not method GET HEAD
 	handle @not_read {
 		header Allow "GET, HEAD"

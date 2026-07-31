@@ -17,7 +17,7 @@ RUN_ROOT="$CORRECTED_OUTPUTS/$MODEL_KEY/tinystories"
 LOGS="${CORRECTED_LOGS_ROOT:-$ROOT/logs_corrected}"
 RM_DIR="$RUN_ROOT/reward_model"
 PPO_DIR="$RUN_ROOT/ppo"
-PYTHON_BIN="${PYTHON_BIN:-/home/orwel/dev_genius/venv/bin/python}"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
 
 case "$MODEL_KEY" in
   pythia-70m)

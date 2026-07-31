@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NominationForm } from "@/components/nomination-form";
 import { RunLedger } from "@/components/run-ledger";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -120,9 +121,9 @@ export default function Home() {
               </h2>
               <p>
                 NULSPEC is a small team of enthusiasts and{" "}
-                <strong>accelerationrationalists</strong>—a fused word, on
-                purpose. We want the field to move fast, and we think the
-                fastest route runs through checking the work.
+                <strong>accelerationalists</strong>. We want the field to move
+                fast, and we think the fastest route runs through checking the
+                work.
               </p>
               <p>
                 We reproduce recent papers on our own machines, freeze the
@@ -208,20 +209,13 @@ export default function Home() {
                 goes public before the first arm launches—and so does every
                 deviation we are forced to make.
               </p>
-              <a className="button button--primary" href={NOMINATE_URL}>
-                Nominate a paper
-              </a>
+              <p className="request-section__privacy">
+                Two fields, no account. We retain the nomination in a private
+                Atlas staff channel and use your email only if we choose to
+                respond.
+              </p>
             </div>
-            <aside>
-              <p className="apparatus__topline">A useful nomination includes</p>
-              <ul>
-                <li>an arXiv or repository link;</li>
-                <li>the specific claim that matters;</li>
-                <li>why an independent result would help;</li>
-                <li>known compute or data constraints.</li>
-              </ul>
-              <p>No credentials required. Null-friendly by default.</p>
-            </aside>
+            <NominationForm />
           </div>
         </section>
 

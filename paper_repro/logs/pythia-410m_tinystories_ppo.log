@@ -1,8 +1,8 @@
 Some weights of GPTNeoXForSequenceClassification were not initialized from the model checkpoint at EleutherAI/pythia-410m-deduped and are newly initialized: ['score.weight']
 You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
-/home/orwel/dev_genius/venv/lib/python3.12/site-packages/accelerate/accelerator.py:529: UserWarning: `log_with=tensorboard` was passed but no supported trackers are currently installed.
+<python-env>/lib/python3.12/site-packages/accelerate/accelerator.py:529: UserWarning: `log_with=tensorboard` was passed but no supported trackers are currently installed.
   warnings.warn(f"`log_with={log_with}` was passed but no supported trackers are currently installed.")
-/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:266: UserWarning: No dataset is provided. Make sure to set config.batch_size to the correct value before training.
+<repo>/paper_repro/compat/trl/trainer/ppo_trainer.py:266: UserWarning: No dataset is provided. Make sure to set config.batch_size to the correct value before training.
   warnings.warn(
 You're using a GPTNeoXTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
 PPO_STEP 1/250 reward=-0.964552 kl=0.000000 best=-0.964552

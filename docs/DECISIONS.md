@@ -37,6 +37,7 @@ revisions through hash manifests.
 
 **Status:** accepted, 2026-07-30
 
-The Palworld server is out of experimental scope. Dev-box jobs must use explicit
-GPU identity checks and CPU, RAM, process, I/O, and concurrency limits. A run
-must stop rather than relax these limits automatically.
+Unrelated services are outside experimental scope. Jobs on shared lab hosts
+must use explicit GPU identity checks and CPU, RAM, process, I/O, and
+concurrency limits. A run must stop rather than relax these limits
+automatically.

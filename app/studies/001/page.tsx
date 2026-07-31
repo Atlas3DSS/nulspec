@@ -25,19 +25,19 @@ export const metadata: Metadata = {
 const stackRows = [
   {
     hardware: "RTX 3090 · 24 GB",
-    host: "wtatum84",
+    host: "LAB HOST B",
     profile: "EXACT",
     role: "Paper-pinned Ampere execution",
   },
   {
     hardware: "RTX 4090 · 24 GB",
-    host: "MonkeyPC",
+    host: "LAB WORKSTATION A",
     profile: "EXACT",
     role: "Paper-pinned Ada execution",
   },
   {
     hardware: "RTX PRO 6000 · 96 GB",
-    host: "wtatum84",
+    host: "LAB HOST B",
     profile: "COMPAT",
     role: "Blackwell throughput; exact-stack re-evaluation required",
   },

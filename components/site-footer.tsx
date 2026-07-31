@@ -23,7 +23,7 @@ export function SiteFooter() {
         </div>
         <div className="site-footer__bottom">
           <p>
-            A small team of enthusiasts and accelerationrationalists, checking
+            A small team of enthusiasts and accelerationalists, checking
             the work on hardware we control.
           </p>
           <Link href="/studies/001">Study 001 is running</Link>

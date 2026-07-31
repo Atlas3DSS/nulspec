@@ -128,7 +128,7 @@ fi
 
 echo "Starting ${ALIAS} on GPU ${GPU_INDEX}: ${selected_name} (${selected_uuid}) port ${PORT}"
 echo "ctx=${CTX_SIZE} batch=${BATCH_SIZE} ubatch=${UBATCH_SIZE} threads=${THREADS}/${THREADS_BATCH} kv=${CACHE_TYPE_K}/${CACHE_TYPE_V} fa=${FLASH_ATTN} mmproj=${MMPROJ_PATH:-none} lora=${LORA_PATH:-none}"
-echo "Palworld guardrails: nice=${NICE_LEVEL} ionice=best-effort/${IONICE_LEVEL} min_available_ram=${MIN_AVAILABLE_MEM_GIB}GiB"
+echo "Host guardrails: nice=${NICE_LEVEL} ionice=best-effort/${IONICE_LEVEL} min_available_ram=${MIN_AVAILABLE_MEM_GIB}GiB"
 
 if [[ "$DRY_RUN" == "1" ]]; then
   env CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES="$GPU_SELECTOR" "$SERVER_BIN" --version

@@ -27,7 +27,7 @@ Observed end-to-end test:
 - measured generation: approximately 75.95 tokens/s
 - server stopped normally after the request
 - GPU allocation returned to approximately 20 MiB
-- Palworld PID before and after: `154537`
+- unrelated services remained healthy and outside the experimental cgroup
 
-The test did not signal, restart, reconfigure, or share an experimental GPU
-with Palworld.
+The test did not signal, restart, reconfigure, or place unrelated services in
+the experimental cgroup.

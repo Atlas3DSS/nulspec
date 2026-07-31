@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import threading
 import time
@@ -172,13 +173,15 @@ def main() -> None:
     parser.add_argument("--pairs", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
-        "--base-url", default="http://wtatum84:8081"
+        "--base-url", default=os.environ.get("JUDGE_BASE_URL")
     )
     parser.add_argument("--model", default="auto")
     parser.add_argument("--concurrency", type=int, default=4)
     parser.add_argument("--max-retries", type=int, default=4)
     parser.add_argument("--limit", type=int)
     args = parser.parse_args()
+    if not args.base_url:
+        parser.error("--base-url or JUDGE_BASE_URL is required")
 
     source = json.loads(args.pairs.read_text())
     label = source["label"]

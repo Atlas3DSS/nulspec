@@ -2,7 +2,7 @@
   "label": "calibration",
   "protocol": {
     "samples": 50,
-    "source": "/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/data_release/datasets/tinystories/preference_eval.json",
+    "source": "<repo>/paper_repro/data_release/datasets/tinystories/preference_eval.json",
     "selection_seed": 20260730,
     "role_mapping": "sft=rejected, ppo=chosen"
   },

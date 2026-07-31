@@ -34,10 +34,10 @@ The paper and `run_ppo_only.sh` state 250 PPO steps. The repository's
 ## Hardware and isolation
 
 - Pythia-70M: workstation RTX 4090, 24 GiB
-- Pythia-410M: dev-box RTX PRO 6000 Blackwell Workstation Edition, 96 GiB
-- Dev-box Palworld server: never signalled, stopped, reconfigured, or assigned
-  either experimental GPU
-- Dev-box experiment: exact PRO 6000 UUID, 12 GiB memory high/16 GiB hard
+- Pythia-410M: shared-host RTX PRO 6000 Blackwell Workstation Edition, 96 GiB
+- Unrelated services: never signalled, stopped, reconfigured, or placed in an
+  experimental cgroup
+- Shared-host experiment: exact PRO 6000 UUID, 12 GiB memory high/16 GiB hard
   process limit, 800% CPU quota, nice 10, low-priority I/O
 - Workstation experiment: 24 GiB memory high/32 GiB hard process limit, 1200%
   CPU quota, nice 10, low-priority I/O
@@ -96,7 +96,7 @@ systemd-run --user --scope \
   nice -n 10 ionice -c 2 -n 7 \
   bash paper_repro/run_tinystories_repro.sh pythia-70m 0 "RTX 4090"
 
-# Dev box
+# Shared lab host
 systemd-run --user --scope \
   -p MemoryHigh=12G -p MemoryMax=16G -p CPUQuota=800% \
   nice -n 10 ionice -c 2 -n 7 \
@@ -108,7 +108,7 @@ The runner is resumable by completed stage. After copying the remote 410M
 output into the local `outputs/` tree:
 
 ```bash
-/home/orwel/dev_genius/venv/bin/python paper_repro/analyze_results.py
+python3 paper_repro/analyze_results.py
 ```
 
 The controlled follow-up is also resumable:

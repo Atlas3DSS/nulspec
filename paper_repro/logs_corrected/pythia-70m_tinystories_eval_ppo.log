@@ -1,6 +1,6 @@
-2026-07-30 02:05:11,674 | INFO     | __main__ | Loading model from /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs_corrected/pythia-70m/tinystories/ppo/final
+2026-07-30 02:05:11,674 | INFO     | __main__ | Loading model from <repo>/paper_repro/outputs_corrected/pythia-70m/tinystories/ppo/final
 2026-07-30 02:05:13,221 | INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2026-07-30 02:05:15,121 | INFO     | __main__ | Loading evaluation data from /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/data_release/datasets/tinystories/sft_eval.json
+2026-07-30 02:05:15,121 | INFO     | __main__ | Loading evaluation data from <repo>/paper_repro/data_release/datasets/tinystories/sft_eval.json
 2026-07-30 02:05:15,127 | INFO     | __main__ | Loaded 200 evaluation examples
 2026-07-30 02:05:15,129 | INFO     | __main__ | Computing perplexity...
 Computing perplexity:   0%|          | 0/13 [00:00<?, ?it/s]Computing perplexity:   8%|▊         | 1/13 [00:00<00:03,  3.02it/s]Computing perplexity:  23%|██▎       | 3/13 [00:00<00:01,  7.06it/s]Computing perplexity:  54%|█████▍    | 7/13 [00:00<00:00, 14.79it/s]Computing perplexity:  85%|████████▍ | 11/13 [00:00<00:00, 20.30it/s]Computing perplexity: 100%|██████████| 13/13 [00:00<00:00, 16.48it/s]
@@ -16,12 +16,12 @@
 2026-07-30 02:05:30,283 | INFO     | absl | Using default tokenizer.
 2026-07-30 02:05:30,845 | INFO     | __main__ | ROUGE-L F1: 0.1357
 2026-07-30 02:05:30,845 | INFO     | __main__ | Computing reward scores...
-2026-07-30 02:05:30,845 | INFO     | __main__ | Loading reward model from /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs_corrected/pythia-70m/tinystories/reward_model/final
+2026-07-30 02:05:30,845 | INFO     | __main__ | Loading reward model from <repo>/paper_repro/outputs_corrected/pythia-70m/tinystories/reward_model/final
 2026-07-30 02:05:30,870 | INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
 Computing rewards:   0%|          | 0/200 [00:00<?, ?it/s]Computing rewards:   0%|          | 1/200 [00:00<00:39,  5.00it/s]Computing rewards:   8%|▊         | 17/200 [00:00<00:02, 68.32it/s]Computing rewards:  16%|█▋        | 33/200 [00:00<00:01, 100.03it/s]Computing rewards:  24%|██▍       | 49/200 [00:00<00:01, 117.83it/s]Computing rewards:  32%|███▎      | 65/200 [00:00<00:01, 128.84it/s]Computing rewards:  40%|████      | 80/200 [00:00<00:00, 135.21it/s]Computing rewards:  48%|████▊     | 95/200 [00:00<00:00, 139.11it/s]Computing rewards:  56%|█████▌    | 111/200 [00:00<00:00, 143.01it/s]Computing rewards:  63%|██████▎   | 126/200 [00:01<00:00, 144.92it/s]Computing rewards:  70%|███████   | 141/200 [00:01<00:00, 145.55it/s]Computing rewards:  78%|███████▊  | 156/200 [00:01<00:00, 140.40it/s]Computing rewards:  86%|████████▌ | 172/200 [00:01<00:00, 143.80it/s]Computing rewards:  95%|█████████▌| 190/200 [00:01<00:00, 152.68it/s]Computing rewards: 100%|██████████| 200/200 [00:01<00:00, 132.23it/s]
 2026-07-30 02:05:32,869 | INFO     | __main__ | Mean Reward: 3.2277
-2026-07-30 02:05:32,869 | INFO     | __main__ | Saved results to /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs_corrected/pythia-70m/tinystories/eval_ppo/evaluation_results.json
-2026-07-30 02:05:32,870 | INFO     | __main__ | Saved sample generations to /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs_corrected/pythia-70m/tinystories/eval_ppo/sample_generations.json
+2026-07-30 02:05:32,869 | INFO     | __main__ | Saved results to <repo>/paper_repro/outputs_corrected/pythia-70m/tinystories/eval_ppo/evaluation_results.json
+2026-07-30 02:05:32,870 | INFO     | __main__ | Saved sample generations to <repo>/paper_repro/outputs_corrected/pythia-70m/tinystories/eval_ppo/sample_generations.json
 2026-07-30 02:05:32,870 | INFO     | __main__ | 
 ============================================================
 2026-07-30 02:05:32,870 | INFO     | __main__ | EVALUATION SUMMARY

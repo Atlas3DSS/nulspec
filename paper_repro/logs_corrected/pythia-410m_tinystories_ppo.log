@@ -1,6 +1,6 @@
-/home/orwel/dev_genius/venv/lib/python3.12/site-packages/accelerate/accelerator.py:529: UserWarning: `log_with=tensorboard` was passed but no supported trackers are currently installed.
+<python-env>/lib/python3.12/site-packages/accelerate/accelerator.py:529: UserWarning: `log_with=tensorboard` was passed but no supported trackers are currently installed.
   warnings.warn(f"`log_with={log_with}` was passed but no supported trackers are currently installed.")
-/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:266: UserWarning: No dataset is provided. Make sure to set config.batch_size to the correct value before training.
+<repo>/paper_repro/compat/trl/trainer/ppo_trainer.py:266: UserWarning: No dataset is provided. Make sure to set config.batch_size to the correct value before training.
   warnings.warn(
 You're using a GPTNeoXTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
 PPO_STEP 1/250 reward=-0.893716 kl=0.000000 best=-0.893716
@@ -186,7 +186,7 @@ PPO_STEP 180/250 reward=-1.065306 kl=0.434144 best=0.683004
 PPO_STEP 181/250 reward=-0.591424 kl=2.686935 best=0.683004
 PPO_STEP 182/250 reward=-0.924129 kl=0.400865 best=0.683004
 PPO_STEP 183/250 reward=-0.628027 kl=0.033715 best=0.683004
-/home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -1.25 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
+<repo>/paper_repro/compat/trl/trainer/ppo_trainer.py:1304: UserWarning: KL divergence is starting to become negative: -1.25 - this might be a precursor for failed training. sometimes this happens because the generation kwargs are not correctly set. Please make sure that the generation kwargs are set correctly, or review your training hyperparameters.
   warnings.warn(
 PPO_STEP 184/250 reward=-1.609083 kl=-1.254308 best=0.683004
 PPO_STEP 185/250 reward=-0.679538 kl=0.975392 best=0.683004

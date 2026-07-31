@@ -46,7 +46,7 @@ Key machine-readable outputs:
 bash extension/run_existing_pair_exports.sh
 
 # Build 50 calibration pairs.
-/home/orwel/dev_genius/venv/bin/python \
+python3 \
   extension/make_calibration_pairs.py \
   --data paper_repro/data_release/datasets/tinystories/preference_eval.json \
   --output extension/artifacts/pairs/calibration.json
@@ -56,7 +56,7 @@ start_remote_llama_pro6000
 bash extension/run_external_judging.sh
 
 # Aggregate.
-/home/orwel/dev_genius/venv/bin/python extension/analyze_judgments.py \
+python3 extension/analyze_judgments.py \
   --judgments calibration=extension/artifacts/judgments/calibration.jsonl \
   --judgments exact-70m=extension/artifacts/judgments/exact-70m.jsonl \
   --judgments corrected-70m=extension/artifacts/judgments/corrected-70m.jsonl \

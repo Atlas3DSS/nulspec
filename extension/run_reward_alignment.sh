@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PYTHON="${PYTHON:-/home/orwel/dev_genius/venv/bin/python}"
+PYTHON="${PYTHON:-python3}"
 PAIRS="$ROOT/extension/artifacts/pairs"
 JUDGMENTS="$ROOT/extension/artifacts/judgments"
 arguments=()

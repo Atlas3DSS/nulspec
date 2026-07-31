@@ -17,6 +17,9 @@ obtain a preferred result.
 7. Keep generated checkpoints and datasets outside ordinary Git history; record
    immutable locations, sizes, and SHA-256 hashes.
 8. Submit analysis changes without editing raw observations.
+9. Apply the
+   [lab repository scope and hygiene policy](docs/REPOSITORY_SCOPE_POLICY.md)
+   before publication.
 
 ## Pull requests
 

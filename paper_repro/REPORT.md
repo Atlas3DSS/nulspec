@@ -140,4 +140,5 @@ separate pre-PPO quantitative threshold for that condition.
 - Machine-readable aggregate and plots: `artifacts/`
 
 All training jobs used GPU identity checks plus CPU, process-memory, nice, and
-I/O limits. The live Palworld server was never signalled or reconfigured.
+I/O limits. Unrelated services remained outside the experimental cgroups and
+were never signalled or reconfigured.

@@ -1,6 +1,7 @@
-# Dev-box llama routes
+# Shared-host llama routes
 
-The dev box is `wtatum84` / `192.168.1.90`.
+The machine-local SSH alias and address are intentionally kept outside this
+repository.
 
 | Physical GPU | UUID | Route | Port |
 |---|---|---|---:|
@@ -29,18 +30,18 @@ binary could identify Blackwell but failed at its first kernel launch.
 
 The launcher defaults to 8 CPU threads, nice level 10, lowest best-effort I/O
 priority, and refuses to start below 10 GiB available system RAM. Those
-guardrails protect the Palworld server. The 3090 route continues to use the
-older Ampere build.
+guardrails isolate experiments from unrelated services. The 3090 route
+continues to use the older Ampere build.
 
-The exact files deployed to the dev box are retained under
-`remote_payload/`. Pre-change copies on the dev box use the suffix
+The exact files deployed to the shared host are retained under
+`remote_payload/`. Pre-change copies on the host use the suffix
 `.pre-pro6000-20260730`.
 
-To rebuild the Pro binary without starving Palworld:
+To rebuild the Pro binary within the measured host envelope:
 
 ```bash
-ssh wtatum84
-cd ~/dev_genius/experiments/overnight_wierd
+ssh "${NULSPEC_SHARED_HOST}"
+cd /path/to/nulspec
 systemd-run --user --scope \
   -p MemoryHigh=6G -p MemoryMax=8G -p CPUQuota=600% \
   nice -n 15 ionice -c 2 -n 7 \

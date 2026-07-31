@@ -80,13 +80,15 @@ if (( available_kib < required_kib )); then
   exit 2
 fi
 
-if [[ "$(hostname)" == "wtatum84" ]]; then
-  if [[ "${DEVBOX_GUARDS_CONFIRMED:-0}" != "1" ]]; then
-    echo "dev-box runs must be launched through run_guarded_2607_25091_arm.sh" >&2
+if [[ "${NULSPEC_HOST_PROFILE:-shared}" == "shared" ]]; then
+  if [[ "${NULSPEC_SHARED_GUARDS_CONFIRMED:-0}" != "1" ]]; then
+    echo "shared-host runs must use run_guarded_2607_25091_arm.sh" >&2
     exit 2
   fi
-  if ! systemctl --user is-active --quiet palworld.service; then
-    echo "Palworld service is not active; refusing to begin in an unexpected state" >&2
+  lock_root="${XDG_RUNTIME_DIR:-/tmp}"
+  exec 9>"$lock_root/nulspec-experiment.lock"
+  if ! flock -n 9; then
+    echo "another shared-host experiment holds the concurrency lock" >&2
     exit 2
   fi
   other_experiment_count="$(
@@ -95,7 +97,7 @@ if [[ "$(hostname)" == "wtatum84" ]]; then
     } | awk -v current_pid="$$" '$1 != current_pid {count++} END {print count + 0}'
   )"
   if (( other_experiment_count > 0 )); then
-    echo "another dev-box experiment is active; refusing concurrent launch" >&2
+    echo "another shared-host experiment is active; refusing concurrent launch" >&2
     exit 2
   fi
 fi

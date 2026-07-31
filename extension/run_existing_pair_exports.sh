@@ -2,7 +2,7 @@
 set -euo pipefail
 
 WORKSPACE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PYTHON_BIN="${PYTHON_BIN:-/home/orwel/dev_genius/venv/bin/python}"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
 DATA="$WORKSPACE/paper_repro/data_release/datasets/tinystories/sft_eval.json"
 OUT="$WORKSPACE/extension/artifacts/pairs"
 export PYTHONPATH="$WORKSPACE/paper_repro/compat:$WORKSPACE/paper_repro/SLM-RL-Agents${PYTHONPATH:+:$PYTHONPATH}"

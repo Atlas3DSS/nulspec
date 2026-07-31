@@ -1,7 +1,6 @@
 import studyDocument from "@/site-data/study-001.json";
 
-export const NOMINATE_URL =
-  "https://github.com/Atlas3DSS/nulspec/issues/new?template=replication-request.yml";
+export const NOMINATE_URL = "/#nominate";
 export const KOFI_URL = "https://ko-fi.com/monkeymind101";
 export const GITHUB_URL = "https://github.com/Atlas3DSS/nulspec";
 export const PROTOCOL_URL =

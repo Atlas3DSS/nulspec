@@ -20,3 +20,4 @@ List tests, regeneration commands, issue references, and affected artifacts.
 - [ ] Generated data did not overwrite raw observations.
 - [ ] External artifacts have immutable revisions and hashes.
 - [ ] No credentials, private prompts, or unrelated service data are included.
+- [ ] The lab repository scope and hygiene checklist has been completed.

@@ -87,7 +87,7 @@ The runner:
 - creates a new immutable attempt directory;
 - captures start/end software and hardware manifests;
 - preserves full logs and all 200 evaluation generations;
-- refuses unguarded execution on the Palworld dev box.
+- refuses unguarded execution on shared lab hosts.
 
 Track M refuses to start until the matching Track R arm has completed.
 
@@ -137,10 +137,10 @@ These runs are not relabeled as preregistered full-matrix results.
 The local pool currently includes an RTX 4090, RTX 3090, and RTX PRO 6000.
 Current roles and memory limits are in [docs/HARDWARE.md](docs/HARDWARE.md).
 
-Palworld is unrelated production state. Dev-box experiments use GPU UUID
-verification, a single-job concurrency rule, cgroup memory/CPU limits, positive
-nice, and low I/O priority. The experiment stops before those protections are
-relaxed.
+Experiments on shared hosts use GPU UUID verification, a single-job concurrency
+rule, cgroup memory/CPU limits, positive nice, and low I/O priority. Unrelated
+services remain outside the experimental cgroup and are never stopped,
+signalled, or reconfigured by experiment tooling.
 
 ## Repository and artifacts
 
@@ -148,6 +148,8 @@ GitHub stores protocols, source, patches, issues, manifests, small raw records,
 analysis, and reports. Downloaded datasets and multi-gigabyte checkpoints do
 not enter ordinary Git history; immutable locations and SHA-256 hashes bind
 them to each Git release. See [artifact policy](docs/ARTIFACT_POLICY.md).
+All paper repositories also follow the
+[lab repository scope and hygiene policy](docs/REPOSITORY_SCOPE_POLICY.md).
 
 Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md).
 

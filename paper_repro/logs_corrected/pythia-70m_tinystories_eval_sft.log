@@ -1,6 +1,6 @@
-2026-07-30 02:04:45,941 | INFO     | __main__ | Loading model from /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs/pythia-70m/tinystories/sft/final
+2026-07-30 02:04:45,941 | INFO     | __main__ | Loading model from <repo>/paper_repro/outputs/pythia-70m/tinystories/sft/final
 2026-07-30 02:04:48,123 | INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2026-07-30 02:04:50,817 | INFO     | __main__ | Loading evaluation data from /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/data_release/datasets/tinystories/sft_eval.json
+2026-07-30 02:04:50,817 | INFO     | __main__ | Loading evaluation data from <repo>/paper_repro/data_release/datasets/tinystories/sft_eval.json
 2026-07-30 02:04:50,828 | INFO     | __main__ | Loaded 200 evaluation examples
 2026-07-30 02:04:50,830 | INFO     | __main__ | Computing perplexity...
 Computing perplexity:   0%|          | 0/13 [00:00<?, ?it/s]Computing perplexity:   8%|▊         | 1/13 [00:00<00:04,  2.74it/s]Computing perplexity:  23%|██▎       | 3/13 [00:00<00:01,  6.81it/s]Computing perplexity:  54%|█████▍    | 7/13 [00:00<00:00, 14.37it/s]Computing perplexity:  85%|████████▍ | 11/13 [00:00<00:00, 19.66it/s]Computing perplexity: 100%|██████████| 13/13 [00:00<00:00, 15.72it/s]
@@ -16,12 +16,12 @@
 2026-07-30 02:05:06,184 | INFO     | absl | Using default tokenizer.
 2026-07-30 02:05:06,738 | INFO     | __main__ | ROUGE-L F1: 0.1326
 2026-07-30 02:05:06,738 | INFO     | __main__ | Computing reward scores...
-2026-07-30 02:05:06,738 | INFO     | __main__ | Loading reward model from /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs_corrected/pythia-70m/tinystories/reward_model/final
+2026-07-30 02:05:06,738 | INFO     | __main__ | Loading reward model from <repo>/paper_repro/outputs_corrected/pythia-70m/tinystories/reward_model/final
 2026-07-30 02:05:06,783 | INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
 Computing rewards:   0%|          | 0/200 [00:00<?, ?it/s]Computing rewards:   0%|          | 1/200 [00:00<00:45,  4.35it/s]Computing rewards:   8%|▊         | 17/200 [00:00<00:02, 63.97it/s]Computing rewards:  17%|█▋        | 34/200 [00:00<00:01, 101.05it/s]Computing rewards:  26%|██▌       | 52/200 [00:00<00:01, 125.60it/s]Computing rewards:  35%|███▌      | 70/200 [00:00<00:00, 141.85it/s]Computing rewards:  44%|████▍     | 88/200 [00:00<00:00, 151.84it/s]Computing rewards:  53%|█████▎    | 106/200 [00:00<00:00, 158.57it/s]Computing rewards:  62%|██████▏   | 124/200 [00:00<00:00, 163.22it/s]Computing rewards:  72%|███████▏  | 143/200 [00:01<00:00, 170.46it/s]Computing rewards:  80%|████████  | 161/200 [00:01<00:00, 168.68it/s]Computing rewards:  90%|████████▉ | 179/200 [00:01<00:00, 162.13it/s]Computing rewards:  98%|█████████▊| 196/200 [00:01<00:00, 161.91it/s]Computing rewards: 100%|██████████| 200/200 [00:01<00:00, 141.60it/s]
 2026-07-30 02:05:08,717 | INFO     | __main__ | Mean Reward: 2.2838
-2026-07-30 02:05:08,718 | INFO     | __main__ | Saved results to /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs_corrected/pythia-70m/tinystories/eval_sft/evaluation_results.json
-2026-07-30 02:05:08,718 | INFO     | __main__ | Saved sample generations to /home/orwel/dev_genius/experiments/overnight_wierd/paper_repro/outputs_corrected/pythia-70m/tinystories/eval_sft/sample_generations.json
+2026-07-30 02:05:08,718 | INFO     | __main__ | Saved results to <repo>/paper_repro/outputs_corrected/pythia-70m/tinystories/eval_sft/evaluation_results.json
+2026-07-30 02:05:08,718 | INFO     | __main__ | Saved sample generations to <repo>/paper_repro/outputs_corrected/pythia-70m/tinystories/eval_sft/sample_generations.json
 2026-07-30 02:05:08,718 | INFO     | __main__ | 
 ============================================================
 2026-07-30 02:05:08,718 | INFO     | __main__ | EVALUATION SUMMARY

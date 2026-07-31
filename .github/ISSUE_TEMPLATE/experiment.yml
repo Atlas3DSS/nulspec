@@ -49,5 +49,5 @@ body:
           required: true
         - label: Existing run directories will not be overwritten.
           required: true
-        - label: Dev-box resource guards protect Palworld.
+        - label: Shared-host resource limits and service isolation are enabled.
           required: true

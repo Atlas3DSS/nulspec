@@ -22,28 +22,28 @@ const scenarios = [
     path: "/",
     width: 1440,
     height: 900,
-    expectedLedgerRows: 15,
+    expectedLedgerRows: 30,
   },
   {
     name: "home-mobile",
     path: "/",
     width: 390,
     height: 844,
-    expectedLedgerRows: 15,
+    expectedLedgerRows: 30,
   },
   {
     name: "study-desktop",
-    path: "/studies/001",
+    path: "/studies/260725091",
     width: 1440,
     height: 900,
-    expectedLedgerRows: 15,
+    expectedLedgerRows: 30,
   },
   {
     name: "study-mobile",
-    path: "/studies/001",
+    path: "/studies/260725091",
     width: 390,
     height: 844,
-    expectedLedgerRows: 15,
+    expectedLedgerRows: 30,
   },
 ];
 
@@ -68,6 +68,7 @@ for (const scenario of scenarios) {
       .filter((element) => {
         if (element.closest(".table-scroll")) return false;
         if (element.closest(".nomination-form__trap")) return false;
+        if (element.closest(".extension-vote__trap")) return false;
         const rect = element.getBoundingClientRect();
         return rect.left < -1 || rect.right > viewportWidth + 1;
       })
@@ -95,6 +96,11 @@ for (const scenario of scenarios) {
       signalVerdicts: [...document.querySelectorAll(".run-verdict")].filter(
         (element) => getComputedStyle(element).color === "rgb(92, 232, 255)",
       ).length,
+      extensionOptions: document.querySelectorAll(
+        '.extension-vote input[name="extension-option"]',
+      ).length,
+      extensionButton: document.querySelector(".extension-vote button")
+        ?.textContent?.trim(),
       overflowingElements,
     };
   });
@@ -132,7 +138,10 @@ for (const scenario of scenarios) {
     diagnostics.nominationFields.length !== (scenario.path === "/" ? 2 : 0) ||
     (scenario.path === "/" &&
       diagnostics.nominationFields.join(",") !== "email,paper") ||
-    diagnostics.signalVerdicts !== 0 ||
+    diagnostics.extensionOptions !== (scenario.path === "/" ? 0 : 5) ||
+    (scenario.path !== "/" &&
+      diagnostics.extensionButton !== "Vote to extend this paper") ||
+    diagnostics.signalVerdicts !== 7 ||
     accessibility.length > 0;
   failed ||= scenarioFailed;
   report.push({

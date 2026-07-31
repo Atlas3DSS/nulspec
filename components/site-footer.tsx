@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { NulspecMark } from "@/components/nulspec-mark";
-import { GITHUB_URL, KOFI_URL, NOMINATE_URL } from "@/lib/study";
+import { GITHUB_URL, KOFI_URL, NOMINATE_URL, getLatestStudy } from "@/lib/study";
 
 export function SiteFooter() {
+  const study = getLatestStudy();
   return (
     <footer className="site-footer">
       <div className="shell">
@@ -28,7 +29,9 @@ export function SiteFooter() {
             A small team of enthusiasts and accelerationalists, checking
             the work on hardware we control.
           </p>
-          <Link href="/studies/001">Study 001 is running</Link>
+          <Link href={`/studies/${study.study_id}`}>
+            Study {study.study_id} is reported
+          </Link>
         </div>
       </div>
     </footer>

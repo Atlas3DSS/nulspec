@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "study_id": "260725091",
+  "study_slug": "towards-robust-rl-small-scale-language-model-agents",
+  "publication_state": "ready_for_website_implementation",
+  "classification": "PARTIALLY_REPRODUCED",
+  "headline": "Released numbers broadly reproduced; stronger claims remain unconfirmed",
+  "conclusion": "We broadly reproduced the released numerical table, but did not confirm the paper's stronger claims of universal stable convergence or a robust capacity-headroom rule; actual output-quality improvement remains unresolved.",
+  "frozen_primary_result": {
+    "registered_arms": 30,
+    "claim_ready_arms": 30,
+    "may_be_rewritten_by_extension": false
+  },
+  "claim_assessments": [
+    {
+      "claim": "Released numerical reward table",
+      "assessment": "BROADLY_REPRODUCED",
+      "basis": "Twelve of fifteen published Track R deltas fell inside conditional prompt intervals, with three misses and substantial directional uncertainty."
+    },
+    {
+      "claim": "Universal stable convergence",
+      "assessment": "NOT_CONFIRMED",
+      "basis": "The prescribed PPO budget was reached in eleven of fifteen Track R arms and twelve of fifteen Track M arms."
+    },
+    {
+      "claim": "Robust capacity-headroom rule",
+      "assessment": "NOT_CONFIRMED",
+      "basis": "The explicit PPL necessary condition held in Track R but failed in Track M, while reward-signal informativeness was not operationalized for the full joint claim."
+    },
+    {
+      "claim": "Actual output-quality improvement",
+      "assessment": "UNRESOLVED",
+      "basis": "Internal reward scores are not independently calibrated across tracks, and the Qwen reviewer did not pass its outer-teacher reliability audit."
+    }
+  ],
+  "extension_call_to_action": {
+    "requested": true,
+    "implementation_owner": "website_team",
+    "button_label": "Vote to extend this paper",
+    "prompt": "Which follow-up would most improve confidence in this result?",
+    "selection_mode": "single_choice",
+    "options": [
+      {
+        "id": "targeted-variance-map",
+        "label": "Measure run-to-run variance",
+        "role": "ROBUSTNESS_REPLICATION",
+        "priority": 1,
+        "summary": "Repeat the three Track R misses, one positive anchor, and one rollback-prone arm across fresh training seeds and repeated decoding draws."
+      },
+      {
+        "id": "exact-stack-training-audit",
+        "label": "Repeat compatibility arms",
+        "role": "REPLICATION_STRENGTHENING",
+        "priority": 2,
+        "summary": "Retrain the eight compatibility-trained arms under the exact reconstructed paper-era software stack on compatible accelerators."
+      },
+      {
+        "id": "track-m-factorial",
+        "label": "Isolate Track M changes",
+        "role": "MECHANISTIC_EXTENSION",
+        "priority": 3,
+        "summary": "Use a preregistered factorial to separate reward initialization, reward-inference dtype, and rollback optimizer-state reset."
+      },
+      {
+        "id": "independent-quality-validation",
+        "label": "Audit actual output quality",
+        "role": "EVALUATION_EXTENSION",
+        "priority": 4,
+        "summary": "Run counterbalanced blinded judging with a human-audited calibration subset and an outer teacher that audits reviewer reliability."
+      },
+      {
+        "id": "clean-room-audit",
+        "label": "Run a clean-room reproduction",
+        "role": "REPRODUCIBILITY_STRENGTHENING",
+        "priority": 5,
+        "summary": "Ask an independent operator to reproduce the result using only the tagged public materials and record every ambiguity."
+      }
+    ]
+  },
+  "roadmap_path": "docs/EXTENSION_ROADMAP.md"
+}

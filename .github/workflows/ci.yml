@@ -111,3 +111,114 @@ jobs:
 
       - name: Audit production dependencies
         run: npm audit --omit=dev
+
+  deploy-canonical:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [protocol-and-code, public-site]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: nulspec-canonical-production
+      cancel-in-progress: false
+    steps:
+      - name: Check out the validated commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Build the exact static release
+        run: |
+          npm ci
+          npm run build:static
+          python3 scripts/build_release_manifest.py \
+            --static-dir out \
+            --commit "$GITHUB_SHA"
+
+      - name: Install the restricted deployment identity
+        env:
+          DEPLOY_KEY: ${{ secrets.NULSPEC_DROPLET_DEPLOY_KEY }}
+          DEPLOY_HOST_KEY: ${{ secrets.NULSPEC_DROPLET_HOST_KEY }}
+        run: |
+          test -n "$DEPLOY_KEY"
+          test -n "$DEPLOY_HOST_KEY"
+          install -m 700 -d "$RUNNER_TEMP/nulspec-ssh"
+          printf '%s\n' "$DEPLOY_KEY" > "$RUNNER_TEMP/nulspec-ssh/id_ed25519"
+          printf '%s\n' "$DEPLOY_HOST_KEY" > "$RUNNER_TEMP/nulspec-ssh/known_hosts"
+          chmod 600 "$RUNNER_TEMP/nulspec-ssh/id_ed25519"
+          chmod 644 "$RUNNER_TEMP/nulspec-ssh/known_hosts"
+          ssh-keygen -y -f "$RUNNER_TEMP/nulspec-ssh/id_ed25519" >/dev/null
+
+      - name: Atomically deploy the validated archive
+        env:
+          DEPLOY_HOST: ${{ secrets.NULSPEC_DROPLET_HOST }}
+          DEPLOY_PORT: ${{ secrets.NULSPEC_DROPLET_PORT }}
+          DEPLOY_USER: ${{ secrets.NULSPEC_DROPLET_USER }}
+        run: |
+          test -n "$DEPLOY_HOST"
+          test -n "$DEPLOY_PORT"
+          test -n "$DEPLOY_USER"
+          tar -C out -cf - . | ssh \
+            -F /dev/null \
+            -T \
+            -p "$DEPLOY_PORT" \
+            -i "$RUNNER_TEMP/nulspec-ssh/id_ed25519" \
+            -o BatchMode=yes \
+            -o ConnectTimeout=15 \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$RUNNER_TEMP/nulspec-ssh/known_hosts" \
+            "$DEPLOY_USER@$DEPLOY_HOST"
+
+      - name: Verify public release provenance
+        env:
+          EXPECTED_COMMIT: ${{ github.sha }}
+        run: |
+          curl --fail --silent --show-error \
+            --retry 3 --retry-delay 2 \
+            https://nulspec.com/release.json > "$RUNNER_TEMP/live-release.json"
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          live = json.loads(Path(os.environ["RUNNER_TEMP"])
+                            .joinpath("live-release.json").read_text())
+          expected_commit = os.environ["EXPECTED_COMMIT"]
+          if live.get("git_commit") != expected_commit:
+              raise SystemExit("live release commit does not match the deployed commit")
+          expected_publications = {}
+          for bundle_path in Path("site-data/publications").glob("study-*.json"):
+              bundle = json.loads(bundle_path.read_text())
+              study_id = bundle["study"]["id"]
+              expected_publications[study_id] = {
+                  "bundle_sha256": hashlib.sha256(bundle_path.read_bytes()).hexdigest(),
+                  "classification": bundle["verdict"]["classification"],
+                  "evidence_revision": bundle["source"]["evidence_revision"],
+              }
+          live_publications = {
+              item["study_id"]: {
+                  "bundle_sha256": item["bundle_sha256"],
+                  "classification": item["classification"],
+                  "evidence_revision": item["evidence_revision"],
+              }
+              for item in live.get("publications", [])
+          }
+          if live_publications != expected_publications:
+              raise SystemExit("live publication provenance does not match the repository")
+          print(
+              f"NULSPEC_CANONICAL_VERIFIED commit={live['git_commit']} "
+              f"tree={live['tree_sha256']}"
+          )
+          PY
+
+      - name: Remove the deployment identity
+        if: always()
+        run: |
+          if test -f "$RUNNER_TEMP/nulspec-ssh/id_ed25519"; then
+            shred --remove=unlink "$RUNNER_TEMP/nulspec-ssh/id_ed25519"
+          fi

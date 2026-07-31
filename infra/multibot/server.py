@@ -6,7 +6,10 @@ import threading
 import multiprocessing
 from pathlib import Path
 
-from nulspec_nominations import register_nulspec_nomination_routes
+from nulspec_nominations import (
+    register_nulspec_extension_vote_routes,
+    register_nulspec_nomination_routes,
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -80,6 +83,7 @@ def create_app():
         return send_from_directory(DOWNLOAD_STORAGE_DIR, filename, as_attachment=True)
 
     register_nulspec_nomination_routes(app)
+    register_nulspec_extension_vote_routes(app)
     return app
 
 

@@ -8,8 +8,9 @@ import {
   GITHUB_URL,
   KOFI_URL,
   NOMINATE_URL,
-  PROTOCOL_URL,
-  study,
+  classificationLabel,
+  getLatestStudy,
+  protocolUrl,
 } from "@/lib/study";
 
 const protocolSteps = [
@@ -41,10 +42,13 @@ const protocolSteps = [
 ];
 
 export default function Home() {
+  const study = getLatestStudy();
+  const classification = classificationLabel(study.verdict.classification);
+
   return (
     <>
       <SiteHeader />
-      <StatusStrip />
+      <StatusStrip study={study} />
       <main id="main-content">
         <section className="hero">
           <div className="shell hero__grid">
@@ -74,8 +78,8 @@ export default function Home() {
 
             <aside className="apparatus" aria-label="Current study apparatus">
               <div className="apparatus__topline">
-                <span>STUDY 001</span>
-                <span>RUNNING ▌</span>
+                <span>STUDY {study.study_id}</span>
+                <span>REPORTED</span>
               </div>
               <p className="apparatus__title">
                 Small-model reinforcement learning
@@ -83,7 +87,7 @@ export default function Home() {
               <dl className="apparatus__facts">
                 <div>
                   <dt>Matrix</dt>
-                  <dd>15 configurations</dd>
+                  <dd>{study.completion.registered_arms} arms · {study.completion.tracks.length} tracks</dd>
                 </div>
                 <div>
                   <dt>Compute</dt>
@@ -95,7 +99,7 @@ export default function Home() {
                 </div>
                 <div>
                   <dt>Conclusion</dt>
-                  <dd>Not yet available</dd>
+                  <dd>{classification}</dd>
                 </div>
               </dl>
               <div className="apparatus__signal" aria-hidden="true">
@@ -106,7 +110,9 @@ export default function Home() {
                   />
                 ))}
               </div>
-              <Link href="/studies/001">Inspect Study 001 →</Link>
+              <Link href={`/studies/${study.study_id}`}>
+                Inspect Study {study.study_id} →
+              </Link>
             </aside>
           </div>
         </section>
@@ -154,7 +160,7 @@ export default function Home() {
               ))}
             </ol>
             <div className="plain-link-row">
-              <a href={PROTOCOL_URL}>Read the frozen protocol ↗</a>
+              <a href={protocolUrl(study)}>Read the frozen protocol ↗</a>
               <a href={GITHUB_URL}>Audit the repository ↗</a>
             </div>
           </div>
@@ -164,19 +170,22 @@ export default function Home() {
           <div className="shell">
             <div className="study-preview__intro">
               <div>
-                <p className="section-kicker">Now running · Study 001</p>
-                <h2>{study.paper.title}</h2>
+                <p className="section-kicker">Reported · Study {study.study_id}</p>
+                <h2>{study.study.paper.title}</h2>
               </div>
               <p>
-                We are testing the complete 15-configuration released-code
-                matrix before opening claim-level analysis. Operational status
-                is public; partial conclusions are deliberately withheld.
+                <strong>{study.verdict.headline}</strong>{" "}
+                {study.verdict.summary}
               </p>
             </div>
-            <RunLedger compact />
+            <RunLedger study={study} compact />
             <div className="plain-link-row">
-              <Link href="/studies/001">Open the complete study record →</Link>
-              <a href={study.paper.url}>Read arXiv:{study.paper.arxiv_id} ↗</a>
+              <Link href={`/studies/${study.study_id}`}>
+                Open the complete study record →
+              </Link>
+              <a href={study.study.paper.url}>
+                Read arXiv:{study.study.paper.arxiv_id} ↗
+              </a>
             </div>
           </div>
         </section>

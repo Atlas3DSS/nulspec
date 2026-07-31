@@ -1,10 +1,11 @@
 import {
   formatAsOf,
+  formatSigned,
   stateMeta,
-  study,
   studyCounts,
   type ArmState,
   type StudyArm,
+  type StudyDocument,
 } from "@/lib/study";
 
 const stateOrder: ArmState[] = ["DONE", "RUNNING", "QUEUED", "FAILED", "ABORTED"];
@@ -28,8 +29,8 @@ function ProvenanceLabel({ value }: { value: StudyArm["provenance"] }) {
       className={`provenance provenance--${value.toLowerCase()}`}
       title={
         value === "EXACT"
-          ? "Paper-pinned execution stack"
-          : "Documented Blackwell-compatible execution stack"
+          ? "Paper-pinned training stack"
+          : "Documented compatibility training with exact-stack claim evaluation"
       }
     >
       {value}
@@ -38,15 +39,35 @@ function ProvenanceLabel({ value }: { value: StudyArm["provenance"] }) {
   );
 }
 
-export function RunLedger({ compact = false }: { compact?: boolean }) {
-  const counts = studyCounts();
+function Effect({ arm }: { arm: StudyArm }) {
+  const [low, high] = arm.metrics.release_prompt_bootstrap_95_ci;
+  return (
+    <span className="run-effect">
+      <strong>{formatSigned(arm.metrics.release_reward_delta)}</strong>
+      <span>
+        [{formatSigned(low)}, {formatSigned(high)}]
+      </span>
+    </span>
+  );
+}
+
+export function RunLedger({
+  study,
+  compact = false,
+}: {
+  study: StudyDocument;
+  compact?: boolean;
+}) {
+  const counts = studyCounts(study.arms);
 
   return (
     <div className={compact ? "ledger ledger--compact" : "ledger"}>
       <div className="ledger__header">
         <div>
-          <p className="section-kicker">Live run ledger</p>
-          <h2>{study.arms.length} frozen configurations</h2>
+          <p className="section-kicker">Final run ledger</p>
+          <h2>
+            {study.arms.length} selected arms · {study.completion.tracks.length} tracks
+          </h2>
         </div>
         <p className="ledger__summary">
           {stateOrder
@@ -54,23 +75,24 @@ export function RunLedger({ compact = false }: { compact?: boolean }) {
             .map((state) => `${counts[state]} ${stateMeta[state].label.toLowerCase()}`)
             .join(" · ")}
           <br />
-          <span>as of {formatAsOf(study.as_of_utc)} UTC</span>
+          <span>reported {formatAsOf(study.as_of_utc)} UTC</span>
         </p>
       </div>
 
-      <div className="ledger-track" aria-label="Visual summary of all 15 run states">
+      <div
+        className="ledger-track"
+        aria-label={`Visual summary of all ${study.arms.length} selected arm states`}
+      >
         {study.arms.map((arm) => (
           <span
             className={`ledger-track__arm ledger-track__arm--${arm.state.toLowerCase()} ${
               arm.provenance === "COMPAT" ? "is-compat" : ""
             }`}
             key={arm.arm_id}
-            title={`Arm ${arm.ordinal}: ${arm.model}, ${arm.dataset}, ${stateMeta[
-              arm.state
-            ].label}`}
+            title={`Arm ${arm.ordinal}, Track ${arm.track}: ${arm.model_label}, ${arm.dataset_label}, ${stateMeta[arm.state].label}`}
           >
             <span className="sr-only">
-              Arm {arm.ordinal}: {arm.model}, {arm.dataset},{" "}
+              Arm {arm.ordinal}, Track {arm.track}: {arm.model_label}, {arm.dataset_label},{" "}
               {stateMeta[arm.state].label}
             </span>
           </span>
@@ -80,17 +102,19 @@ export function RunLedger({ compact = false }: { compact?: boolean }) {
       <div className="table-scroll" tabIndex={0} aria-label="Scrollable run ledger">
         <table className="run-table">
           <caption>
-            Track R execution ledger. DONE means only that a run finished; it is
-            not a replication verdict.
+            Selected terminal arms for the released-code and manuscript-method tracks.
+            Row verdicts are directional assessments; the study verdict appears below.
           </caption>
           <thead>
             <tr>
               <th scope="col">Arm</th>
+              <th scope="col">Track</th>
               <th scope="col">State</th>
               <th scope="col">Configuration</th>
               <th scope="col">GPU</th>
-              <th scope="col">Provenance</th>
-              <th scope="col">Verdict</th>
+              <th scope="col">Profile</th>
+              <th scope="col">Release Δ [95% CI]</th>
+              <th scope="col">Direction</th>
             </tr>
           </thead>
           <tbody>
@@ -98,11 +122,14 @@ export function RunLedger({ compact = false }: { compact?: boolean }) {
               <tr key={arm.arm_id}>
                 <th scope="row">{String(arm.ordinal).padStart(3, "0")}</th>
                 <td>
+                  <span className="track-label">{arm.track}</span>
+                </td>
+                <td>
                   <StateLabel state={arm.state} />
                 </td>
                 <td>
-                  <strong>{arm.model}</strong>
-                  <span>{arm.dataset}</span>
+                  <strong>{arm.model_label}</strong>
+                  <span>{arm.dataset_label}</span>
                 </td>
                 <td>
                   {arm.gpu}
@@ -111,8 +138,11 @@ export function RunLedger({ compact = false }: { compact?: boolean }) {
                 <td>
                   <ProvenanceLabel value={arm.provenance} />
                 </td>
-                <td className="run-verdict">
-                  {arm.verdict ?? <span aria-label="No verdict yet">—</span>}
+                <td>
+                  <Effect arm={arm} />
+                </td>
+                <td className={`run-verdict run-verdict--${arm.verdict.toLowerCase()}`}>
+                  {arm.verdict}
                 </td>
               </tr>
             ))}
@@ -122,14 +152,13 @@ export function RunLedger({ compact = false }: { compact?: boolean }) {
 
       <div className="ledger__notes">
         <p>
-          <sup>1</sup> <strong>COMPAT</strong> marks RTX PRO 6000 Blackwell arms.
-          The paper-pinned PyTorch build cannot target <code>sm_120</code>; the
-          substitution and required exact-stack re-evaluation are recorded as
-          D-001.
+          <sup>1</sup> <strong>COMPAT</strong> marks training on a documented
+          compatibility stack. Claim-level metrics for all such arms were reevaluated
+          on the exact paper stack.
         </p>
         <p>
-          State is operational. Verdict remains blank until the frozen
-          15-configuration family is complete and the analysis gate opens.
+          Intervals are conditional on fixed checkpoints and retained generations.
+          They do not estimate training-to-training or decoding-to-decoding variance.
         </p>
       </div>
     </div>

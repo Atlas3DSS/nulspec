@@ -8,6 +8,7 @@ import {
   type StudyArm,
   type StudyDocument,
 } from "@/lib/study";
+import { HorizontalScrollRegion } from "@/components/horizontal-scroll-region";
 
 const stateOrder: ArmState[] = ["DONE", "RUNNING", "QUEUED", "FAILED", "ABORTED"];
 
@@ -100,11 +101,7 @@ export function RunLedger({
         ))}
       </div>
 
-      <div
-        className="table-scroll"
-        tabIndex={0}
-        aria-label="Scrollable selected-arm results table"
-      >
+      <HorizontalScrollRegion label="Scrollable selected-arm results table">
         <table className="run-table">
           <caption>
             Selected terminal arms for the released-code and manuscript-method tracks.
@@ -174,7 +171,7 @@ export function RunLedger({
             ))}
           </tbody>
         </table>
-      </div>
+      </HorizontalScrollRegion>
 
       <div className="ledger__notes">
         <p>

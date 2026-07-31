@@ -28,6 +28,7 @@ const scenarios = [
     expectedExtensionOptions: 0,
     expectedSignalVerdicts: 7,
     expectedArmSections: 0,
+    expectedHorizontalRegions: 1,
   },
   {
     name: "home-mobile",
@@ -40,6 +41,20 @@ const scenarios = [
     expectedExtensionOptions: 0,
     expectedSignalVerdicts: 7,
     expectedArmSections: 0,
+    expectedHorizontalRegions: 1,
+  },
+  {
+    name: "home-narrow",
+    path: "/",
+    width: 320,
+    height: 700,
+    expectedLedgerRows: 30,
+    expectedEvidenceLinks: 30,
+    expectedNominationFields: 2,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 7,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 1,
   },
   {
     name: "study-desktop",
@@ -52,6 +67,7 @@ const scenarios = [
     expectedExtensionOptions: 5,
     expectedSignalVerdicts: 7,
     expectedArmSections: 0,
+    expectedHorizontalRegions: 2,
   },
   {
     name: "study-mobile",
@@ -64,6 +80,20 @@ const scenarios = [
     expectedExtensionOptions: 5,
     expectedSignalVerdicts: 7,
     expectedArmSections: 0,
+    expectedHorizontalRegions: 2,
+  },
+  {
+    name: "study-tablet",
+    path: "/studies/260725091",
+    width: 768,
+    height: 900,
+    expectedLedgerRows: 30,
+    expectedEvidenceLinks: 30,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 5,
+    expectedSignalVerdicts: 7,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 2,
   },
   {
     name: "arm-evidence-desktop",
@@ -79,6 +109,7 @@ const scenarios = [
     expectedArmTabs: 5,
     expectedActiveTab: "Comparison",
     expectedVisibleIntervalPlots: 1,
+    expectedHorizontalRegions: 0,
   },
   {
     name: "arm-evidence-mobile",
@@ -94,6 +125,7 @@ const scenarios = [
     expectedArmTabs: 5,
     expectedActiveTab: "Provenance",
     expectedVisibleIntervalPlots: 0,
+    expectedHorizontalRegions: 0,
   },
   {
     name: "arm-interval-mobile",
@@ -109,6 +141,23 @@ const scenarios = [
     expectedArmTabs: 5,
     expectedActiveTab: "Comparison",
     expectedVisibleIntervalPlots: 1,
+    expectedHorizontalRegions: 0,
+  },
+  {
+    name: "arm-interval-narrow",
+    path: "/studies/260725091/arms/R-pythia-70m-tinystories-s42#comparison",
+    width: 320,
+    height: 700,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 5,
+    expectedArmTabs: 5,
+    expectedActiveTab: "Comparison",
+    expectedVisibleIntervalPlots: 1,
+    expectedHorizontalRegions: 0,
   },
 ];
 
@@ -218,8 +267,74 @@ for (const scenario of scenarios) {
         ?.textContent?.trim(),
       visibleIntervalPlots: [...document.querySelectorAll(".arm-interval-plot")]
         .filter((element) => element.getClientRects().length > 0).length,
+      horizontalRegions: [
+        ...document.querySelectorAll(".horizontal-scroll-region"),
+      ].map((region) => {
+        const content = region.querySelector(".table-scroll");
+        const controls = region.querySelector(
+          ".horizontal-scroll-region__controls",
+        );
+        const range = controls?.querySelector('input[type="range"]');
+        const buttons = controls?.querySelectorAll("button");
+        const maximumScroll = content.scrollWidth - content.clientWidth;
+        return {
+          maximumScroll,
+          controlsHidden: controls.hidden,
+          rangeMaximum: Number(range?.max),
+          leftDisabled: buttons?.[0]?.disabled,
+          rightDisabled: buttons?.[1]?.disabled,
+        };
+      }),
+      intervalPlotContainment: [
+        ...document.querySelectorAll(".arm-interval-plot"),
+      ]
+        .filter((element) => element.getClientRects().length > 0)
+        .map((element) => {
+          const plotRect = element.getBoundingClientRect();
+          const shellRect = element.closest(".shell")?.getBoundingClientRect();
+          return {
+            withinViewport:
+              plotRect.left >= -1 && plotRect.right <= viewportWidth + 1,
+            withinShell:
+              Boolean(shellRect) &&
+              plotRect.left >= shellRect.left - 1 &&
+              plotRect.right <= shellRect.right + 1,
+          };
+        }),
+      bodyFontSize: Number.parseFloat(getComputedStyle(document.body).fontSize),
+      primaryHeadingFontSize: Number.parseFloat(
+        getComputedStyle(
+          document.querySelector(".hero h1, .study-hero h1, .arm-hero h1") ??
+            document.body,
+        ).fontSize,
+      ),
       overflowingElements,
     };
+  });
+
+  const horizontalInteraction = await page.evaluate(async () => {
+    const region = [...document.querySelectorAll(".horizontal-scroll-region")]
+      .find((element) => {
+        const content = element.querySelector(".table-scroll");
+        return content.scrollWidth > content.clientWidth + 1;
+      });
+    if (!region) return undefined;
+
+    const content = region.querySelector(".table-scroll");
+    const range = region.querySelector('input[type="range"]');
+    const rightButton = region.querySelector(
+      ".horizontal-scroll-region__controls button:last-child",
+    );
+    rightButton?.click();
+    await new Promise(requestAnimationFrame);
+    const result = {
+      movedRight: content.scrollLeft > 1,
+      rangeSynchronized:
+        Math.abs(Number(range?.value) - content.scrollLeft) < 2,
+    };
+    content.scrollLeft = 0;
+    await new Promise(requestAnimationFrame);
+    return result;
   });
 
   let tabInteraction;
@@ -230,14 +345,23 @@ for (const scenario of scenarios) {
       const expectedTab = [...document.querySelectorAll(".arm-tabs [role=tab]")]
         .find((element) => element.textContent?.trim() === expectedActiveTab);
       const before = window.scrollY;
+      const beforeTabTop = document
+        .querySelector(".arm-tabs__sticky")
+        ?.getBoundingClientRect().top;
       evidenceTab?.click();
       await new Promise(requestAnimationFrame);
       const after = window.scrollY;
+      const maximumScroll = document.documentElement.scrollHeight - innerHeight;
+      const afterTabTop = document
+        .querySelector(".arm-tabs__sticky")
+        ?.getBoundingClientRect().top;
       const evidenceSelected = evidenceTab?.getAttribute("aria-selected") === "true";
       expectedTab?.click();
       await new Promise(requestAnimationFrame);
       return {
-        clickPreservedScroll: Math.abs(after - before) < 2,
+        clickPreservedScroll:
+          Math.abs(after - Math.min(before, maximumScroll)) < 2 &&
+          (maximumScroll < before || Math.abs(afterTabTop - beforeTabTop) < 2),
         evidenceSelected,
         restoredActiveTab:
           expectedTab?.getAttribute("aria-selected") === "true",
@@ -295,6 +419,29 @@ for (const scenario of scenarios) {
       diagnostics.deeperEvidenceHeading !==
         "Detailed attempt records are not yet public") ||
     diagnostics.armTabs !== (scenario.expectedArmTabs ?? 0) ||
+    diagnostics.horizontalRegions.length !== scenario.expectedHorizontalRegions ||
+    diagnostics.horizontalRegions.some(
+      (region) =>
+        region.controlsHidden !== (region.maximumScroll <= 1) ||
+        (region.maximumScroll > 1 &&
+          (Math.abs(region.rangeMaximum - region.maximumScroll) > 2 ||
+            !region.leftDisabled ||
+            region.rightDisabled)),
+    ) ||
+    (diagnostics.horizontalRegions.some((region) => region.maximumScroll > 1) &&
+      (!horizontalInteraction?.movedRight ||
+        !horizontalInteraction.rangeSynchronized)) ||
+    diagnostics.intervalPlotContainment.some(
+      (plot) => !plot.withinViewport || !plot.withinShell,
+    ) ||
+    diagnostics.bodyFontSize > 16 ||
+    (scenario.path === "/" &&
+      diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 46 : 77)) ||
+    (scenario.path.startsWith("/studies/") &&
+      !scenario.path.includes("/arms/") &&
+      diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 40 : 62)) ||
+    (scenario.path.includes("/arms/") &&
+      diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 37 : 54)) ||
     diagnostics.visibleArmPanels !== (scenario.expectedArmTabs ? 1 : 0) ||
     diagnostics.activeArmTab !== scenario.expectedActiveTab ||
     diagnostics.stickyTabPosition !==
@@ -315,6 +462,7 @@ for (const scenario of scenarios) {
     ...scenario,
     status: response?.status(),
     diagnostics,
+    horizontalInteraction,
     tabInteraction,
     accessibility,
     passed: !scenarioFailed,

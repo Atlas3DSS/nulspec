@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { RunLedger } from "@/components/run-ledger";
 import { ExtensionVoteForm } from "@/components/extension-vote-form";
+import { HorizontalScrollRegion } from "@/components/horizontal-scroll-region";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { StatusStrip } from "@/components/status-strip";
@@ -169,7 +170,9 @@ export default async function StudyPage({ params }: StudyPageProps) {
             <div className="study-section__body">
               <p className="section-kicker">Hardware and stack provenance</p>
               <h2>Observed hardware and software profiles</h2>
-              <div className="table-scroll" tabIndex={0}>
+              <HorizontalScrollRegion
+                label="Scrollable hardware and software profiles table"
+              >
                 <table className="hardware-table">
                   <thead>
                     <tr>
@@ -198,7 +201,7 @@ export default async function StudyPage({ params }: StudyPageProps) {
                     ))}
                   </tbody>
                 </table>
-              </div>
+              </HorizontalScrollRegion>
               <p className="study-note">
                 The publication export contains observed GPU labels and neutral host aliases.
                 Device UUIDs, private paths, and unrelated operational records are excluded.

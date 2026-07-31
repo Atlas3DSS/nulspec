@@ -1,0 +1,1291 @@
+{
+  "schema_version": 1,
+  "study_id": "260725091",
+  "paper": {
+    "arxiv_id": "2607.25091",
+    "title": "Towards Robust Reinforcement Learning for Small-Scale Language Model Agents"
+  },
+  "source_analysis": {
+    "path": "paper_repro/full_matrix_analysis.json",
+    "sha256": "b835e49051c16099d992b8f83f2afb456919aa9501eafe0c400d34888b71be16",
+    "schema_version": 7
+  },
+  "classification": "PARTIALLY_REPRODUCED",
+  "conclusion": "We broadly reproduced the released numerical table, but did not confirm the paper's stronger claims of universal stable convergence or a robust capacity-headroom rule; actual output-quality improvement remains unresolved.",
+  "track_summary": {
+    "R": {
+      "execution_counts": {
+        "pending": 0,
+        "unterminated": 0,
+        "failed": 0,
+        "invalid_complete": 0,
+        "completed": 10,
+        "completed_with_recovery": 5
+      },
+      "claim_ready_arms": 15,
+      "execution_manifest_protocol_versions": {
+        "1.0.0": 9,
+        "1.6.0": 6
+      },
+      "recovery_arms": [
+        "R-smollm2-135m-tinystories-s42",
+        "R-smollm2-135m-cnn_dailymail-s42",
+        "R-smollm2-360m-tinystories-s42",
+        "R-smollm2-360m-cnn_dailymail-s42",
+        "R-smollm2-360m-wikitext-s42"
+      ],
+      "blackwell_exact_stack_reevaluations": {
+        "required": 3,
+        "completed": 3
+      },
+      "ppo_training_health": {
+        "completed_target": 11,
+        "target_shortfall_arms": [
+          "R-pythia-70m-tinystories-s42",
+          "R-pythia-160m-tinystories-s42",
+          "R-pythia-160m-cnn_dailymail-s42",
+          "R-pythia-160m-wikitext-s42"
+        ],
+        "rollback_stop_arms": [
+          "R-pythia-70m-tinystories-s42",
+          "R-pythia-160m-tinystories-s42",
+          "R-pythia-160m-cnn_dailymail-s42",
+          "R-pythia-160m-wikitext-s42"
+        ],
+        "corruption_events": 20,
+        "ratio_threshold_warnings": 177,
+        "negative_kl_warnings": 385
+      },
+      "numerical_matches": 12,
+      "numerical_match_arms": [
+        "R-pythia-70m-tinystories-s42",
+        "R-pythia-70m-wikitext-s42",
+        "R-pythia-160m-tinystories-s42",
+        "R-pythia-160m-cnn_dailymail-s42",
+        "R-pythia-160m-wikitext-s42",
+        "R-pythia-410m-tinystories-s42",
+        "R-pythia-410m-cnn_dailymail-s42",
+        "R-pythia-410m-wikitext-s42",
+        "R-smollm2-135m-tinystories-s42",
+        "R-smollm2-135m-cnn_dailymail-s42",
+        "R-smollm2-135m-wikitext-s42",
+        "R-smollm2-360m-wikitext-s42"
+      ],
+      "numerical_mismatch_arms": [
+        "R-pythia-70m-cnn_dailymail-s42",
+        "R-smollm2-360m-tinystories-s42",
+        "R-smollm2-360m-cnn_dailymail-s42"
+      ],
+      "direction_counts": {
+        "agrees": 4,
+        "disagrees": 1,
+        "inconclusive_interval_includes_zero": 10
+      },
+      "independent_paired_significance": {
+        "alpha": 0.05,
+        "unadjusted_arms": [
+          "R-pythia-410m-tinystories-s42",
+          "R-pythia-410m-wikitext-s42",
+          "R-smollm2-360m-tinystories-s42",
+          "R-smollm2-360m-wikitext-s42"
+        ],
+        "holm_15_arms": [
+          "R-smollm2-360m-wikitext-s42"
+        ]
+      },
+      "capacity_headroom": {
+        "status": "complete",
+        "evaluated_arms": 15,
+        "paper_defined_criteria": {
+          "fluent_prior": "release-protocol SFT perplexity < 20",
+          "material_positive_gain": "reward delta > +0.2",
+          "source": "The released README states that every configuration with reward delta exceeding +0.2 has SFT PPL below 20."
+        },
+        "release_protocol": {
+          "material_positive_arms": [
+            "R-pythia-410m-tinystories-s42",
+            "R-smollm2-135m-tinystories-s42",
+            "R-smollm2-360m-tinystories-s42",
+            "R-smollm2-360m-cnn_dailymail-s42",
+            "R-smollm2-360m-wikitext-s42"
+          ],
+          "material_positive_with_fluent_prior": [
+            "R-pythia-410m-tinystories-s42",
+            "R-smollm2-135m-tinystories-s42",
+            "R-smollm2-360m-tinystories-s42",
+            "R-smollm2-360m-cnn_dailymail-s42",
+            "R-smollm2-360m-wikitext-s42"
+          ],
+          "material_positive_without_fluent_prior": [],
+          "nonfluent_arms": [
+            "R-pythia-70m-tinystories-s42",
+            "R-pythia-70m-cnn_dailymail-s42",
+            "R-pythia-70m-wikitext-s42",
+            "R-pythia-160m-cnn_dailymail-s42",
+            "R-pythia-160m-wikitext-s42",
+            "R-pythia-410m-wikitext-s42",
+            "R-smollm2-135m-wikitext-s42"
+          ],
+          "nonfluent_without_material_positive_gain": [
+            "R-pythia-70m-tinystories-s42",
+            "R-pythia-70m-cnn_dailymail-s42",
+            "R-pythia-70m-wikitext-s42",
+            "R-pythia-160m-cnn_dailymail-s42",
+            "R-pythia-160m-wikitext-s42",
+            "R-pythia-410m-wikitext-s42",
+            "R-smollm2-135m-wikitext-s42"
+          ],
+          "necessary_fluency_condition_holds": true
+        },
+        "independent_paired_diagnostic": {
+          "material_positive_arms": [
+            "R-pythia-410m-tinystories-s42",
+            "R-smollm2-360m-tinystories-s42",
+            "R-smollm2-360m-wikitext-s42"
+          ],
+          "material_positive_without_fluent_prior": [],
+          "necessary_fluency_condition_holds": true
+        },
+        "full_joint_hypothesis_testable": false,
+        "joint_hypothesis_limit": "The release does not give a preregistered threshold or retained claim-level measurement for an 'informative' or 'discriminative' reward signal, so only the paper's stated fluency necessary condition can be checked directly."
+      },
+      "claim_level_assessment": "ready_for_interpretation"
+    },
+    "M": {
+      "execution_counts": {
+        "pending": 0,
+        "unterminated": 0,
+        "failed": 0,
+        "invalid_complete": 0,
+        "completed": 15,
+        "completed_with_recovery": 0
+      },
+      "claim_ready_arms": 15,
+      "execution_manifest_protocol_versions": {
+        "1.8.0": 3,
+        "1.9.0": 6,
+        "1.7.0": 6
+      },
+      "recovery_arms": [],
+      "blackwell_exact_stack_reevaluations": {
+        "required": 5,
+        "completed": 5
+      },
+      "ppo_training_health": {
+        "completed_target": 12,
+        "target_shortfall_arms": [
+          "M-pythia-160m-tinystories-s42",
+          "M-pythia-160m-cnn_dailymail-s42",
+          "M-pythia-160m-wikitext-s42"
+        ],
+        "rollback_stop_arms": [
+          "M-pythia-160m-tinystories-s42",
+          "M-pythia-160m-cnn_dailymail-s42",
+          "M-pythia-160m-wikitext-s42"
+        ],
+        "corruption_events": 16,
+        "ratio_threshold_warnings": 453,
+        "negative_kl_warnings": 433
+      },
+      "numerical_matches": 5,
+      "numerical_match_arms": [
+        "M-pythia-70m-tinystories-s42",
+        "M-pythia-160m-tinystories-s42",
+        "M-pythia-160m-wikitext-s42",
+        "M-pythia-410m-cnn_dailymail-s42",
+        "M-smollm2-360m-cnn_dailymail-s42"
+      ],
+      "numerical_mismatch_arms": [
+        "M-pythia-70m-cnn_dailymail-s42",
+        "M-pythia-70m-wikitext-s42",
+        "M-pythia-160m-cnn_dailymail-s42",
+        "M-pythia-410m-tinystories-s42",
+        "M-pythia-410m-wikitext-s42",
+        "M-smollm2-135m-tinystories-s42",
+        "M-smollm2-135m-cnn_dailymail-s42",
+        "M-smollm2-135m-wikitext-s42",
+        "M-smollm2-360m-tinystories-s42",
+        "M-smollm2-360m-wikitext-s42"
+      ],
+      "direction_counts": {
+        "agrees": 3,
+        "disagrees": 1,
+        "inconclusive_interval_includes_zero": 11
+      },
+      "independent_paired_significance": {
+        "alpha": 0.05,
+        "unadjusted_arms": [
+          "M-pythia-410m-tinystories-s42",
+          "M-pythia-410m-cnn_dailymail-s42",
+          "M-pythia-410m-wikitext-s42",
+          "M-smollm2-135m-tinystories-s42",
+          "M-smollm2-135m-wikitext-s42",
+          "M-smollm2-360m-tinystories-s42",
+          "M-smollm2-360m-wikitext-s42"
+        ],
+        "holm_15_arms": [
+          "M-pythia-410m-cnn_dailymail-s42",
+          "M-pythia-410m-wikitext-s42",
+          "M-smollm2-135m-tinystories-s42",
+          "M-smollm2-135m-wikitext-s42",
+          "M-smollm2-360m-tinystories-s42",
+          "M-smollm2-360m-wikitext-s42"
+        ]
+      },
+      "capacity_headroom": {
+        "status": "complete",
+        "evaluated_arms": 15,
+        "paper_defined_criteria": {
+          "fluent_prior": "release-protocol SFT perplexity < 20",
+          "material_positive_gain": "reward delta > +0.2",
+          "source": "The released README states that every configuration with reward delta exceeding +0.2 has SFT PPL below 20."
+        },
+        "release_protocol": {
+          "material_positive_arms": [
+            "M-pythia-70m-wikitext-s42",
+            "M-pythia-410m-wikitext-s42",
+            "M-smollm2-135m-tinystories-s42",
+            "M-smollm2-135m-cnn_dailymail-s42",
+            "M-smollm2-135m-wikitext-s42",
+            "M-smollm2-360m-tinystories-s42",
+            "M-smollm2-360m-wikitext-s42"
+          ],
+          "material_positive_with_fluent_prior": [
+            "M-smollm2-135m-tinystories-s42",
+            "M-smollm2-135m-cnn_dailymail-s42",
+            "M-smollm2-360m-tinystories-s42",
+            "M-smollm2-360m-wikitext-s42"
+          ],
+          "material_positive_without_fluent_prior": [
+            "M-pythia-70m-wikitext-s42",
+            "M-pythia-410m-wikitext-s42",
+            "M-smollm2-135m-wikitext-s42"
+          ],
+          "nonfluent_arms": [
+            "M-pythia-70m-tinystories-s42",
+            "M-pythia-70m-cnn_dailymail-s42",
+            "M-pythia-70m-wikitext-s42",
+            "M-pythia-160m-cnn_dailymail-s42",
+            "M-pythia-160m-wikitext-s42",
+            "M-pythia-410m-wikitext-s42",
+            "M-smollm2-135m-wikitext-s42"
+          ],
+          "nonfluent_without_material_positive_gain": [
+            "M-pythia-70m-tinystories-s42",
+            "M-pythia-70m-cnn_dailymail-s42",
+            "M-pythia-160m-cnn_dailymail-s42",
+            "M-pythia-160m-wikitext-s42"
+          ],
+          "necessary_fluency_condition_holds": false
+        },
+        "independent_paired_diagnostic": {
+          "material_positive_arms": [
+            "M-pythia-410m-tinystories-s42",
+            "M-pythia-410m-cnn_dailymail-s42",
+            "M-pythia-410m-wikitext-s42",
+            "M-smollm2-135m-tinystories-s42",
+            "M-smollm2-135m-wikitext-s42",
+            "M-smollm2-360m-tinystories-s42",
+            "M-smollm2-360m-wikitext-s42"
+          ],
+          "material_positive_without_fluent_prior": [
+            "M-pythia-410m-wikitext-s42",
+            "M-smollm2-135m-wikitext-s42"
+          ],
+          "necessary_fluency_condition_holds": false
+        },
+        "full_joint_hypothesis_testable": false,
+        "joint_hypothesis_limit": "The release does not give a preregistered threshold or retained claim-level measurement for an 'informative' or 'discriminative' reward signal, so only the paper's stated fluency necessary condition can be checked directly."
+      },
+      "claim_level_assessment": "ready_for_interpretation"
+    }
+  },
+  "variance_scope": {
+    "interpretation": "The 15 model-by-corpus configurations are fixed experimental conditions, not 15 independent replicates of one method effect. Each Track R versus Track M comparison is a single-seed method contrast and does not estimate an expected effect over fresh training or decoding runs.",
+    "sources": {
+      "held_out_prompt_composition": {
+        "status": "estimated_conditionally",
+        "design": "10,000-replicate prompt-paired bootstrap over 200 retained prompt-level reward differences",
+        "captures": "variation across the retained held-out prompts, conditional on the trained checkpoints and retained generations",
+        "does_not_capture": [
+          "fresh training runs",
+          "fresh reward-model or PPO runs",
+          "fresh decoding draws",
+          "a new sample of model or corpus configurations"
+        ]
+      },
+      "training_seed": {
+        "status": "not_estimated",
+        "seeds_per_configuration": [
+          42
+        ],
+        "independent_runs_per_track_configuration": 1,
+        "limitation": "Training-to-training variance and seed-by-method interaction cannot be estimated."
+      },
+      "decoding": {
+        "status": "not_estimated",
+        "release_endpoint": "one unseeded sampled continuation per checkpoint and prompt",
+        "independent_endpoint": "one seeded deterministic continuation per checkpoint and prompt",
+        "limitation": "The deterministic endpoint removes decoding noise from that comparison; it does not estimate the distribution of sampled decoding outcomes."
+      },
+      "sft_between_tracks": {
+        "status": "controlled_not_estimated",
+        "design": "Track M reuses the matching Track R SFT checkpoint.",
+        "consequence": "This removes fresh SFT variation from the R-versus-M contrast but does not estimate SFT seed variance."
+      },
+      "reward_model_and_ppo_between_tracks": {
+        "status": "single_realization",
+        "design": "Each track trains reward-model and PPO stages once at seed 42.",
+        "limitation": "An observed R-versus-M difference can establish what happened in these frozen runs, but not that the method change will have the same magnitude or direction across fresh runs."
+      },
+      "hardware_and_software_stack": {
+        "status": "sensitivity_only",
+        "design": "Hardware and stack are recorded per arm; Blackwell checkpoints receive exact-stack reevaluation.",
+        "limitation": "These checks disclose and probe stack sensitivity but do not estimate a population variance across hardware or software environments."
+      },
+      "fixed_configuration_heterogeneity": {
+        "status": "described_not_sampled",
+        "design": "Five named models crossed with three named corpora.",
+        "limitation": "Across-arm heterogeneity is reported directly. It is not used as a standard error for a general method effect because the configurations were not sampled from a defined population."
+      },
+      "failures_and_recoveries": {
+        "status": "documented_not_replicated",
+        "design": "Every failure, rollback, recovery boundary, and resource event is retained.",
+        "limitation": "Recovery attempts share checkpoints with their source attempts and are not counted as independent training replicates."
+      }
+    },
+    "required_for_run_to_run_estimation": "Multiple independently executed training seeds per configuration and repeated sampled decoding from each retained checkpoint."
+  },
+  "arms": [
+    {
+      "ordinal": 1,
+      "arm_id": "R-pythia-70m-tinystories-s42",
+      "track": "R",
+      "model": "pythia-70m",
+      "dataset": "tinystories",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.0754,
+        "release_reward_delta": 0.057109375,
+        "release_prompt_bootstrap_95_ci": [
+          -0.187193359375,
+          0.30453320312499993
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": -0.012890625,
+        "independent_paired_bootstrap_95_ci": [
+          -0.12828125,
+          0.09953320312499997
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 2,
+      "arm_id": "R-pythia-70m-cnn_dailymail-s42",
+      "track": "R",
+      "model": "pythia-70m",
+      "dataset": "cnn_dailymail",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "GeForce RTX 3090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.1874,
+        "release_reward_delta": 0.078828125,
+        "release_prompt_bootstrap_95_ci": [
+          -0.151095703125,
+          0.311640625
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": -0.059375,
+        "independent_paired_bootstrap_95_ci": [
+          -0.19703125,
+          0.08367382812499997
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 3,
+      "arm_id": "R-pythia-70m-wikitext-s42",
+      "track": "R",
+      "model": "pythia-70m",
+      "dataset": "wikitext",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.0618,
+        "release_reward_delta": -0.102578125,
+        "release_prompt_bootstrap_95_ci": [
+          -0.330078125,
+          0.13484960937499993
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": 0.038671875,
+        "independent_paired_bootstrap_95_ci": [
+          -0.09015625,
+          0.17398632812499998
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 4,
+      "arm_id": "R-pythia-160m-tinystories-s42",
+      "track": "R",
+      "model": "pythia-160m",
+      "dataset": "tinystories",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": 0.2377,
+        "release_reward_delta": -0.04767578125,
+        "release_prompt_bootstrap_95_ci": [
+          -0.60252978515625,
+          0.4991899414062499
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": 0.137890625,
+        "independent_paired_bootstrap_95_ci": [
+          -0.020666992187499997,
+          0.29918164062499997
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 5,
+      "arm_id": "R-pythia-160m-cnn_dailymail-s42",
+      "track": "R",
+      "model": "pythia-160m",
+      "dataset": "cnn_dailymail",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.1976,
+        "release_reward_delta": -0.0821875,
+        "release_prompt_bootstrap_95_ci": [
+          -0.26485156249999997,
+          0.09921875
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": -0.00890625,
+        "independent_paired_bootstrap_95_ci": [
+          -0.12344140625,
+          0.10594140624999995
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 6,
+      "arm_id": "R-pythia-160m-wikitext-s42",
+      "track": "R",
+      "model": "pythia-160m",
+      "dataset": "wikitext",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "GeForce RTX 3090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": 0.0435,
+        "release_reward_delta": -0.1920458984375,
+        "release_prompt_bootstrap_95_ci": [
+          -0.6554798583984376,
+          0.2695339355468749
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": -0.137421875,
+        "independent_paired_bootstrap_95_ci": [
+          -0.3688701171875,
+          0.08721533203124987
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 7,
+      "arm_id": "R-pythia-410m-tinystories-s42",
+      "track": "R",
+      "model": "pythia-410m",
+      "dataset": "tinystories",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "GeForce RTX 3090",
+      "provenance": "EXACT",
+      "verdict": "MATCH",
+      "metrics": {
+        "published_reward_delta": 1.3549,
+        "release_reward_delta": 1.4715167236328126,
+        "release_prompt_bootstrap_95_ci": [
+          0.7397511749267578,
+          2.2281274719238278
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": 0.7813768768310547,
+        "independent_paired_bootstrap_95_ci": [
+          0.12461038017272952,
+          1.4270645122528074
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.25648743512564876,
+        "directional_assessment": "agrees"
+      }
+    },
+    {
+      "ordinal": 8,
+      "arm_id": "R-pythia-410m-cnn_dailymail-s42",
+      "track": "R",
+      "model": "pythia-410m",
+      "dataset": "cnn_dailymail",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "MATCH",
+      "metrics": {
+        "published_reward_delta": -0.2586,
+        "release_reward_delta": -0.5445378684997558,
+        "release_prompt_bootstrap_95_ci": [
+          -0.8633304023742675,
+          -0.23793332862854027
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": -0.20523025512695312,
+        "independent_paired_bootstrap_95_ci": [
+          -0.4924450759887695,
+          0.08835076522827132
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "agrees"
+      }
+    },
+    {
+      "ordinal": 9,
+      "arm_id": "R-pythia-410m-wikitext-s42",
+      "track": "R",
+      "model": "pythia-410m",
+      "dataset": "wikitext",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "GeForce RTX 3090",
+      "provenance": "EXACT",
+      "verdict": "MATCH",
+      "metrics": {
+        "published_reward_delta": -1.0429,
+        "release_reward_delta": -0.971552734375,
+        "release_prompt_bootstrap_95_ci": [
+          -1.4751292419433595,
+          -0.4611053466796879
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": -0.6228898620605469,
+        "independent_paired_bootstrap_95_ci": [
+          -1.1900794105529786,
+          -0.049172813415527906
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.4076359236407636,
+        "directional_assessment": "agrees"
+      }
+    },
+    {
+      "ordinal": 10,
+      "arm_id": "R-smollm2-135m-tinystories-s42",
+      "track": "R",
+      "model": "smollm2-135m",
+      "dataset": "tinystories",
+      "seed": 42,
+      "execution": "completed_with_recovery",
+      "claim_ready": true,
+      "recovery_used": true,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": 0.2255,
+        "release_reward_delta": 0.3138226318359375,
+        "release_prompt_bootstrap_95_ci": [
+          -0.11713824462890624,
+          0.7436867446899413
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": 0.138455810546875,
+        "independent_paired_bootstrap_95_ci": [
+          -0.20606982421874998,
+          0.4889371032714844
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 11,
+      "arm_id": "R-smollm2-135m-cnn_dailymail-s42",
+      "track": "R",
+      "model": "smollm2-135m",
+      "dataset": "cnn_dailymail",
+      "seed": 42,
+      "execution": "completed_with_recovery",
+      "claim_ready": true,
+      "recovery_used": true,
+      "host": "lab-devbox",
+      "gpu": "GeForce RTX 3090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.1937,
+        "release_reward_delta": -0.03282585144042969,
+        "release_prompt_bootstrap_95_ci": [
+          -0.35537713813781735,
+          0.2822823181152344
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": 0.10268646240234375,
+        "independent_paired_bootstrap_95_ci": [
+          -0.1932386779785156,
+          0.4048898391723631
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 12,
+      "arm_id": "R-smollm2-135m-wikitext-s42",
+      "track": "R",
+      "model": "smollm2-135m",
+      "dataset": "wikitext",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": 0.0151,
+        "release_reward_delta": -0.04226577758789062,
+        "release_prompt_bootstrap_95_ci": [
+          -0.2696068458557129,
+          0.17734530639648416
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": -0.1285223388671875,
+        "independent_paired_bootstrap_95_ci": [
+          -0.3197963256835938,
+          0.06273213195800777
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 13,
+      "arm_id": "R-smollm2-360m-tinystories-s42",
+      "track": "R",
+      "model": "smollm2-360m",
+      "dataset": "tinystories",
+      "seed": 42,
+      "execution": "completed_with_recovery",
+      "claim_ready": true,
+      "recovery_used": true,
+      "host": "lab-devbox",
+      "gpu": "RTX PRO 6000 Blackwell; exact-stack evaluation on RTX 3090",
+      "provenance": "COMPAT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": 0.7236,
+        "release_reward_delta": 0.2578976440429688,
+        "release_prompt_bootstrap_95_ci": [
+          -0.10988302612304686,
+          0.6377868499755859
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 0.3962100982666016,
+        "independent_paired_bootstrap_95_ci": [
+          0.08174965476989746,
+          0.7083070983886719
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.1986580134198658,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 14,
+      "arm_id": "R-smollm2-360m-cnn_dailymail-s42",
+      "track": "R",
+      "model": "smollm2-360m",
+      "dataset": "cnn_dailymail",
+      "seed": 42,
+      "execution": "completed_with_recovery",
+      "claim_ready": true,
+      "recovery_used": true,
+      "host": "lab-devbox",
+      "gpu": "RTX PRO 6000 Blackwell; exact-stack evaluation on RTX 3090",
+      "provenance": "COMPAT",
+      "verdict": "DIVERGES",
+      "metrics": {
+        "published_reward_delta": -0.0008,
+        "release_reward_delta": 0.32028701782226565,
+        "release_prompt_bootstrap_95_ci": [
+          0.12865437316894532,
+          0.5103760147094726
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 0.14476318359375,
+        "independent_paired_bootstrap_95_ci": [
+          -0.0525244140625,
+          0.33492309570312495
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "disagrees"
+      }
+    },
+    {
+      "ordinal": 15,
+      "arm_id": "R-smollm2-360m-wikitext-s42",
+      "track": "R",
+      "model": "smollm2-360m",
+      "dataset": "wikitext",
+      "seed": 42,
+      "execution": "completed_with_recovery",
+      "claim_ready": true,
+      "recovery_used": true,
+      "host": "lab-devbox",
+      "gpu": "RTX PRO 6000 Blackwell; exact-stack evaluation on RTX 3090",
+      "provenance": "COMPAT",
+      "verdict": "MATCH",
+      "metrics": {
+        "published_reward_delta": 0.2721,
+        "release_reward_delta": 0.3978582763671875,
+        "release_prompt_bootstrap_95_ci": [
+          0.1950249481201172,
+          0.6037511138916015
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": 0.61900634765625,
+        "independent_paired_bootstrap_95_ci": [
+          0.43588488769531253,
+          0.8054230957031251
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.00014999850001499987,
+        "directional_assessment": "agrees"
+      }
+    },
+    {
+      "ordinal": 16,
+      "arm_id": "M-pythia-70m-tinystories-s42",
+      "track": "M",
+      "model": "pythia-70m",
+      "dataset": "tinystories",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "GeForce RTX 3090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.0754,
+        "release_reward_delta": 0.19680130004882812,
+        "release_prompt_bootstrap_95_ci": [
+          -0.47341567611694335,
+          0.8716881637573239
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": -0.0741007697582245,
+        "independent_paired_bootstrap_95_ci": [
+          -0.4240448084920645,
+          0.26340817632526137
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 17,
+      "arm_id": "M-pythia-70m-cnn_dailymail-s42",
+      "track": "M",
+      "model": "pythia-70m",
+      "dataset": "cnn_dailymail",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.1874,
+        "release_reward_delta": 0.14046875,
+        "release_prompt_bootstrap_95_ci": [
+          -0.1036015625,
+          0.399375
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 0.048551840782165526,
+        "independent_paired_bootstrap_95_ci": [
+          -0.11674258303642272,
+          0.2114866731166839
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 18,
+      "arm_id": "M-pythia-70m-wikitext-s42",
+      "track": "M",
+      "model": "pythia-70m",
+      "dataset": "wikitext",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.0618,
+        "release_reward_delta": 0.27140625,
+        "release_prompt_bootstrap_95_ci": [
+          -0.025943359374999992,
+          0.5656367187499999
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": -0.07920865654945373,
+        "independent_paired_bootstrap_95_ci": [
+          -0.3036215205192566,
+          0.1301303242743015
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 19,
+      "arm_id": "M-pythia-160m-tinystories-s42",
+      "track": "M",
+      "model": "pythia-160m",
+      "dataset": "tinystories",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": 0.2377,
+        "release_reward_delta": -0.1148773193359375,
+        "release_prompt_bootstrap_95_ci": [
+          -0.6333701629638672,
+          0.40416194152832013
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": 0.18617248117923738,
+        "independent_paired_bootstrap_95_ci": [
+          -0.18445584630966189,
+          0.5444795774072407
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 20,
+      "arm_id": "M-pythia-160m-cnn_dailymail-s42",
+      "track": "M",
+      "model": "pythia-160m",
+      "dataset": "cnn_dailymail",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "GeForce RTX 3090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.1976,
+        "release_reward_delta": 0.15719894409179688,
+        "release_prompt_bootstrap_95_ci": [
+          -0.070562442779541,
+          0.3853568954467773
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 0.16449229955673217,
+        "independent_paired_bootstrap_95_ci": [
+          -0.0140702264085412,
+          0.3392691676542163
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.5527944720552794,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 21,
+      "arm_id": "M-pythia-160m-wikitext-s42",
+      "track": "M",
+      "model": "pythia-160m",
+      "dataset": "wikitext",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": 0.0435,
+        "release_reward_delta": 0.003152618408203125,
+        "release_prompt_bootstrap_95_ci": [
+          -0.2653484191894531,
+          0.27378487014770503
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": 0.06606109619140625,
+        "independent_paired_bootstrap_95_ci": [
+          -0.0964850472509861,
+          0.22302279137074943
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 22,
+      "arm_id": "M-pythia-410m-tinystories-s42",
+      "track": "M",
+      "model": "pythia-410m",
+      "dataset": "tinystories",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "RTX PRO 6000 Blackwell; exact-stack evaluation on RTX 3090",
+      "provenance": "COMPAT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": 1.3549,
+        "release_reward_delta": -0.2118743896484375,
+        "release_prompt_bootstrap_95_ci": [
+          -0.8536619110107422,
+          0.4293562469482421
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 0.6340134352445602,
+        "independent_paired_bootstrap_95_ci": [
+          0.048352041080594065,
+          1.2223805945515631
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.28259717402825973,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 23,
+      "arm_id": "M-pythia-410m-cnn_dailymail-s42",
+      "track": "M",
+      "model": "pythia-410m",
+      "dataset": "cnn_dailymail",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "GeForce RTX 3090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.2586,
+        "release_reward_delta": 0.0538360595703125,
+        "release_prompt_bootstrap_95_ci": [
+          -0.4590156555175781,
+          0.5521620635986327
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": 1.383223981410265,
+        "independent_paired_bootstrap_95_ci": [
+          0.7382292763106525,
+          2.022407019939273
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.00019999800001999982,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 24,
+      "arm_id": "M-pythia-410m-wikitext-s42",
+      "track": "M",
+      "model": "pythia-410m",
+      "dataset": "wikitext",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "RTX PRO 6000 Blackwell; exact-stack evaluation on RTX 3090",
+      "provenance": "COMPAT",
+      "verdict": "DIVERGES",
+      "metrics": {
+        "published_reward_delta": -1.0429,
+        "release_reward_delta": 1.6959249877929687,
+        "release_prompt_bootstrap_95_ci": [
+          1.0325188827514649,
+          2.333676170349121
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 1.713885405510664,
+        "independent_paired_bootstrap_95_ci": [
+          1.1028748480156063,
+          2.3391054985187947
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.00014999850001499987,
+        "directional_assessment": "disagrees"
+      }
+    },
+    {
+      "ordinal": 25,
+      "arm_id": "M-smollm2-135m-tinystories-s42",
+      "track": "M",
+      "model": "smollm2-135m",
+      "dataset": "tinystories",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "MATCH",
+      "metrics": {
+        "published_reward_delta": 0.2255,
+        "release_reward_delta": 2.256296844482422,
+        "release_prompt_bootstrap_95_ci": [
+          1.9794986724853516,
+          2.5336235580444333
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 1.994680215343833,
+        "independent_paired_bootstrap_95_ci": [
+          1.6793944870308042,
+          2.300301525192335
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.00014999850001499987,
+        "directional_assessment": "agrees"
+      }
+    },
+    {
+      "ordinal": 26,
+      "arm_id": "M-smollm2-135m-cnn_dailymail-s42",
+      "track": "M",
+      "model": "smollm2-135m",
+      "dataset": "cnn_dailymail",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "GeForce RTX 3090",
+      "provenance": "EXACT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.1937,
+        "release_reward_delta": 0.20201492309570312,
+        "release_prompt_bootstrap_95_ci": [
+          -0.08042143249511718,
+          0.4748914527893066
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 0.11711573703214526,
+        "independent_paired_bootstrap_95_ci": [
+          -0.12368584086187183,
+          0.3584699927587062
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 1.0,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 27,
+      "arm_id": "M-smollm2-135m-wikitext-s42",
+      "track": "M",
+      "model": "smollm2-135m",
+      "dataset": "wikitext",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-workstation",
+      "gpu": "GeForce RTX 4090",
+      "provenance": "EXACT",
+      "verdict": "MATCH",
+      "metrics": {
+        "published_reward_delta": 0.0151,
+        "release_reward_delta": 0.4184381103515625,
+        "release_prompt_bootstrap_95_ci": [
+          0.2013202667236328,
+          0.6319182891845703
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 0.7660917241126299,
+        "independent_paired_bootstrap_95_ci": [
+          0.5293021465586498,
+          1.0089837227091192
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.00014999850001499987,
+        "directional_assessment": "agrees"
+      }
+    },
+    {
+      "ordinal": 28,
+      "arm_id": "M-smollm2-360m-tinystories-s42",
+      "track": "M",
+      "model": "smollm2-360m",
+      "dataset": "tinystories",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "RTX PRO 6000 Blackwell; exact-stack evaluation on RTX 3090",
+      "provenance": "COMPAT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": 0.7236,
+        "release_reward_delta": 0.2992254638671875,
+        "release_prompt_bootstrap_95_ci": [
+          -0.0621014404296875,
+          0.6599698486328124
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 0.9358187199756504,
+        "independent_paired_bootstrap_95_ci": [
+          0.5433200010266155,
+          1.31152628327813
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.00014999850001499987,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 29,
+      "arm_id": "M-smollm2-360m-cnn_dailymail-s42",
+      "track": "M",
+      "model": "smollm2-360m",
+      "dataset": "cnn_dailymail",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "RTX PRO 6000 Blackwell; exact-stack evaluation on RTX 3090",
+      "provenance": "COMPAT",
+      "verdict": "INCONCLUSIVE",
+      "metrics": {
+        "published_reward_delta": -0.0008,
+        "release_reward_delta": 0.12042739868164062,
+        "release_prompt_bootstrap_95_ci": [
+          -0.007357379913330077,
+          0.25207443618774406
+        ],
+        "published_delta_inside_release_interval": true,
+        "independent_paired_reward_delta": 0.09071953177452087,
+        "independent_paired_bootstrap_95_ci": [
+          -0.025356979055330155,
+          0.20870278915949161
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.8974610253897461,
+        "directional_assessment": "inconclusive_interval_includes_zero"
+      }
+    },
+    {
+      "ordinal": 30,
+      "arm_id": "M-smollm2-360m-wikitext-s42",
+      "track": "M",
+      "model": "smollm2-360m",
+      "dataset": "wikitext",
+      "seed": 42,
+      "execution": "completed",
+      "claim_ready": true,
+      "recovery_used": false,
+      "host": "lab-devbox",
+      "gpu": "RTX PRO 6000 Blackwell; exact-stack evaluation on RTX 3090",
+      "provenance": "COMPAT",
+      "verdict": "MATCH",
+      "metrics": {
+        "published_reward_delta": 0.2721,
+        "release_reward_delta": 0.5556210327148438,
+        "release_prompt_bootstrap_95_ci": [
+          0.31702261352539063,
+          0.7953452987670897
+        ],
+        "published_delta_inside_release_interval": false,
+        "independent_paired_reward_delta": 1.26780154556036,
+        "independent_paired_bootstrap_95_ci": [
+          0.9955762472245843,
+          1.5328343212511388
+        ],
+        "independent_paired_sign_flip_pvalue_holm_15": 0.00014999850001499987,
+        "directional_assessment": "agrees"
+      }
+    }
+  ]
+}

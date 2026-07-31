@@ -19,7 +19,7 @@ nulspec.com {
 
 	@nomination_api {
 		method POST OPTIONS
-		path /api/nominations
+		path /api/nominations /api/extension-votes
 	}
 	handle @nomination_api {
 		request_body {
@@ -30,7 +30,7 @@ nulspec.com {
 		}
 	}
 
-	@nomination_api_wrong_method path /api/nominations
+	@nomination_api_wrong_method path /api/nominations /api/extension-votes
 	handle @nomination_api_wrong_method {
 		header Allow "POST, OPTIONS"
 		respond 405

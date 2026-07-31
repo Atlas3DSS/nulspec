@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { NulspecMark } from "@/components/nulspec-mark";
+import { getLatestStudy } from "@/lib/study";
 
 export function SiteHeader() {
+  const study = getLatestStudy();
   return (
     <header className="site-header">
       <div className="shell site-header__inner">
@@ -13,7 +15,7 @@ export function SiteHeader() {
         <nav aria-label="Primary navigation">
           <ul className="site-nav">
             <li>
-              <Link href="/studies/001">Study 001</Link>
+              <Link href={`/studies/${study.study_id}`}>Study {study.study_id}</Link>
             </li>
             <li>
               <Link href="/#method">Method</Link>

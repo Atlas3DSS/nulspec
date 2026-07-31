@@ -238,6 +238,15 @@ def switch_current(target: Path) -> None:
         temporary.unlink(missing_ok=True)
 
 
+def prepare_release_directory(directory: Path) -> None:
+    """Make the validated release root traversable by the unprivileged web server."""
+    if directory.is_symlink() or not directory.is_dir():
+        raise DeployError("release destination is not a real directory")
+    directory.chmod(0o755)
+    if directory.stat().st_mode & 0o777 != 0o755:
+        raise DeployError("release destination permissions are not 0755")
+
+
 def verify_live(manifest: dict[str, object]) -> None:
     health_paths = manifest["health_paths"]
     assert isinstance(health_paths, list)
@@ -305,6 +314,7 @@ def install() -> None:
                 shutil.rmtree(staging)
             else:
                 os.rename(staging, destination)
+            prepare_release_directory(destination)
             switch_current(destination)
             switched = True
             try:

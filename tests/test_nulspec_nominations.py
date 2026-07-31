@@ -18,6 +18,7 @@ from nulspec_nominations import (  # noqa: E402
     NominationRelay,
     NominationValidationError,
     RateLimitExceeded,
+    RelayUnavailable,
     ReleaseManifestRegistry,
     SubmissionResult,
     normalize_arxiv_url,
@@ -26,6 +27,7 @@ from nulspec_nominations import (  # noqa: E402
     register_nulspec_nomination_routes,
     validate_nomination,
 )
+from nulspec_mail_store import NominationStore  # noqa: E402
 
 
 class FakeResponse:
@@ -44,6 +46,16 @@ class FakeSession:
     def post(self, url: str, **kwargs) -> FakeResponse:
         self.calls.append({"url": url, **kwargs})
         return FakeResponse()
+
+
+class SequencedSession(FakeSession):
+    def __init__(self, statuses: list[int]):
+        super().__init__()
+        self.statuses = statuses
+
+    def post(self, url: str, **kwargs) -> FakeResponse:
+        self.calls.append({"url": url, **kwargs})
+        return FakeResponse(status_code=self.statuses.pop(0))
 
 
 class FakeRelay:
@@ -207,6 +219,36 @@ def test_relay_limits_fourth_submission_from_one_ip() -> None:
             ),
             client_ip="203.0.113.20",
         )
+
+
+def test_failed_discord_delivery_keeps_the_same_durable_reference(
+    tmp_path: Path,
+) -> None:
+    session = SequencedSession([400, 200])
+    relay = NominationRelay(
+        channel_id=1532567350472343653,
+        bot_token="test-token",
+        session=session,
+        now=lambda: datetime(2026, 7, 31, 2, 30, tzinfo=timezone.utc),
+        store=NominationStore(tmp_path / "mail.sqlite3"),
+    )
+    nomination = validate_nomination(
+        "researcher@example.com",
+        "https://arxiv.org/abs/2607.25091",
+    )
+
+    with pytest.raises(RelayUnavailable):
+        relay.submit(nomination, client_ip="203.0.113.25")
+    recovered = relay.submit(nomination, client_ip="203.0.113.25")
+    duplicate = relay.submit(nomination, client_ip="203.0.113.25")
+
+    first_reference = session.calls[0]["json"]["embeds"][0]["fields"][2]["value"]
+    second_reference = session.calls[1]["json"]["embeds"][0]["fields"][2]["value"]
+    assert recovered.reference == first_reference == second_reference
+    assert session.calls[0]["json"]["nonce"] == session.calls[1]["json"]["nonce"]
+    assert session.calls[0]["json"]["enforce_nonce"] is True
+    assert recovered.duplicate is False
+    assert duplicate == SubmissionResult(reference=recovered.reference, duplicate=True)
 
 
 def test_flask_route_accepts_only_the_two_fields_and_honeypot() -> None:

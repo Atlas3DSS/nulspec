@@ -16,6 +16,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 COMMIT = re.compile(r"^[0-9a-f]{40}$")
 MANIFEST_NAME = "release.json"
+PUBLIC_ORIGIN = "https://nulspec.com"
 
 
 class ManifestError(Exception):
@@ -91,6 +92,11 @@ def build_manifest(static_directory: Path, commit: str) -> dict[str, Any]:
     publication_records = []
     for bundle, raw in publications:
         study_id = bundle["study"]["id"]
+        artifact_paths = {
+            artifact["role"]: artifact["public_path"]
+            for artifact in bundle["artifacts"]
+        }
+        full_report_path = artifact_paths["full_report"]
         health_paths.add(f"/studies/{study_id}/")
         for artifact in bundle["artifacts"]:
             health_paths.add(f"/{artifact['public_path']}")
@@ -103,6 +109,13 @@ def build_manifest(static_directory: Path, commit: str) -> dict[str, Any]:
                 "bundle_sha256": sha256(raw),
                 "evidence_revision": bundle["source"]["evidence_revision"],
                 "extension_vote": bundle["extension_call_to_action"],
+                "result_notification": {
+                    "study_url": f"{PUBLIC_ORIGIN}/studies/{study_id}/",
+                    "full_report_url": f"{PUBLIC_ORIGIN}/{full_report_path}",
+                    "headline": bundle["verdict"]["headline"],
+                    "summary": bundle["verdict"]["summary"],
+                    "key_findings": bundle["verdict"]["key_findings"],
+                },
             }
         )
     for path in health_paths - {"/release.json"}:

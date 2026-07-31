@@ -2,7 +2,7 @@
   "schema_version": 1,
   "study_id": "001",
   "state": "RUNNING",
-  "as_of_utc": "2026-07-31T00:43:40Z",
+  "as_of_utc": "2026-07-31T01:29:01Z",
   "paper": {
     "title": "Towards Robust Reinforcement Learning for Small-Scale Language Model Agents",
     "arxiv_id": "2607.25091",
@@ -114,7 +114,7 @@
       "gpu": "RTX 3090",
       "host": "wtatum84",
       "provenance": "EXACT",
-      "state": "RUNNING",
+      "state": "DONE",
       "verdict": null
     },
     {
@@ -125,7 +125,7 @@
       "gpu": "RTX 4090",
       "host": "MonkeyPC",
       "provenance": "EXACT",
-      "state": "RUNNING",
+      "state": "FAILED",
       "verdict": null
     },
     {
@@ -136,7 +136,7 @@
       "gpu": "RTX 3090",
       "host": "wtatum84",
       "provenance": "EXACT",
-      "state": "QUEUED",
+      "state": "RUNNING",
       "verdict": null
     },
     {
@@ -158,7 +158,7 @@
       "gpu": "RTX PRO 6000",
       "host": "wtatum84",
       "provenance": "COMPAT",
-      "state": "RUNNING",
+      "state": "FAILED",
       "verdict": null
     },
     {
@@ -169,7 +169,7 @@
       "gpu": "RTX PRO 6000",
       "host": "wtatum84",
       "provenance": "COMPAT",
-      "state": "RUNNING",
+      "state": "FAILED",
       "verdict": null
     },
     {
@@ -180,7 +180,7 @@
       "gpu": "RTX PRO 6000",
       "host": "wtatum84",
       "provenance": "COMPAT",
-      "state": "RUNNING",
+      "state": "FAILED",
       "verdict": null
     }
   ],
@@ -196,6 +196,12 @@
       "scope": "Wall-clock execution only",
       "what": "The 15 configurations are scheduled concurrently across three locally controlled GPUs.",
       "impact_control": "Data, seed, model, hyperparameters, and evaluation remain unchanged; host, GPU, stack, pause events, and commit are recorded per arm."
+    },
+    {
+      "id": "D-003",
+      "scope": "Four SmolLM2 attempts",
+      "what": "Four immutable attempts now have terminal failure manifests. The 135M TinyStories attempt exited after SFT; the three RTX PRO 6000 attempts ended before completing the full SFT, reward, PPO, and evaluation pipeline.",
+      "impact_control": "Partial artifacts remain attached to their original attempt IDs and do not count as completed runs. Any recovery must create a new attempt with explicit provenance linkage; the claim-level result gate remains closed."
     }
   ]
 }

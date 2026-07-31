@@ -1,5 +1,17 @@
 import Link from "next/link";
-import { studyCounts } from "@/lib/study";
+import {
+  stateMeta,
+  studyCounts,
+  type ArmState,
+} from "@/lib/study";
+
+const statusOrder: ArmState[] = [
+  "DONE",
+  "RUNNING",
+  "QUEUED",
+  "FAILED",
+  "ABORTED",
+];
 
 export function StatusStrip() {
   const counts = studyCounts();
@@ -16,7 +28,14 @@ export function StatusStrip() {
         </div>
         <p>
           <span className="status-strip__counts">
-            {counts.DONE} done · {counts.RUNNING} running · {counts.QUEUED} queued ·{" "}
+            {statusOrder
+              .filter((state) => counts[state] > 0)
+              .map(
+                (state) =>
+                  `${counts[state]} ${stateMeta[state].label.toLowerCase()}`,
+              )
+              .join(" · ")}
+            {" · "}
           </span>
           <span className="status-strip__warning">conclusions not final</span>
         </p>

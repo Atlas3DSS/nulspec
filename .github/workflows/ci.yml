@@ -161,8 +161,12 @@ jobs:
           test -n "$DEPLOY_HOST"
           test -n "$DEPLOY_PORT"
           test -n "$DEPLOY_USER"
+          deploy_host="$(printf '%s' "$DEPLOY_HOST" | tr -d '[:space:]')"
           deploy_port="$(printf '%s' "$DEPLOY_PORT" | tr -d '[:space:]')"
+          deploy_user="$(printf '%s' "$DEPLOY_USER" | tr -d '[:space:]')"
+          [[ "$deploy_host" =~ ^[A-Za-z0-9.-]+$ ]]
           [[ "$deploy_port" =~ ^[0-9]{1,5}$ ]]
+          [[ "$deploy_user" =~ ^[a-z_][a-z0-9_-]{0,31}$ ]]
           (( deploy_port >= 1 && deploy_port <= 65535 ))
           tar -C out -cf - . | ssh \
             -F /dev/null \
@@ -174,7 +178,7 @@ jobs:
             -o IdentitiesOnly=yes \
             -o StrictHostKeyChecking=yes \
             -o UserKnownHostsFile="$RUNNER_TEMP/nulspec-ssh/known_hosts" \
-            "$DEPLOY_USER@$DEPLOY_HOST"
+            "$deploy_user@$deploy_host"
 
       - name: Verify public release provenance
         env:

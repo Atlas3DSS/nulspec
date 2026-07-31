@@ -161,10 +161,13 @@ jobs:
           test -n "$DEPLOY_HOST"
           test -n "$DEPLOY_PORT"
           test -n "$DEPLOY_USER"
+          deploy_port="$(printf '%s' "$DEPLOY_PORT" | tr -d '[:space:]')"
+          [[ "$deploy_port" =~ ^[0-9]{1,5}$ ]]
+          (( deploy_port >= 1 && deploy_port <= 65535 ))
           tar -C out -cf - . | ssh \
             -F /dev/null \
             -T \
-            -p "$DEPLOY_PORT" \
+            -p "$deploy_port" \
             -i "$RUNNER_TEMP/nulspec-ssh/id_ed25519" \
             -o BatchMode=yes \
             -o ConnectTimeout=15 \

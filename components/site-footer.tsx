@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NulspecMark } from "@/components/nulspec-mark";
 import { GITHUB_URL, KOFI_URL, NOMINATE_URL } from "@/lib/study";
 
 export function SiteFooter() {
@@ -8,6 +9,7 @@ export function SiteFooter() {
         <div className="site-footer__top">
           <div>
             <p className="wordmark wordmark--footer" aria-label="NULSPEC">
+              <NulspecMark className="wordmark__mark" />
               <span>NUL</span>
               <span className="wordmark__accent">SPEC</span>
             </p>

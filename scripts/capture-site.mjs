@@ -45,20 +45,6 @@ const scenarios = [
     height: 844,
     expectedLedgerRows: 15,
   },
-  {
-    name: "logo-lab-desktop",
-    path: "/logo-lab",
-    width: 1440,
-    height: 900,
-    expectedLedgerRows: 0,
-  },
-  {
-    name: "logo-lab-mobile",
-    path: "/logo-lab",
-    width: 390,
-    height: 844,
-    expectedLedgerRows: 0,
-  },
 ];
 
 const report = [];
@@ -102,7 +88,7 @@ for (const scenario of scenarios) {
       scrollWidth: document.documentElement.scrollWidth,
       clientWidth: viewportWidth,
       ledgerRows: document.querySelectorAll(".run-table tbody tr").length,
-      logoOptions: document.querySelectorAll(".logo-option").length,
+      brandMarks: document.querySelectorAll(".wordmark__mark").length,
       nominationFields: [
         ...document.querySelectorAll(".nomination-form__field input"),
       ].map((element) => element.getAttribute("name")),
@@ -142,7 +128,7 @@ for (const scenario of scenarios) {
     !response?.ok() ||
     diagnostics.horizontalOverflow ||
     diagnostics.ledgerRows !== scenario.expectedLedgerRows ||
-    diagnostics.logoOptions !== (scenario.path === "/logo-lab" ? 20 : 0) ||
+    diagnostics.brandMarks !== 2 ||
     diagnostics.nominationFields.length !== (scenario.path === "/" ? 2 : 0) ||
     (scenario.path === "/" &&
       diagnostics.nominationFields.join(",") !== "email,paper") ||
@@ -159,6 +145,13 @@ for (const scenario of scenarios) {
   await page.close();
 }
 
+const removedLogoLab = await fetch(`${baseUrl}/logo-lab`, {
+  redirect: "manual",
+});
+if (removedLogoLab.status !== 404) {
+  failed = true;
+}
+
 await browser.close();
 await writeFile(
   resolve(outputDir, "browser-report.json"),
@@ -172,5 +165,10 @@ for (const item of report) {
       `${item.accessibility.length} accessibility violations`,
   );
 }
+
+console.log(
+  `${removedLogoLab.status === 404 ? "PASS" : "FAIL"} removed-logo-lab: ` +
+    `HTTP ${removedLogoLab.status}`,
+);
 
 if (failed) process.exitCode = 1;

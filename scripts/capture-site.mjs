@@ -67,7 +67,7 @@ const scenarios = [
   },
   {
     name: "arm-evidence-desktop",
-    path: "/studies/260725091/arms/R-pythia-70m-tinystories-s42",
+    path: "/studies/260725091/arms/R-pythia-70m-tinystories-s42#comparison",
     width: 1440,
     height: 900,
     expectedLedgerRows: 0,
@@ -76,10 +76,13 @@ const scenarios = [
     expectedExtensionOptions: 0,
     expectedSignalVerdicts: 0,
     expectedArmSections: 5,
+    expectedArmTabs: 5,
+    expectedActiveTab: "Comparison",
+    expectedVisibleIntervalPlots: 1,
   },
   {
     name: "arm-evidence-mobile",
-    path: "/studies/260725091/arms/R-pythia-70m-tinystories-s42",
+    path: "/studies/260725091/arms/R-pythia-70m-tinystories-s42#provenance",
     width: 390,
     height: 844,
     expectedLedgerRows: 0,
@@ -88,6 +91,24 @@ const scenarios = [
     expectedExtensionOptions: 0,
     expectedSignalVerdicts: 0,
     expectedArmSections: 5,
+    expectedArmTabs: 5,
+    expectedActiveTab: "Provenance",
+    expectedVisibleIntervalPlots: 0,
+  },
+  {
+    name: "arm-interval-mobile",
+    path: "/studies/260725091/arms/R-pythia-70m-tinystories-s42#comparison",
+    width: 390,
+    height: 844,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 5,
+    expectedArmTabs: 5,
+    expectedActiveTab: "Comparison",
+    expectedVisibleIntervalPlots: 1,
   },
 ];
 
@@ -105,12 +126,22 @@ for (const scenario of scenarios) {
     waitUntil: "networkidle",
   });
   await page.evaluate(() => document.fonts.ready);
+  if (scenario.expectedActiveTab) {
+    await page.waitForFunction(
+      (expected) =>
+        document
+          .querySelector('.arm-tabs [role="tab"][aria-selected="true"]')
+          ?.textContent?.trim() === expected,
+      scenario.expectedActiveTab,
+    );
+  }
 
   const diagnostics = await page.evaluate(() => {
     const viewportWidth = document.documentElement.clientWidth;
     const overflowingElements = [...document.querySelectorAll("body *")]
       .filter((element) => {
         if (element.closest(".table-scroll")) return false;
+        if (element.closest(".arm-tabs__list")) return false;
         if (element.closest(".nomination-form__trap")) return false;
         if (element.closest(".extension-vote__trap")) return false;
         const rect = element.getBoundingClientRect();
@@ -169,9 +200,45 @@ for (const scenario of scenarios) {
       ].filter((id) => document.getElementById(id)),
       deeperEvidenceHeading: document.querySelector(".arm-unavailable h3")
         ?.textContent?.trim(),
+      armTabs: document.querySelectorAll('.arm-tabs [role="tab"]').length,
+      visibleArmPanels: document.querySelectorAll(
+        '.arm-tabs [role="tabpanel"]:not([hidden])',
+      ).length,
+      activeArmTab: document
+        .querySelector('.arm-tabs [role="tab"][aria-selected="true"]')
+        ?.textContent?.trim(),
+      stickyTabPosition: document.querySelector(".arm-tabs__sticky")
+        ? getComputedStyle(document.querySelector(".arm-tabs__sticky")).position
+        : undefined,
+      intervalPlots: document.querySelectorAll(".arm-interval-plot").length,
+      visibleIntervalPlots: [...document.querySelectorAll(".arm-interval-plot")]
+        .filter((element) => element.getClientRects().length > 0).length,
       overflowingElements,
     };
   });
+
+  let tabInteraction;
+  if (scenario.expectedArmTabs) {
+    tabInteraction = await page.evaluate(async (expectedActiveTab) => {
+      const evidenceTab = [...document.querySelectorAll(".arm-tabs [role=tab]")]
+        .find((element) => element.textContent?.trim() === "Evidence");
+      const expectedTab = [...document.querySelectorAll(".arm-tabs [role=tab]")]
+        .find((element) => element.textContent?.trim() === expectedActiveTab);
+      const before = window.scrollY;
+      evidenceTab?.click();
+      await new Promise(requestAnimationFrame);
+      const after = window.scrollY;
+      const evidenceSelected = evidenceTab?.getAttribute("aria-selected") === "true";
+      expectedTab?.click();
+      await new Promise(requestAnimationFrame);
+      return {
+        clickPreservedScroll: Math.abs(after - before) < 2,
+        evidenceSelected,
+        restoredActiveTab:
+          expectedTab?.getAttribute("aria-selected") === "true",
+      };
+    }, scenario.expectedActiveTab);
+  }
 
   await page.screenshot({
     path: resolve(outputDir, `${scenario.name}-viewport.png`),
@@ -217,12 +284,25 @@ for (const scenario of scenarios) {
     diagnostics.armSections.length !== scenario.expectedArmSections ||
     (scenario.expectedArmSections > 0 &&
       diagnostics.deeperEvidenceHeading !== "Deeper evidence is not yet public.") ||
+    diagnostics.armTabs !== (scenario.expectedArmTabs ?? 0) ||
+    diagnostics.visibleArmPanels !== (scenario.expectedArmTabs ? 1 : 0) ||
+    diagnostics.activeArmTab !== scenario.expectedActiveTab ||
+    diagnostics.stickyTabPosition !==
+      (scenario.expectedArmTabs ? "sticky" : undefined) ||
+    diagnostics.intervalPlots !== (scenario.expectedArmTabs ? 1 : 0) ||
+    diagnostics.visibleIntervalPlots !==
+      (scenario.expectedVisibleIntervalPlots ?? 0) ||
+    (scenario.expectedArmTabs &&
+      (!tabInteraction?.clickPreservedScroll ||
+        !tabInteraction.evidenceSelected ||
+        !tabInteraction.restoredActiveTab)) ||
     accessibility.length > 0;
   failed ||= scenarioFailed;
   report.push({
     ...scenario,
     status: response?.status(),
     diagnostics,
+    tabInteraction,
     accessibility,
     passed: !scenarioFailed,
   });

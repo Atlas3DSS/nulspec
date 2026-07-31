@@ -2,7 +2,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 export const NOMINATE_URL = "/#nominate";
-export const KOFI_URL = "https://ko-fi.com/monkeymind101";
+export const KOFI_URL = "https://ko-fi.com/nulspec";
 export const GITHUB_URL = "https://github.com/Atlas3DSS/nulspec";
 
 export type ArmState = "QUEUED" | "RUNNING" | "DONE" | "FAILED" | "ABORTED";

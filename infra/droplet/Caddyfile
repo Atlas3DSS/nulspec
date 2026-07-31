@@ -1,0 +1,37 @@
+{
+	admin 127.0.0.1:2019
+	servers :443 {
+		protocols h1 h2
+	}
+}
+
+discorddownloads.atlas3dss.com {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		-Server
+	}
+
+	@allowed {
+		method GET HEAD
+		path / /health /tommy /bob /claude /george /kevin /kevin-the-klanker /klanker /downloads/*
+	}
+	handle @allowed {
+		reverse_proxy 127.0.0.1:8080
+	}
+
+	@known_path path / /health /tommy /bob /claude /george /kevin /kevin-the-klanker /klanker /downloads/*
+	handle @known_path {
+		header Allow "GET, HEAD"
+		respond 405
+	}
+
+	handle {
+		respond 404
+	}
+}
+
+import /etc/caddy/sites-enabled/*.caddy

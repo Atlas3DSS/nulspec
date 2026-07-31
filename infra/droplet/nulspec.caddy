@@ -1,0 +1,31 @@
+www.nulspec.com {
+	redir https://nulspec.com{uri} permanent
+}
+
+nulspec.com {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), geolocation=(), microphone=()"
+		-Server
+	}
+
+	@immutable path /_next/static/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	@not_read not method GET HEAD
+	handle @not_read {
+		header Allow "GET, HEAD"
+		respond 405
+	}
+
+	handle {
+		root * /srv/nulspec/current
+		try_files {path} {path}/index.html =404
+		file_server
+	}
+}

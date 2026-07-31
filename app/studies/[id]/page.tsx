@@ -113,14 +113,14 @@ export default async function StudyPage({ params }: StudyPageProps) {
           <div className="shell study-section__grid">
             <div className="study-section__number">01</div>
             <div className="study-section__body">
-              <p className="section-kicker">Claim under test</p>
-              <h2>A complete matrix, not a favorable checkpoint.</h2>
+              <p className="section-kicker">Claim under evaluation</p>
+              <h2>Registered scope and completion status</h2>
               <p className="study-section__lead">{study.study.claim_under_test}</p>
               <p>
-                The registered family contains {study.completion.registered_arms} selected
-                arms across {study.completion.tracks.length} separately interpreted tracks.
-                Every selected arm reached a terminal, claim-ready state before the verdict
-                gate opened.
+                The protocol registers {study.completion.registered_arms} selected arms
+                across {study.completion.tracks.length} separately interpreted tracks.
+                All selected arms reached a terminal, claim-ready state before the study
+                verdict was calculated.
               </p>
             </div>
           </div>
@@ -131,7 +131,7 @@ export default async function StudyPage({ params }: StudyPageProps) {
             <div className="study-section__number">02</div>
             <div className="study-section__body">
               <p className="section-kicker">Frozen protocol</p>
-              <h2>“Exact” is a versioned statement.</h2>
+              <h2>Protocol and source revisions</h2>
               <dl className="digest-list">
                 <div>
                   <dt>Execution protocol</dt>
@@ -168,7 +168,7 @@ export default async function StudyPage({ params }: StudyPageProps) {
             <div className="study-section__number">03</div>
             <div className="study-section__body">
               <p className="section-kicker">Hardware and stack provenance</p>
-              <h2>Observed hardware, neutral lab identities.</h2>
+              <h2>Observed hardware and software profiles</h2>
               <div className="table-scroll" tabIndex={0}>
                 <table className="hardware-table">
                   <thead>
@@ -221,7 +221,7 @@ export default async function StudyPage({ params }: StudyPageProps) {
             <div className="study-section__number">05</div>
             <div className="study-section__body">
               <p className="section-kicker">Deviation register</p>
-              <h2>Material differences stay attached to the result.</h2>
+              <h2>Material differences from the published procedure</h2>
               <ol className="deviation-list">
                 {study.deviations.map((deviation) => (
                   <li key={deviation.id}>
@@ -251,13 +251,13 @@ export default async function StudyPage({ params }: StudyPageProps) {
 
               <div className="result-columns">
                 <div>
-                  <h3>What the evidence says</h3>
+                  <h3>Evidence summary</h3>
                   <ul>
                     {study.verdict.key_findings.map((finding) => <li key={finding}>{finding}</li>)}
                   </ul>
                 </div>
                 <div>
-                  <h3>Limits on the claim</h3>
+                  <h3>Interpretation limits</h3>
                   <ul>
                     {study.verdict.limitations.map((limitation) => <li key={limitation}>{limitation}</li>)}
                   </ul>
@@ -270,9 +270,9 @@ export default async function StudyPage({ params }: StudyPageProps) {
                 ))}
               </div>
               <p className="result-provenance">
-                Public bundle bound to evidence revision{" "}
-                <code>{study.source.evidence_revision}</code>. Artifact links are verified
-                against the SHA-256 digests shown above before deployment.
+                The public bundle records evidence revision{" "}
+                <code>{study.source.evidence_revision}</code>. During deployment, each
+                artifact is checked against the SHA-256 digest shown above.
               </p>
             </div>
           </div>
@@ -282,18 +282,20 @@ export default async function StudyPage({ params }: StudyPageProps) {
           <div className="shell study-section__grid">
             <div className="study-section__number">EXT</div>
             <div className="study-section__body">
-              <p className="section-kicker">Extensions remain fenced</p>
-              <h2>New evidence may extend this record, never rewrite it.</h2>
+              <p className="section-kicker">Post-publication extensions</p>
+              <h2>Extensions are reported separately from the primary result</h2>
               <p>
-                Reviewer diagnostics, additional seeds, ablations, and future hardware
-                sensitivity checks remain separate from this frozen primary verdict.
-                Any extension receives its own provenance and cannot silently change the
-                completed run manifest.
+                Additional seeds, ablations, reviewer diagnostics, and hardware
+                sensitivity checks are recorded as extensions. Each extension receives
+                separate provenance and does not modify the completed primary run
+                manifest or verdict.
               </p>
               {study.frozen_primary_result && (
                 <p className="extension-fence__lock">
-                  FROZEN PRIMARY RESULT · {study.frozen_primary_result.claim_ready_arms}/
-                  {study.frozen_primary_result.registered_arms} CLAIM-READY · REWRITABLE: NO
+                  PRIMARY RESULT · FROZEN ·{" "}
+                  {study.frozen_primary_result.claim_ready_arms}/
+                  {study.frozen_primary_result.registered_arms} CLAIM-READY · EXTENSIONS
+                  DO NOT MODIFY THIS RESULT
                 </p>
               )}
               {study.extension_call_to_action && (
@@ -309,12 +311,12 @@ export default async function StudyPage({ params }: StudyPageProps) {
         <section className="study-cta">
           <div className="shell study-cta__grid">
             <div>
-              <p className="section-kicker">Follow or challenge the work</p>
-              <h2>Every useful objection should become a reproducible test.</h2>
+              <p className="section-kicker">Future replication work</p>
+              <h2>Propose another paper or fund additional replication capacity</h2>
             </div>
             <div className="button-row">
               <a className="button button--primary" href={NOMINATE_URL}>Nominate the next paper</a>
-              <a className="button button--secondary" href={KOFI_URL}>Fund GPU-hours</a>
+              <a className="button button--secondary" href={KOFI_URL}>Support replication work</a>
             </div>
           </div>
         </section>

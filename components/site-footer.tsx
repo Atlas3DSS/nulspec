@@ -15,22 +15,23 @@ export function SiteFooter() {
               <span className="wordmark__accent">SPEC</span>
             </p>
             <p className="site-footer__line">
-              Null results. Executable specifications.
+              Independent replication of published research.
             </p>
           </div>
           <div className="footer-actions">
             <a href={NOMINATE_URL}>Nominate a paper ↗</a>
-            <a href={KOFI_URL}>Fund GPU-hours ↗</a>
+            <a href={KOFI_URL}>Support replication work ↗</a>
             <a href={GITHUB_URL}>GitHub ↗</a>
           </div>
         </div>
         <div className="site-footer__bottom">
           <p>
-            A small team of enthusiasts and accelerationalists, checking
-            the work on hardware we control.
+            NULSPEC begins with AI and machine-learning studies using
+            team-operated compute. Its long-term objective is independent
+            replication across research fields.
           </p>
           <Link href={`/studies/${study.study_id}`}>
-            Study {study.study_id} is reported
+            View Study {study.study_id}
           </Link>
         </div>
       </div>

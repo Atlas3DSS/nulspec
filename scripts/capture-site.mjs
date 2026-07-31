@@ -183,6 +183,9 @@ for (const scenario of scenarios) {
       nominationFields: [
         ...document.querySelectorAll(".nomination-form__field input"),
       ].map((element) => element.getAttribute("name")),
+      nominationButton: document.querySelector(".nomination-form__submit")
+        ?.textContent?.trim(),
+      homeHeading: document.querySelector(".hero h1")?.textContent?.trim(),
       signalVerdicts: [...document.querySelectorAll(".run-verdict")].filter(
         (element) => getComputedStyle(element).color === "rgb(92, 232, 255)",
       ).length,
@@ -211,6 +214,8 @@ for (const scenario of scenarios) {
         ? getComputedStyle(document.querySelector(".arm-tabs__sticky")).position
         : undefined,
       intervalPlots: document.querySelectorAll(".arm-interval-plot").length,
+      intervalPlotHeading: document.querySelector(".arm-interval-plot h3")
+        ?.textContent?.trim(),
       visibleIntervalPlots: [...document.querySelectorAll(".arm-interval-plot")]
         .filter((element) => element.getClientRects().length > 0).length,
       overflowingElements,
@@ -277,19 +282,27 @@ for (const scenario of scenarios) {
     diagnostics.nominationFields.length !== scenario.expectedNominationFields ||
     (scenario.path === "/" &&
       diagnostics.nominationFields.join(",") !== "email,paper") ||
+    (scenario.path === "/" &&
+      diagnostics.nominationButton !== "Submit nomination") ||
+    (scenario.path === "/" &&
+      diagnostics.homeHeading !== "No acceleration without replication.") ||
     diagnostics.extensionOptions !== scenario.expectedExtensionOptions ||
     (scenario.expectedExtensionOptions > 0 &&
       diagnostics.extensionButton !== "Vote to extend this paper") ||
     diagnostics.signalVerdicts !== scenario.expectedSignalVerdicts ||
     diagnostics.armSections.length !== scenario.expectedArmSections ||
     (scenario.expectedArmSections > 0 &&
-      diagnostics.deeperEvidenceHeading !== "Deeper evidence is not yet public.") ||
+      diagnostics.deeperEvidenceHeading !==
+        "Detailed attempt records are not yet public") ||
     diagnostics.armTabs !== (scenario.expectedArmTabs ?? 0) ||
     diagnostics.visibleArmPanels !== (scenario.expectedArmTabs ? 1 : 0) ||
     diagnostics.activeArmTab !== scenario.expectedActiveTab ||
     diagnostics.stickyTabPosition !==
       (scenario.expectedArmTabs ? "sticky" : undefined) ||
     diagnostics.intervalPlots !== (scenario.expectedArmTabs ? 1 : 0) ||
+    (scenario.expectedArmTabs &&
+      diagnostics.intervalPlotHeading !==
+        "Reward-difference estimates and conditional 95% intervals") ||
     diagnostics.visibleIntervalPlots !==
       (scenario.expectedVisibleIntervalPlots ?? 0) ||
     (scenario.expectedArmTabs &&

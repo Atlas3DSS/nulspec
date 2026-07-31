@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: "%s — NULSPEC",
   },
   description:
-    "A small independent team rerunning published AI research, recording every deviation, and publishing failures and null results with the same care as successes.",
+    "Independent research replication, beginning with AI and machine learning. Registered protocols, deviations, selected execution records, and reported outcomes are public.",
   applicationName: "NULSPEC",
   alternates: {
     canonical: "/",
@@ -19,16 +19,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "NULSPEC",
-    title: "NULSPEC — We rerun the experiments",
+    title: "NULSPEC — Independent research replication",
     description:
-      "Independent AI research replication on hardware we control. Public protocols, live run ledgers, and no conclusions before the work is done.",
+      "NULSPEC begins with AI and machine-learning studies using team-operated compute, with a long-term objective of independent replication across research fields.",
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "NULSPEC — We rerun the experiments",
+    title: "NULSPEC — Independent research replication",
     description:
-      "Independent research replication. Null results and deviations included.",
+      "Independent replication beginning with AI and machine learning, with public protocols, deviations, selected execution records, and reported outcomes.",
   },
 };
 

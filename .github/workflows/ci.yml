@@ -98,6 +98,9 @@ jobs:
       - name: Validate evidence data
         run: npm run validate:data
 
+      - name: Validate public copy
+        run: npm run validate:copy
+
       - name: Check types and style
         run: |
           npm run typecheck

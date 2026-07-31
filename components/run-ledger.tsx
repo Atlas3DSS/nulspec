@@ -65,7 +65,7 @@ export function RunLedger({
     <div className={compact ? "ledger ledger--compact" : "ledger"}>
       <div className="ledger__header">
         <div>
-          <p className="section-kicker">Final run ledger</p>
+          <p className="section-kicker">Selected arm results</p>
           <h2>
             {study.arms.length} selected arms · {study.completion.tracks.length} tracks
           </h2>
@@ -100,7 +100,11 @@ export function RunLedger({
         ))}
       </div>
 
-      <div className="table-scroll" tabIndex={0} aria-label="Scrollable run ledger">
+      <div
+        className="table-scroll"
+        tabIndex={0}
+        aria-label="Scrollable selected-arm results table"
+      >
         <table className="run-table">
           <caption>
             Selected terminal arms for the released-code and manuscript-method tracks.

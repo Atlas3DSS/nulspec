@@ -1,0 +1,44 @@
+{
+  "name": "nulspec",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Public evidence surface for independent research replications.",
+  "scripts": {
+    "dev": "next dev",
+    "start": "next start",
+    "build": "npm run validate:data && next build",
+    "build:static": "NULSPEC_STATIC_EXPORT=1 npm run build",
+    "build:cloudflare": "opennextjs-cloudflare build",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint app components lib --max-warnings=0",
+    "validate:data": "node scripts/validate-site-data.mjs",
+    "test:browser": "node scripts/capture-site.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "5.2.8",
+    "@fontsource/ibm-plex-mono": "5.2.7",
+    "next": "16.2.12",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "1.20.2",
+    "@types/node": "24.2.0",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "axe-core": "4.12.1",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.2.12",
+    "playwright-core": "1.62.1",
+    "typescript": "6.0.3",
+    "wrangler": "4.116.0"
+  },
+  "overrides": {
+    "postcss": "8.5.25",
+    "sharp": "0.35.3"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}

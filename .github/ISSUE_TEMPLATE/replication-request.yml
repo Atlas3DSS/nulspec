@@ -1,0 +1,47 @@
+name: Nominate a paper for replication
+description: Propose a concrete published claim for NULSPEC to attempt on local compute.
+title: "[Replication request]: "
+labels:
+  - replication-request
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for putting a claim on the bench. A good nomination is specific enough to estimate, freeze, and test.
+  - type: input
+    id: paper
+    attributes:
+      label: Paper or project
+      description: Provide an arXiv, journal, project, or repository URL.
+      placeholder: https://arxiv.org/abs/...
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: Claim to test
+      description: Which exact result, table, figure, or behavior matters?
+      placeholder: The paper reports that...
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: Why would an independent result help?
+      description: Null results and plausible disconfirmations are welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Known compute, data, or licensing constraints
+      description: Mention released checkpoints, datasets, expected GPU memory, or blockers if known.
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Expectations
+      options:
+        - label: I understand that nomination does not guarantee selection or a particular result.
+          required: true
+        - label: I have disclosed any conflict of interest relevant to this request.
+          required: true

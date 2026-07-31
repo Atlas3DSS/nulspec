@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "study_id": "001",
+  "state": "RUNNING",
+  "as_of_utc": "2026-07-31T00:43:40Z",
+  "paper": {
+    "title": "Towards Robust Reinforcement Learning for Small-Scale Language Model Agents",
+    "arxiv_id": "2607.25091",
+    "url": "https://arxiv.org/abs/2607.25091",
+    "source_commit": "64acb621037c711395f2d77516bee70d8a49b819"
+  },
+  "protocol": {
+    "version": "1.0.0",
+    "tag": "2607.25091-protocol-v1.0.0",
+    "freeze_commit": "8a54ff56ab10d0795ae4e6845d61022b2916de97",
+    "matrix_sha256": "0a55e04ecd7e2c3fca8a58326b050c91a4a41410630cc625569918d22aabfdb2",
+    "config_sha256": "520b60137a885d1f80c66a81c217bd133507cba0944dc4315f051c28b7e7c40b"
+  },
+  "claim_under_test": "The paper reports a capacity-headroom pattern: reinforcement learning gains should depend jointly on model scale and how well supervised fine-tuning already fits the task.",
+  "arms": [
+    {
+      "ordinal": 1,
+      "arm_id": "R-pythia-70m-tinystories-s42",
+      "model": "Pythia 70M",
+      "dataset": "TinyStories",
+      "gpu": "RTX 4090",
+      "host": "MonkeyPC",
+      "provenance": "EXACT",
+      "state": "DONE",
+      "verdict": null
+    },
+    {
+      "ordinal": 2,
+      "arm_id": "R-pythia-70m-cnn_dailymail-s42",
+      "model": "Pythia 70M",
+      "dataset": "CNN / DailyMail",
+      "gpu": "RTX 3090",
+      "host": "wtatum84",
+      "provenance": "EXACT",
+      "state": "DONE",
+      "verdict": null
+    },
+    {
+      "ordinal": 3,
+      "arm_id": "R-pythia-70m-wikitext-s42",
+      "model": "Pythia 70M",
+      "dataset": "WikiText",
+      "gpu": "RTX 4090",
+      "host": "MonkeyPC",
+      "provenance": "EXACT",
+      "state": "DONE",
+      "verdict": null
+    },
+    {
+      "ordinal": 4,
+      "arm_id": "R-pythia-160m-tinystories-s42",
+      "model": "Pythia 160M",
+      "dataset": "TinyStories",
+      "gpu": "RTX 4090",
+      "host": "MonkeyPC",
+      "provenance": "EXACT",
+      "state": "DONE",
+      "verdict": null
+    },
+    {
+      "ordinal": 5,
+      "arm_id": "R-pythia-160m-cnn_dailymail-s42",
+      "model": "Pythia 160M",
+      "dataset": "CNN / DailyMail",
+      "gpu": "RTX 4090",
+      "host": "MonkeyPC",
+      "provenance": "EXACT",
+      "state": "DONE",
+      "verdict": null
+    },
+    {
+      "ordinal": 6,
+      "arm_id": "R-pythia-160m-wikitext-s42",
+      "model": "Pythia 160M",
+      "dataset": "WikiText",
+      "gpu": "RTX 3090",
+      "host": "wtatum84",
+      "provenance": "EXACT",
+      "state": "DONE",
+      "verdict": null
+    },
+    {
+      "ordinal": 7,
+      "arm_id": "R-pythia-410m-tinystories-s42",
+      "model": "Pythia 410M",
+      "dataset": "TinyStories",
+      "gpu": "RTX 3090",
+      "host": "wtatum84",
+      "provenance": "EXACT",
+      "state": "DONE",
+      "verdict": null
+    },
+    {
+      "ordinal": 8,
+      "arm_id": "R-pythia-410m-cnn_dailymail-s42",
+      "model": "Pythia 410M",
+      "dataset": "CNN / DailyMail",
+      "gpu": "RTX 4090",
+      "host": "MonkeyPC",
+      "provenance": "EXACT",
+      "state": "DONE",
+      "verdict": null
+    },
+    {
+      "ordinal": 9,
+      "arm_id": "R-pythia-410m-wikitext-s42",
+      "model": "Pythia 410M",
+      "dataset": "WikiText",
+      "gpu": "RTX 3090",
+      "host": "wtatum84",
+      "provenance": "EXACT",
+      "state": "RUNNING",
+      "verdict": null
+    },
+    {
+      "ordinal": 10,
+      "arm_id": "R-smollm2-135m-tinystories-s42",
+      "model": "SmolLM2 135M",
+      "dataset": "TinyStories",
+      "gpu": "RTX 4090",
+      "host": "MonkeyPC",
+      "provenance": "EXACT",
+      "state": "RUNNING",
+      "verdict": null
+    },
+    {
+      "ordinal": 11,
+      "arm_id": "R-smollm2-135m-cnn_dailymail-s42",
+      "model": "SmolLM2 135M",
+      "dataset": "CNN / DailyMail",
+      "gpu": "RTX 3090",
+      "host": "wtatum84",
+      "provenance": "EXACT",
+      "state": "QUEUED",
+      "verdict": null
+    },
+    {
+      "ordinal": 12,
+      "arm_id": "R-smollm2-135m-wikitext-s42",
+      "model": "SmolLM2 135M",
+      "dataset": "WikiText",
+      "gpu": "RTX 4090",
+      "host": "MonkeyPC",
+      "provenance": "EXACT",
+      "state": "QUEUED",
+      "verdict": null
+    },
+    {
+      "ordinal": 13,
+      "arm_id": "R-smollm2-360m-tinystories-s42",
+      "model": "SmolLM2 360M",
+      "dataset": "TinyStories",
+      "gpu": "RTX PRO 6000",
+      "host": "wtatum84",
+      "provenance": "COMPAT",
+      "state": "RUNNING",
+      "verdict": null
+    },
+    {
+      "ordinal": 14,
+      "arm_id": "R-smollm2-360m-cnn_dailymail-s42",
+      "model": "SmolLM2 360M",
+      "dataset": "CNN / DailyMail",
+      "gpu": "RTX PRO 6000",
+      "host": "wtatum84",
+      "provenance": "COMPAT",
+      "state": "RUNNING",
+      "verdict": null
+    },
+    {
+      "ordinal": 15,
+      "arm_id": "R-smollm2-360m-wikitext-s42",
+      "model": "SmolLM2 360M",
+      "dataset": "WikiText",
+      "gpu": "RTX PRO 6000",
+      "host": "wtatum84",
+      "provenance": "COMPAT",
+      "state": "RUNNING",
+      "verdict": null
+    }
+  ],
+  "deviations": [
+    {
+      "id": "D-001",
+      "scope": "RTX PRO 6000 arms only",
+      "what": "The authors' pinned PyTorch 2.5.1 stack cannot execute CUDA kernels for Blackwell sm_120. These arms use PyTorch 2.9.1 with CUDA 12.8 while retaining the other paper pins.",
+      "impact_control": "They are labeled COMPAT, kept out of exact-stack claims, and require exact-stack checkpoint re-evaluation before comparison."
+    },
+    {
+      "id": "D-002",
+      "scope": "Wall-clock execution only",
+      "what": "The 15 configurations are scheduled concurrently across three locally controlled GPUs.",
+      "impact_control": "Data, seed, model, hyperparameters, and evaluation remain unchanged; host, GPU, stack, pause events, and commit are recorded per arm."
+    }
+  ]
+}

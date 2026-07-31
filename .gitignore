@@ -8,6 +8,13 @@ __pycache__/
 .coverage
 htmlcov/
 .venv/
+.next/
+.open-next/
+.wrangler/
+/out/
+.artifacts/
+node_modules/
+*.tsbuildinfo
 venv/
 
 # Editors and operating systems

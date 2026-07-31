@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ArmEvidenceTabs } from "@/components/arm-evidence-tabs";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { StatusStrip } from "@/components/status-strip";
@@ -64,6 +65,121 @@ function profileDescription(arm: StudyArm) {
   return arm.provenance === "EXACT"
     ? "Paper-pinned training stack and claim evaluation."
     : "Documented compatibility training with exact-stack claim evaluation.";
+}
+
+function ArmIntervalPlot({ arm }: { arm: StudyArm }) {
+  const rows = [
+    {
+      id: "release",
+      label: "Release sampled",
+      point: arm.metrics.release_reward_delta,
+      interval: arm.metrics.release_prompt_bootstrap_95_ci,
+    },
+    {
+      id: "paired",
+      label: "Paired deterministic",
+      point: arm.metrics.independent_paired_reward_delta,
+      interval: arm.metrics.independent_paired_bootstrap_95_ci,
+    },
+  ] as const;
+  const published = arm.metrics.published_reward_delta;
+  const values = [
+    0,
+    published,
+    ...rows.flatMap((row) => [row.point, row.interval[0], row.interval[1]]),
+  ];
+  const rawMinimum = Math.min(...values);
+  const rawMaximum = Math.max(...values);
+  const rawSpan = Math.max(rawMaximum - rawMinimum, 0.01);
+  const domainMinimum = rawMinimum - rawSpan * 0.08;
+  const domainMaximum = rawMaximum + rawSpan * 0.08;
+  const domainSpan = domainMaximum - domainMinimum;
+  const positionNumber = (value: number) =>
+    ((value - domainMinimum) / domainSpan) * 100;
+  const position = (value: number) => positionNumber(value) + "%";
+  const chartLabel =
+    "Published reward delta " +
+    formatSigned(published) +
+    ". Release sampled estimate " +
+    formatSigned(rows[0].point) +
+    " with conditional 95 percent interval " +
+    conditionalInterval(rows[0].interval) +
+    ". Paired deterministic estimate " +
+    formatSigned(rows[1].point) +
+    " with conditional 95 percent interval " +
+    conditionalInterval(rows[1].interval) +
+    ".";
+
+  return (
+    <figure className="arm-interval-plot">
+      <div className="arm-interval-plot__header">
+        <div>
+          <p className="section-kicker">Conditional uncertainty plot</p>
+          <h3 id={"interval-plot-" + arm.arm_id}>
+            See the spread before reading the decimals.
+          </h3>
+          <p>Longer whiskers mean a wider supplied conditional interval.</p>
+        </div>
+        <div className="arm-interval-plot__legend" aria-hidden="true">
+          <span><i className="is-interval" />95% interval</span>
+          <span><i className="is-published" />Published Δ</span>
+          <span><i className="is-zero" />Zero</span>
+        </div>
+      </div>
+      <div
+        aria-label={chartLabel}
+        className="arm-interval-plot__chart"
+        role="img"
+      >
+        {rows.map((row) => {
+          const low = row.interval[0];
+          const high = row.interval[1];
+          return (
+            <div className="arm-interval-row" key={row.id}>
+              <span className="arm-interval-row__label">{row.label}</span>
+              <div className="arm-interval-row__scale" aria-hidden="true">
+                <i
+                  className="arm-interval-row__reference is-zero"
+                  style={{ left: position(0) }}
+                />
+                <i
+                  className="arm-interval-row__reference is-published"
+                  style={{ left: position(published) }}
+                />
+                <i
+                  className="arm-interval-row__whisker"
+                  style={{
+                    left: position(low),
+                    width:
+                      Math.max(positionNumber(high) - positionNumber(low), 0.75) +
+                      "%",
+                  }}
+                />
+                <i
+                  className="arm-interval-row__cap"
+                  style={{ left: position(low) }}
+                />
+                <i
+                  className="arm-interval-row__cap"
+                  style={{ left: position(high) }}
+                />
+                <i
+                  className={"arm-interval-row__point is-" + row.id}
+                  style={{ left: position(row.point) }}
+                />
+              </div>
+              <code>{formatSigned(row.point)}</code>
+            </div>
+          );
+        })}
+      </div>
+      <figcaption>
+        Points are the supplied endpoints; whiskers are their supplied conditional
+        95% intervals. The dashed ice line marks the published delta. This does not
+        estimate training-to-training variance.
+      </figcaption>
+    </figure>
+  );
 }
 
 function ArtifactCard({ artifact }: { artifact: PublicationArtifact }) {
@@ -173,16 +289,10 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
               </div>
             </div>
 
-            <nav className="arm-jump-links" aria-label="Arm evidence sections">
-              <a href="#comparison">Comparison</a>
-              <a href="#execution">Execution</a>
-              <a href="#provenance">Provenance</a>
-              <a href="#evidence">Evidence</a>
-              <a href="#limitations">Limits</a>
-            </nav>
           </div>
         </header>
 
+        <ArmEvidenceTabs>
         <section className="study-section arm-section" id="comparison">
           <div className="shell study-section__grid">
             <div className="study-section__number">01</div>
@@ -206,6 +316,8 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
                   <small>Fixed checkpoint and retained generations</small>
                 </article>
               </div>
+
+              <ArmIntervalPlot arm={arm} />
 
               <div className="arm-judgment-grid">
                 <article>
@@ -444,6 +556,7 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
             </div>
           </div>
         </section>
+        </ArmEvidenceTabs>
       </main>
       <SiteFooter />
     </>

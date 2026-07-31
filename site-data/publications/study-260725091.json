@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "publication_status": "ready",
-  "generated_at_utc": "2026-07-31T15:46:34Z",
+  "generated_at_utc": "2026-07-31T18:27:57Z",
   "study": {
     "id": "260725091",
     "slug": "towards-robust-rl-small-scale-language-model-agents",
@@ -99,8 +99,15 @@
       "role": "website_handoff",
       "path": "publication/website-handoff.json",
       "public_path": "studies/260725091/artifacts/website-handoff.json",
-      "sha256": "17ab55d5b10acdc85987344aa28552882fd30dfbca675257044381fad9039728",
+      "sha256": "ea11c79fee95779f7c3aff34e450716c3a6e2864328fae0ab3f60a5847d81318",
       "media_type": "application/json"
+    },
+    {
+      "role": "frontend_handoff",
+      "path": "publication/FRONTEND_HANDOFF.md",
+      "public_path": "studies/260725091/artifacts/frontend-handoff.md",
+      "sha256": "f179658d8e5424511c40b7575e021b61f8ac78a485b4ab2077162e93f9993e2f",
+      "media_type": "text/markdown"
     }
   ],
   "arms": [
@@ -1103,6 +1110,107 @@
         "priority": 5,
         "summary": "Ask an independent operator to reproduce the result using only the tagged public materials and record every ambiguity."
       }
+    ]
+  },
+  "evidence_navigation": {
+    "requested": true,
+    "implementation_owner": "website_team",
+    "goal": "Every matrix result should open a stable, human-readable path into the evidence supporting that arm-level outcome.",
+    "canonical_hierarchy": [
+      "study",
+      "configuration",
+      "arm",
+      "attempt",
+      "evaluation",
+      "artifact"
+    ],
+    "semantic_definitions": {
+      "configuration": "One model, dataset, and seed combination shared across method tracks.",
+      "arm": "The selected scientific claim unit for one configuration and track.",
+      "attempt": "One immutable execution, including failed attempts and recovery lineage; attempts are not independent scientific replicates when they reuse prerequisites.",
+      "outcome": "The claim-level result selected under the frozen protocol.",
+      "artifact": "A hash-bound report, record, log, generation set, manifest, or checkpoint supporting an outcome."
+    },
+    "route_contract": {
+      "arm_detail": "/studies/{study_id}/arms/{arm_id}",
+      "comparison_fragment": "#comparison",
+      "execution_fragment": "#execution",
+      "provenance_fragment": "#provenance",
+      "evidence_fragment": "#evidence",
+      "future_attempts_fragment": "#attempts"
+    },
+    "matrix_interaction": {
+      "primary_action": "Open the arm evidence page.",
+      "explicit_link_label": "View evidence",
+      "direction_badge_target": "#comparison",
+      "state_target": "#execution",
+      "profile_target": "#provenance",
+      "accessibility_requirement": "Provide a keyboard-focusable named link in every row; do not rely on row click, hover, glyph, or color alone."
+    },
+    "arm_page_mvp": {
+      "status": "implementable_from_current_publication_bundle",
+      "required_sections": [
+        "Plain-language arm summary",
+        "Published result versus release-protocol rerun",
+        "Independent paired endpoint",
+        "Selected execution and recovery status",
+        "Hardware and software provenance",
+        "Study-level evidence artifacts",
+        "Uncertainty and interpretation limitations"
+      ],
+      "comparison_rules": [
+        "Render published_delta_inside_release_interval and the directional assessment as separate judgments.",
+        "Do not present MATCH as full numerical reproduction when the published estimate falls outside the rerun interval.",
+        "Label every displayed interval as conditional on the retained checkpoint and generations.",
+        "Display the Holm-adjusted paired p-value with the independent paired endpoint, not as support for the sampled release endpoint.",
+        "Keep the study-level PARTIALLY_REPRODUCED classification visually distinct from the arm-level directional verdict."
+      ],
+      "available_source": {
+        "artifact_role": "machine_analysis",
+        "arm_array": "arms",
+        "join_key": "arm_id"
+      }
+    },
+    "phase_two_evidence_index": {
+      "status": "not_yet_public",
+      "proposed_artifact": "arm-evidence-index.json",
+      "purpose": "Expose sanitized attempt timelines and direct per-arm artifact links without leaking private infrastructure.",
+      "required_arm_fields": [
+        "arm_id",
+        "detail_path",
+        "selected_outcome",
+        "attempts",
+        "evaluations",
+        "artifacts",
+        "related_deviations",
+        "related_error_findings",
+        "reproduction_command"
+      ],
+      "required_attempt_fields": [
+        "attempt_id",
+        "execution",
+        "selected_for_claim",
+        "selection_reason",
+        "recovery_parent",
+        "protocol_version",
+        "public_hardware_profile",
+        "manifest_sha256"
+      ],
+      "required_artifact_fields": [
+        "label",
+        "kind",
+        "immutable_url",
+        "sha256",
+        "media_type",
+        "byte_count"
+      ],
+      "frontend_behavior_until_available": "Show the selected arm evidence and study-level artifacts, label attempt-level and raw-output drilldown as unavailable, and never synthesize missing URLs or attempt histories."
+    },
+    "privacy_requirements": [
+      "Use neutral public host aliases only.",
+      "Do not expose local paths, usernames, raw hostnames, service identifiers, addresses, credentials, or GPU UUIDs.",
+      "Link large evidence only at immutable public revisions with a digest.",
+      "Preserve failed and superseded attempts once the sanitized attempt index is published."
     ]
   },
   "frozen_primary_result": {

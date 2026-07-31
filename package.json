@@ -8,6 +8,7 @@
     "start": "next start",
     "build": "npm run validate:data && next build",
     "build:static": "NULSPEC_STATIC_EXPORT=1 npm run build",
+    "build:sites": "npm run build:static && node scripts/build-sites.mjs",
     "build:cloudflare": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "typecheck": "tsc --noEmit",

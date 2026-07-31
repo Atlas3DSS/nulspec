@@ -104,7 +104,10 @@ export function NominationForm() {
           required
           type="email"
         />
-        <p>Used only if Atlas staff decide to follow up.</p>
+        <p>
+          If we publish this replication, we will email the result once. No
+          marketing.
+        </p>
       </div>
 
       <div className="nomination-form__field">

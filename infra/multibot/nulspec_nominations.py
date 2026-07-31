@@ -13,6 +13,7 @@ import math
 import os
 import re
 import secrets
+import sqlite3
 import threading
 import time
 from pathlib import Path
@@ -21,6 +22,8 @@ from urllib.parse import urlsplit
 
 from flask import Flask, Response, jsonify, request
 import requests
+
+from nulspec_mail_store import MailStoreError, NominationStore
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +51,7 @@ LEGACY_ARXIV_ID_RE = re.compile(
 STUDY_ID_RE = re.compile(r"^[0-9]{3,}$")
 EXTENSION_OPTION_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 DEFAULT_RELEASE_MANIFEST = Path("/srv/nulspec/current/release.json")
+DEFAULT_MAIL_DATABASE = Path("/var/lib/multibot/nulspec-mail.sqlite3")
 
 
 class NominationValidationError(ValueError):
@@ -340,6 +344,7 @@ class NominationRelay:
         session: requests.Session | None = None,
         clock: Callable[[], float] = time.monotonic,
         now: Callable[[], datetime] | None = None,
+        store: NominationStore | None = None,
     ):
         if channel_id <= 0 or not bot_token:
             raise RelayUnavailable("nomination relay is not configured")
@@ -348,11 +353,10 @@ class NominationRelay:
         self.bot_token = bot_token
         self.allowed_origins = allowed_origins
         self.session = session or requests.Session()
-        self._clock = clock
         self._now = now or (lambda: datetime.now(timezone.utc))
         self._limiter = SlidingWindowLimiter(clock)
         self._delivery_lock = threading.Lock()
-        self._recent: dict[str, tuple[float, str]] = {}
+        self.store = store or NominationStore(":memory:")
 
     @classmethod
     def from_environment(cls) -> "NominationRelay":
@@ -370,20 +374,10 @@ class NominationRelay:
             channel_id=channel_id,
             bot_token=bot_token,
             allowed_origins=allowed_origins or DEFAULT_ALLOWED_ORIGINS,
+            store=NominationStore(
+                os.environ.get("NULSPEC_MAIL_DB_PATH", str(DEFAULT_MAIL_DATABASE))
+            ),
         )
-
-    @staticmethod
-    def _fingerprint(nomination: ValidatedNomination) -> str:
-        payload = f"{nomination.email}\0{nomination.arxiv_id}".encode()
-        return hashlib.sha256(payload).hexdigest()
-
-    def _prune_recent(self, now: float) -> None:
-        cutoff = now - 86400
-        self._recent = {
-            key: value
-            for key, value in self._recent.items()
-            if value[0] > cutoff
-        }
 
     def submit(
         self,
@@ -391,31 +385,44 @@ class NominationRelay:
         *,
         client_ip: str,
     ) -> SubmissionResult:
-        """Deliver one nomination, returning the prior reference on duplicates."""
+        """Persist and deliver one nomination, returning durable duplicates."""
         self._limiter.check_and_record(client_ip, nomination.email)
-        fingerprint = self._fingerprint(nomination)
 
         with self._delivery_lock:
-            monotonic_now = self._clock()
-            self._prune_recent(monotonic_now)
-            if fingerprint in self._recent:
-                return SubmissionResult(
-                    reference=self._recent[fingerprint][1],
-                    duplicate=True,
-                )
-
             submitted_at = self._now().astimezone(timezone.utc)
             reference = (
                 f"NLS-{submitted_at:%Y%m%d}-{secrets.token_hex(3).upper()}"
             )
-            message_id = self._deliver(nomination, reference, submitted_at)
-            self._recent[fingerprint] = (monotonic_now, reference)
+            try:
+                claim = self.store.claim_nomination(
+                    reference=reference,
+                    email=nomination.email,
+                    arxiv_id=nomination.arxiv_id,
+                    paper_url=nomination.paper_url,
+                    submitted_at=submitted_at,
+                )
+            except (MailStoreError, OSError, sqlite3.Error, ValueError) as exc:
+                raise RelayUnavailable("nomination could not be preserved") from exc
+            if claim.discord_message_id is not None:
+                return SubmissionResult(reference=claim.reference, duplicate=True)
+
+            message_id = self._deliver(
+                nomination,
+                claim.reference,
+                submitted_at,
+            )
+            try:
+                self.store.mark_discord_delivered(claim.reference, message_id)
+            except (MailStoreError, OSError, sqlite3.Error, ValueError) as exc:
+                raise RelayUnavailable(
+                    "nomination delivery could not be committed"
+                ) from exc
             logger.info(
                 "Relayed NULSPEC nomination %s to Discord message %s.",
-                reference,
+                claim.reference,
                 message_id,
             )
-            return SubmissionResult(reference=reference, duplicate=False)
+            return SubmissionResult(reference=claim.reference, duplicate=False)
 
     def _deliver(
         self,
@@ -424,8 +431,16 @@ class NominationRelay:
         submitted_at: datetime,
     ) -> str:
         endpoint = f"{DISCORD_API_ROOT}/channels/{self.channel_id}/messages"
+        nonce = str(
+            int.from_bytes(
+                hashlib.sha256(reference.encode("ascii")).digest()[:8],
+                "big",
+            )
+        )
         payload = {
             "allowed_mentions": {"parse": []},
+            "nonce": nonce,
+            "enforce_nonce": True,
             "embeds": [
                 {
                     "color": 0x5CE8FF,
@@ -457,8 +472,8 @@ class NominationRelay:
                     ],
                     "footer": {
                         "text": (
-                            "NULSPEC intake · reply manually by email "
-                            "only if appropriate"
+                            "NULSPEC intake · a result notice will be sent "
+                            "if this paper is published"
                         )
                     },
                     "timestamp": submitted_at.isoformat(),
@@ -801,7 +816,14 @@ def register_nulspec_nomination_routes(
     if relay is None:
         try:
             relay = NominationRelay.from_environment()
-        except (RelayUnavailable, TypeError, ValueError) as exc:
+        except (
+            MailStoreError,
+            OSError,
+            RelayUnavailable,
+            sqlite3.Error,
+            TypeError,
+            ValueError,
+        ) as exc:
             logger.warning("NULSPEC nomination relay disabled: %s", exc)
             relay = DisabledNominationRelay()
 

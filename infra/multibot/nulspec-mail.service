@@ -1,0 +1,49 @@
+[Unit]
+Description=NULSPEC completion email and researcher reply relay
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=multibot
+Group=multibot
+WorkingDirectory=/srv/multibot/current
+Environment=PYTHONDONTWRITEBYTECODE=1
+EnvironmentFile=/etc/multibot/multibot.env
+EnvironmentFile=/etc/nulspec-mail.env
+ExecStartPre=/srv/multibot/venv/bin/python /srv/multibot/current/nulspec_mail.py check-config
+ExecStart=/srv/multibot/venv/bin/python /srv/multibot/current/nulspec_mail.py worker
+Restart=on-failure
+RestartSec=15s
+TimeoutStopSec=30s
+UMask=0077
+
+CPUQuota=25%
+MemoryHigh=192M
+MemoryMax=256M
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+AmbientCapabilities=
+CapabilityBoundingSet=
+LockPersonality=true
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/multibot
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictRealtime=true
+RestrictSUIDSGID=true
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

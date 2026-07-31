@@ -205,6 +205,39 @@ def validate_release(directory: Path) -> dict[str, object]:
             and str(paper.get("url", "")).startswith("https://arxiv.org/abs/")
         ):
             raise DeployError(f"release has invalid paper metadata for study {study_id}")
+        result_notice = publication.get("result_notification")
+        expected_study_url = f"https://nulspec.com/studies/{study_id}/"
+        expected_artifact_prefix = f"{expected_study_url}artifacts/"
+        full_report_url = str(
+            result_notice.get("full_report_url", "")
+            if isinstance(result_notice, dict)
+            else ""
+        )
+        if not (
+            isinstance(result_notice, dict)
+            and result_notice.get("study_url") == expected_study_url
+            and full_report_url.startswith(expected_artifact_prefix)
+            and ".." not in PurePosixPath(full_report_url).parts
+            and "?" not in full_report_url
+            and "#" not in full_report_url
+            and isinstance(result_notice.get("headline"), str)
+            and 1 <= len(result_notice["headline"]) <= 240
+            and bool(result_notice["headline"].strip())
+            and isinstance(result_notice.get("summary"), str)
+            and 1 <= len(result_notice["summary"]) <= 1_200
+            and bool(result_notice["summary"].strip())
+            and isinstance(result_notice.get("key_findings"), list)
+            and 1 <= len(result_notice["key_findings"]) <= 10
+            and all(
+                isinstance(finding, str)
+                and 1 <= len(finding) <= 700
+                and bool(finding.strip())
+                for finding in result_notice["key_findings"]
+            )
+        ):
+            raise DeployError(
+                f"release has an invalid result notice for study {study_id}"
+            )
         extension = publication.get("extension_vote")
         if not (
             isinstance(extension, dict)

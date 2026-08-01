@@ -102,6 +102,12 @@ extension-vote identifiers. Browser checks cover desktop and mobile layouts,
 keyboard-focusable evidence links, horizontal-table controls, tab behavior,
 route allowlisting, and WCAG 2.1 AA rules when an authorized bundle is present.
 
+The repository build now runs `scripts/sync_publications.py` before public-data
+validation. It compatibility-checks a pending typed handoff without publishing
+it, rejects any public files for a review-blocked study, and imports an
+authorized handoff from the exact Git commit being built. This makes the final
+research-to-site transition automatic while preserving the release gate.
+
 At research commit `9cc6bafba42f19b144f45d02c9c1d71ac4ea9816`,
 compatibility validation passes and the normal import rejects release state
 `blocked_pending_human_review`. The one permitted Fable invocation ended in a
@@ -117,8 +123,9 @@ production deployment, and research-side semantic verification.
 Implementation record: [PR #22](https://github.com/Atlas3DSS/nulspec/pull/22).
 Pre-publication checks include TypeScript, lint, static build and route
 validation, responsive browser checks, accessibility checks, exact-handoff
-compatibility validation, and the expected fail-closed import result. Merged
-commit and production-route evidence remain pending.
+compatibility validation, the build-time publication sync, and the expected
+fail-closed import result. Merged commit and production-route evidence remain
+pending.
 
 ## Resolved items
 

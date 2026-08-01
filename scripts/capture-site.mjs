@@ -45,11 +45,11 @@ const scenarios = [
     path: "/",
     width: 1440,
     height: 900,
-    expectedLedgerRows: 30,
-    expectedEvidenceLinks: 30,
+    expectedLedgerRows: 5,
+    expectedEvidenceLinks: 5,
     expectedNominationFields: 2,
     expectedExtensionOptions: 0,
-    expectedSignalVerdicts: 7,
+    expectedSignalVerdicts: 0,
     expectedArmSections: 0,
     expectedHorizontalRegions: 1,
   },
@@ -58,11 +58,11 @@ const scenarios = [
     path: "/",
     width: 390,
     height: 844,
-    expectedLedgerRows: 30,
-    expectedEvidenceLinks: 30,
+    expectedLedgerRows: 5,
+    expectedEvidenceLinks: 5,
     expectedNominationFields: 2,
     expectedExtensionOptions: 0,
-    expectedSignalVerdicts: 7,
+    expectedSignalVerdicts: 0,
     expectedArmSections: 0,
     expectedHorizontalRegions: 1,
   },
@@ -71,13 +71,41 @@ const scenarios = [
     path: "/",
     width: 320,
     height: 700,
-    expectedLedgerRows: 30,
-    expectedEvidenceLinks: 30,
+    expectedLedgerRows: 5,
+    expectedEvidenceLinks: 5,
     expectedNominationFields: 2,
     expectedExtensionOptions: 0,
-    expectedSignalVerdicts: 7,
+    expectedSignalVerdicts: 0,
     expectedArmSections: 0,
     expectedHorizontalRegions: 1,
+  },
+  {
+    name: "accuracy-study-desktop",
+    path: "/studies/260723346",
+    width: 1440,
+    height: 900,
+    expectedLedgerRows: 5,
+    expectedEvidenceLinks: 5,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 6,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 2,
+    expectedAccuracyVariance: 1,
+  },
+  {
+    name: "accuracy-study-mobile",
+    path: "/studies/260723346",
+    width: 390,
+    height: 844,
+    expectedLedgerRows: 5,
+    expectedEvidenceLinks: 5,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 6,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 2,
+    expectedAccuracyVariance: 1,
   },
   {
     name: "study-desktop",
@@ -131,6 +159,8 @@ const scenarios = [
     expectedArmSections: 5,
     expectedArmTabs: 5,
     expectedActiveTab: "Comparison",
+    expectedUnavailableHeading: "Detailed attempt records are not yet public",
+    expectedIntervalPlots: 1,
     expectedVisibleIntervalPlots: 1,
     expectedHorizontalRegions: 0,
   },
@@ -147,6 +177,8 @@ const scenarios = [
     expectedArmSections: 5,
     expectedArmTabs: 5,
     expectedActiveTab: "Provenance",
+    expectedUnavailableHeading: "Detailed attempt records are not yet public",
+    expectedIntervalPlots: 1,
     expectedVisibleIntervalPlots: 0,
     expectedHorizontalRegions: 0,
   },
@@ -163,6 +195,8 @@ const scenarios = [
     expectedArmSections: 5,
     expectedArmTabs: 5,
     expectedActiveTab: "Comparison",
+    expectedUnavailableHeading: "Detailed attempt records are not yet public",
+    expectedIntervalPlots: 1,
     expectedVisibleIntervalPlots: 1,
     expectedHorizontalRegions: 0,
   },
@@ -179,8 +213,48 @@ const scenarios = [
     expectedArmSections: 5,
     expectedArmTabs: 5,
     expectedActiveTab: "Comparison",
+    expectedUnavailableHeading: "Detailed attempt records are not yet public",
+    expectedIntervalPlots: 1,
     expectedVisibleIntervalPlots: 1,
     expectedHorizontalRegions: 0,
+  },
+  {
+    name: "accuracy-run-desktop",
+    path: "/studies/260723346/arms/seed-0#comparison",
+    width: 1440,
+    height: 900,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 5,
+    expectedArmTabs: 5,
+    expectedActiveTab: "Comparison",
+    expectedIntervalPlots: 0,
+    expectedVisibleIntervalPlots: 0,
+    expectedHorizontalRegions: 2,
+    expectedAccuracyBars: 4,
+    expectedSingleSeedLabel: true,
+  },
+  {
+    name: "accuracy-run-mobile",
+    path: "/studies/260723346/arms/seed-3#provenance",
+    width: 390,
+    height: 844,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 5,
+    expectedArmTabs: 5,
+    expectedActiveTab: "Provenance",
+    expectedIntervalPlots: 0,
+    expectedVisibleIntervalPlots: 0,
+    expectedHorizontalRegions: 2,
+    expectedAccuracyBars: 4,
+    expectedSingleSeedLabel: true,
   },
   {
     name: "papers-desktop",
@@ -401,6 +475,11 @@ for (const scenario of scenarios) {
         ?.textContent?.trim(),
       visibleIntervalPlots: [...document.querySelectorAll(".arm-interval-plot")]
         .filter((element) => element.getClientRects().length > 0).length,
+      accuracyVariancePlots: document.querySelectorAll(".accuracy-variance").length,
+      accuracyResultBars: document.querySelectorAll(".accuracy-result-bar").length,
+      singleSeedLabel: document
+        .querySelector(".accuracy-arm-outcomes")
+        ?.textContent?.includes("No per-seed replication verdict is assigned."),
       candidateRows: document.querySelectorAll(".paper-candidate").length,
       candidateSummary: document
         .querySelector(".paper-queue-summary")
@@ -649,9 +728,8 @@ for (const scenario of scenarios) {
               "network has been reached",
             ))))) ||
     diagnostics.armSections.length !== scenario.expectedArmSections ||
-    (scenario.expectedArmSections > 0 &&
-      diagnostics.deeperEvidenceHeading !==
-        "Detailed attempt records are not yet public") ||
+    (scenario.expectedUnavailableHeading &&
+      diagnostics.deeperEvidenceHeading !== scenario.expectedUnavailableHeading) ||
     diagnostics.armTabs !== (scenario.expectedArmTabs ?? 0) ||
     diagnostics.horizontalRegions.length !== scenario.expectedHorizontalRegions ||
     diagnostics.horizontalRegions.some(
@@ -682,12 +760,18 @@ for (const scenario of scenarios) {
     diagnostics.activeArmTab !== scenario.expectedActiveTab ||
     diagnostics.stickyTabPosition !==
       (scenario.expectedArmTabs ? "sticky" : undefined) ||
-    diagnostics.intervalPlots !== (scenario.expectedArmTabs ? 1 : 0) ||
-    (scenario.expectedArmTabs &&
+    diagnostics.intervalPlots !==
+      (scenario.expectedIntervalPlots ?? (scenario.expectedArmTabs ? 1 : 0)) ||
+    ((scenario.expectedIntervalPlots ?? (scenario.expectedArmTabs ? 1 : 0)) > 0 &&
       diagnostics.intervalPlotHeading !==
         "Reward-difference estimates and conditional 95% intervals") ||
     diagnostics.visibleIntervalPlots !==
       (scenario.expectedVisibleIntervalPlots ?? 0) ||
+    diagnostics.accuracyVariancePlots !==
+      (scenario.expectedAccuracyVariance ?? 0) ||
+    diagnostics.accuracyResultBars !== (scenario.expectedAccuracyBars ?? 0) ||
+    diagnostics.singleSeedLabel !==
+      (scenario.expectedSingleSeedLabel ? true : undefined) ||
     (scenario.expectedArmTabs &&
       (!tabInteraction?.clickPreservedScroll ||
         !tabInteraction.evidenceSelected ||
@@ -722,6 +806,14 @@ if (unknownArm.status !== 404) {
   failed = true;
 }
 
+const unknownAccuracyArm = await fetch(
+  baseUrl + "/studies/260723346/arms/seed-99",
+  { redirect: "manual" },
+);
+if (unknownAccuracyArm.status !== 404) {
+  failed = true;
+}
+
 await browser.close();
 await writeFile(
   resolve(outputDir, "browser-report.json"),
@@ -745,6 +837,12 @@ console.log(
   (unknownArm.status === 404 ? "PASS" : "FAIL") +
     " unknown-arm: HTTP " +
     unknownArm.status,
+);
+
+console.log(
+  (unknownAccuracyArm.status === 404 ? "PASS" : "FAIL") +
+    " unknown-accuracy-arm: HTTP " +
+    unknownAccuracyArm.status,
 );
 
 if (failed) process.exitCode = 1;

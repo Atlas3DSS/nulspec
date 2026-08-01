@@ -177,6 +177,204 @@ export interface PublicationBundle {
   };
 }
 
+export interface AccuracyAggregate {
+  mean: number;
+  n_training_seeds: number;
+  sample_sd: number;
+  descriptive_t95_interval: [number, number];
+  per_seed: number[];
+  estimator: "final_sample_weighted_full_validation_accuracy";
+  unit: "percent_accuracy";
+}
+
+export interface AccuracyMetricSummary {
+  model_key: string;
+  observed: AccuracyAggregate;
+  reported_accuracy?: number;
+  reported_accuracy_inside_descriptive_t95?: boolean;
+}
+
+export interface AccuracyPointDifference {
+  mean: number;
+  n: number;
+  sample_sd: number;
+  t95_interval: [number, number];
+  values: number[];
+}
+
+export interface McNemarExactResult {
+  a_correct_b_correct: number;
+  a_correct_b_wrong: number;
+  a_wrong_b_correct: number;
+  a_wrong_b_wrong: number;
+  accuracy_a: number;
+  accuracy_b: number;
+  log10_p_value: number;
+  method: string;
+  n: number;
+  p_value: number;
+  seed: number;
+  statistic: number;
+}
+
+export interface AccuracyComparison {
+  accuracy_point_difference: AccuracyPointDifference;
+  per_seed_mcnemar_exact: McNemarExactResult[];
+}
+
+export interface AccuracyRunComparison {
+  accuracy_point_difference: number;
+  mcnemar_exact: McNemarExactResult;
+  unit: "percentage_points";
+}
+
+export interface AccuracyRunModel {
+  accuracy_sample_weighted: number;
+  best_valid_accuracy_unweighted_batch_mean?: number;
+  cross_entropy_sample_weighted: number;
+  elapsed_seconds?: number;
+  final_valid_accuracy_unweighted_batch_mean?: number;
+  model_key: string;
+  parameter_count?: number;
+}
+
+export interface AccuracyRun {
+  run_id: string;
+  seed: number;
+  route: string;
+  gpu: string;
+  environment: {
+    cuda_runtime: string;
+    cudnn: number;
+    gpu: {
+      compute_capability: string;
+      name: string;
+      total_memory_bytes: number;
+    };
+    numpy: string;
+    platform: string;
+    python: string;
+    torch: string;
+  };
+  integrity: {
+    complete_sha256: string;
+    config_sha256: string;
+    n_validation_targets: number;
+    predictions_sha256: string;
+    split_indices_sha256: string;
+    stage_checkpoint_sha256s: Record<string, string>;
+    stage_count: number;
+    status: "passed";
+    validation_indices_sha256: string;
+  };
+  models: Record<string, AccuracyRunModel>;
+  metrics: Record<string, number>;
+  comparisons: Record<string, AccuracyRunComparison>;
+}
+
+export interface AccuracyExtensionVote {
+  button_label: "Vote to extend this paper";
+  question: string;
+  choices: Array<{
+    id: string;
+    label: string;
+    role: string;
+  }>;
+  effect: string;
+}
+
+interface DiagnosticAccuracyAggregate {
+  mean: number;
+  n: number;
+  sample_sd: number;
+  t95_interval: [number, number];
+  values: number[];
+}
+
+export interface AccuracyPublicationBundle {
+  schema_version: "nulspec-classification-accuracy-site-v1";
+  publication_status: "ready";
+  generated_at_utc: string;
+  source: {
+    repository: string;
+    evidence_revision: string;
+    handoff_path: string;
+    handoff_sha256: string;
+    handoff_schema_version: "nulspec-classification-accuracy-study-handoff-v1";
+    source_publication_status: "blocked_pending_typed_accuracy_frontend";
+    declared_artifact_count: number;
+  };
+  study: {
+    id: string;
+    slug: string;
+    title: string;
+    arxiv_id: string;
+    arxiv_url: string;
+    upstream_commit: string;
+    scope: string;
+  };
+  metrics_schema: {
+    id: "sprkd_trial_accuracy_v1";
+    primary_unit: "percent_accuracy";
+    primary_estimator: "final_sample_weighted_full_validation_accuracy";
+    uncertainty: string;
+    not_prompt_bootstrap: true;
+    not_equivalence_test: true;
+  };
+  classification: {
+    replication_outcome: "not_replicated";
+    underlying_method_claim: "inconclusive";
+    rationale: string;
+    decision_source: string;
+  };
+  paper_reported_accuracy: Record<string, number>;
+  primary: {
+    metrics: Record<string, AccuracyMetricSummary>;
+    comparisons: Record<string, AccuracyComparison>;
+    runs: AccuracyRun[];
+  };
+  diagnostics: {
+    preregistered_extensions: unknown;
+    common_probe_hessian: unknown;
+    posthoc_stability: {
+      scope: string;
+      aggregates: Record<string, unknown>;
+      seeds: Record<string, Record<string, unknown>>;
+    };
+    posthoc_loss_contract: {
+      scope: string;
+      models: Record<
+        string,
+        { accuracy: DiagnosticAccuracyAggregate; cross_entropy: DiagnosticAccuracyAggregate }
+      >;
+      comparisons: Record<string, unknown>;
+      runs: unknown[];
+    };
+  };
+  compute: {
+    recorded_device_process_hours_total: number;
+    recorded_device_process_seconds: Record<string, number>;
+    accounting_note: string;
+  };
+  artifacts: PublicationArtifact[];
+  routes: {
+    study: string;
+    arms: string[];
+  };
+  extension_vote: AccuracyExtensionVote;
+  completion: {
+    registered_runs: number;
+    terminal_runs: number;
+    claim_ready_runs: number;
+    gates: Record<string, true>;
+  };
+  frozen_primary_result: {
+    registered_runs: number;
+    claim_ready_runs: number;
+    may_be_rewritten_by_extension: false;
+  };
+}
+
 export interface StudyArm extends PublicationArm {
   model_label: string;
   dataset_label: string;
@@ -184,14 +382,31 @@ export interface StudyArm extends PublicationArm {
 }
 
 export interface StudyDocument extends Omit<PublicationBundle, "arms"> {
+  metric_family: "reward_delta";
   study_id: string;
   state: StudyState;
   as_of_utc: string;
   arms: StudyArm[];
 }
 
+export interface AccuracyStudyArm extends AccuracyRun {
+  ordinal: number;
+  arm_id: string;
+  state: ArmState;
+}
+
+export interface AccuracyStudyDocument extends AccuracyPublicationBundle {
+  metric_family: "classification_accuracy";
+  study_id: string;
+  state: StudyState;
+  as_of_utc: string;
+  arms: AccuracyStudyArm[];
+}
+
+export type AnyStudyDocument = StudyDocument | AccuracyStudyDocument;
+
 const publicationsDirectory = join(process.cwd(), "site-data", "publications");
-let cachedStudies: StudyDocument[] | undefined;
+let cachedStudies: AnyStudyDocument[] | undefined;
 
 function armState(execution: PublicationArm["execution"]): ArmState {
   if (execution === "failed") return "FAILED";
@@ -218,6 +433,7 @@ function datasetLabel(value: string) {
 function toStudy(bundle: PublicationBundle): StudyDocument {
   return {
     ...bundle,
+    metric_family: "reward_delta",
     completion: {
       ...bundle.completion,
       tracks: bundle.completion.tracks.map((track) => ({
@@ -242,15 +458,50 @@ function toStudy(bundle: PublicationBundle): StudyDocument {
   };
 }
 
-export function getStudies(): StudyDocument[] {
+function toAccuracyStudy(
+  bundle: AccuracyPublicationBundle,
+): AccuracyStudyDocument {
+  return {
+    ...bundle,
+    metric_family: "classification_accuracy",
+    study_id: bundle.study.id,
+    state: "REPORTED",
+    as_of_utc: bundle.generated_at_utc,
+    arms: bundle.primary.runs.map((run, index) => ({
+      ...run,
+      ordinal: index + 1,
+      arm_id: run.run_id,
+      state: "DONE",
+    })),
+  };
+}
+
+export function isAccuracyStudy(
+  study: AnyStudyDocument,
+): study is AccuracyStudyDocument {
+  return study.metric_family === "classification_accuracy";
+}
+
+export function getStudies(): AnyStudyDocument[] {
   if (cachedStudies) return cachedStudies;
   cachedStudies = readdirSync(publicationsDirectory)
     .filter((name) => /^study-[0-9]{3,}\.json$/.test(name))
     .map((name) => {
       const raw = readFileSync(join(publicationsDirectory, name), "utf8");
-      return toStudy(JSON.parse(raw) as PublicationBundle);
+      const bundle = JSON.parse(raw) as
+        | PublicationBundle
+        | AccuracyPublicationBundle;
+      if (bundle.schema_version === 1) return toStudy(bundle);
+      if (bundle.schema_version === "nulspec-classification-accuracy-site-v1") {
+        return toAccuracyStudy(bundle);
+      }
+      throw new Error(`Unsupported NULSPEC publication schema in ${name}`);
     })
-    .sort((left, right) => right.study_id.localeCompare(left.study_id));
+    .sort(
+      (left, right) =>
+        Date.parse(right.as_of_utc) - Date.parse(left.as_of_utc) ||
+        right.study_id.localeCompare(left.study_id),
+    );
   return cachedStudies;
 }
 
@@ -262,7 +513,19 @@ export function getStudyArm(studyId: string, armId: string) {
   const study = getStudy(studyId);
   if (!study) return undefined;
   const arm = study.arms.find((item) => item.arm_id === armId);
-  return arm ? { study, arm } : undefined;
+  if (!arm) return undefined;
+  if (isAccuracyStudy(study)) {
+    return {
+      metric_family: "classification_accuracy" as const,
+      study,
+      arm: arm as AccuracyStudyArm,
+    };
+  }
+  return {
+    metric_family: "reward_delta" as const,
+    study,
+    arm: arm as StudyArm,
+  };
 }
 
 export type ArmEvidenceFragment =
@@ -287,7 +550,13 @@ export function getLatestStudy() {
   return latest;
 }
 
-export function protocolUrl(study: StudyDocument) {
+export function protocolUrl(study: AnyStudyDocument) {
+  if (isAccuracyStudy(study)) {
+    const protocol = study.artifacts.find(
+      (artifact) => artifact.role === "frozen_primary_protocol",
+    );
+    return protocol ? artifactUrl(protocol) : study.study.arxiv_url;
+  }
   return `${GITHUB_URL}/blob/main/protocols/${study.study.paper.arxiv_id}/REPRODUCTION_PROTOCOL.md`;
 }
 
@@ -297,6 +566,18 @@ export function artifactUrl(artifact: PublicationArtifact) {
 
 export function classificationLabel(value: Classification) {
   return value.replaceAll("_", " ").toLowerCase();
+}
+
+export function studyClassificationLabel(study: AnyStudyDocument) {
+  return isAccuracyStudy(study)
+    ? study.classification.replication_outcome.replaceAll("_", " ")
+    : classificationLabel(study.verdict.classification);
+}
+
+export function studySummary(study: AnyStudyDocument) {
+  return isAccuracyStudy(study)
+    ? study.classification.rationale
+    : study.verdict.summary;
 }
 
 export const stateMeta: Record<
@@ -330,7 +611,7 @@ export const stateMeta: Record<
   },
 };
 
-export function studyCounts(arms: StudyArm[]) {
+export function studyCounts(arms: Array<{ state: ArmState }>) {
   return arms.reduce<Record<ArmState, number>>(
     (counts, arm) => {
       counts[arm.state] += 1;

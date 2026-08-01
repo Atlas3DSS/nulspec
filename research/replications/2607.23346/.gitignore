@@ -1,0 +1,17 @@
+# Reconstruct these public inputs from SOURCE_MANIFEST.md.
+/work/
+
+# Raw logs, checkpoints, predictions, and process state are summarized into
+# tracked, machine-readable results after integrity checks.
+/outputs/
+/.ruff_cache/
+/.pytest_cache/
+__pycache__/
+*.pyc
+
+# These are reproducibility artifacts, not scheduler lock files.
+!/requirements-replication.lock
+!/requirements-artifacts.lock
+
+# Analyzer console mirrors are redundant with the tracked JSON/CSV/Markdown outputs.
+/results/*.stdout

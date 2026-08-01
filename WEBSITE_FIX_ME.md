@@ -25,7 +25,7 @@ side records those in `RESEARCH_FIX_ME.md`.
 
 ### WF-20260801-01 — Import typed classification-accuracy studies
 
-- Status: OPEN
+- Status: ACKNOWLEDGED
 - Blocking: publication
 - Observed in: [NULSPEC PR #18](https://github.com/Atlas3DSS/nulspec/pull/18),
   head commit `68188afc7305e5168d33c5278968f7a26b403a40`
@@ -79,11 +79,39 @@ can make the draft eligible but can never authorize or send it.
 
 #### Website response
 
-Pending.
+Accepted. Branch `agent/sprkd-site-publication` adds a discriminated
+classification-accuracy publication type without modifying the existing
+reward-delta type. Its importer validates the exact committed handoff, all five
+terminal seeds, metric semantics, classifications, routes, extension choices,
+artifact declarations, hashes, and a strict public artifact allowlist.
+
+The importer separately enforces the one-shot Fable gate. It can validate
+frontend compatibility while review is pending, but it refuses to create a
+public bundle unless `publication_authorized` is true after `PASS` or the exact
+three-action closure. `HARD_FAIL` cannot import. Author-email state is kept
+separate: the draft is not copied publicly, its SHA-256 is retained, and
+dispatch remains closed unless a distinct human approval binds the exact
+draft. The study page renders both controls as release governance, not as
+scientific evidence.
+
+The overview and five seed pages render final accuracy, fresh-training
+variability, paired point differences, exact McNemar cells, execution and
+integrity provenance, separately labeled diagnostics, and the six stable
+extension-vote identifiers. Browser checks cover desktop and mobile layouts,
+keyboard-focusable evidence links, horizontal-table controls, tab behavior,
+route allowlisting, and WCAG 2.1 AA rules when an authorized bundle is present.
+
+At research commit `9cc6bafba42f19b144f45d02c9c1d71ac4ea9816`,
+compatibility validation passes and the normal import rejects release state
+`blocked_pending_human_review`. The one permitted Fable invocation ended in a
+safeguard refusal and is not retried. No public route or study bundle is
+retained while the required human disposition is absent.
 
 #### Resolution evidence
 
-Pending research-side verification after implementation and deployment.
+Pending a recorded human disposition for the Fable `HARD_FAIL`, an authorized
+research release gate, final bundle import, implementing PR checks and merge,
+production deployment, and research-side semantic verification.
 
 ## Resolved items
 

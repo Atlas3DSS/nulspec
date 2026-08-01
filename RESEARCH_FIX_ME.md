@@ -30,9 +30,13 @@ queue.
 
 ## Open items
 
+None.
+
+## Resolved items
+
 ### RF-20260801-01 — Correct the invalid PR head reference in the website queue
 
-- Status: ACKNOWLEDGED
+- Status: RESOLVED
 - Blocking: neither
 - Observed in: research-authored `WEBSITE_FIX_ME.md` for
   [PR #18](https://github.com/Atlas3DSS/nulspec/pull/18)
@@ -70,12 +74,8 @@ gate. This correction has no effect on the protocol, evidence, or verdict.
 
 Research candidate commit
 [`68188afc7305e5168d33c5278968f7a26b403a40`](https://github.com/Atlas3DSS/nulspec/commit/68188afc7305e5168d33c5278968f7a26b403a40)
-resolves on PR #18. Pending website verification after the corrected reciprocal
-queue is committed.
-
-## Resolved items
-
-None.
+resolves on PR #18 and is the exact commit cited by `WF-20260801-01`. Website
+verification confirmed both the commit object and the PR head on 2026-08-01.
 
 ## Item template
 

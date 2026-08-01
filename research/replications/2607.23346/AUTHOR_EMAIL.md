@@ -1,5 +1,10 @@
 # Draft author email — not sent
 
+Dispatch always requires final human approval. A Fable `PASS`, or closure of
+all three actions from a normal `FAIL`, can make this exact draft eligible for
+that approval but cannot authorize or send it. A `HARD_FAIL` also stops the
+publication workflow for human review.
+
 **Subject:** Independent replication attempt of the SPRKD malaria experiment
 
 Hello SPRKD authors,

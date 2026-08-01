@@ -270,6 +270,16 @@ Git history alone cannot prove preregistration timing. That is our process
 error, not an upstream finding, and future studies require a pushed protocol
 commit before compute begins.
 
+The completed release candidate is separately governed by a one-shot final
+peer review. Fable reviews one committed evidence packet and returns `PASS`,
+`FAIL`, or `HARD_FAIL`; it does not rerun the study or alter the frozen verdict.
+A normal `FAIL` contains exactly three corrections, which are closed and
+validated once before publication without resubmission. Only `HARD_FAIL`
+requires human review of publication. Every author email has an additional
+mandatory final human gate: Fable can make the exact draft eligible for review
+but cannot authorize or send it. The review record is process provenance, not
+scientific evidence.
+
 ## Constructive author follow-up
 
 `AUTHOR_QUESTIONS.md` requests the historical code/environment, per-seed

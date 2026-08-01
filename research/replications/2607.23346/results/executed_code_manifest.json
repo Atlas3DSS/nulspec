@@ -55,7 +55,9 @@
       "verify_released.py": "8cc1ee61e5a5eda3f563a9d28d0cc457d26bf4d4d590828b6872590f757f6d67"
     },
     "plot_primary_accuracy_sha256": "6d3f82ad2a98be2b2b9277cb2400f27642d553031197c497c6a6842b68533c67",
-    "publication_builder_sha256": "7a3cd9eed0492242f0151e6d64b0fa41d888ef72bf1ea0ddbe30418daa3ae89e",
+    "publication_builder_sha256": "6d7106a517c426c424f0ab99151f27a89033f2c9d66f4554d75be8a0d47df773",
+    "final_peer_review_gate_sha256": "5452b3b52a0cef713dc850706d8dedce3d3efd21fc0b681be35b3f1b3706ed2c",
+    "final_peer_review_protocol_sha256": "e35f241324e40d7bb3d9315db2fabb0f49577d3812d1d3eaa3d3b85424d4fab7",
     "dependency_lock_sha256s": {
       "requirements-artifacts.lock": "db20dd7ac3ccb210104d5ae0c9df95c0249f606867c869d77b5ebe4cb7ba6895",
       "requirements-replication.lock": "3db4f2e5a110340aefbfc41e5a858a6c48b038907523dcf1475079b57b73c429"

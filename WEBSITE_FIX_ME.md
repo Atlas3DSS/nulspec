@@ -79,7 +79,8 @@ can make the draft eligible but can never authorize or send it.
 
 #### Website response
 
-Accepted. Branch `agent/sprkd-site-publication` adds a discriminated
+Accepted. Draft [PR #22](https://github.com/Atlas3DSS/nulspec/pull/22) on
+branch `agent/sprkd-site-publication` adds a discriminated
 classification-accuracy publication type without modifying the existing
 reward-delta type. Its importer validates the exact committed handoff, all five
 terminal seeds, metric semantics, classifications, routes, extension choices,
@@ -112,6 +113,12 @@ retained while the required human disposition is absent.
 Pending a recorded human disposition for the Fable `HARD_FAIL`, an authorized
 research release gate, final bundle import, implementing PR checks and merge,
 production deployment, and research-side semantic verification.
+
+Implementation record: [PR #22](https://github.com/Atlas3DSS/nulspec/pull/22).
+Pre-publication checks include TypeScript, lint, static build and route
+validation, responsive browser checks, accessibility checks, exact-handoff
+compatibility validation, and the expected fail-closed import result. Merged
+commit and production-route evidence remain pending.
 
 ## Resolved items
 

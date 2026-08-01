@@ -168,6 +168,15 @@ or after exact F1/F2/F3 closure for `FAIL`; `HARD_FAIL` always requires a human.
 Email dispatch remains closed until a separate human approval record binds the
 exact draft, final review, and any action closure.
 
+The single production invocation bound committed packet SHA-256
+`5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea`
+and commit `68188afc7305e5168d33c5278968f7a26b403a40`. Fable's safeguard
+refused the biomedical-content packet before returning substantive review
+content. The runner retained the prompt, response wrapper, attempt state, and
+stderr hashes, emitted a technical `HARD_FAIL`, and now refuses a second
+invocation. Publication and the author-email workflow are blocked for human
+review.
+
 ## Container status
 
 The Dockerfile and shell/Python syntax are checked, but neither Docker nor

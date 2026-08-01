@@ -1,10 +1,10 @@
 {
   "artifacts": [
     {
-      "bytes": 8220,
+      "bytes": 8567,
       "path": "README.md",
       "role": "study_readme",
-      "sha256": "7ee8a3e45f706b5d57188f704e01473baf4f2671b5841c49e534ba3b0db0dd16"
+      "sha256": "6e4229fc78e4b082945d61642c44671004a33caa2c9b88713a873c7d3916d627"
     },
     {
       "bytes": 6246,
@@ -13,16 +13,16 @@
       "sha256": "1aca344b5269bb493706008e2f4572f78efdd640caa0424363900d2e0a872854"
     },
     {
-      "bytes": 19300,
+      "bytes": 19680,
       "path": "REPORT.md",
       "role": "full_report",
-      "sha256": "343898ab7e8864413083fd87ce0c39ee8c4af49da0a6d92104cc8dda34f1c4fa"
+      "sha256": "377940bf9a08a372e033d7fd091c6a353236975727102ed2bacba3c04cb16ff3"
     },
     {
-      "bytes": 8876,
+      "bytes": 9390,
       "path": "TESTS.md",
       "role": "verification_log",
-      "sha256": "dc22d1f9f8d52d8f2591f55007b4a00b101576bbb78ca65fc873f6a3acf5f5a2"
+      "sha256": "1e749da9292c85055f4ac167b94d8a9f2e15fc230ed98f67701f1d6fe4561064"
     },
     {
       "bytes": 8213,
@@ -55,10 +55,10 @@
       "sha256": "da4d8d9f789a1404a9e93cd158c6295d7663813880038649c0d2473c031594c4"
     },
     {
-      "bytes": 51735,
+      "bytes": 52864,
       "path": "ERROR_LOG.md",
       "role": "origin_separated_error_ledger",
-      "sha256": "8ef5b46b62d2f9d223111869ed65993f8082c63992e8585020d64796393f2288"
+      "sha256": "a6b2308c19e0d2b439be59c88ec07eb25f7b8754d8de6b22a62f97ac41fed35a"
     },
     {
       "bytes": 3273,
@@ -257,6 +257,24 @@
       "path": "results/citation_audit_results.json",
       "role": "machine_citations",
       "sha256": "f9e118fc92f002922ae9707b08fbd78916b7e5fbf23dbe728952974de10aa0dd"
+    },
+    {
+      "bytes": 603683,
+      "path": "results/fable_final_review_packet.json",
+      "role": "final_peer_review_packet",
+      "sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea"
+    },
+    {
+      "bytes": 5756,
+      "path": "results/fable_final_peer_review.json",
+      "role": "final_peer_review_result",
+      "sha256": "46bb89243ff9326dac6e91f82fc570000116c52b3c1baa1d65e998c3cbf3f347"
+    },
+    {
+      "bytes": 2577,
+      "path": "FABLE_FINAL_REVIEW.md",
+      "role": "final_peer_review_human_record",
+      "sha256": "629ec6015f0a8eee139db6e4122f9181057a83f8bd23fd87bee0b27ceece9f5f"
     }
   ],
   "citation_audit": {
@@ -5896,18 +5914,18 @@
   },
   "final_peer_review": {
     "action_closure_required": false,
-    "author_email_approval_status": "blocked_pending_fable_review",
+    "author_email_approval_status": "blocked_pending_hard_fail_human_review",
     "author_email_dispatch_authorized": false,
     "author_email_eligible_for_human_approval": false,
     "author_email_human_approval_required": true,
-    "human_review_required": false,
+    "human_review_required": true,
     "protocol": "nulspec-fable-one-shot-final-gate-v1",
     "protocol_document": "FABLE_REVIEW_PROTOCOL.md",
     "publication_authorized": false,
     "resubmission_allowed": false,
     "reviewer": "Fable",
     "single_invocation": true,
-    "status": "blocked_pending_fable_one_shot_review"
+    "status": "blocked_pending_human_review"
   },
   "metrics_schema": {
     "id": "sprkd_trial_accuracy_v1",
@@ -7599,19 +7617,19 @@
     ]
   },
   "publication_status": {
-    "author_email_dispatch": "blocked_pending_fable_review",
+    "author_email_dispatch": "blocked_pending_hard_fail_human_review",
     "canonical_site_import": "blocked_pending_typed_accuracy_frontend",
     "frontend_contract": "FRONTEND_HANDOFF.md",
     "reason": "The current site validator accepts reward-delta arms, not classification-accuracy trials. Accuracy is not relabeled as reward.",
     "research_release_gate": {
       "action_closure_required": false,
-      "author_email_approval_status": "blocked_pending_fable_review",
+      "author_email_approval_status": "blocked_pending_hard_fail_human_review",
       "author_email_dispatch_authorized": false,
       "author_email_eligible_for_human_approval": false,
       "author_email_human_approval_required": true,
-      "human_review_required": false,
+      "human_review_required": true,
       "publication_authorized": false,
-      "status": "blocked_pending_fable_one_shot_review"
+      "status": "blocked_pending_human_review"
     }
   },
   "routes": {

@@ -280,6 +280,12 @@ mandatory final human gate: Fable can make the exact draft eligible for review
 but cannot authorize or send it. The review record is process provenance, not
 scientific evidence.
 
+The one permitted Fable invocation was refused by its biomedical-content
+safeguard before any substantive review was returned. The frozen gate therefore
+records a technical `HARD_FAIL` and requires human review; no resubmission will
+occur. This process outcome does not change the **Not replicated** public-result
+assessment or the **Inconclusive** underlying-method assessment.
+
 ## Constructive author follow-up
 
 `AUTHOR_QUESTIONS.md` requests the historical code/environment, per-seed

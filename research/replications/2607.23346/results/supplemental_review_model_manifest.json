@@ -1,0 +1,36 @@
+{
+  "catalog_endpoint": "https://openrouter.ai/api/v1/models",
+  "catalog_entries_reverified_at_utc": "2026-08-01T18:07:18.601788Z",
+  "catalog_snapshot_public": false,
+  "catalog_snapshot_sha256": "86b3b7a89e1340fcb35730d74e0c550e4896915943db341e5ca632264754b630",
+  "models": [
+    {
+      "canonical_slug": "z-ai/glm-5.2-20260616",
+      "catalog_created_unix": 1781631930,
+      "catalog_entry_sha256": "3cc2711d55995750ac3cf8d6b94929992db3197342221012eb4df9de5308e0a4",
+      "catalog_pricing_usd_per_token": {
+        "completion": "0.0000022528",
+        "input_cache_read": "0.00000013312",
+        "prompt": "0.0000007168"
+      },
+      "context_length": 1048576,
+      "family": "GLM",
+      "requested_id": "z-ai/glm-5.2"
+    },
+    {
+      "canonical_slug": "moonshotai/kimi-k3-20260715",
+      "catalog_created_unix": 1784215858,
+      "catalog_entry_sha256": "76e5f2549c3c848056871c2cb9db88b758cf606ee29acfa464f376a00c22704e",
+      "catalog_pricing_usd_per_token": {
+        "completion": "0.000015",
+        "input_cache_read": "0.0000003",
+        "prompt": "0.000003"
+      },
+      "context_length": 1048576,
+      "family": "Kimi",
+      "requested_id": "moonshotai/kimi-k3"
+    }
+  ],
+  "schema_version": "nulspec-supplemental-model-manifest-v1",
+  "selection_rule": "strongest current GLM and Kimi review models available"
+}

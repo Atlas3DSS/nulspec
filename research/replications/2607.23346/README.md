@@ -66,13 +66,23 @@ it can never authorize or send the email.
 
 The one permitted invocation ended in a technical `HARD_FAIL`: Fable's
 biomedical-content safeguard refused the malaria packet before returning any
-substantive review. The request is not being resubmitted. Publication is
-therefore blocked for human review, and the refusal is not evidence about the
-paper or this replication's scientific result.
+substantive review. The request is not being resubmitted. Under the human-issued
+fallback rule, one GLM and one Kimi reviewer then received the same immutable
+packet. Both raw texts declared `PASS`, but GLM's response violated the verdict
+contract and Kimi's JSON was truncated; neither was a valid structured PASS. A
+later valid GLM recovery call is retained but ineligible under the no-retry
+rule. The supplemental disposition is therefore `HARD_FAIL`, publication
+remains blocked for human review, and none of these process outcomes is evidence
+about the paper or this replication's scientific result.
 
-Raw source, datasets, virtual environments, checkpoints, and run logs are
-ignored. Small manifests, scripts, derived tables, and the final report are
-tracked.
+[EXTERNAL_REVIEW_LEDGER.md](EXTERNAL_REVIEW_LEDGER.md) reports all six provider
+events and the complete **$4.44176232** external-review cost, including the
+**$3.224742** charged for Fable's refusal. Exact traces remain in the private
+lab archive; a sanitized training-ready projection is public and hash-bound.
+
+Raw source, datasets, virtual environments, checkpoints, run logs, and provider
+envelopes with private identifiers are ignored. Small manifests, sanitized
+review traces, scripts, derived tables, and the final report are tracked.
 
 ## Frozen inputs
 

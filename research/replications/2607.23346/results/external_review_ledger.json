@@ -1,0 +1,405 @@
+{
+  "append_only": true,
+  "binding": {
+    "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+    "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+    "reviewed_commit": "68188afc7305e5168d33c5278968f7a26b403a40"
+  },
+  "events": [
+    {
+      "binding": {
+        "packet_bytes": 603683,
+        "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+        "prompt_bytes": 605580,
+        "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+        "reviewed_commit": "68188afc7305e5168d33c5278968f7a26b403a40"
+      },
+      "charged_cost_usd": 3.224742,
+      "completed_at_utc": "2026-08-01T16:43:08.433358Z",
+      "consensus_eligible": false,
+      "declared_verdict": null,
+      "elapsed_seconds": 6.842492,
+      "event_id": "FABLE-REFUSAL-20260801-001",
+      "event_type": "reviewer_safeguard_refusal",
+      "failure": {
+        "category": "bio",
+        "provider_message_sanitized": "API Error: Fable 5's safeguards flagged this message (https://www.anthropic.com/legal/aup). They may flag safe, normal content as well. These measures let us bring you Mythos-level capabilities sooner, and we're working to refine them. Claude Code can't respond to this request with Fable 5.\n\nTry rephrasing the request in a new session or change your model.\n\nLearn more: https://support.claude.com/en/articles/15363606",
+        "stop_reason": "refusal",
+        "terminal_reason": "api_error"
+      },
+      "findings_returned": 0,
+      "http_status": null,
+      "model": "claude-fable-5",
+      "model_invoked": true,
+      "model_usage": {
+        "claude-fable-5": {
+          "cacheCreationInputTokens": 242078,
+          "cacheReadInputTokens": 0,
+          "contextWindow": 1000000,
+          "costUSD": 3.026385,
+          "inputTokens": 1,
+          "maxOutputTokens": 64000,
+          "outputTokens": 8,
+          "webSearchRequests": 0
+        },
+        "claude-haiku-4-5-20251001": {
+          "cacheCreationInputTokens": 0,
+          "cacheReadInputTokens": 0,
+          "contextWindow": 200000,
+          "costUSD": 0.198357,
+          "inputTokens": 198262,
+          "maxOutputTokens": 32000,
+          "outputTokens": 19,
+          "webSearchRequests": 0
+        }
+      },
+      "provider": "Anthropic",
+      "publication_consequence": "Fable HARD_FAIL; no resubmission; invoke the one-pair GLM/Kimi supplemental disposition and otherwise fail closed for human review.",
+      "reviewer": "Fable",
+      "started_at_utc": "2026-08-01T16:43:01.590076Z",
+      "trace": {
+        "artifacts": {
+          "attempt": {
+            "bytes": 847,
+            "sha256": "6b548645f20ede56d5964ce47c8225af8279d938270a1e0887f1e81eb5d843f4"
+          },
+          "prompt": {
+            "bytes": 605580,
+            "sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d"
+          },
+          "raw_response": {
+            "bytes": 5118,
+            "sha256": "82ccbc735ef4dd8d9b627df993ee9f1e819c7a67e4b493ad4ffc51d9bc24b4c9"
+          },
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "public": false,
+        "retention": "ignored_immutable_lab_archive"
+      },
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 242078
+        },
+        "cache_creation_input_tokens": 242078,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 1,
+        "iterations": [
+          {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 242078
+            },
+            "cache_creation_input_tokens": 242078,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 1,
+            "output_tokens": 8,
+            "type": "message"
+          }
+        ],
+        "output_tokens": 8,
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 0
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      },
+      "validation_status": "technical_hard_fail"
+    },
+    {
+      "binding": {
+        "catalog_entry_sha256": "3cc2711d55995750ac3cf8d6b94929992db3197342221012eb4df9de5308e0a4",
+        "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+        "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+        "reviewed_commit": "68188afc7305e5168d33c5278968f7a26b403a40"
+      },
+      "canonical_model": "z-ai/glm-5.2-20260616",
+      "charged_cost_usd": 0.0,
+      "completed_at_utc": "2026-08-01T17:56:14.992532Z",
+      "consensus_eligible": false,
+      "declared_verdict": null,
+      "elapsed_seconds": 0.099014,
+      "event_id": "OR-TRANSPORT-20260801-001",
+      "event_type": "transport_failure",
+      "failure": "FallbackReviewError: OpenRouter returned HTTP 401: Missing Authentication header",
+      "findings_returned": 0,
+      "finish_reason": null,
+      "http_status": 401,
+      "human_label": "authentication_transport_failure_no_model_invocation",
+      "model_invoked": false,
+      "native_finish_reason": null,
+      "provider": "OpenRouter",
+      "provider_reported_model": null,
+      "requested_model": "z-ai/glm-5.2",
+      "reviewer_family": "GLM",
+      "started_at_utc": "2026-08-01T17:56:14.892054Z",
+      "trace": {
+        "artifacts": {
+          "attempt": {
+            "bytes": 875,
+            "sha256": "a3ba6a6150e5fa115cc7cbae1742e838fad3f04adf61c01830c8bcf9d84a7c11"
+          },
+          "raw_response": {
+            "bytes": 64,
+            "sha256": "a5c01dc568ef16f02c4e04e7a2919ffe2cbd02224b4c2ba8f5d053a5f5c0297d"
+          }
+        },
+        "public": false,
+        "retention": "ignored_immutable_lab_archive"
+      },
+      "usage": {},
+      "validated_verdict": null,
+      "validation_status": "completed_invalid"
+    },
+    {
+      "binding": {
+        "catalog_entry_sha256": "76e5f2549c3c848056871c2cb9db88b758cf606ee29acfa464f376a00c22704e",
+        "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+        "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+        "reviewed_commit": "68188afc7305e5168d33c5278968f7a26b403a40"
+      },
+      "canonical_model": "moonshotai/kimi-k3-20260715",
+      "charged_cost_usd": 0.0,
+      "completed_at_utc": "2026-08-01T17:56:15.423360Z",
+      "consensus_eligible": false,
+      "declared_verdict": null,
+      "elapsed_seconds": 0.101257,
+      "event_id": "OR-TRANSPORT-20260801-002",
+      "event_type": "transport_failure",
+      "failure": "FallbackReviewError: OpenRouter returned HTTP 401: Missing Authentication header",
+      "findings_returned": 0,
+      "finish_reason": null,
+      "http_status": 401,
+      "human_label": "authentication_transport_failure_no_model_invocation",
+      "model_invoked": false,
+      "native_finish_reason": null,
+      "provider": "OpenRouter",
+      "provider_reported_model": null,
+      "requested_model": "moonshotai/kimi-k3",
+      "reviewer_family": "Kimi",
+      "started_at_utc": "2026-08-01T17:56:15.320266Z",
+      "trace": {
+        "artifacts": {
+          "attempt": {
+            "bytes": 887,
+            "sha256": "a7022f0248c9919066fb16e534f3ffdf0ec89b37538e365267a3fde6edaae27e"
+          },
+          "raw_response": {
+            "bytes": 64,
+            "sha256": "a5c01dc568ef16f02c4e04e7a2919ffe2cbd02224b4c2ba8f5d053a5f5c0297d"
+          }
+        },
+        "public": false,
+        "retention": "ignored_immutable_lab_archive"
+      },
+      "usage": {},
+      "validated_verdict": null,
+      "validation_status": "completed_invalid"
+    },
+    {
+      "binding": {
+        "catalog_entry_sha256": "3cc2711d55995750ac3cf8d6b94929992db3197342221012eb4df9de5308e0a4",
+        "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+        "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+        "reviewed_commit": "68188afc7305e5168d33c5278968f7a26b403a40"
+      },
+      "canonical_model": "z-ai/glm-5.2-20260616",
+      "charged_cost_usd": 0.04710276,
+      "completed_at_utc": "2026-08-01T17:58:04.466916Z",
+      "consensus_eligible": true,
+      "declared_verdict": "PASS",
+      "elapsed_seconds": 30.981795,
+      "event_id": "OR-REVIEW-20260801-001",
+      "event_type": "supplemental_model_review",
+      "failure": "ValueError: PASS has the wrong next step",
+      "findings_returned": 8,
+      "finish_reason": "stop",
+      "http_status": 200,
+      "human_label": "primary_pair_schema_invalid_wrong_pass_next_step",
+      "model_invoked": true,
+      "native_finish_reason": "stop",
+      "provider": "OpenRouter",
+      "provider_reported_model": "z-ai/glm-5.2",
+      "requested_model": "z-ai/glm-5.2",
+      "reviewer_family": "GLM",
+      "started_at_utc": "2026-08-01T17:57:33.483371Z",
+      "trace": {
+        "artifacts": {
+          "attempt": {
+            "bytes": 838,
+            "sha256": "692023cf835cc25bbf67fe890bc4ae6c2fc94a37d19016eaad21cd31483ae8cd"
+          },
+          "raw_response": {
+            "bytes": 7943,
+            "sha256": "440aa0fa6431698c98b9e6fc1c587e7de2ff8da5f96e3dc109d441052eca09e4"
+          }
+        },
+        "public": false,
+        "retention": "ignored_immutable_lab_archive"
+      },
+      "usage": {
+        "completion_tokens": 1452,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.04710276,
+        "is_byok": false,
+        "prompt_tokens": 185373,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 148299,
+          "video_tokens": 0
+        },
+        "total_tokens": 186825
+      },
+      "validated_verdict": null,
+      "validation_status": "completed_invalid"
+    },
+    {
+      "binding": {
+        "catalog_entry_sha256": "76e5f2549c3c848056871c2cb9db88b758cf606ee29acfa464f376a00c22704e",
+        "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+        "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+        "reviewed_commit": "68188afc7305e5168d33c5278968f7a26b403a40"
+      },
+      "canonical_model": "moonshotai/kimi-k3-20260715",
+      "charged_cost_usd": 1.123173,
+      "completed_at_utc": "2026-08-01T18:00:29.132065Z",
+      "consensus_eligible": true,
+      "declared_verdict": "PASS",
+      "elapsed_seconds": 144.622105,
+      "event_id": "OR-REVIEW-20260801-002",
+      "event_type": "supplemental_model_review",
+      "failure": "JSONDecodeError: Unterminated string starting at: line 40 column 13 (char 6649)",
+      "findings_returned": 0,
+      "finish_reason": "length",
+      "http_status": 200,
+      "human_label": "primary_pair_truncated_invalid_json",
+      "model_invoked": true,
+      "native_finish_reason": "length",
+      "provider": "OpenRouter",
+      "provider_reported_model": "moonshotai/kimi-k3",
+      "requested_model": "moonshotai/kimi-k3",
+      "reviewer_family": "Kimi",
+      "started_at_utc": "2026-08-01T17:58:04.508654Z",
+      "trace": {
+        "artifacts": {
+          "attempt": {
+            "bytes": 892,
+            "sha256": "a572f25d0aad5f5285223cffe47ddd3ac7f54d06d1696a2450b7672dca36d88d"
+          },
+          "raw_response": {
+            "bytes": 119318,
+            "sha256": "9ad1696403dc4b02e25c1035fa9285715d0777079f2a7ed895b3c3108169c1b6"
+          }
+        },
+        "public": false,
+        "retention": "ignored_immutable_lab_archive"
+      },
+      "usage": {
+        "completion_tokens": 16000,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 13452
+        },
+        "cost": 1.123173,
+        "is_byok": false,
+        "prompt_tokens": 169594,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 185594
+      },
+      "validated_verdict": null,
+      "validation_status": "completed_invalid"
+    },
+    {
+      "binding": {
+        "catalog_entry_sha256": "3cc2711d55995750ac3cf8d6b94929992db3197342221012eb4df9de5308e0a4",
+        "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+        "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+        "reviewed_commit": "68188afc7305e5168d33c5278968f7a26b403a40"
+      },
+      "canonical_model": "z-ai/glm-5.2-20260616",
+      "charged_cost_usd": 0.04674456,
+      "completed_at_utc": "2026-08-01T18:03:08.779162Z",
+      "consensus_eligible": false,
+      "declared_verdict": "PASS",
+      "elapsed_seconds": 20.993016,
+      "event_id": "OR-REVIEW-20260801-003",
+      "event_type": "supplemental_model_review",
+      "failure": null,
+      "findings_returned": 8,
+      "finish_reason": "stop",
+      "http_status": 200,
+      "human_label": "ineligible_additional_call_after_primary_pair",
+      "model_invoked": true,
+      "native_finish_reason": "stop",
+      "provider": "OpenRouter",
+      "provider_reported_model": "z-ai/glm-5.2",
+      "requested_model": "z-ai/glm-5.2",
+      "reviewer_family": "GLM",
+      "started_at_utc": "2026-08-01T18:02:47.784357Z",
+      "trace": {
+        "artifacts": {
+          "attempt": {
+            "bytes": 798,
+            "sha256": "e93919f19adf88bf5c3c10c8a6ac1f6c5dff379c2d543474fe2651dfdf690df5"
+          },
+          "raw_response": {
+            "bytes": 7157,
+            "sha256": "5ce295b57b1d03dd203774bc50d4155e910ea7607890ec2e033cc4dd34d871c5"
+          }
+        },
+        "public": false,
+        "retention": "ignored_immutable_lab_archive"
+      },
+      "usage": {
+        "completion_tokens": 1253,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.04674456,
+        "is_byok": false,
+        "prompt_tokens": 185373,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 148299,
+          "video_tokens": 0
+        },
+        "total_tokens": 186626
+      },
+      "validated_verdict": "PASS",
+      "validation_status": "completed_valid"
+    }
+  ],
+  "generated_at_utc": "2026-08-01T18:16:18Z",
+  "interpretation": "Review outcomes are release-process evidence only. They do not alter the frozen scientific result.",
+  "schema_version": "nulspec-external-review-ledger-v1",
+  "study_id": "260723346",
+  "target_arxiv_id": "2607.23346v1",
+  "totals": {
+    "anthropic_usd": 3.224742,
+    "consensus_eligible_model_invocations": 2,
+    "findings_returned_by_consensus_eligible_valid_reviews": 0,
+    "model_invocations": 4,
+    "openrouter_usd": 1.21702032,
+    "provider_request_events": 6,
+    "total_usd": 4.44176232
+  }
+}

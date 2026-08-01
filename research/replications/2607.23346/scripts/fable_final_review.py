@@ -20,6 +20,7 @@ PACKET_SCHEMA = "nulspec-fable-final-review-packet-v1"
 RESULT_SCHEMA = "nulspec-fable-final-peer-review-v1"
 CLOSURE_SCHEMA = "nulspec-fable-action-closure-v1"
 EMAIL_APPROVAL_SCHEMA = "nulspec-author-email-human-approval-v1"
+SUPPLEMENTAL_CONSENSUS_SCHEMA = "nulspec-supplemental-review-consensus-v1"
 PROTOCOL_ID = "nulspec-fable-one-shot-final-gate-v1"
 EXPECTED_SEEDS = list(range(5))
 EXPECTED_AREAS = {
@@ -897,6 +898,7 @@ def validate_email_approval(
     author_email_sha256: str,
     review: dict[str, Any],
     closure: dict[str, Any] | None,
+    supplemental_consensus_sha256: str | None = None,
 ) -> None:
     if approval.get("schema_version") != EMAIL_APPROVAL_SCHEMA:
         raise ValueError("unexpected author-email human-approval schema")
@@ -915,6 +917,105 @@ def validate_email_approval(
     closure_sha = sha256_bytes(canonical_json(closure)) if closure else None
     if approval.get("fable_action_closure_sha256") != closure_sha:
         raise ValueError("author-email approval binds a different action closure")
+    if (
+        approval.get("supplemental_review_consensus_sha256")
+        != supplemental_consensus_sha256
+    ):
+        raise ValueError("author-email approval binds a different supplemental review")
+
+
+def evaluate_supplemental_consensus(
+    consensus: dict[str, Any],
+    *,
+    fable_result_sha256: str,
+    packet_sha256: str,
+) -> dict[str, Any]:
+    if consensus.get("schema_version") != SUPPLEMENTAL_CONSENSUS_SCHEMA:
+        raise ValueError("unexpected supplemental-review consensus schema")
+    if consensus.get("source_fable_result_sha256") != fable_result_sha256:
+        raise ValueError("supplemental consensus binds a different Fable result")
+    binding = consensus.get("binding")
+    if not isinstance(binding, dict) or binding.get("packet_sha256") != packet_sha256:
+        raise ValueError("supplemental consensus binds a different packet")
+    policy = consensus.get("policy")
+    if not isinstance(policy, dict):
+        raise ValueError("supplemental consensus lacks its policy")
+    required_policy = {
+        "required_reviewers": ["GLM", "Kimi"],
+        "same_immutable_packet_required": True,
+        "both_structured_pass_required": True,
+        "malformed_refusal_or_non_pass_fails_closed": True,
+        "retry_or_tiebreaker_allowed": False,
+        "scientific_result_mutable": False,
+        "author_email_dispatch_requires_separate_human_approval": True,
+    }
+    for key, expected in required_policy.items():
+        if policy.get(key) != expected:
+            raise ValueError(f"supplemental policy differs at {key}")
+    pair = consensus.get("primary_pair")
+    if not isinstance(pair, list) or len(pair) != 2:
+        raise ValueError(
+            "supplemental consensus must contain exactly two primary reviews"
+        )
+    if [row.get("reviewer_family") for row in pair] != ["GLM", "Kimi"]:
+        raise ValueError("supplemental reviewers differ or are reordered")
+    if not all(row.get("consensus_eligible") is True for row in pair):
+        raise ValueError("supplemental primary pair contains an ineligible review")
+    both_valid_pass = all(
+        row.get("structured_valid") is True and row.get("validated_verdict") == "PASS"
+        for row in pair
+    )
+    decision = consensus.get("decision")
+    if decision == "PASS":
+        if not both_valid_pass:
+            raise ValueError(
+                "supplemental PASS lacks two valid structured PASS reviews"
+            )
+        if consensus.get("publication_authorized") is not True:
+            raise ValueError("supplemental PASS does not authorize publication")
+        if consensus.get("author_email_dispatch_authorized") is not False:
+            raise ValueError("supplemental PASS incorrectly authorizes email dispatch")
+        if consensus.get("author_email_human_approval_required") is not True:
+            raise ValueError("supplemental PASS drops mandatory human email approval")
+        return {
+            "status": "approved_by_glm_kimi_consensus_after_fable_hard_fail",
+            "publication_authorized": True,
+            "author_email_eligible_for_human_approval": True,
+            "author_email_dispatch_authorized": False,
+            "author_email_human_approval_required": True,
+            "author_email_approval_status": "pending_final_human_approval",
+            "human_review_required": False,
+            "action_closure_required": False,
+            "supplemental_review_decision": "PASS",
+        }
+    if decision != "HARD_FAIL":
+        raise ValueError("supplemental decision must be PASS or HARD_FAIL")
+    if both_valid_pass:
+        raise ValueError("supplemental HARD_FAIL contradicts two valid PASS reviews")
+    for key in (
+        "publication_authorized",
+        "author_email_eligible_for_human_approval",
+        "author_email_dispatch_authorized",
+    ):
+        if consensus.get(key) is not False:
+            raise ValueError(f"supplemental HARD_FAIL opened {key}")
+    if consensus.get("human_review_required") is not True:
+        raise ValueError("supplemental HARD_FAIL does not require human review")
+    if consensus.get("author_email_human_approval_required") is not True:
+        raise ValueError("supplemental HARD_FAIL drops mandatory human email approval")
+    return {
+        "status": "blocked_after_supplemental_hard_fail_pending_human_review",
+        "publication_authorized": False,
+        "author_email_eligible_for_human_approval": False,
+        "author_email_dispatch_authorized": False,
+        "author_email_human_approval_required": True,
+        "author_email_approval_status": (
+            "blocked_pending_supplemental_hard_fail_human_review"
+        ),
+        "human_review_required": True,
+        "action_closure_required": False,
+        "supplemental_review_decision": "HARD_FAIL",
+    }
 
 
 def gate_for_paths(study_root: Path) -> dict[str, Any]:
@@ -945,6 +1046,18 @@ def gate_for_paths(study_root: Path) -> dict[str, Any]:
     closure_path = study_root / "results/fable_action_closure.json"
     closure = load_json(closure_path) if closure_path.is_file() else None
     gate = evaluate_gate(review, closure)
+    supplemental_path = study_root / "results/supplemental_review_consensus.json"
+    supplemental_sha256 = None
+    if supplemental_path.is_file():
+        if review["decision"]["verdict"] != "HARD_FAIL":
+            raise ValueError("supplemental consensus exists without a Fable HARD_FAIL")
+        supplemental = load_json(supplemental_path)
+        supplemental_sha256 = sha256(supplemental_path)
+        gate = evaluate_supplemental_consensus(
+            supplemental,
+            fable_result_sha256=sha256(result_path),
+            packet_sha256=review["packet"]["sha256"],
+        )
     approval_path = study_root / "results/author_email_human_approval.json"
     if not approval_path.is_file():
         return gate
@@ -956,6 +1069,7 @@ def gate_for_paths(study_root: Path) -> dict[str, Any]:
         sha256(study_root / "AUTHOR_EMAIL.md"),
         review,
         closure,
+        supplemental_sha256,
     )
     gate["author_email_dispatch_authorized"] = True
     gate["author_email_approval_status"] = "approved_for_exact_draft_once"
@@ -1070,6 +1184,60 @@ def self_test() -> None:
     hard_review = deepcopy(review)
     hard_review["decision"] = hard
     assert evaluate_gate(hard_review, None)["human_review_required"] is True
+    supplemental = {
+        "schema_version": SUPPLEMENTAL_CONSENSUS_SCHEMA,
+        "source_fable_result_sha256": "c" * 64,
+        "binding": {"packet_sha256": packet_sha},
+        "policy": {
+            "required_reviewers": ["GLM", "Kimi"],
+            "same_immutable_packet_required": True,
+            "both_structured_pass_required": True,
+            "malformed_refusal_or_non_pass_fails_closed": True,
+            "retry_or_tiebreaker_allowed": False,
+            "scientific_result_mutable": False,
+            "author_email_dispatch_requires_separate_human_approval": True,
+        },
+        "primary_pair": [
+            {
+                "reviewer_family": family,
+                "structured_valid": True,
+                "validated_verdict": "PASS",
+                "consensus_eligible": True,
+            }
+            for family in ("GLM", "Kimi")
+        ],
+        "decision": "PASS",
+        "publication_authorized": True,
+        "author_email_eligible_for_human_approval": True,
+        "author_email_dispatch_authorized": False,
+        "author_email_human_approval_required": True,
+        "human_review_required": False,
+    }
+    supplemental_gate = evaluate_supplemental_consensus(
+        supplemental,
+        fable_result_sha256="c" * 64,
+        packet_sha256=packet_sha,
+    )
+    assert supplemental_gate["publication_authorized"] is True
+    assert supplemental_gate["author_email_dispatch_authorized"] is False
+    failed_supplemental = deepcopy(supplemental)
+    failed_supplemental["primary_pair"][1]["structured_valid"] = False
+    failed_supplemental["primary_pair"][1]["validated_verdict"] = None
+    failed_supplemental.update(
+        {
+            "decision": "HARD_FAIL",
+            "publication_authorized": False,
+            "author_email_eligible_for_human_approval": False,
+            "human_review_required": True,
+        }
+    )
+    failed_supplemental_gate = evaluate_supplemental_consensus(
+        failed_supplemental,
+        fable_result_sha256="c" * 64,
+        packet_sha256=packet_sha,
+    )
+    assert failed_supplemental_gate["publication_authorized"] is False
+    assert failed_supplemental_gate["human_review_required"] is True
     print("FABLE_FINAL_REVIEW_SELF_TEST_PASS")
 
 

@@ -150,9 +150,10 @@ artifact. The handoff deliberately reports the canonical site import as
 blocked until the frontend accepts a typed classification-accuracy arm.
 
 The final peer-review runner has a deterministic contract test covering all
-three decisions, rejection of a two-action `FAIL`, the blocked pre-closure
-state, exact F1/F2/F3 closure, `HARD_FAIL` human escalation, and the separate
-human approval binding for the author email:
+three Fable decisions, rejection of a two-action `FAIL`, the blocked
+pre-closure state, exact F1/F2/F3 closure, the two-valid-PASS GLM/Kimi fallback,
+fail-closed malformed fallback responses, and the separate human approval
+binding for the author email:
 
 ```bash
 work/.venv/bin/python scripts/fable_final_review.py self-test
@@ -163,10 +164,24 @@ seed set and result schemas, checks the pending typed website handoff, compacts
 only duplicated machine rows while retaining canonical hashes, and writes the
 review packet. The candidate tree and packet must then match the committed Git
 blob exactly. `review-once` writes its attempt marker before invoking Fable and
-refuses any second attempt. `check-gate` authorizes publication after a `PASS`,
-or after exact F1/F2/F3 closure for `FAIL`; `HARD_FAIL` always requires a human.
-Email dispatch remains closed until a separate human approval record binds the
-exact draft, final review, and any action closure.
+refuses any second attempt. `check-gate` authorizes publication after a Fable
+`PASS`, exact F1/F2/F3 closure for `FAIL`, or two independently valid structured
+supplemental PASS decisions after a technical Fable `HARD_FAIL`. Any malformed
+or non-PASS supplemental result fails closed for human review. Email dispatch
+remains closed until a separate human approval record binds the exact draft,
+final review, supplemental disposition when present, and any action closure.
+
+The external-review audit is regenerated from the ignored exact traces and then
+checked byte-for-byte:
+
+```bash
+work/.venv/bin/python scripts/audit_external_reviews.py check --study-root .
+```
+
+It asserts six chronological provider events, exact packet/prompt/raw hashes,
+model-catalog entry hashes, sanitized JSONL trace safety, the **$4.44176232**
+cost total, the ineligibility of the extra GLM call, a `HARD_FAIL` disposition,
+and closed publication and email gates.
 
 The single production invocation bound committed packet SHA-256
 `5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea`
@@ -174,8 +189,9 @@ and commit `68188afc7305e5168d33c5278968f7a26b403a40`. Fable's safeguard
 refused the biomedical-content packet before returning substantive review
 content. The runner retained the prompt, response wrapper, attempt state, and
 stderr hashes, emitted a technical `HARD_FAIL`, and now refuses a second
-invocation. Publication and the author-email workflow are blocked for human
-review.
+invocation. The one permitted supplemental pair also failed structured
+validation, so publication and the author-email workflow remain blocked for
+human review.
 
 ## Container status
 

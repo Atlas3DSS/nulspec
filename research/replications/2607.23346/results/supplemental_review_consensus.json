@@ -1,0 +1,69 @@
+{
+  "author_email_dispatch_authorized": false,
+  "author_email_eligible_for_human_approval": false,
+  "author_email_human_approval_required": true,
+  "binding": {
+    "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+    "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+    "reviewed_commit": "68188afc7305e5168d33c5278968f7a26b403a40"
+  },
+  "decided_at_utc": "2026-08-01T18:16:18Z",
+  "decision": "HARD_FAIL",
+  "decision_reason": "Neither primary-pair response was schema-valid: GLM returned PASS with the FAIL-only next step, and Kimi's JSON was truncated at the output limit. Both raw texts declared PASS, but the required two valid structured PASS decisions were not established.",
+  "excluded_events": [
+    {
+      "charged_cost_usd": 0.04674456,
+      "declared_verdict": "PASS",
+      "event_id": "OR-REVIEW-20260801-003",
+      "reason": "Additional GLM contract-recovery invocation occurred after the primary pair and is ineligible under the no-retry rule.",
+      "validated_verdict": "PASS"
+    }
+  ],
+  "fable_resubmission_allowed": false,
+  "human_review_required": true,
+  "policy": {
+    "author_email_dispatch_requires_separate_human_approval": true,
+    "both_structured_pass_required": true,
+    "malformed_refusal_or_non_pass_fails_closed": true,
+    "required_reviewers": [
+      "GLM",
+      "Kimi"
+    ],
+    "retry_or_tiebreaker_allowed": false,
+    "same_immutable_packet_required": true,
+    "scientific_result_mutable": false,
+    "trigger": "Fable technical HARD_FAIL"
+  },
+  "primary_pair": [
+    {
+      "canonical_model": "z-ai/glm-5.2-20260616",
+      "charged_cost_usd": 0.04710276,
+      "consensus_eligible": true,
+      "declared_verdict": "PASS",
+      "event_id": "OR-REVIEW-20260801-001",
+      "failure": "ValueError: PASS has the wrong next step",
+      "raw_response_sha256": "440aa0fa6431698c98b9e6fc1c587e7de2ff8da5f96e3dc109d441052eca09e4",
+      "reviewer_family": "GLM",
+      "structured_valid": false,
+      "validated_verdict": null
+    },
+    {
+      "canonical_model": "moonshotai/kimi-k3-20260715",
+      "charged_cost_usd": 1.123173,
+      "consensus_eligible": true,
+      "declared_verdict": "PASS",
+      "event_id": "OR-REVIEW-20260801-002",
+      "failure": "JSONDecodeError: Unterminated string starting at: line 40 column 13 (char 6649)",
+      "raw_response_sha256": "9ad1696403dc4b02e25c1035fa9285715d0777079f2a7ed895b3c3108169c1b6",
+      "reviewer_family": "Kimi",
+      "structured_valid": false,
+      "validated_verdict": null
+    }
+  ],
+  "publication_authorized": false,
+  "schema_version": "nulspec-supplemental-review-consensus-v1",
+  "source_fable_refusal_id": "FABLE-REFUSAL-20260801-001",
+  "source_fable_result_sha256": "46bb89243ff9326dac6e91f82fc570000116c52b3c1baa1d65e998c3cbf3f347",
+  "study_id": "260723346",
+  "supplemental_resubmission_allowed": false
+}

@@ -284,6 +284,28 @@ def main() -> int:
     loss_contract = loaded["loss_contract"]
     citation = loaded["citations"]
     final_review_gate = gate_for_paths(root)
+    external_review = load_json(root / "results/external_review_ledger.json")
+    supplemental_review = load_json(root / "results/supplemental_review_consensus.json")
+    if external_review.get("schema_version") != "nulspec-external-review-ledger-v1":
+        raise ValueError("external review: unexpected ledger schema")
+    if supplemental_review.get("schema_version") != (
+        "nulspec-supplemental-review-consensus-v1"
+    ):
+        raise ValueError("external review: unexpected consensus schema")
+    if external_review.get("study_id") != "260723346":
+        raise ValueError("external review: study binding differs")
+    if external_review.get("binding") != supplemental_review.get("binding"):
+        raise ValueError("external review: ledger and consensus bindings differ")
+    review_events = external_review.get("events")
+    if not isinstance(review_events, list) or len(review_events) != 6:
+        raise ValueError("external review: provider event chronology differs")
+    event_ids = [row.get("event_id") for row in review_events]
+    if len(set(event_ids)) != len(event_ids):
+        raise ValueError("external review: duplicate event identifier")
+    if supplemental_review.get("decision") != final_review_gate.get(
+        "supplemental_review_decision"
+    ):
+        raise ValueError("external review: consensus and final gate differ")
     device_process_seconds = {
         "primary_training": finite(
             primary["operations"]["sum_recorded_training_stage_seconds_all_seeds"],
@@ -320,6 +342,14 @@ def main() -> int:
         ("AUTHOR_EMAIL.md", "unsent_author_email_draft"),
         ("FABLE_REVIEW_PROTOCOL.md", "final_peer_review_protocol"),
         ("scripts/fable_final_review.py", "final_peer_review_gate"),
+        (
+            "SUPPLEMENTAL_REVIEW_PROTOCOL.md",
+            "supplemental_peer_review_protocol",
+        ),
+        (
+            "scripts/audit_external_reviews.py",
+            "external_review_audit_exporter",
+        ),
         ("results/executed_code_manifest.json", "executed_code_identity"),
         ("results/PRIMARY_ACCURACY_BY_SEED.png", "primary_figure"),
         ("results/SCRATCH_RESULTS.md", "primary_human_table"),
@@ -351,6 +381,30 @@ def main() -> int:
                     "final_peer_review_result",
                 ),
                 ("FABLE_FINAL_REVIEW.md", "final_peer_review_human_record"),
+                (
+                    "EXTERNAL_REVIEW_LEDGER.md",
+                    "external_review_human_ledger",
+                ),
+                (
+                    "results/external_review_ledger.json",
+                    "external_review_machine_ledger",
+                ),
+                (
+                    "results/external_review_training_traces.jsonl",
+                    "external_review_sanitized_training_traces",
+                ),
+                (
+                    "results/supplemental_review_model_manifest.json",
+                    "supplemental_review_model_manifest",
+                ),
+                (
+                    "SUPPLEMENTAL_REVIEW_CONSENSUS.md",
+                    "supplemental_review_human_disposition",
+                ),
+                (
+                    "results/supplemental_review_consensus.json",
+                    "supplemental_review_machine_disposition",
+                ),
             ]
         )
     optional_review_artifacts.extend(
@@ -442,7 +496,58 @@ def main() -> int:
             "reviewer": "Fable",
             "single_invocation": True,
             "resubmission_allowed": False,
+            "supplemental_protocol_document": "SUPPLEMENTAL_REVIEW_PROTOCOL.md",
+            "supplemental_reviewers": ["GLM", "Kimi"],
+            "supplemental_resubmission_allowed": False,
             **final_review_gate,
+        },
+        "external_review_accounting": {
+            "governance_only_not_scientific_evidence": True,
+            "ledger_schema": external_review["schema_version"],
+            "supplemental_consensus_schema": supplemental_review["schema_version"],
+            "fable_refusal_id": supplemental_review["source_fable_refusal_id"],
+            "supplemental_decision": supplemental_review["decision"],
+            "costs_usd": {
+                "anthropic": finite(
+                    external_review["totals"]["anthropic_usd"],
+                    "external review Anthropic cost",
+                ),
+                "openrouter": finite(
+                    external_review["totals"]["openrouter_usd"],
+                    "external review OpenRouter cost",
+                ),
+                "total": finite(
+                    external_review["totals"]["total_usd"],
+                    "external review total cost",
+                ),
+            },
+            "events": [
+                {
+                    "event_id": row["event_id"],
+                    "provider": row["provider"],
+                    "model": row.get("canonical_model") or row.get("model"),
+                    "validation_status": row["validation_status"],
+                    "declared_verdict": row.get("declared_verdict"),
+                    "validated_verdict": row.get("validated_verdict"),
+                    "consensus_eligible": row["consensus_eligible"],
+                    "findings_returned": row["findings_returned"],
+                    "charged_cost_usd": finite(
+                        row["charged_cost_usd"],
+                        f"external review cost {row['event_id']}",
+                    ),
+                }
+                for row in review_events
+            ],
+            "public_artifacts": {
+                "ledger": "results/external_review_ledger.json",
+                "sanitized_training_traces": (
+                    "results/external_review_training_traces.jsonl"
+                ),
+                "model_manifest": ("results/supplemental_review_model_manifest.json"),
+                "consensus": "results/supplemental_review_consensus.json",
+            },
+            "raw_trace_public": False,
+            "raw_trace_retention": "ignored_immutable_lab_archive",
         },
         "compute": {
             "recorded_device_process_seconds": device_process_seconds,

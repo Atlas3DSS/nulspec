@@ -1,10 +1,10 @@
 {
   "artifacts": [
     {
-      "bytes": 8567,
+      "bytes": 9356,
       "path": "README.md",
       "role": "study_readme",
-      "sha256": "6e4229fc78e4b082945d61642c44671004a33caa2c9b88713a873c7d3916d627"
+      "sha256": "f58cfc5cfd3d108828061d344b4a872280b283de40a42a57272445ffb82f1330"
     },
     {
       "bytes": 6246,
@@ -19,10 +19,10 @@
       "sha256": "377940bf9a08a372e033d7fd091c6a353236975727102ed2bacba3c04cb16ff3"
     },
     {
-      "bytes": 9390,
+      "bytes": 10173,
       "path": "TESTS.md",
       "role": "verification_log",
-      "sha256": "1e749da9292c85055f4ac167b94d8a9f2e15fc230ed98f67701f1d6fe4561064"
+      "sha256": "f9fc930759da13a11782e5e287850772894439445db225551dae89eefff4a8f2"
     },
     {
       "bytes": 8213,
@@ -55,10 +55,10 @@
       "sha256": "da4d8d9f789a1404a9e93cd158c6295d7663813880038649c0d2473c031594c4"
     },
     {
-      "bytes": 52864,
+      "bytes": 57678,
       "path": "ERROR_LOG.md",
       "role": "origin_separated_error_ledger",
-      "sha256": "a6b2308c19e0d2b439be59c88ec07eb25f7b8754d8de6b22a62f97ac41fed35a"
+      "sha256": "9f3748f2833e62c169220fb641e7ab9106ae97553ede9295a91fb6e75adb0b25"
     },
     {
       "bytes": 3273,
@@ -115,10 +115,10 @@
       "sha256": "385a28e4b12973e0804e1eaa3f41e3aebb044fd29c2f1acb4f1529e0d82b60a1"
     },
     {
-      "bytes": 5251,
+      "bytes": 5825,
       "path": "FRONTEND_HANDOFF.md",
       "role": "typed_frontend_contract",
-      "sha256": "03976b48e1a03bb8041628f7787b0eeec87ee3c75dd24e64aed95a716a91296f"
+      "sha256": "8fc14a14da9c7946eebf855587194e205f842d12b6e9a98e58799aff2738dcda"
     },
     {
       "bytes": 2424,
@@ -139,16 +139,28 @@
       "sha256": "e35f241324e40d7bb3d9315db2fabb0f49577d3812d1d3eaa3d3b85424d4fab7"
     },
     {
-      "bytes": 42559,
+      "bytes": 50303,
       "path": "scripts/fable_final_review.py",
       "role": "final_peer_review_gate",
-      "sha256": "5452b3b52a0cef713dc850706d8dedce3d3efd21fc0b681be35b3f1b3706ed2c"
+      "sha256": "b7945920f08ab4eaa5451ee97547f2d2e76e4049b546b2d2a5c57612cad24a81"
     },
     {
-      "bytes": 4366,
+      "bytes": 2922,
+      "path": "SUPPLEMENTAL_REVIEW_PROTOCOL.md",
+      "role": "supplemental_peer_review_protocol",
+      "sha256": "8df8094d64dbddb726fe1995ee843f8ad254d698a6a516dfd964742319ad8b00"
+    },
+    {
+      "bytes": 30534,
+      "path": "scripts/audit_external_reviews.py",
+      "role": "external_review_audit_exporter",
+      "sha256": "cff0f63edc98fe78ed39665aa9595e1416a0a9ba3b0be7503e5997008c50c02b"
+    },
+    {
+      "bytes": 5015,
       "path": "results/executed_code_manifest.json",
       "role": "executed_code_identity",
-      "sha256": "96366f8055fbfd0915a012f634efd963a71a05e6f17150a1754c21bf064faf61"
+      "sha256": "c5cada43d066a92def3bcf5673dd6960efdd0010d7ed5cb5892b93c50890ec68"
     },
     {
       "bytes": 151170,
@@ -271,10 +283,46 @@
       "sha256": "46bb89243ff9326dac6e91f82fc570000116c52b3c1baa1d65e998c3cbf3f347"
     },
     {
-      "bytes": 2577,
+      "bytes": 3558,
       "path": "FABLE_FINAL_REVIEW.md",
       "role": "final_peer_review_human_record",
-      "sha256": "629ec6015f0a8eee139db6e4122f9181057a83f8bd23fd87bee0b27ceece9f5f"
+      "sha256": "478c029c3a8f34aa9a6af3563a9683db7c5c78211996a7c4845f7419ac917e0b"
+    },
+    {
+      "bytes": 1934,
+      "path": "EXTERNAL_REVIEW_LEDGER.md",
+      "role": "external_review_human_ledger",
+      "sha256": "0293f6135d3bb0052d635e7271142cef3308ebd224a65c206292d1a127cab2f5"
+    },
+    {
+      "bytes": 15256,
+      "path": "results/external_review_ledger.json",
+      "role": "external_review_machine_ledger",
+      "sha256": "cf3532af309505728751bf344064adaca2a84599a219b79531a603084e0bf1ff"
+    },
+    {
+      "bytes": 40431,
+      "path": "results/external_review_training_traces.jsonl",
+      "role": "external_review_sanitized_training_traces",
+      "sha256": "f769c2bd5c9ec80ad1d47b9aff197e518b8dd78e9b222c3064a2c7aead1f665d"
+    },
+    {
+      "bytes": 1348,
+      "path": "results/supplemental_review_model_manifest.json",
+      "role": "supplemental_review_model_manifest",
+      "sha256": "471027b063e9a8ec64c4a5a458005d135ce48e2a59b1aec21f7fe9cf19205d91"
+    },
+    {
+      "bytes": 1576,
+      "path": "SUPPLEMENTAL_REVIEW_CONSENSUS.md",
+      "role": "supplemental_review_human_disposition",
+      "sha256": "f84cd6c1dda1dca054a264524bd4dab56d6dcf252bb88c3b00d506b5336c397a"
+    },
+    {
+      "bytes": 2911,
+      "path": "results/supplemental_review_consensus.json",
+      "role": "supplemental_review_machine_disposition",
+      "sha256": "59c8ddfd35b25268f3569558be57efc94f5217ae460d4706e034aa1fa704a2b5"
     }
   ],
   "citation_audit": {
@@ -5912,9 +5960,97 @@
     "effect": "Schedules new evidence and never rewrites the frozen result.",
     "question": "Which follow-up would most improve confidence in this result?"
   },
+  "external_review_accounting": {
+    "costs_usd": {
+      "anthropic": 3.224742,
+      "openrouter": 1.21702032,
+      "total": 4.44176232
+    },
+    "events": [
+      {
+        "charged_cost_usd": 3.224742,
+        "consensus_eligible": false,
+        "declared_verdict": null,
+        "event_id": "FABLE-REFUSAL-20260801-001",
+        "findings_returned": 0,
+        "model": "claude-fable-5",
+        "provider": "Anthropic",
+        "validated_verdict": null,
+        "validation_status": "technical_hard_fail"
+      },
+      {
+        "charged_cost_usd": 0.0,
+        "consensus_eligible": false,
+        "declared_verdict": null,
+        "event_id": "OR-TRANSPORT-20260801-001",
+        "findings_returned": 0,
+        "model": "z-ai/glm-5.2-20260616",
+        "provider": "OpenRouter",
+        "validated_verdict": null,
+        "validation_status": "completed_invalid"
+      },
+      {
+        "charged_cost_usd": 0.0,
+        "consensus_eligible": false,
+        "declared_verdict": null,
+        "event_id": "OR-TRANSPORT-20260801-002",
+        "findings_returned": 0,
+        "model": "moonshotai/kimi-k3-20260715",
+        "provider": "OpenRouter",
+        "validated_verdict": null,
+        "validation_status": "completed_invalid"
+      },
+      {
+        "charged_cost_usd": 0.04710276,
+        "consensus_eligible": true,
+        "declared_verdict": "PASS",
+        "event_id": "OR-REVIEW-20260801-001",
+        "findings_returned": 8,
+        "model": "z-ai/glm-5.2-20260616",
+        "provider": "OpenRouter",
+        "validated_verdict": null,
+        "validation_status": "completed_invalid"
+      },
+      {
+        "charged_cost_usd": 1.123173,
+        "consensus_eligible": true,
+        "declared_verdict": "PASS",
+        "event_id": "OR-REVIEW-20260801-002",
+        "findings_returned": 0,
+        "model": "moonshotai/kimi-k3-20260715",
+        "provider": "OpenRouter",
+        "validated_verdict": null,
+        "validation_status": "completed_invalid"
+      },
+      {
+        "charged_cost_usd": 0.04674456,
+        "consensus_eligible": false,
+        "declared_verdict": "PASS",
+        "event_id": "OR-REVIEW-20260801-003",
+        "findings_returned": 8,
+        "model": "z-ai/glm-5.2-20260616",
+        "provider": "OpenRouter",
+        "validated_verdict": "PASS",
+        "validation_status": "completed_valid"
+      }
+    ],
+    "fable_refusal_id": "FABLE-REFUSAL-20260801-001",
+    "governance_only_not_scientific_evidence": true,
+    "ledger_schema": "nulspec-external-review-ledger-v1",
+    "public_artifacts": {
+      "consensus": "results/supplemental_review_consensus.json",
+      "ledger": "results/external_review_ledger.json",
+      "model_manifest": "results/supplemental_review_model_manifest.json",
+      "sanitized_training_traces": "results/external_review_training_traces.jsonl"
+    },
+    "raw_trace_public": false,
+    "raw_trace_retention": "ignored_immutable_lab_archive",
+    "supplemental_consensus_schema": "nulspec-supplemental-review-consensus-v1",
+    "supplemental_decision": "HARD_FAIL"
+  },
   "final_peer_review": {
     "action_closure_required": false,
-    "author_email_approval_status": "blocked_pending_hard_fail_human_review",
+    "author_email_approval_status": "blocked_pending_supplemental_hard_fail_human_review",
     "author_email_dispatch_authorized": false,
     "author_email_eligible_for_human_approval": false,
     "author_email_human_approval_required": true,
@@ -5925,7 +6061,14 @@
     "resubmission_allowed": false,
     "reviewer": "Fable",
     "single_invocation": true,
-    "status": "blocked_pending_human_review"
+    "status": "blocked_after_supplemental_hard_fail_pending_human_review",
+    "supplemental_protocol_document": "SUPPLEMENTAL_REVIEW_PROTOCOL.md",
+    "supplemental_resubmission_allowed": false,
+    "supplemental_review_decision": "HARD_FAIL",
+    "supplemental_reviewers": [
+      "GLM",
+      "Kimi"
+    ]
   },
   "metrics_schema": {
     "id": "sprkd_trial_accuracy_v1",
@@ -7617,19 +7760,20 @@
     ]
   },
   "publication_status": {
-    "author_email_dispatch": "blocked_pending_hard_fail_human_review",
+    "author_email_dispatch": "blocked_pending_supplemental_hard_fail_human_review",
     "canonical_site_import": "blocked_pending_typed_accuracy_frontend",
     "frontend_contract": "FRONTEND_HANDOFF.md",
     "reason": "The current site validator accepts reward-delta arms, not classification-accuracy trials. Accuracy is not relabeled as reward.",
     "research_release_gate": {
       "action_closure_required": false,
-      "author_email_approval_status": "blocked_pending_hard_fail_human_review",
+      "author_email_approval_status": "blocked_pending_supplemental_hard_fail_human_review",
       "author_email_dispatch_authorized": false,
       "author_email_eligible_for_human_approval": false,
       "author_email_human_approval_required": true,
       "human_review_required": true,
       "publication_authorized": false,
-      "status": "blocked_pending_human_review"
+      "status": "blocked_after_supplemental_hard_fail_pending_human_review",
+      "supplemental_review_decision": "HARD_FAIL"
     }
   },
   "routes": {

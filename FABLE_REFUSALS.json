@@ -1,0 +1,117 @@
+{
+  "append_only": true,
+  "refusals": [
+    {
+      "binding": {
+        "packet_bytes": 603683,
+        "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+        "prompt_bytes": 605580,
+        "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+        "reviewed_commit": "68188afc7305e5168d33c5278968f7a26b403a40"
+      },
+      "charged_cost_usd": 3.224742,
+      "completed_at_utc": "2026-08-01T16:43:08.433358Z",
+      "consensus_eligible": false,
+      "declared_verdict": null,
+      "elapsed_seconds": 6.842492,
+      "event_id": "FABLE-REFUSAL-20260801-001",
+      "event_type": "reviewer_safeguard_refusal",
+      "failure": {
+        "category": "bio",
+        "provider_message_sanitized": "API Error: Fable 5's safeguards flagged this message (https://www.anthropic.com/legal/aup). They may flag safe, normal content as well. These measures let us bring you Mythos-level capabilities sooner, and we're working to refine them. Claude Code can't respond to this request with Fable 5.\n\nTry rephrasing the request in a new session or change your model.\n\nLearn more: https://support.claude.com/en/articles/15363606",
+        "stop_reason": "refusal",
+        "terminal_reason": "api_error"
+      },
+      "findings_returned": 0,
+      "http_status": null,
+      "model": "claude-fable-5",
+      "model_invoked": true,
+      "model_usage": {
+        "claude-fable-5": {
+          "cacheCreationInputTokens": 242078,
+          "cacheReadInputTokens": 0,
+          "contextWindow": 1000000,
+          "costUSD": 3.026385,
+          "inputTokens": 1,
+          "maxOutputTokens": 64000,
+          "outputTokens": 8,
+          "webSearchRequests": 0
+        },
+        "claude-haiku-4-5-20251001": {
+          "cacheCreationInputTokens": 0,
+          "cacheReadInputTokens": 0,
+          "contextWindow": 200000,
+          "costUSD": 0.198357,
+          "inputTokens": 198262,
+          "maxOutputTokens": 32000,
+          "outputTokens": 19,
+          "webSearchRequests": 0
+        }
+      },
+      "provider": "Anthropic",
+      "publication_consequence": "Fable HARD_FAIL; no resubmission; invoke the one-pair GLM/Kimi supplemental disposition and otherwise fail closed for human review.",
+      "reviewer": "Fable",
+      "started_at_utc": "2026-08-01T16:43:01.590076Z",
+      "trace": {
+        "artifacts": {
+          "attempt": {
+            "bytes": 847,
+            "sha256": "6b548645f20ede56d5964ce47c8225af8279d938270a1e0887f1e81eb5d843f4"
+          },
+          "prompt": {
+            "bytes": 605580,
+            "sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d"
+          },
+          "raw_response": {
+            "bytes": 5118,
+            "sha256": "82ccbc735ef4dd8d9b627df993ee9f1e819c7a67e4b493ad4ffc51d9bc24b4c9"
+          },
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "public": false,
+        "retention": "ignored_immutable_lab_archive"
+      },
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 242078
+        },
+        "cache_creation_input_tokens": 242078,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 1,
+        "iterations": [
+          {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 242078
+            },
+            "cache_creation_input_tokens": 242078,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 1,
+            "output_tokens": 8,
+            "type": "message"
+          }
+        ],
+        "output_tokens": 8,
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 0
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      },
+      "validation_status": "technical_hard_fail"
+    }
+  ],
+  "schema_version": "nulspec-fable-refusal-ledger-v1",
+  "totals": {
+    "charged_cost_usd": 3.224742,
+    "findings_returned": 0,
+    "refusals": 1
+  },
+  "updated_at_utc": "2026-08-01T18:16:18Z"
+}

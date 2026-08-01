@@ -58,6 +58,13 @@
     "publication_builder_sha256": "6d7106a517c426c424f0ab99151f27a89033f2c9d66f4554d75be8a0d47df773",
     "final_peer_review_gate_sha256": "5452b3b52a0cef713dc850706d8dedce3d3efd21fc0b681be35b3f1b3706ed2c",
     "final_peer_review_protocol_sha256": "e35f241324e40d7bb3d9315db2fabb0f49577d3812d1d3eaa3d3b85424d4fab7",
+    "post_fable_release_governance": {
+      "external_review_audit_exporter_sha256": "cff0f63edc98fe78ed39665aa9595e1416a0a9ba3b0be7503e5997008c50c02b",
+      "final_peer_review_gate_sha256": "b7945920f08ab4eaa5451ee97547f2d2e76e4049b546b2d2a5c57612cad24a81",
+      "publication_builder_sha256": "c5dd7a0093d22348d3b11d8e8bba68c5e9535f81e092f04a506cf8f05996dc9b",
+      "scope": "Post-refusal accounting, supplemental disposition, and fail-closed publication/email gating; scientific analysis code and frozen results unchanged",
+      "supplemental_review_protocol_sha256": "8df8094d64dbddb726fe1995ee843f8ad254d698a6a516dfd964742319ad8b00"
+    },
     "dependency_lock_sha256s": {
       "requirements-artifacts.lock": "db20dd7ac3ccb210104d5ae0c9df95c0249f606867c869d77b5ebe4cb7ba6895",
       "requirements-replication.lock": "3db4f2e5a110340aefbfc41e5a858a6c48b038907523dcf1475079b57b73c429"

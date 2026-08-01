@@ -96,11 +96,20 @@ Render and enforce `final_peer_review` from `WEBSITE_HANDOFF.json`. The release
 candidate receives exactly one Fable review and is never resubmitted. `PASS`
 authorizes publication; `FAIL` remains blocked until its machine-readable
 three-action closure is complete, then authorizes publication without a second
-review; `HARD_FAIL` remains blocked pending human disposition. Separately,
-every author email requires final human approval of the exact hashed draft.
-Fable can make the draft eligible for that approval but can never authorize
-dispatch. Review status is release governance and must not be presented as
-evidence about the paper's method.
+review. After a technical Fable `HARD_FAIL`, only independently schema-valid
+PASS decisions from both the pinned GLM and Kimi reviewers can satisfy the
+publication gate; any malformed, truncated, refused, or non-PASS response
+remains blocked for human disposition. There is no reviewer retry or
+tiebreaker. Separately, every author email requires final human approval of the
+exact hashed draft and all applicable review-disposition hashes. External
+review can make the draft eligible for that approval but can never authorize
+dispatch. Review status and provider cost are release-governance provenance,
+not evidence about the paper's method.
+
+Expose the sanitized external-review ledger, model manifest, consensus record,
+and training-trace projection as ordinary audit artifacts. Show the total cost
+and each failed/refused attempt without exposing provider request/session IDs,
+private paths, or credentials.
 
 ## Extension control
 

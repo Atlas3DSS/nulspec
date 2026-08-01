@@ -55,10 +55,10 @@
       "sha256": "da4d8d9f789a1404a9e93cd158c6295d7663813880038649c0d2473c031594c4"
     },
     {
-      "bytes": 48428,
+      "bytes": 48781,
       "path": "ERROR_LOG.md",
       "role": "origin_separated_error_ledger",
-      "sha256": "1d076ecd1dd45f798339f3ab5165c48c14db7d2d50c19c686f2567e9d6e5bd5f"
+      "sha256": "d364479d8bad37a526063a10111214c0ef029d7eea65a113cf645526478ef6b8"
     },
     {
       "bytes": 3273,

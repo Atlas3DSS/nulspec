@@ -16,6 +16,29 @@ const browser = await chromium.launch({
   headless: true,
 });
 
+const testCandidatePapers = Array.from({ length: 100 }, (_, index) => ({
+  id: `test-paper-${String(index + 1).padStart(3, "0")}`,
+  title: `Computational replication candidate ${String(index + 1).padStart(3, "0")}`,
+  url: `https://example.org/papers/${index + 1}`,
+  source_id: `TEST:${String(index + 1).padStart(3, "0")}`,
+  authors: [`Researcher ${index + 1}`, "Second Author"],
+  published_at: new Date(Date.UTC(2026, 6, 31) - index * 86_400_000).toISOString(),
+  venue: index % 2 === 0 ? "Test archive" : "Test journal",
+  topics: index % 3 === 0 ? ["simulation", "statistics"] : ["evaluation"],
+  summary:
+    "This synthetic browser-test entry verifies that the candidate queue remains compact and readable with a full production-sized response.",
+  replication_case:
+    "The inputs, implementation, and quantitative endpoint are available for an end-to-end computational test.",
+  audience_case:
+    "The claim could affect research decisions beyond the paper's immediate specialty.",
+  code_url: `https://example.org/code/${index + 1}`,
+  data_url: index % 4 === 0 ? `https://example.org/data/${index + 1}` : undefined,
+  estimated_hardware: index % 2 === 0 ? "1 × 24 GB GPU" : "CPU only",
+  estimated_runtime: `${(index % 12) + 1} compute-hours`,
+  vote_count: index === 73 ? 900 : (index * 17) % 113,
+  viewer_has_voted: false,
+}));
+
 const scenarios = [
   {
     name: "home-desktop",
@@ -159,6 +182,51 @@ const scenarios = [
     expectedVisibleIntervalPlots: 1,
     expectedHorizontalRegions: 0,
   },
+  {
+    name: "papers-desktop",
+    path: "/papers",
+    width: 1440,
+    height: 900,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+    expectedCandidateRows: 25,
+    voteResponse: "success",
+  },
+  {
+    name: "papers-mobile-rate-limit",
+    path: "/papers",
+    width: 390,
+    height: 844,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+    expectedCandidateRows: 25,
+    voteResponse: "rate-limit",
+  },
+  {
+    name: "papers-narrow",
+    path: "/papers",
+    width: 320,
+    height: 700,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+    expectedCandidateRows: 25,
+    voteResponse: "success",
+  },
 ];
 
 const report = [];
@@ -171,10 +239,76 @@ for (const scenario of scenarios) {
     reducedMotion: "reduce",
   });
 
+  if (scenario.expectedCandidateRows) {
+    const voteCounts = new Map(
+      testCandidatePapers.map((paper) => [paper.id, paper.vote_count]),
+    );
+    await page.route("**/api/paper-queue", async (route) => {
+      await route.fulfill({
+        contentType: "application/json",
+        json: {
+          schema_version: 1,
+          generated_at_utc: "2026-07-31T23:00:00Z",
+          voting: {
+            enabled: true,
+            policy_version: "browser-test-v1",
+          },
+          papers: testCandidatePapers.map((paper) => ({
+            ...paper,
+            vote_count: voteCounts.get(paper.id),
+          })),
+        },
+        status: 200,
+      });
+    });
+    await page.route("**/api/paper-votes", async (route) => {
+      if (scenario.voteResponse === "rate-limit") {
+        await route.fulfill({
+          contentType: "application/json",
+          headers: { "Retry-After": "120" },
+          json: { error: "rate_limited" },
+          status: 429,
+        });
+        return;
+      }
+
+      const request = route.request().postDataJSON();
+      const currentCount = voteCounts.get(request.paper_id);
+      if (currentCount === undefined) {
+        await route.fulfill({
+          contentType: "application/json",
+          json: { error: "not_found" },
+          status: 404,
+        });
+        return;
+      }
+      const nextCount = currentCount + 1;
+      voteCounts.set(request.paper_id, nextCount);
+      await route.fulfill({
+        contentType: "application/json",
+        json: {
+          ok: true,
+          paper_id: request.paper_id,
+          vote_count: nextCount,
+          duplicate: false,
+          reference: "pv_browser_test",
+        },
+        status: 201,
+      });
+    });
+  }
+
   const response = await page.goto(`${baseUrl}${scenario.path}`, {
     waitUntil: "networkidle",
   });
   await page.evaluate(() => document.fonts.ready);
+  if (scenario.expectedCandidateRows) {
+    await page.waitForFunction(
+      (expected) =>
+        document.querySelectorAll(".paper-candidate").length === expected,
+      scenario.expectedCandidateRows,
+    );
+  }
   if (scenario.expectedActiveTab) {
     await page.waitForFunction(
       (expected) =>
@@ -267,6 +401,25 @@ for (const scenario of scenarios) {
         ?.textContent?.trim(),
       visibleIntervalPlots: [...document.querySelectorAll(".arm-interval-plot")]
         .filter((element) => element.getClientRects().length > 0).length,
+      candidateRows: document.querySelectorAll(".paper-candidate").length,
+      candidateSummary: document
+        .querySelector(".paper-queue-summary")
+        ?.textContent?.trim(),
+      candidateFirstId: document
+        .querySelector(".paper-candidate")
+        ?.getAttribute("data-paper-id"),
+      candidateVoteButtons: document.querySelectorAll(
+        ".paper-candidate__vote button",
+      ).length,
+      closedCandidateDetails: document.querySelectorAll(
+        ".paper-candidate__details:not([open])",
+      ).length,
+      candidateSortState: [...document.querySelectorAll(".paper-sort button")].map(
+        (element) => ({
+          label: element.textContent?.trim(),
+          pressed: element.getAttribute("aria-pressed"),
+        }),
+      ),
       horizontalRegions: [
         ...document.querySelectorAll(".horizontal-scroll-region"),
       ].map((region) => {
@@ -304,7 +457,9 @@ for (const scenario of scenarios) {
       bodyFontSize: Number.parseFloat(getComputedStyle(document.body).fontSize),
       primaryHeadingFontSize: Number.parseFloat(
         getComputedStyle(
-          document.querySelector(".hero h1, .study-hero h1, .arm-hero h1") ??
+          document.querySelector(
+            ".hero h1, .study-hero h1, .arm-hero h1, .paper-queue-hero h1",
+          ) ??
             document.body,
         ).fontSize,
       ),
@@ -394,6 +549,64 @@ for (const scenario of scenarios) {
     }));
   });
 
+  let paperInteraction;
+  if (scenario.expectedCandidateRows) {
+    const newestFirstId = await page
+      .locator(".paper-candidate")
+      .first()
+      .getAttribute("data-paper-id");
+    await page.getByRole("button", { name: "Most votes" }).click();
+    await page.waitForFunction(
+      () =>
+        document
+          .querySelector(".paper-candidate")
+          ?.getAttribute("data-paper-id") === "test-paper-074",
+    );
+    const mostVoted = page.locator(".paper-candidate").first();
+    const countBefore = Number(
+      await mostVoted.locator(".paper-candidate__vote strong").textContent(),
+    );
+    await mostVoted.locator(".paper-candidate__vote button").click();
+
+    if (scenario.voteResponse === "rate-limit") {
+      await page.waitForFunction(() =>
+        document
+          .querySelector(".paper-vote-notice")
+          ?.textContent?.includes("network has been reached"),
+      );
+    } else {
+      await page.waitForFunction(
+        () =>
+          document.querySelector(".paper-candidate__vote button")?.textContent ===
+          "Recorded",
+      );
+    }
+
+    const countAfter = Number(
+      await mostVoted.locator(".paper-candidate__vote strong").textContent(),
+    );
+    const voteButtonText = await mostVoted
+      .locator(".paper-candidate__vote button")
+      .textContent();
+    const voteNotice = await page.locator(".paper-vote-notice").textContent();
+    await page.getByRole("button", { name: "Next →" }).click();
+    const nextPageRows = await page.locator(".paper-candidate").count();
+    const paginationText = await page
+      .locator(".paper-queue-pagination span")
+      .textContent();
+
+    paperInteraction = {
+      newestFirstId,
+      mostVotedFirstId: "test-paper-074",
+      countBefore,
+      countAfter,
+      voteButtonText,
+      voteNotice,
+      nextPageRows,
+      paginationText,
+    };
+  }
+
   const scenarioFailed =
     !response?.ok() ||
     diagnostics.horizontalOverflow ||
@@ -414,6 +627,27 @@ for (const scenario of scenarios) {
     (scenario.expectedExtensionOptions > 0 &&
       diagnostics.extensionButton !== "Vote to extend this paper") ||
     diagnostics.signalVerdicts !== scenario.expectedSignalVerdicts ||
+    diagnostics.candidateRows !== (scenario.expectedCandidateRows ?? 0) ||
+    (scenario.expectedCandidateRows > 0 &&
+      (!diagnostics.candidateSummary?.includes("100 papers") ||
+        diagnostics.candidateFirstId !== "test-paper-001" ||
+        diagnostics.candidateVoteButtons !== 25 ||
+        diagnostics.closedCandidateDetails !== 25 ||
+        diagnostics.candidateSortState[0]?.pressed !== "true" ||
+        diagnostics.candidateSortState[1]?.pressed !== "false" ||
+        paperInteraction?.newestFirstId !== "test-paper-001" ||
+        paperInteraction?.mostVotedFirstId !== "test-paper-074" ||
+        paperInteraction?.countBefore !== 900 ||
+        paperInteraction?.nextPageRows !== 25 ||
+        !paperInteraction?.paginationText?.includes("26–50 of 100") ||
+        (scenario.voteResponse === "success" &&
+          (paperInteraction?.countAfter !== 901 ||
+            paperInteraction?.voteButtonText !== "Recorded")) ||
+        (scenario.voteResponse === "rate-limit" &&
+          (paperInteraction?.countAfter !== 900 ||
+            !paperInteraction?.voteNotice?.includes(
+              "network has been reached",
+            ))))) ||
     diagnostics.armSections.length !== scenario.expectedArmSections ||
     (scenario.expectedArmSections > 0 &&
       diagnostics.deeperEvidenceHeading !==
@@ -442,6 +676,8 @@ for (const scenario of scenarios) {
       diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 40 : 62)) ||
     (scenario.path.includes("/arms/") &&
       diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 37 : 54)) ||
+    (scenario.path === "/papers" &&
+      diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 42 : 62)) ||
     diagnostics.visibleArmPanels !== (scenario.expectedArmTabs ? 1 : 0) ||
     diagnostics.activeArmTab !== scenario.expectedActiveTab ||
     diagnostics.stickyTabPosition !==
@@ -464,6 +700,7 @@ for (const scenario of scenarios) {
     diagnostics,
     horizontalInteraction,
     tabInteraction,
+    paperInteraction,
     accessibility,
     passed: !scenarioFailed,
   });

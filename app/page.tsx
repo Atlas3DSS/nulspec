@@ -243,6 +243,9 @@ export default function Home() {
                 Atlas staff. If we complete and publish a replication, we may
                 use the address to send one email with the result.
               </p>
+              <p className="request-section__candidate-link">
+                <Link href="/papers">Review and vote on candidate papers →</Link>
+              </p>
             </div>
             <NominationForm />
           </div>

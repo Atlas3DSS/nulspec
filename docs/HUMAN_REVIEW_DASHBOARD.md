@@ -71,17 +71,32 @@ same pinned Flask and Werkzeug packages.
   /srv/multibot/current/nulspec_review.py hash-password
 ```
 
-Create a root-readable file outside the repository. Paste only the generated
-scrypt hash into each account record. Use neutral reviewer display labels if a
-decision export will enter a public research repository.
+The production environment template provisions the first login as `monkey`.
+Paste the generated scrypt hash into the intentionally blank
+`NULSPEC_REVIEW_PRIMARY_PASSWORD_HASH` field in
+`/etc/nulspec-review.env`, between its single quotes. The quotes prevent the
+hash's dollar signs from being interpreted when the file is sourced for a
+configuration check. Do not paste the plaintext password into that file.
+Generate an independent service pepper, then validate the configuration:
+
+```bash
+/srv/multibot/venv/bin/python \
+  /srv/multibot/current/nulspec_review.py generate-pepper
+```
+
+For additional reviewers, remove the three `NULSPEC_REVIEW_PRIMARY_*` fields
+and use an encoded account envelope. Create a root-readable JSON file outside
+the repository and paste only generated scrypt hashes into its records. Use
+neutral reviewer display labels if a decision export will enter a public
+research repository.
 
 ```json
 {
   "schema_version": "nulspec-reviewer-accounts-v1",
   "accounts": [
     {
-      "username": "reviewer.one",
-      "display_name": "NULSPEC human reviewer 01",
+      "username": "monkey",
+      "display_name": "monkey",
       "password_hash": "scrypt:32768:8:1$replace-with-generated-value",
       "roles": ["reviewer"]
     }
@@ -89,20 +104,18 @@ decision export will enter a public research repository.
 }
 ```
 
-Encode the envelope and generate an independent service pepper:
+Encode the multi-account envelope:
 
 ```bash
 /srv/multibot/venv/bin/python \
   /srv/multibot/current/nulspec_review.py encode-accounts \
   --input /etc/nulspec-review-accounts.json
-
-/srv/multibot/venv/bin/python \
-  /srv/multibot/current/nulspec_review.py generate-pepper
 ```
 
-Copy both emitted assignments into `/etc/nulspec-review.env`, alongside the
-non-secret settings in `infra/multibot/nulspec-review.env.example`, then set
-ownership to `root:root` and mode `0600`. Validate without printing either
+Install `infra/multibot/nulspec-review.env.example` as
+`/etc/nulspec-review.env`, fill the blank password-hash and pepper fields (or
+replace the primary fields with the emitted account-envelope assignment), then
+set ownership to `root:root` and mode `0600`. Validate without printing either
 secret:
 
 ```bash
@@ -117,8 +130,9 @@ The `:memory:` override validates credentials, scrypt parameters, pepper,
 origins, cookie policy, and session settings without opening or changing the
 live service database as root.
 
-The service intentionally has no default account and stays disabled when the
-environment file is absent or invalid.
+The service intentionally has no usable default password and stays disabled
+when the environment file is absent, the password-hash field remains blank, or
+any setting is invalid.
 
 ## Queue a study
 

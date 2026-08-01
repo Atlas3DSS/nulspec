@@ -19,6 +19,7 @@ from nulspec_review import (  # noqa: E402
     DisabledReviewService,
     ReviewConfigurationError,
     ReviewService,
+    accounts_from_environment,
     decode_accounts,
     encode_accounts,
     register_nulspec_review_routes,
@@ -211,6 +212,52 @@ def test_account_envelope_round_trips_and_rejects_plain_passwords() -> None:
     unsafe = base64.urlsafe_b64encode(json.dumps(raw).encode()).decode().rstrip("=")
     with pytest.raises(ReviewConfigurationError, match="scrypt"):
         decode_accounts(unsafe)
+
+
+def test_primary_reviewer_environment_provisions_monkey() -> None:
+    accounts = accounts_from_environment(
+        {
+            "NULSPEC_REVIEW_PRIMARY_USERNAME": "monkey",
+            "NULSPEC_REVIEW_PRIMARY_DISPLAY_NAME": "monkey",
+            "NULSPEC_REVIEW_PRIMARY_PASSWORD_HASH": PASSWORD_HASH,
+        }
+    )
+
+    assert list(accounts) == ["monkey"]
+    assert accounts["monkey"].display_name == "monkey"
+    assert accounts["monkey"].password_hash == PASSWORD_HASH
+
+
+def test_primary_reviewer_environment_fails_closed_until_password_hash_is_set() -> None:
+    with pytest.raises(ReviewConfigurationError, match="password hash is empty"):
+        accounts_from_environment(
+            {
+                "NULSPEC_REVIEW_PRIMARY_USERNAME": "monkey",
+                "NULSPEC_REVIEW_PRIMARY_DISPLAY_NAME": "monkey",
+                "NULSPEC_REVIEW_PRIMARY_PASSWORD_HASH": "",
+            }
+        )
+
+
+def test_primary_reviewer_and_account_envelope_are_mutually_exclusive() -> None:
+    raw = {
+        "schema_version": ACCOUNTS_SCHEMA,
+        "accounts": [
+            {
+                "username": "reviewer.one",
+                "display_name": "Reviewer One",
+                "password_hash": PASSWORD_HASH,
+                "roles": ["reviewer"],
+            }
+        ],
+    }
+    with pytest.raises(ReviewConfigurationError, match="not both"):
+        accounts_from_environment(
+            {
+                "NULSPEC_REVIEW_ACCOUNTS_B64": encode_accounts(raw),
+                "NULSPEC_REVIEW_PRIMARY_USERNAME": "monkey",
+            }
+        )
 
 
 def test_account_hash_parameters_and_origins_are_configuration_wide() -> None:

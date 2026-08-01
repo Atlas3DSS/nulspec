@@ -182,6 +182,45 @@ def encode_accounts(raw: Mapping[str, object]) -> str:
     return encoded
 
 
+def accounts_from_environment(
+    environment: Mapping[str, str] = os.environ,
+) -> dict[str, ReviewerAccount]:
+    """Load either the single primary reviewer or a multi-account envelope."""
+
+    encoded = environment.get("NULSPEC_REVIEW_ACCOUNTS_B64", "").strip()
+    primary = {
+        "username": environment.get("NULSPEC_REVIEW_PRIMARY_USERNAME", "").strip(),
+        "display_name": environment.get(
+            "NULSPEC_REVIEW_PRIMARY_DISPLAY_NAME", ""
+        ).strip(),
+        "password_hash": environment.get(
+            "NULSPEC_REVIEW_PRIMARY_PASSWORD_HASH", ""
+        ).strip(),
+    }
+    if encoded:
+        if any(primary.values()):
+            raise ReviewConfigurationError(
+                "configure either the primary reviewer or the account envelope, not both"
+            )
+        return decode_accounts(encoded)
+    if not primary["username"]:
+        raise ReviewConfigurationError("primary reviewer username is empty")
+    if not primary["display_name"]:
+        raise ReviewConfigurationError("primary reviewer display name is empty")
+    if not primary["password_hash"]:
+        raise ReviewConfigurationError("primary reviewer password hash is empty")
+    raw = {
+        "schema_version": ACCOUNTS_SCHEMA,
+        "accounts": [
+            {
+                **primary,
+                "roles": ["reviewer"],
+            }
+        ],
+    }
+    return decode_accounts(encode_accounts(raw))
+
+
 def decode_pepper(encoded: str) -> bytes:
     pepper = _b64decode(encoded, label="review pepper")
     if len(pepper) < 32:
@@ -270,7 +309,7 @@ class ReviewService:
     def from_environment(cls) -> ReviewService:
         if os.environ.get("NULSPEC_REVIEW_ENABLED") != "1":
             raise ReviewConfigurationError("NULSPEC_REVIEW_ENABLED is not 1")
-        accounts = decode_accounts(os.environ.get("NULSPEC_REVIEW_ACCOUNTS_B64", ""))
+        accounts = accounts_from_environment()
         pepper = decode_pepper(os.environ.get("NULSPEC_REVIEW_PEPPER_B64", ""))
         database = Path(os.environ.get("NULSPEC_REVIEW_DB_PATH", str(DEFAULT_DATABASE)))
         raw_origins = os.environ.get(

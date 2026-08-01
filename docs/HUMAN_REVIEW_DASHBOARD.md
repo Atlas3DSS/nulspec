@@ -303,6 +303,21 @@ script rather than that package alias. npm stopped before the build step and no
 source file changed. The hygiene script and remaining named build checks were
 then invoked directly. This was our local command-name error.
 
+### HREVIEW-LOCAL-008 — PR metadata check requested an unsupported CLI field
+
+After draft PR creation, the first read-only verification query requested
+`headRefOid`, which is unavailable in the host's installed GitHub CLI version.
+The query stopped with its supported-field list; it did not modify the PR or
+repository. Verification was repeated using fields supported by that version.
+
+### HREVIEW-EXTERNAL-001 — GitHub App could not create the draft PR
+
+The preferred GitHub App call returned `403 Resource not accessible by
+integration` after the branch was already pushed. No repository or PR state was
+partially created by that call. The authenticated GitHub CLI fallback then
+created draft PR #23 from the same pushed commit. This is recorded as an
+external integration limitation rather than a NULSPEC source or research error.
+
 ## Pre-existing validation limitation
 
 ### HREVIEW-BASE-001 — Ignored upstream checkout absent from local worktree

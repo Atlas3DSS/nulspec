@@ -1,0 +1,296 @@
+{
+  "schema_version": "nulspec-review-hierarchy-architecture-corrections-v1",
+  "published_at_utc": "2026-08-01T21:19:22.906452Z",
+  "effective_architecture": {
+    "primary_reviewer": "local Qwen",
+    "independent_outer_teachers": [
+      "GLM",
+      "Kimi"
+    ],
+    "outer_adjudicator": "Codex",
+    "fable_recurring_teacher_role": "prohibited",
+    "fable_allowed_role": "one bounded advisory critique after the pipeline is complete and validated",
+    "automatic_publication_authorized": false,
+    "automatic_training_signal_authorized": false,
+    "author_email_dispatch_authorized": false
+  },
+  "corrections": [
+    {
+      "run_id": "qwen-three-teacher-20260801-v1",
+      "record_class": "historical_ineligible_architecture_probe",
+      "status": "completed",
+      "mistake": "The prototype combined the separate final-release reviewer policy with the recurring Qwen teacher loop.",
+      "teacher_loop_eligible": false,
+      "fable": {
+        "model_invoked": false,
+        "status": "local_invocation_non_response",
+        "reported_charge_usd": 0,
+        "teacher_loop_eligible": false
+      },
+      "glm": {
+        "model_invoked": true,
+        "status": "invoked_invalid_under_original_strict_reference_gate",
+        "reported_charge_usd": 0.02047586,
+        "raw_response_sha256": "40ef631dd87a2004d50c49023d6c4785a552757c36bba56f2ecdcfa4b8713c24"
+      },
+      "kimi": {
+        "model_invoked": true,
+        "status": "completed_valid",
+        "reported_charge_usd": 0.086829,
+        "raw_response_sha256": "4315c96f8f6591749a963b2330ef95f080283ba8d1aa9c36b566c38f8093e30b"
+      },
+      "known_reported_charge_usd": 0.10730486,
+      "public_summary": "extension/artifacts/review_hierarchy_20260801.json"
+    },
+    {
+      "run_id": "qwen-three-teacher-20260801-v2",
+      "record_class": "historical_ineligible_architecture_probe",
+      "status": "aborted_by_operator",
+      "mistake": "The corrected schema was tested before Fable had been removed from the recurring teacher list.",
+      "teacher_loop_eligible": false,
+      "fable": {
+        "model_invoked": true,
+        "status": "completed_valid_substantive_review_but_architecturally_ineligible",
+        "teacher_loop_eligible": false,
+        "reported_charge_usd": 1.431673,
+        "elapsed_seconds": 282.218887,
+        "usage": {
+          "cache_creation_input_tokens": 9732,
+          "input_tokens": 2,
+          "output_tokens": 26045
+        },
+        "cost_breakdown_usd": {
+          "claude_fable_5": 1.42392,
+          "claude_haiku_support": 0.007753
+        },
+        "raw_response_byte_count": 141833,
+        "raw_response_sha256": "980a631b7e178328db51bb4764318602be49ddb624433bbf10f85a33745b8976",
+        "parsed_audit_byte_count": 14447,
+        "parsed_audit_sha256": "fca1bcf2ad2f63fd085b28afadc749f51778b36cf3e1fde369efe673dcc8ad5e",
+        "attempt_complete_byte_count": 17001,
+        "attempt_complete_sha256": "ed74867c13414261c6577527ad142a35d621baa5d478eb4d6405e9ec04a2bfbc"
+      },
+      "glm": {
+        "model_invoked": true,
+        "status": "interrupted_during_http_read",
+        "response_received": false,
+        "reported_charge_usd": null,
+        "charge_note": "No response wrapper was received, so a reported charge is unavailable. Remote billing may have occurred."
+      },
+      "kimi": {
+        "model_invoked": false,
+        "status": "not_started",
+        "reported_charge_usd": 0
+      },
+      "codex": {
+        "invoked": false,
+        "status": "not_started"
+      },
+      "known_reported_charge_usd": 1.431673,
+      "known_charge_excludes": "Any provider-side charge for the interrupted GLM request."
+    },
+    {
+      "run_id": "qwen-teacher-20260801-v3",
+      "record_class": "historical_ineligible_sequential_implementation_trace",
+      "status": "completed_with_invalid_components",
+      "mistake": "GLM and Kimi were invoked sequentially even though their audits are independent, and an invalid Kimi invocation was allowed to reach the join as a terminal record.",
+      "teacher_loop_eligible": false,
+      "glm": {
+        "model_invoked": true,
+        "status": "completed_valid",
+        "reported_charge_usd": 0.01641026,
+        "elapsed_seconds": 173.82591,
+        "raw_response_byte_count": 29518,
+        "raw_response_sha256": "43d85311f41ac28012a37f4079b328d6a1fe74e99ad45b7e7e7021e0307cbbf6"
+      },
+      "kimi": {
+        "model_invoked": true,
+        "status": "invalid_account_credit_preflight",
+        "reported_charge_usd": 0,
+        "elapsed_seconds": 0.532032,
+        "http_status": 402,
+        "raw_response_byte_count": 1102,
+        "raw_response_sha256": "a09a5b61f570d4d2e76397e2a9646e1915ff8b8a7e631cf9168cea6b265cef7a",
+        "repair_performed_in_this_historical_run": false
+      },
+      "codex": {
+        "invoked": true,
+        "status": "schema_valid_with_original_strict_reference_gate_failure",
+        "return_code": 0,
+        "elapsed_seconds": 69.638617,
+        "last_message_byte_count": 8420,
+        "last_message_sha256": "25cec2dd934e9a367dcf1b87b76628eff4c951e9d5c59ed5ad2d7bb85cd57f90",
+        "stdout_sha256": "631d3b454631eac86675cc000782ede236bbd013b22c197aad3186741468daa4"
+      },
+      "known_reported_charge_usd": 0.01641026,
+      "public_summary": "extension/artifacts/review_hierarchy_20260801_v3.json",
+      "corrective_actions": [
+        "GLM and Kimi now fan out concurrently and join before Codex.",
+        "Invalid invocations now create immutable linked repair attempts.",
+        "Codex runs only after both logical teacher chains terminate with valid audits.",
+        "Out-of-packet finding identities are preserved as contract warnings instead of discarding an otherwise schema-valid audit."
+      ]
+    },
+    {
+      "run_id": "qwen-teacher-parallel-20260801-v4",
+      "record_class": "historical_ineligible_timeout_policy_trace",
+      "status": "operator_terminated",
+      "mistake": "The first parallel implementation retained a 30-minute non-streaming response timeout, allowing both accepted provider requests to wait without an application response for at least 29 minutes.",
+      "teacher_loop_eligible": false,
+      "parallel_start_verified": true,
+      "glm": {
+        "model_invoked": true,
+        "status": "operator_terminated_after_no_application_response",
+        "reported_charge_usd": null,
+        "charge_note": "No provider usage wrapper was received. Remote billing may have occurred.",
+        "request_sha256": "48d57cffe97681429d81e2fb556f24d2fd8e83b9164467e965298485cf2d81a7"
+      },
+      "kimi": {
+        "model_invoked": true,
+        "status": "operator_terminated_after_no_application_response",
+        "reported_charge_usd": null,
+        "charge_note": "No provider usage wrapper was received. Remote billing may have occurred.",
+        "request_sha256": "322378f0e49ac8de38a8a8237fa8d9abce9f85de1371ccaaaddb671f728682c2"
+      },
+      "codex": {
+        "invoked": false,
+        "status": "blocked_at_teacher_join"
+      },
+      "corrective_actions": [
+        "Each provider attempt now has a four-minute response deadline.",
+        "A timeout has zero teacher weight and creates a new linked attempt.",
+        "Timeout recovery reroutes away from the first configured provider.",
+        "Three timeouts exhaust the chain and block Codex, limiting the worst-case wait to twelve minutes."
+      ],
+      "known_reported_charge_usd": null
+    },
+    {
+      "run_id": "qwen-teacher-hybrid-20260801-v5",
+      "record_class": "historical_ineligible_configuration_and_repair_trace",
+      "status": "operator_terminated",
+      "mistake": "Kimi was configured at maximum reasoning even though the requested setting was high reasoning with the full output allowance. Its first active stream reached the four-minute ceiling, the direct fallback had no configured key, and the route planner then rotated back to Moonshot instead of blocking on the unavailable independent fallback.",
+      "teacher_loop_eligible": false,
+      "glm": {
+        "status": "completed_valid",
+        "elapsed_seconds": 28.284941,
+        "reported_charge_usd": 0.02066278
+      },
+      "kimi": {
+        "first_attempt_status": "invoked_invalid_stream_deadline",
+        "first_attempt_elapsed_seconds": 240.000619,
+        "fallback_status": "setup_failed_missing_fireworks_key",
+        "third_attempt_status": "operator_terminated",
+        "reported_charge_usd": null,
+        "charge_note": "No final usage wrapper was returned for either interrupted Moonshot stream. Provider-side charges may have occurred."
+      },
+      "known_reported_charge_usd": 0.02066278,
+      "corrective_actions": [
+        "Kimi reasoning is now explicitly high while the context-safe maximum output allowance remains unchanged.",
+        "An unavailable independent fallback now blocks the Kimi chain instead of rotating back to the primary Moonshot route.",
+        "The configuration mismatch and all partial streams remain preserved as ineligible evidence."
+      ]
+    },
+    {
+      "run_id": "qwen-teacher-hybrid-20260801-v6",
+      "record_class": "historical_ineligible_postfinalization_hash_trace",
+      "status": "completed_with_irreproducible_aggregate",
+      "mistake": "The aggregate evidence hash was computed before the run-complete record and final lifecycle event were written, so the published trace index could not be reproduced from the completed directory.",
+      "teacher_loop_eligible": false,
+      "outer_teacher_status": "two_valid_audits",
+      "codex_status": "completed_valid",
+      "known_reported_charge_usd": 0.11293604,
+      "corrective_actions": [
+        "Completion state and the final event are now written before the aggregate is computed.",
+        "The public-summary copy is excluded to avoid a circular hash.",
+        "A separate validator recomputes the completed index."
+      ]
+    },
+    {
+      "run_id": "qwen-teacher-hybrid-20260801-v7",
+      "record_class": "historical_ineligible_incomplete_adjudication_packet_trace",
+      "status": "completed_with_codex_trace_gate_block",
+      "mistake": "The raw teacher evidence existed in the ignored archive, but the Codex packet projected only a small subset of its metadata. Codex correctly refused to assume that omitted route, response-model, normalized-stream, timing, usage, and cost records existed.",
+      "teacher_loop_eligible": false,
+      "outer_teacher_status": "two_valid_audits",
+      "codex_status": "completed_valid_structured_block_for_trace_scope",
+      "known_reported_charge_usd": 0.0989883,
+      "corrective_actions": [
+        "Codex now receives every complete credential-free teacher attempt record.",
+        "Requests, headers, raw SSE, normalized events, assembled responses, and parsed audits now have explicit byte-count and SHA-256 bindings."
+      ]
+    },
+    {
+      "run_id": "qwen-teacher-hybrid-20260801-v8",
+      "record_class": "historical_ineligible_unrepaired_codex_contract_trace",
+      "status": "completed_with_invalid_codex_adjudication",
+      "mistake": "Codex returned a substantively useful object with one partial pair identity, but the harness had no linked Codex repair chain and terminated the run after preserving the invalid object.",
+      "teacher_loop_eligible": false,
+      "outer_teacher_status": "two_valid_audits",
+      "codex_status": "completed_invalid_partial_pair_identity",
+      "known_reported_charge_usd": 0.10430812,
+      "corrective_actions": [
+        "A malformed or contract-invalid Codex object now has zero decision weight and triggers a bounded linked fresh invocation.",
+        "Valid substantive Codex decisions are never retried."
+      ]
+    },
+    {
+      "run_id": "fable-pipeline-critique-20260801-v1",
+      "record_class": "historical_ineligible_local_harness_preflight_trace",
+      "status": "completed_invalid_before_model_invocation",
+      "mistake": "The one-shot critique harness passed a JSON Schema draft declaration that Claude Code 2.1.210 could not resolve. The CLI rejected the local schema before sending a model request.",
+      "teacher_loop_eligible": false,
+      "fable": {
+        "model_invoked": false,
+        "status": "not_invoked_local_schema_rejection",
+        "reported_charge_usd": 0,
+        "elapsed_seconds": 0.916916,
+        "automatic_retry_performed": false
+      },
+      "public_result": "extension/artifacts/fable_pipeline_critique_20260801.json",
+      "corrective_actions": [
+        "The unsupported draft declaration was removed.",
+        "The harness now rejects draft declarations and external schema references before claiming a future one-shot marker.",
+        "This failure is attributed to NULSPEC's harness and is not classified as a Fable refusal."
+      ],
+      "known_reported_charge_usd": 0
+    }
+  ],
+  "eligible_reference_run": {
+    "run_id": "qwen-teacher-hybrid-20260801-v9",
+    "status": "completed_valid",
+    "teacher_loop_eligible": true,
+    "public_summary": "extension/artifacts/review_hierarchy_20260801_v9.json",
+    "validation_record": "extension/artifacts/review_hierarchy_validation_20260801_v9.json",
+    "known_reported_teacher_charge_usd": 0.08085356,
+    "outer_teacher_status": "two_valid_audits",
+    "codex": {
+      "status": "completed_valid",
+      "attempt_count": 2,
+      "repair_count": 1,
+      "first_attempt_status": "completed_invalid_partial_pair_identity",
+      "terminal_attempt_status": "completed_valid"
+    },
+    "trace_index": {
+      "evidence_file_count": 45,
+      "evidence_aggregate_sha256": "7c3924a87b4ba6c9b431b26a042e964f930f27182676b3901608c9857d11cb91"
+    }
+  },
+  "known_reported_charge_totals_usd": {
+    "mistaken_fable_teacher_calls": 1.431673,
+    "all_recorded_correction_runs_known_model_calls": 1.89228336,
+    "eligible_reference_run_teacher_calls": 0.08085356,
+    "known_total_including_eligible_reference": 1.97313692,
+    "excludes_unknown_interrupted_glm_charge": true,
+    "excludes_two_unknown_v4_provider_charges": true,
+    "excludes_unknown_v5_moonshot_charges": true
+  },
+  "preservation": {
+    "raw_traces_retained": true,
+    "raw_traces_public": false,
+    "historical_outputs_rewritten": false,
+    "ineligible_outputs_used_as_teacher_votes": false,
+    "automatic_scientific_retry_performed": false,
+    "linked_execution_repair_performed": true,
+    "linked_execution_repair_scope": "One invalid Codex structured adjudication in v9 was preserved and reissued. No valid scientific answer was retried."
+  }
+}

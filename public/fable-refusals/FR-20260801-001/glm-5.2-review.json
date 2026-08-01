@@ -1,0 +1,104 @@
+{
+  "completed_at_utc": "2026-08-01T18:03:08.779162Z",
+  "decision": {
+    "action_items": [],
+    "checks": [
+      {
+        "area": "scientific_fidelity",
+        "evidence": "primary.models.sprkd_upstream_direct_init.accuracy.mean=85.74165457184326; primary.models.sprkd_paper_random_init.accuracy.mean=67.97677793904208; primary.models.sprkd_upstream_direct_init.best_history_accuracy_unweighted_batch_mean.mean=94.82735340242033",
+        "finding": "The three evidence layers (artifact replay, exact public path, narrow paper-intent) are faithfully executed and reported. The frozen classification of 'not replicated' for the public final-result recipe and 'inconclusive' for the underlying method is well-supported by the machine evidence: exact SPRKD averaged 85.74% (SD 20.01) and paper-intent SPRKD averaged 67.98% (SD 24.63), neither reproducing the reported 94.80%. The best-epoch proximity (94.83% exact, 94.15% intent) is correctly reported as non-verdict-bearing context.",
+        "status": "PASS"
+      },
+      {
+        "area": "internal_consistency",
+        "evidence": "REPORT.md table values match primary.models.*.accuracy fields in machine_evidence.primary",
+        "finding": "All prose values match the machine evidence. The report's table of five-seed final accuracies, SDs, and t-intervals exactly match scratch_summary.json. The one-page summary, frontend handoff, and full report are mutually consistent on classification, metric schema, and post-hoc boundary labels.",
+        "status": "PASS"
+      },
+      {
+        "area": "statistics_and_uncertainty",
+        "evidence": "PROTOCOL.md decision language; REPORT.md limitations section; UPSTREAM_AUDIT.md SPRKD-UPSTREAM-014",
+        "finding": "Descriptive 95% t intervals are correctly labeled as descriptive across five training seeds, not as prompt bootstraps or equivalence tests. The report explicitly states that wide unbounded intervals for unstable series are poor summaries of high/chance mixtures and that every seed is primary context. McNemar tests are correctly run only within-seed and not pooled across incompatible splits. The non-equivalence of McNemar p=1.0 is correctly noted.",
+        "status": "PASS"
+      },
+      {
+        "area": "replication_extension_boundary",
+        "evidence": "EXTENSION_PROTOCOL.md; POSTHOC_DIAGNOSTICS.md; REPORT.md stability section",
+        "finding": "E1, E2, E3, D1, and D2 are clearly labeled as extensions or post-hoc diagnostics that cannot alter the frozen verdict. E1/E2 were frozen before scratch outcomes; E3 was frozen after jobs began but before outcomes inspected; D1/D2 are explicitly outcome-motivated. The D2 logit-input result (94.792% SPRKD) is correctly presented as a post-hoc diagnostic, not as the preregistered replication.",
+        "status": "PASS"
+      },
+      {
+        "area": "reproducibility_and_provenance",
+        "evidence": "SOURCE_MANIFEST.md; TESTS.md; ERROR_LOG.md SPRKD-LOCAL-057; CONTAINER.md",
+        "finding": "Source manifest provides SHA-256 digests for all binary inputs. Execution configs, checkpoint hashes, prediction hashes, split indices, and code hashes are retained and validated by fail-closed analyzers. The container recipe is provided with pinned dependencies. The disclosed limitation that protocols were timestamped but not Git-committed before compute is candidly reported as a process error.",
+        "status": "PASS"
+      },
+      {
+        "area": "error_transparency",
+        "evidence": "ERROR_LOG.md sections: NULSPEC/local errors, Upstream/release issues, External/operational limitations",
+        "finding": "The error ledger separates local errors (100 entries), upstream/release issues (16 entries), and external/operational limitations (3 entries). Each entry describes what happened, impact, and resolution. No failed command was promoted into a scientific finding without independent evidence.",
+        "status": "PASS"
+      },
+      {
+        "area": "publication_handoff",
+        "evidence": "website_handoff_candidate.metrics_schema; website_handoff_candidate.artifacts; TESTS.md final aggregate and publication checks",
+        "finding": "The typed website handoff uses sprkd_trial_accuracy_v1 schema, correctly avoids relabeling accuracy as reward, includes all seven source schema pins, target arXiv assertion, 2500 Hessian probe values, and fail-closed artifact allowlist. The final peer-review gate has a deterministic contract test covering all three decisions.",
+        "status": "PASS"
+      },
+      {
+        "area": "author_email_fairness",
+        "evidence": "AUTHOR_EMAIL.md; AUTHOR_QUESTIONS.md",
+        "finding": "The author email is constructive, factually accurate, and does not allege fabrication. It correctly describes the three evidence layers, the frozen classification, the best/final contrast, and the post-hoc D2 diagnostic. It requests specific provenance items (seeds, loss inputs, checkpoint rule, Hessian provenance) and invites author response. The email is clearly labeled as a draft requiring human approval.",
+        "status": "PASS"
+      }
+    ],
+    "hard_fail_reason": "",
+    "human_email_approval_acknowledged": true,
+    "no_resubmission_acknowledged": true,
+    "reviewed_packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+    "single_review_acknowledged": true,
+    "summary": "The bundle is scientifically honest, internally consistent, reproducible within its disclosed boundary, fair to the authors, and ready to publish. The frozen numerical results are faithfully reported across all evidence layers, the prose matches the machine evidence, statistical language is appropriately descriptive, replication versus extension/post-hoc boundaries are clearly maintained, provenance is thorough with hash-pinned inputs and integrity checks, errors are origin-separated and transparently logged, the website handoff is correctly typed and fail-closed, and the author-email draft is constructive and factually accurate. Disclosed limitations (preregistration timing, container untested, extension config hash gaps) are candidly reported and do not undermine the core findings.",
+    "verdict": "PASS"
+  },
+  "elapsed_seconds": 20.993016,
+  "http_status": 200,
+  "invocation_count": 1,
+  "model": {
+    "canonical_slug": "z-ai/glm-5.2-20260616",
+    "catalog_entry_sha256": "3cc2711d55995750ac3cf8d6b94929992db3197342221012eb4df9de5308e0a4",
+    "context_length": 1048576,
+    "requested_id": "z-ai/glm-5.2"
+  },
+  "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+  "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+  "raw_response_byte_count": 7157,
+  "raw_response_public": false,
+  "raw_response_sha256": "5ce295b57b1d03dd203774bc50d4155e910ea7607890ec2e033cc4dd34d871c5",
+  "release_control": {
+    "author_email_dispatch_authorized": false,
+    "human_disposition_required": true,
+    "publication_authorized": false
+  },
+  "retry_allowed": false,
+  "schema_version": "nulspec-openrouter-supplemental-review-v2",
+  "started_at_utc": "2026-08-01T18:02:47.784357Z",
+  "status": "completed_valid",
+  "usage": {
+    "completion_tokens": 1253,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 0
+    },
+    "cost": 0.04674456,
+    "is_byok": false,
+    "prompt_tokens": 185373,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 148299,
+      "video_tokens": 0
+    },
+    "total_tokens": 186626
+  }
+}

@@ -1,0 +1,402 @@
+{
+  "automatic_changes_authorized": false,
+  "completed_at_utc": "2026-08-01T22:09:22.651320Z",
+  "critique": {
+    "authority_confirmation": {
+      "can_authorize_email": false,
+      "can_authorize_publication": false,
+      "can_change_qwen_results": false,
+      "can_change_training_signals": false,
+      "is_teacher_vote": false
+    },
+    "confidence": 0.72,
+    "cost_control_assessment": {
+      "assessment": "partially_adequate",
+      "rationale": "Accounting is exemplary: per-attempt costs carry an explicit source (provider-reported for GLM, rate-card-calculated for Kimi; completed_pipeline_summary.outer_teacher_attempts[*].usage.cost_source), unknown provider-side charges from interrupted streams are flagged rather than zeroed (architecture_corrections.corrections[3].glm.charge_note, corrections[4].kimi.charge_note), the mistaken $1.431673 Fable invocation is preserved and counted (corrections[1]), and the published totals reconcile exactly: 1.89228336 + 0.08085356 = 1.97313692 USD (architecture_corrections.known_reported_charge_totals_usd). Enforcement, however, is weaker than accounting: there is no code-level USD ceiling; the Kimi allowance nominally authorizes about $15 of output per attempt, bounded only indirectly by the 240-second deadline and three-attempt budget (F01); three historical runs carry unknowable provider-side charges; and Codex consumption is subscription-unmetered (F09). The v2 incident demonstrates that the control that failed was configuration, not budget \u2014 a budget gate would have capped the exposure independently of the architecture mistake.",
+      "recommended_changes": [
+        "Enforce an explicit per-run USD ceiling recorded in run-start.json and derive per-attempt max_tokens from the remaining budget and route output rate.",
+        "Reconcile post-run against provider billing APIs where available to close the unknown-charge gap for interrupted streams.",
+        "Meter or impute Codex adjudicator consumption in the reported totals."
+      ]
+    },
+    "failure_taxonomy_assessment": {
+      "assessment": "adequate",
+      "rationale": "The taxonomy operates at two levels and works at both. At run level, nine correction records each name a specific mistake, classify it precisely (architecture probe, sequential implementation, timeout policy, configuration-and-repair, post-finalization hash, incomplete adjudication packet, unrepaired Codex contract, local harness preflight), and attribute NULSPEC harness errors as directly as provider failures \u2014 the failed one-shot critique is explicitly a NULSPEC schema-harness error, not a Fable refusal (architecture_corrections.corrections[8]). At runtime, repair kinds distinguish billing (402), stream timeout, transient HTTP, missing provider key, structured-output failure, and transport failure, with a distinct terminal block for the missing Kimi fallback (sources[\"extension/review_hierarchy.py\"].content, repair_plan_for_attempt). Remaining gaps are modest and behavior-preserving: substring-based classification lets several audit-contract failures fall into the generic bucket, HTTP 401/403 are unclassified, and status labels are free-form (findings F03, F10).",
+      "recommended_changes": [
+        "Replace substring matching on exception text with typed exceptions or an explicit failure_kind field.",
+        "Classify HTTP 401/403 as terminal credential failures rather than generic same-route reissues.",
+        "Enumerate run/component status and record_class vocabularies in the corrections schema and validate entries against them."
+      ]
+    },
+    "findings": [
+      {
+        "category": "cost_control",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_teacher_attempts[1].request_parameters.max_completion_tokens",
+          "completed_pipeline_summary.outer_teacher_attempts[1].provider_route.output_usd_per_million",
+          "sources[\"extension/review_hierarchy.py\"].content (MAX_TEACHER_ATTEMPTS/MAX_CODEX_ATTEMPTS; no USD budget check anywhere)",
+          "architecture_corrections.corrections[4].kimi.charge_note",
+          "architecture_corrections.known_reported_charge_totals_usd.excludes_two_unknown_v4_provider_charges"
+        ],
+        "finding_id": "F01_cost_budget_gate",
+        "impact": "Actual v9 spend was small ($0.08085356), but the architecture cannot prove an upper bound on a bad run's cost, and three historical runs already carry unknown provider-side charges the totals must exclude. The v2 incident ($1.431673) shows configuration, not budget, was the control that failed; a budget gate would have capped it.",
+        "issue": "The runner enforces attempt counts and stream deadlines but no monetary ceiling: Kimi's context-derived allowance authorizes 1,029,863 output tokens per attempt (about $15.45 at the recorded $15/M output rate), so worst-case run cost is bounded only indirectly by the 240-second deadline and the three-attempt budget, and interrupted streams have already produced unknowable provider-side charges.",
+        "recommended_change": "Record an explicit per-run USD ceiling in run-start.json, derive per-attempt max_tokens from the remaining budget and the route's output rate, assert the budget before each attempt, and reconcile post-run against provider billing where an API exists.",
+        "severity": "medium"
+      },
+      {
+        "category": "release_authority",
+        "evidence_references": [
+          "sources[\"docs/REVIEW_HIERARCHY.md\"].content (section 'Separate final-release review', first, second, and fifth bullets)"
+        ],
+        "finding_id": "F02_release_refusal_handling",
+        "impact": "A safety-motivated refusal \u2014 plausibly the most information-bearing kind of non-response \u2014 would not by itself force human adjudication before the outward-facing publication authorization; only email dispatch retains an unconditional human approval. This gate was not exercised in the audited run, so the risk is prospective, not realized.",
+        "issue": "The separate final-release gate treats a Fable safeguard refusal and a technical non-response identically as a logged zero-weight non-response, after which valid GLM and Kimi PASS decisions authorize publication; this also sits in tension with the later bullet stating that 'missing' final reviews block for human adjudication.",
+        "recommended_change": "Split the taxonomy: keep transport/technical non-responses zero-weight, but route safeguard refusals to block-for-human-adjudication (or require recorded human sign-off acknowledging the refusal) before the two-reviewer authorization path can proceed, and reconcile the 'missing reviews block' bullet with the zero-weight non-response bullet.",
+        "severity": "medium"
+      },
+      {
+        "category": "failure_taxonomy",
+        "evidence_references": [
+          "sources[\"extension/review_hierarchy.py\"].content (repair_plan_for_attempt keyword and http_status sets)",
+          "sources[\"extension/review_hierarchy.py\"].content (validate_teacher_audit error message strings)"
+        ],
+        "finding_id": "F03_repair_classification_brittleness",
+        "impact": "Repair behavior stays safe (linked reissue without reroute), but the permanent repair-kind labels can misstate root causes, and a key revoked mid-run would burn all three attempts on the same failing route as generic reissues.",
+        "issue": "repair_plan_for_attempt classifies failures by substring matching on exception text ('json', 'schema', 'content', 'timed out'); several audit-contract failures raised by validate_teacher_audit (for example 'outer teacher returned an invalid assessment' or 'outer teacher returned a malformed finding') match no keyword and fall through to the generic reissue kind, and HTTP 401/403 credential failures are not classified at all.",
+        "recommended_change": "Replace substring classification with typed exception subclasses or an explicit machine-readable failure_kind, add a terminal classification for 401/403, and unit-test the mapping for every message the validators can raise.",
+        "severity": "low"
+      },
+      {
+        "category": "independence",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_teacher_attempts[0].provider_route.request_parameters.provider",
+          "completed_pipeline_summary.outer_teacher_attempts[0].provider_route.route_id",
+          "sources[\"extension/EXPLAINER.md\"].content ('pinned GLM and pinned Kimi receive the same Qwen-only packet concurrently')"
+        ],
+        "finding_id": "F04_glm_upstream_not_pinned",
+        "impact": "The logical model is pinned but the serving deployment is not, so behavior can vary with routing across attempts and runs, and the public projection cannot show whether two GLM attempts were served by the same upstream. The raw headers retained in the ignored archive likely contain the identity, but it is not publicly bound.",
+        "issue": "GLM's transport lets OpenRouter choose and substitute upstream serving providers (allow_fallbacks: true, latency sort), and the public attempt record does not surface which upstream actually served the request; EXPLAINER.md nonetheless describes the teachers as 'pinned'.",
+        "recommended_change": "Extract the OpenRouter-selected upstream provider from response metadata into the public attempt record, and either pin an ordered provider list or document explicitly why latency routing with fallbacks is acceptable for audit reproducibility.",
+        "severity": "low"
+      },
+      {
+        "category": "trace_integrity",
+        "evidence_references": [
+          "sources[\"extension/review_hierarchy.py\"].content (sanitize_failure_message)",
+          "sources[\"docs/REVIEW_HIERARCHY.md\"].content (section 'Trace contract': 'Provider request IDs, private paths, and internal host data stay out of the public projection.')"
+        ],
+        "finding_id": "F05_sanitizer_provider_scope",
+        "impact": "A Moonshot or Fireworks error containing request or account identifiers could pass unredacted into public failure fields, contradicting the documented guarantee. No such leak is visible in the supplied records, so this is a latent rather than realized defect.",
+        "issue": "sanitize_failure_message redacts only OpenRouter account URLs and user IDs, while the trace contract promises that provider request IDs and internal identifiers stay out of the public projection; Moonshot and Fireworks failure strings have no equivalent redaction patterns.",
+        "recommended_change": "Generalize sanitization with per-provider redaction patterns (URLs, request IDs, account tokens) and add a validator scan of public summaries for provider-identifier patterns.",
+        "severity": "low"
+      },
+      {
+        "category": "evidence_boundary",
+        "evidence_references": [
+          "protocol.evidence_boundary",
+          "sources[\"extension/review_hierarchy.py\"].content (imports from extension.direct_teacher_providers)",
+          "validation_record.checks",
+          "sources (seven entries; the two modules are absent)"
+        ],
+        "finding_id": "F06_critique_packet_omits_modules",
+        "impact": "Deadline enforcement, route tables (including the Kimi Fireworks fallback), cost normalization, and the semantics of the passed checks are attested by records but not auditable in this critique \u2014 the same class of omission that correctly blocked Codex's trace gate in v7. This bounds the confidence of the parallelism and validation assessments.",
+        "issue": "The critique packet omits the transport and validator sources: review_hierarchy.py imports stream deadlines, provider routes, payload construction, and usage normalization from extension/direct_teacher_providers.py, and the 11 validation checks are implemented in validate_review_hierarchy.py; neither file's content is included in sources.",
+        "recommended_change": "Include direct_teacher_providers.py and validate_review_hierarchy.py (content plus hashes) in future critique packets so the enforcement layer and validator semantics can be reviewed end to end.",
+        "severity": "low"
+      },
+      {
+        "category": "validation",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_teacher_chains[0].repair_count",
+          "completed_pipeline_summary.outer_teacher_chains[1].repair_count",
+          "architecture_corrections.corrections[2].kimi.repair_performed_in_this_historical_run",
+          "architecture_corrections.eligible_reference_run.codex.repair_count"
+        ],
+        "finding_id": "F07_teacher_repairs_unexercised",
+        "impact": "Only the Codex repair path is demonstrated post-correction; the most failure-prone teacher paths are validated by design review and ineligible traces rather than by the shipped implementation.",
+        "issue": "The corrected teacher-side repair machinery \u2014 billing reroute, timeout reroute, missing-fallback blocking, and chain exhaustion blocking Codex \u2014 has never executed in an eligible run: both v9 teacher chains completed on attempt one with repair_count 0, and the historical exercises either predate the fixes or explicitly performed no repair.",
+        "recommended_change": "Add fault-injection integration tests against mock providers (402, stalls at each deadline, missing fallback key, full chain exhaustion) and record their results as part of the pipeline's validation coverage.",
+        "severity": "low"
+      },
+      {
+        "category": "validation",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_teacher_attempts[0].audit.systemic_patterns[1]",
+          "sources[\"extension/review_hierarchy.py\"].content (validate_teacher_audit applies identity checks to findings only)"
+        ],
+        "finding_id": "F08_prose_pair_citations_unchecked",
+        "impact": "Unverifiable or truncated pair references enter the public record without contract warnings; whether they resolve to packet pairs cannot be machine-audited, and this critique cannot and does not check them against the unseen Qwen packet.",
+        "issue": "The pair-identity contract gate applies only to structured findings; systemic_patterns are free text and in v9 carry pair citations the gate cannot check, including truncated identifiers such as 'c2899bd' and '7a64c07c' in GLM's TIE-to-A pattern entry.",
+        "recommended_change": "Add a structured referenced_pair_ids array to systemic patterns validated like finding identities, or have the validator scan prose for hex-ID-like tokens and emit contract warnings for non-matches.",
+        "severity": "low"
+      },
+      {
+        "category": "cost_control",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_adjudicator.attempts[0] (no usage or cost fields)",
+          "sources[\"extension/review_hierarchy.py\"].content (run_codex_outer_outer_attempt scrubs API keys, forcing subscription auth)",
+          "architecture_corrections.known_reported_charge_totals_usd"
+        ],
+        "finding_id": "F09_codex_cost_unmetered",
+        "impact": "Totals understate true resource consumption and prevent teacher-versus-adjudicator cost comparisons. The omission is structural and disclosed by the auth model, not concealed.",
+        "issue": "Codex adjudication runs on subscription authentication and reports no token usage or cost in the public record, so the USD totals cover teacher and mistaken-Fable calls but not adjudicator consumption.",
+        "recommended_change": "Parse token usage from the retained Codex JSONL transcript into the attempt record and report an imputed cost or an explicit subscription-unmetered line item in the totals.",
+        "severity": "info"
+      },
+      {
+        "category": "documentation",
+        "evidence_references": [
+          "architecture_corrections.corrections[1].fable.status",
+          "architecture_corrections.corrections[2].kimi.status",
+          "architecture_corrections.schema_version"
+        ],
+        "finding_id": "F10_status_vocabulary_freeform",
+        "impact": "Cross-run machine auditing must string-match ad hoc labels, which will drift as the corrections record grows; the labels are descriptive and honest but not contract-checked.",
+        "issue": "Run and component statuses in the corrections record are expressive free-form strings (for example 'completed_valid_substantive_review_but_architecturally_ineligible' and 'invalid_account_credit_preflight') rather than an enumerated vocabulary.",
+        "recommended_change": "Enumerate status and record_class values in the corrections schema and validate new entries against the enumeration.",
+        "severity": "info"
+      },
+      {
+        "category": "repair_policy",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_adjudicator.attempts[1].repair_action.diagnosis",
+          "sources[\"extension/review_hierarchy.py\"].content (validate_outer_outer raises on first violation)"
+        ],
+        "finding_id": "F11_repair_diagnosis_granularity",
+        "impact": "The linked reissue succeeded in v9, but repairs converge more slowly than necessary when multiple findings are malformed, and the archived diagnosis is less precise than the trace standard the pipeline applies elsewhere.",
+        "issue": "validate_outer_outer raises on the first contract violation, so the v9 repair diagnosis names the failed gate ('Codex finding has a partial pair identity') but not the offending finding, and any additional violations in the same object are masked.",
+        "recommended_change": "Collect all contract violations with finding indices before raising, and include the full list in both the repair prompt and the preserved repair record.",
+        "severity": "info"
+      },
+      {
+        "category": "trace_integrity",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_adjudicator.attempts[0].requested_model",
+          "completed_pipeline_summary.outer_adjudicator.attempts[1].codex_cli_version",
+          "sources[\"extension/review_hierarchy.py\"].content (run_codex_outer_outer_attempt records codex_cli_version; --model appended only if provided)"
+        ],
+        "finding_id": "F12_codex_model_identity_absent",
+        "impact": "The adjudicator's model identity cannot be pinned or compared across runs from the public summary \u2014 a weaker provenance standard than the pipeline demands of its teachers. The archived Codex JSONL transcript may contain the identity, but it is not publicly bound.",
+        "issue": "Teacher attempts record requested and response model identities, but Codex attempts record only the CLI version with requested_model null; the underlying model that produced the adjudication is absent from the public record.",
+        "recommended_change": "Pass an explicit --model, and extract the model identity reported in the Codex JSONL events into the public attempt record alongside the CLI version.",
+        "severity": "low"
+      }
+    ],
+    "overall_assessment": "sound_with_changes",
+    "parallelism_assessment": {
+      "assessment": "adequate",
+      "rationale": "Fan-out is genuinely concurrent (two-worker pool with both chains submitted together) and the join is deterministic, collecting chains in configured teacher order (sources[\"extension/review_hierarchy.py\"].content, run_parallel_teachers). The eligible run corroborates this: GLM and Kimi started at 21:02:06.967230Z and 21:02:06.966129Z, and Codex started at 21:04:14.652020Z, 65 milliseconds after the later (Kimi) chain completed at 21:04:14.586678Z. Codex is gated on exactly two valid chains with an explicit outer_adjudicator_blocked event otherwise, and per-attempt 60/60/240-second stream deadlines bound each chain to a 12-minute worst case \u2014 the direct fix for the v4 29-minute blind wait (architecture_corrections.corrections[3]). Event-log appends are lock-serialized and attempt directories are exclusive-create, so parallel writers cannot corrupt the trace, and the validator's event_order_and_parallel_join_valid check passed (validation_record.checks[9]). Caveats: deadline enforcement lives in direct_teacher_providers.py, which is outside this packet (finding F06), and there is no early abort of the surviving chain once the other has exhausted \u2014 a defensible evidence-preservation choice that should be documented as deliberate.",
+      "recommended_changes": [
+        "Include the transport module in future critique packets so stream-deadline enforcement is auditable end to end.",
+        "Document the no-early-abort join behavior as a deliberate choice, or add an optional abort when the sibling chain has already exhausted and Codex is guaranteed to be blocked."
+      ]
+    },
+    "recommended_validation_tests": [
+      "Fault-injection billing test: mock Moonshot returning HTTP 402 on Kimi attempt 1 and assert a linked reissue with kind reissue_after_billing_failure_with_provider_reroute targeting the independent fallback route.",
+      "Missing-fallback block test: with the Fireworks key absent, assert the Kimi chain records block_after_missing_independent_fallback_key, does not rotate back to Moonshot, and Codex is not invoked (regression for the v5 defect).",
+      "Stream-deadline matrix: stall a mock SSE stream just past each deadline (first event 60 s, idle 60 s, total 240 s) and assert zero decision weight, a linked timeout repair with reroute, and a 12-minute worst-case chain bound.",
+      "Codex exhaustion test: return three consecutive contract-invalid Codex objects and assert the run terminates blocked with all three attempts preserved immutably and no acceptance.",
+      "Repair-classification unit tests: for every ReviewHierarchyError message raised by parse_teacher_content and validate_teacher_audit, assert the intended repair kind (catches the substring-matching fallthrough) and add 401/403 cases.",
+      "Tamper-detection test: flip one byte in an archived trace file and assert validate_review_hierarchy.py fails the per-file binding and aggregate-hash checks.",
+      "Cross-teacher delivery equality check: extend the validator to assert identical user_prompt_sha256 and packet hash across the GLM and Kimi attempts of a run, preserving the independence evidence observed in v9.",
+      "Sanitizer regression test: feed synthetic Moonshot and Fireworks failure strings containing request IDs and account URLs and assert public failure fields are redacted.",
+      "Budget-gate test (after implementing F01): configure a low per-run USD cap and assert attempts halt with a budget-block record before the cap is exceeded.",
+      "One-shot critique preflight regression: assert schemas with draft declarations or external $refs are rejected locally with model_invoked false and zero charge (regression for fable-pipeline-critique-20260801-v1).",
+      "Concurrency interleaving test: run the fan-out against asymmetrically slow mock providers and assert event-log ordering invariants, lock-safe appends, and exclusive-create safety under parallel writes."
+    ],
+    "repair_policy_assessment": {
+      "assessment": "adequate",
+      "rationale": "The policy has the right invariants, and they are implemented rather than merely stated: attempts are immutable (exclusive-create writes), invalid invocations carry zero decision weight and can no longer reach the join as terminal records (the v3 fix, architecture_corrections.corrections[2]), repairs are linked fresh attempts with minimal parameter deltas and explicit budgets (three per teacher, three for Codex), exhaustion blocks Codex, valid substantive PASS/WARN/FAIL answers are never retried, and the reissue prompt tells the model no prior scientific answer was accepted \u2014 preserving independence across attempts (sources[\"extension/review_hierarchy.py\"].content, run_outer_teacher_attempt). The Kimi missing-fallback case correctly blocks instead of rotating back to Moonshot (the v5 fix, architecture_corrections.corrections[4]). The Codex repair chain was demonstrated live in v9: the invalid partial-pair-identity object was preserved with hashes and zero weight, and the linked second attempt was accepted (completed_pipeline_summary.outer_adjudicator.attempts). Weaknesses are diagnostic precision (first-violation-only diagnoses, F11), classification brittleness (F03), and the fact that teacher-side repair paths remain unexercised in an eligible run (F07).",
+      "recommended_changes": [
+        "Report all contract violations with finding indices in Codex repair diagnoses.",
+        "Adopt typed failure classification for repair kinds.",
+        "Exercise teacher-side repair and blocking paths under fault injection before relying on them in production runs."
+      ]
+    },
+    "scope_confirmation": "pipeline_architecture_and_trace_only",
+    "strengths": [
+      {
+        "claim": "The corrected architecture cleanly separates the recurring GLM/Kimi-to-Codex teacher loop from Fable's bounded advisory and final-release roles, and the runner structurally enforces exactly one GLM plus one Kimi teacher with Fable prohibited from the loop.",
+        "evidence_references": [
+          "architecture_corrections.effective_architecture",
+          "sources[\"extension/review_hierarchy.py\"].content (main: 'teacher loop requires exactly one configured GLM and one configured Kimi model; Fable is prohibited')",
+          "sources[\"docs/REVIEW_HIERARCHY.md\"].content (section 'Purpose')"
+        ]
+      },
+      {
+        "claim": "The one-way evidence boundary is enforced in code rather than only documented: the runner validates the packet's top-level shape, whitelists review fields, rejects non-Qwen primary reviews, requires an explicit boundary declaration, and checks for prompt-delimiter collisions.",
+        "evidence_references": [
+          "sources[\"extension/review_hierarchy.py\"].content (validate_qwen_packet, high_depth_harness)",
+          "sources[\"docs/REVIEW_HIERARCHY.md\"].content (section 'Evidence boundary')"
+        ]
+      },
+      {
+        "claim": "Concurrent fan-out and join behaved as designed in the eligible run: GLM and Kimi started about one millisecond apart, Codex started only 65 milliseconds after the later chain completed, and the validator independently checked event ordering and the parallel join.",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_teacher_attempts[0].started_at_utc",
+          "completed_pipeline_summary.outer_teacher_attempts[1].started_at_utc",
+          "completed_pipeline_summary.outer_teacher_chains[1].completed_at_utc",
+          "completed_pipeline_summary.outer_adjudicator.started_at_utc",
+          "validation_record.checks[9]"
+        ]
+      },
+      {
+        "claim": "Teacher independence is preserved at delivery: both teachers received byte-identical user packets (identical user_prompt_sha256) with family-specific system prompts, and neither prompt contains the other teacher's audit.",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_teacher_attempts[0].user_prompt_sha256",
+          "completed_pipeline_summary.outer_teacher_attempts[1].user_prompt_sha256",
+          "sources[\"extension/review_hierarchy.py\"].content (high_depth_harness, run_parallel_teachers)"
+        ]
+      },
+      {
+        "claim": "Invalid invocations and adjudications are immutable, zero-weight, and repaired through linked fresh attempts with explicit budgets, and valid substantive answers are never retried; the Codex path demonstrated this live in v9 when the invalid first attempt was preserved with hashes and the linked second attempt was accepted.",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_adjudicator.attempts[0].status",
+          "completed_pipeline_summary.outer_adjudicator.attempts[0].last_message_sha256",
+          "completed_pipeline_summary.outer_adjudicator.attempts[1].repair_action",
+          "sources[\"extension/review_hierarchy.py\"].content (write_new_bytes exclusive-create mode, run_codex_outer_outer)"
+        ]
+      },
+      {
+        "claim": "Trace integrity is comprehensive: every artifact is bound by byte count and SHA-256, the lifecycle log is append-only and lock-serialized, the v6 ordering defect (aggregate computed before final records) is fixed in code, and the 45-file aggregate hash was independently recomputed and matches across the run summary, corrections record, and validation record.",
+        "evidence_references": [
+          "completed_pipeline_summary.trace_index.evidence_aggregate_sha256",
+          "validation_record.commands[1].evidence_aggregate_sha256",
+          "architecture_corrections.eligible_reference_run.trace_index.evidence_aggregate_sha256",
+          "architecture_corrections.corrections[5].corrective_actions",
+          "sources[\"extension/review_hierarchy.py\"].content (trace_evidence_index)"
+        ]
+      },
+      {
+        "claim": "Cost accounting is honest and internally consistent: per-attempt costs carry an explicit source, unknown provider-side charges from interrupted streams are flagged rather than zeroed, and the recorded totals reconcile exactly (1.89228336 + 0.08085356 = 1.97313692 USD).",
+        "evidence_references": [
+          "architecture_corrections.known_reported_charge_totals_usd",
+          "architecture_corrections.corrections[3].glm.charge_note",
+          "architecture_corrections.corrections[4].kimi.charge_note",
+          "completed_pipeline_summary.outer_teacher_total_reported_cost_usd",
+          "completed_pipeline_summary.outer_teacher_attempts[0].usage.cost_source",
+          "completed_pipeline_summary.outer_teacher_attempts[1].usage.cost_source"
+        ]
+      },
+      {
+        "claim": "NULSPEC's own mistakes are classified as directly as external failures: the failed one-shot critique is attributed to NULSPEC's schema harness rather than a Fable refusal, and the sequential-join, timeout-policy, configuration, hash-ordering, packet-omission, and missing-Codex-repair defects are each named per run with corrective actions and preserved ineligible traces.",
+        "evidence_references": [
+          "architecture_corrections.corrections[8].corrective_actions",
+          "architecture_corrections.corrections[2].mistake",
+          "architecture_corrections.corrections[3].mistake",
+          "architecture_corrections.corrections[5].mistake",
+          "architecture_corrections.corrections[6].mistake",
+          "architecture_corrections.corrections[7].mistake",
+          "architecture_corrections.preservation"
+        ]
+      },
+      {
+        "claim": "Release-authority controls are held false at every layer and structurally enforced: the Codex schema pins release controls to false by const, the runner raises if Codex returns anything else, and the run summary, Codex decision, and corrections record all show no publication, training-signal, or email authority.",
+        "evidence_references": [
+          "sources[\"extension/outer_outer_schema.json\"].content (release_control const-false properties)",
+          "sources[\"extension/review_hierarchy.py\"].content (validate_outer_outer)",
+          "completed_pipeline_summary.release_control",
+          "completed_pipeline_summary.outer_adjudicator.decision.release_control",
+          "architecture_corrections.effective_architecture"
+        ]
+      },
+      {
+        "claim": "Prior corrective actions verifiably landed in the eligible run: Kimi ran at high (not maximum) reasoning effort, both teacher attempts record the 60/60/240-second stream deadlines, and the Codex packet carried complete credential-free attempt records with hash bindings as required after v7.",
+        "evidence_references": [
+          "completed_pipeline_summary.outer_teacher_attempts[1].request_parameters.reasoning_effort",
+          "completed_pipeline_summary.outer_teacher_attempts[0].total_response_timeout_seconds",
+          "completed_pipeline_summary.outer_teacher_attempts[1].total_response_timeout_seconds",
+          "architecture_corrections.corrections[4].corrective_actions",
+          "architecture_corrections.corrections[6].corrective_actions",
+          "sources[\"extension/review_hierarchy.py\"].content (codex_packet)"
+        ]
+      },
+      {
+        "claim": "Schema-valid audits with out-of-packet finding identities are preserved with explicit contract warnings instead of being discarded or silently rewritten, for teachers and Codex alike \u2014 the v3 lesson made durable.",
+        "evidence_references": [
+          "architecture_corrections.corrections[2].corrective_actions",
+          "sources[\"extension/review_hierarchy.py\"].content (validate_teacher_audit, validate_outer_outer warning paths)",
+          "completed_pipeline_summary.outer_teacher_attempts[0].contract_warnings"
+        ]
+      },
+      {
+        "claim": "Credential and identifier hygiene is layered: keys come only from ignored environment configuration, the Codex subprocess environment is scrubbed of API keys and runs in an ephemeral read-only sandbox with an isolated working directory, public failure text is sanitized, and the validator includes a public-boundary cleanliness check.",
+        "evidence_references": [
+          "sources[\"extension/review_hierarchy.py\"].content (run_codex_outer_outer_attempt environment.pop, sanitize_failure_message)",
+          "validation_record.checks[2]",
+          "sources[\"docs/REVIEW_HIERARCHY.md\"].content (section 'Trace contract')"
+        ]
+      }
+    ],
+    "summary": "The corrected GLM/Kimi-to-Codex teacher pipeline is architecturally sound with changes recommended. Its strongest properties are enforced rather than merely documented: a code-validated Qwen-only evidence boundary; genuinely concurrent fan-out with a deterministic, gated join (sub-millisecond parallel starts and a 65 ms join-to-Codex handoff in v9); immutable, zero-weight invalid attempts with linked, budgeted repairs that never retry valid substantive answers (demonstrated live by the v9 Codex reissue); byte-count/SHA-256 bindings for every artifact with an independently recomputed 45-file aggregate matching across three records; honest cost accounting whose totals reconcile exactly, including the preserved $1.431673 mistaken Fable invocation; and release controls pinned false at schema, runner, and record levels. NULSPEC's nine recorded implementation mistakes are classified as candidly as external failures \u2014 including attributing the failed one-shot critique to its own schema harness \u2014 and each correction verifiably landed in the eligible run. The material changes recommended are: add an enforced per-run USD budget (cost is currently bounded only indirectly by deadlines and attempt caps, and three historical runs carry unknown provider-side charges); separate safeguard refusals from technical non-responses in the final-release gate before the two-reviewer authorization path can proceed; harden failure classification (typed exceptions, 401/403 handling); surface GLM's actual upstream provider and Codex's model identity in public records; generalize the failure sanitizer beyond OpenRouter; include the transport and validator modules in future critique packets so enforcement is auditable; and exercise the teacher-side repair paths under fault injection. Confidence is bounded at 0.72 chiefly because direct_teacher_providers.py and validate_review_hierarchy.py are outside this packet and no hashes could be independently recomputed here. This critique assesses pipeline architecture and trace only: it is not a teacher vote, scientific verdict, or release vote; it does not evaluate whether the recorded Qwen process assessment was substantively correct; it recommends no change to frozen Qwen results; and it authorizes no publication, training-signal change, or email dispatch.",
+    "trace_assessment": {
+      "assessment": "adequate",
+      "rationale": "Every attempt binds its request, response headers, raw SSE, normalized events, assembled response, and parsed audit by byte count and SHA-256 (completed_pipeline_summary.outer_teacher_attempts[0] and [1]); the lifecycle log is append-only and lock-serialized; completion records are written before the aggregate is computed and the public summary is excluded from the index (the v6 fix, architecture_corrections.corrections[5]); and the 45-file aggregate 7c3924a87b4ba6c9b431b26a042e964f930f27182676b3901608c9857d11cb91 was independently recomputed by the validator and matches across completed_pipeline_summary.trace_index, architecture_corrections.eligible_reference_run.trace_index, and validation_record.commands[1]. Credential hygiene is enforced at multiple points and checked by public_boundary_clean (validation_record.checks[2]). Residual gaps: the public projection publishes only the aggregate hash and file count rather than a per-file manifest, limiting third-party verification of selective disclosures; the failure sanitizer is OpenRouter-specific (F05); Codex's underlying model identity is absent from the public record (F12); and the validator's own source is outside this packet, so its 11 checks are attested rather than reviewed here (F06).",
+      "recommended_changes": [
+        "Publish the per-file relative-path-plus-hash manifest alongside the public summary.",
+        "Generalize failure sanitization to all configured providers and validate public output against provider-identifier patterns.",
+        "Record the Codex response-model identity in the public attempt record.",
+        "Consider external timestamping or signing of the aggregate hash for third-party verifiability."
+      ]
+    }
+  },
+  "decision_weight": 0,
+  "effort": "max",
+  "elapsed_seconds": 688.55158,
+  "explicit_user_reissue_authorized": true,
+  "invocation_count": 1,
+  "is_teacher_vote": false,
+  "max_budget_usd": 5.0,
+  "model_alias": "fable",
+  "packet_byte_count": 236101,
+  "packet_sha256": "969566b4beb9cf695cce2637d2757482142bf552c49794b795d21f48be52e8d3",
+  "prior_record_byte_count": 1155,
+  "prior_record_sha256": "5a169d2e6e383079c0e2aaad5f621a0a6bdbfa7eaa3d6a9e791035186a46921e",
+  "prior_stderr_byte_count": 122,
+  "prior_stderr_sha256": "d8a1e758a0885d376f7a2457d829c53f27040ef929246fb4e28105670fb743de",
+  "prompt_sha256": "341ef8518056bcf83578b1f3e225c4078f878c050402e919c019220cc17d0d90",
+  "raw_stdout_byte_count": 345310,
+  "raw_stdout_sha256": "6b6bb7fb871da7b3363c375e2730f814aad66bafddc8907211d62b909a627b98",
+  "reissue_of_run_id": "fable-pipeline-critique-20260801-v1",
+  "reissue_reason": "prior_attempt_failed_local_cli_schema_validation_before_model_invocation",
+  "reported_model_usage": {
+    "claude-fable-5": {
+      "cacheCreationInputTokens": 95088,
+      "cacheReadInputTokens": 0,
+      "contextWindow": 1000000,
+      "costUSD": 4.07097,
+      "inputTokens": 2,
+      "maxOutputTokens": 64000,
+      "outputTokens": 57647
+    },
+    "claude-haiku-4-5-20251001": {
+      "cacheCreationInputTokens": 0,
+      "cacheReadInputTokens": 0,
+      "contextWindow": 200000,
+      "costUSD": 0.06909,
+      "inputTokens": 68940,
+      "maxOutputTokens": 32000,
+      "outputTokens": 30
+    }
+  },
+  "reported_total_cost_usd": 4.14006,
+  "retry_allowed": false,
+  "return_code": 0,
+  "role": "one_time_advisory_pipeline_critique",
+  "run_id": "fable-pipeline-critique-20260801-v2",
+  "schema_version": "nulspec-fable-pipeline-critique-public-v1",
+  "started_at_utc": "2026-08-01T21:57:54.096723Z",
+  "status": "completed_valid",
+  "stderr_byte_count": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "wrapper_metadata": {
+    "duration_api_ms": 690061,
+    "duration_ms": 687293,
+    "is_error": false,
+    "num_turns": 2,
+    "stop_reason": "tool_use",
+    "subtype": "success"
+  }
+}

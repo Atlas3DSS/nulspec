@@ -1,0 +1,346 @@
+{
+  "correction_reference": "extension/artifacts/review_hierarchy_architecture_corrections_20260801.json",
+  "record_class": "historical_ineligible_sequential_implementation_trace",
+  "teacher_loop_eligible": false,
+  "architecture": {
+    "automatic_release_authority": false,
+    "fable_in_teacher_loop": false,
+    "independent_outer_teachers": [
+      "GLM",
+      "Kimi"
+    ],
+    "outer_adjudicator": "Codex",
+    "primary_reviewer": "local Qwen"
+  },
+  "completed_at_utc": "2026-08-01T19:31:17.166046Z",
+  "outer_adjudicator": {
+    "codex_cli_version": "codex-cli 0.146.0",
+    "completed_at_utc": "2026-08-01T19:31:17.165119Z",
+    "elapsed_seconds": 69.638617,
+    "failure": "ReviewHierarchyError: Codex finding cites a pair outside the packet",
+    "invocation_count": 1,
+    "prompt_sha256": "127713def62e74147804c9018c30045bb725dda415e4e071b719fffc997f0ef5",
+    "requested_model": null,
+    "retry_allowed": false,
+    "return_code": 0,
+    "started_at_utc": "2026-08-01T19:30:07.525121Z",
+    "status": "completed_invalid",
+    "stderr_byte_count": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_byte_count": 15112,
+    "stdout_sha256": "631d3b454631eac86675cc000782ede236bbd013b22c197aad3186741468daa4"
+  },
+  "outer_teacher_attempts": [
+    {
+      "attempt_id": "qwen-teacher-20260801-v3-T1",
+      "audit": {
+        "findings": [
+          {
+            "issue": "Calibration pair correctly shows routine_consistent behavior: ppo_first picks A (mapped ppo) and sft_first picks B (mapped ppo), confirming the same underlying model wins regardless of position. Reasons mirror appropriately.",
+            "label": "calibration",
+            "pair_id": "0569cbf81a99aab701dc5351",
+            "rationale": "No process flag needed; included as positive control confirming the audit pipeline detects consistency where expected.",
+            "recommended_action": "none",
+            "severity": "info"
+          },
+          {
+            "issue": "Second calibration pair also routine_consistent with mapped_winner=ppo in both orientations. No contradiction detected.",
+            "label": "calibration",
+            "pair_id": "edfe36d998d4a6c09a6478db",
+            "rationale": "Positive control confirms consistency-detection logic.",
+            "recommended_action": "none",
+            "severity": "info"
+          },
+          {
+            "issue": "Both orientations select position A regardless of which model occupies it (ppo_first\u2192A=ppo, sft_first\u2192A=sft). This is a clear position-bias pattern: the reviewer never selects B. The reasons differ in substance ('B is excessively repetitive and incoherent' vs 'B is empty'), raising the possibility that the evaluation is anchored to position rather than content.",
+            "label": "corrected-410m",
+            "pair_id": "b9b01fa50339dc0f10a2cd3c",
+            "rationale": "When both orientations produce the same raw winner label (A) but different mapped_winners (ppo vs sft), the mapped_winner is purely an artifact of position assignment, not a content judgment. This undermines the reliability of any downstream preference signal.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Both orientations select A again (ppo_first\u2192A=ppo, sft_first\u2192A=sft). Reasons are near-identical in structure ('A continues coherently; B is repetitive...'), suggesting template-like justification rather than content-specific assessment.",
+            "label": "corrected-410m",
+            "pair_id": "0b346d098a49cc126aaa865a",
+            "rationale": "Same position-A bias pattern as b9b01fa50339dc0f10a2cd3c. When the rationale structure is invariant to position swap, the review process may be relying on positional heuristics.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Both orientations select A (ppo_first\u2192A=ppo, sft_first\u2192A=sft). Reasons are similar in framing ('A is less repetitive' / 'A continues coherently; B is repetitive'), reinforcing position-A bias.",
+            "label": "corrected-160m",
+            "pair_id": "7a9935ab59dacc1f8f93fcb9",
+            "rationale": "Third instance of both-orientations-pick-A pattern in the sample. Systemic.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Both orientations select A (ppo_first\u2192A=ppo, sft_first\u2192A=sft). The sft_first rationale is notably vague ('Slightly less repetitive; introduces curiosity, though both are poor') and lacks specificity about candidate B's deficiencies.",
+            "label": "corrected-160m",
+            "pair_id": "d7300b7b6413a48a66ec05a9",
+            "rationale": "Fourth instance of both-orientations-pick-A. Vague rationale in the sft_first orientation may indicate insufficient engagement with the actual content.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Position-inconsistent with a bias pattern: ppo_first produces TIE, sft_first produces A (mapped sft). When PPO is in position A, the reviewer calls TIE; when SFT is in position A, the reviewer picks A. This asymmetric pattern suggests that position A receives a benefit-of-the-doubt that position B does not.",
+            "label": "corrected-160m",
+            "pair_id": "daaeadfe1865c2f6caee223a",
+            "rationale": "The TIE-to-A shift depending on which model is in position A is consistent with an anchoring bias favoring the first-presented candidate. The mapped_winner flip from tie to sft is driven by position, not content.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same asymmetric pattern: ppo_first\u2192TIE, sft_first\u2192A (mapped sft). TIE when PPO is A, but A wins when SFT is A.",
+            "label": "corrected-70m",
+            "pair_id": "d3de7c9bdfd0294dc099c62b",
+            "rationale": "Repeating TIE-vs-A pattern confirms systemic first-position favoritism.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same asymmetric pattern: ppo_first\u2192TIE, sft_first\u2192A (mapped sft).",
+            "label": "exact-160m",
+            "pair_id": "e5f27219d4ce496d69fb1d9d",
+            "rationale": "Consistent with the systemic position bias trend across all label categories.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same asymmetric pattern: ppo_first\u2192TIE, sft_first\u2192A (mapped sft).",
+            "label": "exact-410m",
+            "pair_id": "0cce63fbd4f9d826a9692ddb",
+            "rationale": "Reinforces the systemic finding.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same asymmetric pattern: ppo_first\u2192TIE, sft_first\u2192A (mapped sft).",
+            "label": "corrected-160m",
+            "pair_id": "7a64c07c4b4b9a3d83a1a7f9",
+            "rationale": "Reinforces the systemic finding.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same asymmetric pattern: ppo_first\u2192TIE, sft_first\u2192A (mapped sft).",
+            "label": "exact-160m",
+            "pair_id": "c2899bde4c74c631421570b9",
+            "rationale": "Reinforces the systemic finding.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same asymmetric pattern: ppo_first\u2192TIE, sft_first\u2192A (mapped sft). Rationale is extremely terse: 'Slightly less repetitive and more coherent continuation.' without specifying which candidate is A or B.",
+            "label": "exact-410m",
+            "pair_id": "36a2a634ee5b26c5c4462af4",
+            "rationale": "Reinforces systemic finding; additionally, the vague rationale may not adequately support a non-TIE decision when the other orientation found both equally flawed.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same asymmetric pattern: ppo_first\u2192TIE, sft_first\u2192A (mapped sft).",
+            "label": "corrected-410m",
+            "pair_id": "f58cf32a6b0e067082b36ebd",
+            "rationale": "Reinforces the systemic finding.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Reverse asymmetric pattern: ppo_first\u2192A (mapped ppo), sft_first\u2192TIE. When PPO is in position A, the reviewer picks A; when SFT is in position A, the reviewer calls TIE. This is the mirror image of the previous pattern and equally indicative of position-A favoritism.",
+            "label": "exact-410m",
+            "pair_id": "f45019eb24426368816ee62f",
+            "rationale": "The reviewer appears to give position A a win when possible (when the content is arguably decent) but defaults to TIE when position A's content is poor. Position B rarely benefits from the same latitude.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same reverse asymmetric pattern: ppo_first\u2192A (mapped ppo), sft_first\u2192TIE.",
+            "label": "exact-410m",
+            "pair_id": "2050cdab2e866beb10606aa3",
+            "rationale": "Reinforces the mirror pattern. Position A gets benefit of the doubt; position B does not.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same reverse asymmetric pattern: ppo_first\u2192A (mapped ppo), sft_first\u2192TIE.",
+            "label": "exact-410m",
+            "pair_id": "045e4be2dca5d326ce60db5b",
+            "rationale": "Reinforces the systemic finding.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same reverse asymmetric pattern: ppo_first\u2192A (mapped ppo), sft_first\u2192TIE.",
+            "label": "corrected-410m",
+            "pair_id": "3f2baff5840b23ea8260d19f",
+            "rationale": "Reinforces the systemic finding.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Same reverse asymmetric pattern: ppo_first\u2192A (mapped ppo), sft_first\u2192TIE.",
+            "label": "corrected-160m",
+            "pair_id": "ac070967be598d2fc0cee1e6",
+            "rationale": "Reinforces the systemic finding.",
+            "recommended_action": "flag_position_bias",
+            "severity": "warning"
+          },
+          {
+            "issue": "Exception to the dominant A-bias pattern: ppo_first\u2192TIE, sft_first\u2192B (mapped ppo). Here the reviewer picks position B (which is PPO) in the sft_first orientation. While this breaks the A-bias pattern, it does so by selecting PPO, and the ppo_first orientation still produced TIE rather than A. The asymmetry persists: PPO only wins when in position B, never when in position A in this pair.",
+            "label": "exact-70m",
+            "pair_id": "183138ca4386dc960b4d16d4",
+            "rationale": "This is the only pair in the sample where B wins in either orientation. The reviewer's reluctance to select A (PPO) in ppo_first orientation despite selecting B (PPO) in sft_first orientation suggests the position assignment still drives the outcome rather than the model identity.",
+            "recommended_action": "flag_position_inconsistency",
+            "severity": "warning"
+          },
+          {
+            "issue": "Systemic position bias toward candidate A is evident across the entire sample. Population summary confirms: raw A choices vastly exceed raw B choices in every label category (e.g., corrected-160m: A=55, B=17; exact-70m: A=21, B=10; corrected-410m: A=203, B=150). Out of 20 sampled pairs, 4 showed both-orientations-pick-A, 8 showed TIE-when-PPO-is-A / A-wins-when-SFT-is-A, 5 showed A-wins-when-PPO-is-A / TIE-when-SFT-is-A, and only 1 showed B winning in any orientation. Position B essentially never benefits from the benefit-of-the-doubt that position A receives. The selection_reason 'position_inconsistent' is applied to 18 of 20 sampled pairs, and this is the primary diagnostic signal of the bias.",
+            "label": "systemic",
+            "pair_id": "ALL",
+            "rationale": "The overwhelming pattern is that position A receives preferential treatment. When both candidates are flawed, the reviewer either picks A or calls TIE, but almost never picks B. This renders the mapped_winner signal unreliable for any pair where the two orientations disagree, because the disagreement is driven by position rather than content. The two calibration pairs that show routine_consistent behavior are the exception, not the rule, and likely reflect cases where quality differences are large enough to overcome the positional bias.",
+            "recommended_action": "flag_systemic_position_bias",
+            "severity": "critical"
+          }
+        ],
+        "overall_assessment": "pass",
+        "reviewer_reliability": 0.55,
+        "scope_confirmation": "qwen_records_only",
+        "summary": "The Qwen primary review process exhibits a severe systemic position bias toward candidate A. Of 20 sampled pairs, 18 are flagged position_inconsistent by the primary protocol itself, and the inconsistency follows predictable patterns driven by which model occupies position A rather than by content quality. Calibration pairs (2 of 20) show correct consistency, but these likely reflect large quality gaps that overcome the bias. The mapped_winner signal from position-inconsistent pairs should be treated as unreliable for any downstream use. No winner/rationale contradictions or malformed reasoning were found beyond the positional artifacts. Recommend flagging all position_inconsistent pairs as unreliable and prioritizing calibration-consistent pairs for any preference signal extraction.",
+        "systemic_patterns": [
+          "Position-A bias: Candidate A is selected disproportionately across all label categories. Population-level raw A choices exceed raw B choices by factors of 2-3x in non-TIE-heavy categories and by much larger margins in TIE-heavy categories.",
+          "TIE-asymmetric pattern: When PPO is in position A and both candidates are poor, the reviewer calls TIE; when SFT is in position A under the same conditions, the reviewer picks A. This produces a spurious sft-winner signal that is purely positional.",
+          "A-wins-when-decent pattern: When PPO is in position A and content is marginally coherent, the reviewer picks A; when SFT is in position A and content is equally marginal, the reviewer calls TIE. This produces a spurious ppo-winner signal that is equally positional.",
+          "Vague rationale pattern: Several sft_first rationales are terse and non-specific (e.g., 'Slightly less repetitive; introduces curiosity, though both are poor.'), suggesting insufficient engagement with content when the positional heuristic already determines the outcome.",
+          "Near-zero B selections: Only 1 of 20 sampled pairs produced a B selection in any orientation, and even that case showed positional inconsistency. This extreme rarity of B selections is the clearest indicator of positional anchoring."
+        ]
+      },
+      "canonical_slug": "z-ai/glm-5.2-20260616",
+      "catalog_context_length": 1048576,
+      "catalog_entry_sha256": "cf77fa0567080140fff9d53badfbdebf931ae5b2619e1249c6e1f272a63fefe2",
+      "catalog_max_completion_tokens": 128000,
+      "completed_at_utc": "2026-08-01T19:30:06.897501Z",
+      "contract_warnings": [
+        "finding_cited_pair_outside_packet:systemic:ALL"
+      ],
+      "elapsed_seconds": 173.82591,
+      "harness_profile": "glm-qwen-outer-teacher-high-v1",
+      "http_status": 200,
+      "invocation_count": 1,
+      "max_tokens_basis": "catalog_top_provider_max_completion_tokens",
+      "model_invocation_count": 1,
+      "provider_route": "DeepInfra",
+      "raw_response_byte_count": 29518,
+      "raw_response_sha256": "43d85311f41ac28012a37f4079b328d6a1fe74e99ad45b7e7e7021e0307cbbf6",
+      "request_parameters": {
+        "max_tokens": 128000,
+        "provider": {
+          "allow_fallbacks": true,
+          "order": [
+            "deepinfra",
+            "streamlake",
+            "decart",
+            "alibaba"
+          ],
+          "require_parameters": true
+        },
+        "reasoning": {
+          "effort": "high"
+        },
+        "temperature": 1.0
+      },
+      "requested_model_id": "z-ai/glm-5.2",
+      "retry_allowed": false,
+      "reviewer_family": "GLM",
+      "started_at_utc": "2026-08-01T19:27:13.020118Z",
+      "status": "completed_valid",
+      "system_prompt_sha256": "c1a16e36611dd78dc8c2d6a18b014404508794b672f566fcb689e3321a812980",
+      "usage": {
+        "completion_tokens": 4872,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 1433
+        },
+        "cost": 0.01641026,
+        "is_byok": false,
+        "prompt_tokens": 6342,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 11214
+      },
+      "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+    },
+    {
+      "attempt_id": "qwen-teacher-20260801-v3-T2",
+      "canonical_slug": "moonshotai/kimi-k3-20260715",
+      "catalog_context_length": 1048576,
+      "catalog_entry_sha256": "76e5f2549c3c848056871c2cb9db88b758cf606ee29acfa464f376a00c22704e",
+      "catalog_max_completion_tokens": null,
+      "completed_at_utc": "2026-08-01T19:30:07.472132Z",
+      "elapsed_seconds": 0.532032,
+      "failure": "ReviewHierarchyError: OpenRouter returned HTTP 402: This request requires more credits, or fewer max_tokens. You requested up to 938310 tokens, but can only afford 639927. To increase, visit [OpenRouter account URL redacted] and adjust the key's monthly limit",
+      "harness_profile": "kimi-qwen-outer-teacher-high-v1",
+      "http_status": 402,
+      "invocation_count": 1,
+      "max_tokens_basis": "context_minus_conservative_input_estimate_and_safety",
+      "model_invocation_count": 1,
+      "provider_route": null,
+      "raw_response_byte_count": 1102,
+      "raw_response_sha256": "a09a5b61f570d4d2e76397e2a9646e1915ff8b8a7e631cf9168cea6b265cef7a",
+      "request_parameters": {
+        "max_tokens": 1029863,
+        "provider": {
+          "allow_fallbacks": true,
+          "ignore": [
+            "fireworks"
+          ],
+          "order": [
+            "modal",
+            "together",
+            "morph",
+            "moonshotai"
+          ],
+          "require_parameters": true
+        },
+        "reasoning": {
+          "effort": "high"
+        },
+        "temperature": 1.0
+      },
+      "requested_model_id": "moonshotai/kimi-k3",
+      "retry_allowed": false,
+      "reviewer_family": "Kimi",
+      "started_at_utc": "2026-08-01T19:30:06.898897Z",
+      "status": "invoked_invalid",
+      "system_prompt_sha256": "16d39987ed79789930f0501f80110618a86af76b9ea612fd02781ddd00b5e140",
+      "usage": {},
+      "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+    }
+  ],
+  "outer_teacher_total_reported_cost_usd": 0.01641026,
+  "outer_teacher_valid_count": 1,
+  "qwen_packet": {
+    "byte_count": 19942,
+    "sha256": "c6a809d61e49102d0cf4d29649379587eeaa4a02fb99b5e3aa7134dcbf51b6b6"
+  },
+  "release_control": {
+    "author_email_dispatch_authorized": false,
+    "publication_authorized": false,
+    "separate_final_release_review_required": true,
+    "training_signal_change_authorized": false
+  },
+  "run_id": "qwen-teacher-20260801-v3",
+  "schema_version": "nulspec-qwen-review-hierarchy-public-v1",
+  "trace_index": {
+    "contents": "Ignored local archive includes model catalogs, system and user prompts, request bodies, raw response wrappers, parsed outputs, Codex JSONL events, stderr, version, and state records.",
+    "evidence_aggregate_sha256": "1788dfa316722654506e5d884c8731976e49f3091b6f4f4b90d4aef32219b4fb",
+    "evidence_file_count": 28,
+    "raw_trace_public": false
+  }
+}

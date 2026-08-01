@@ -1,0 +1,1583 @@
+{
+  "architecture": {
+    "automatic_release_authority": false,
+    "fable_in_teacher_loop": false,
+    "independent_outer_teachers": [
+      "GLM",
+      "Kimi"
+    ],
+    "invalid_adjudication_policy": "immutable linked Codex reissue; valid substantive decisions are never retried",
+    "invalid_invocation_policy": "immutable linked repair attempts; never accepted as a teacher audit",
+    "outer_adjudicator": "Codex",
+    "primary_reviewer": "local Qwen",
+    "provider_transport": "OpenRouter GLM plus first-party Moonshot Kimi; both streamed",
+    "stream_deadlines_seconds": {
+      "first_event": 60,
+      "idle": 60,
+      "total": 240
+    },
+    "teacher_execution": "parallel_fan_out_then_join"
+  },
+  "completed_at_utc": "2026-08-01T21:07:19.406621Z",
+  "outer_adjudicator": {
+    "attempt_count": 2,
+    "attempts": [
+      {
+        "attempt_id": "qwen-teacher-hybrid-20260801-v9-CODEX-A1",
+        "attempt_number": 1,
+        "codex_cli_version": "codex-cli 0.146.0",
+        "completed_at_utc": "2026-08-01T21:05:37.990163Z",
+        "elapsed_seconds": 83.335176,
+        "failure": "ReviewHierarchyError: Codex finding has a partial pair identity",
+        "invocation_count": 1,
+        "last_message_byte_count": 12438,
+        "last_message_sha256": "7fe41a39b1cbea297bcd0c19408ba292bf79c8cacba10270b14e409223772061",
+        "linked_repair_allowed": true,
+        "prompt_sha256": "ac2c12bb635f2dd5e63c071305bdf08ce70865eb0562c327c7adcb9356f8e3b9",
+        "repair_action": null,
+        "repair_of_attempt_id": null,
+        "requested_model": null,
+        "retry_allowed": false,
+        "return_code": 0,
+        "started_at_utc": "2026-08-01T21:04:14.652020Z",
+        "status": "completed_invalid",
+        "stderr_byte_count": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_byte_count": 21535,
+        "stdout_sha256": "60f2cfbf9f0fe43513cf7ee7f48bedd8678cf0019a2a29c9a2794a3c54b5caa0"
+      },
+      {
+        "attempt_id": "qwen-teacher-hybrid-20260801-v9-CODEX-A2",
+        "attempt_number": 2,
+        "codex_cli_version": "codex-cli 0.146.0",
+        "completed_at_utc": "2026-08-01T21:07:19.405353Z",
+        "contract_warnings": [],
+        "decision": {
+          "cross_teacher_agreement": "partial",
+          "findings": [
+            {
+              "adjudication": "The population summary records 196 position-inconsistent non-calibration pairs out of 1,200, while calibration records have zero inconsistent pairs. The targeted sample repeatedly changes mapped outcomes after orientation reversal. This supports a process failure for using affected reviews as direct winner or reward signals, while recognizing that the sample intentionally prioritized inconsistent records.",
+              "evidence_references": [
+                "qwen_primary_packet.protocol.population_summary",
+                "qwen_primary_packet.protocol.sample_size_realized",
+                "qwen_primary_packet.protocol.selection",
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.overall_assessment",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.overall_assessment"
+              ],
+              "issue": "The Qwen process is materially unstable under orientation swaps in the supplied population and targeted sample.",
+              "label": null,
+              "pair_id": null,
+              "recommended_action": "Quarantine position-inconsistent Qwen records from winner aggregation or training use pending independent, position-balanced re-review.",
+              "severity": "critical"
+            },
+            {
+              "adjudication": "Every non-calibration subset has more raw-A than raw-B choices, most prominently corrected-410m and exact-410m. This corroborates position-bias risk. Because ties dominate several smaller-model subsets and the supplied sample is enriched for inconsistent pairs, the packet does not establish that position bias explains every inconsistency or every Qwen decision.",
+              "evidence_references": [
+                "qwen_primary_packet.protocol.population_summary.corrected-160m",
+                "qwen_primary_packet.protocol.population_summary.corrected-410m",
+                "qwen_primary_packet.protocol.population_summary.corrected-70m",
+                "qwen_primary_packet.protocol.population_summary.exact-160m",
+                "qwen_primary_packet.protocol.population_summary.exact-410m",
+                "qwen_primary_packet.protocol.population_summary.exact-70m",
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.systemic_patterns",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.systemic_patterns"
+              ],
+              "issue": "Raw-choice counts show a consistent raw-A skew across non-calibration labels, but its causal scope should not be overstated.",
+              "label": null,
+              "pair_id": null,
+              "recommended_action": "Measure position effects on a representative or complete paired dataset and report rates by label rather than generalizing from the targeted sample alone.",
+              "severity": "warning"
+            },
+            {
+              "adjudication": "This is direct evidence of an orientation-sensitive and internally unstable judgment. Both teachers identify it as the strongest sampled position-anchor case.",
+              "evidence_references": [
+                "qwen_primary_packet.pairs[b9b01fa50339dc0f10a2cd3c].qwen_reviews",
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.findings[b9b01fa50339dc0f10a2cd3c]",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings[b9b01fa50339dc0f10a2cd3c]"
+              ],
+              "issue": "Qwen selects raw A in both orientations, causing the mapped winner to flip, while its descriptions of the opposing candidate are incompatible.",
+              "label": "corrected-410m",
+              "pair_id": "b9b01fa50339dc0f10a2cd3c",
+              "recommended_action": "Exclude both orientations from outcome aggregation and obtain a new position-balanced independent review.",
+              "severity": "critical"
+            },
+            {
+              "adjudication": "The positional outcome conflict is established. The supplied records do not allow determination of the substantively better candidate because underlying candidate outputs are outside scope.",
+              "evidence_references": [
+                "qwen_primary_packet.pairs[0b346d098a49cc126aaa865a].qwen_reviews",
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.findings[0b346d098a49cc126aaa865a]",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings[0b346d098a49cc126aaa865a]"
+              ],
+              "issue": "Qwen selects raw A in both orientations, producing mutually conflicting mapped winners.",
+              "label": "corrected-410m",
+              "pair_id": "0b346d098a49cc126aaa865a",
+              "recommended_action": "Exclude this pair's mapped outcome pending independent re-review.",
+              "severity": "warning"
+            },
+            {
+              "adjudication": "Both teachers agree that the pair is position-inconsistent. Claims about exact candidate defects cannot be independently resolved from this bounded packet.",
+              "evidence_references": [
+                "qwen_primary_packet.pairs[7a9935ab59dacc1f8f93fcb9].qwen_reviews",
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.findings[7a9935ab59dacc1f8f93fcb9]",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings[7a9935ab59dacc1f8f93fcb9]"
+              ],
+              "issue": "Qwen selects raw A in both orientations and therefore maps the win to different models solely after position reversal.",
+              "label": "corrected-160m",
+              "pair_id": "7a9935ab59dacc1f8f93fcb9",
+              "recommended_action": "Exclude this pair's mapped outcome pending independent re-review.",
+              "severity": "warning"
+            },
+            {
+              "adjudication": "The conflicting mapped winners establish unreliability. The unnamed comparative rationale is weakly auditable, although omission of A/B alone is not enough to classify the structured record as malformed.",
+              "evidence_references": [
+                "qwen_primary_packet.pairs[d7300b7b6413a48a66ec05a9].qwen_reviews",
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.findings[d7300b7b6413a48a66ec05a9]",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings[d7300b7b6413a48a66ec05a9]"
+              ],
+              "issue": "Qwen selects raw A in both orientations, and the second rationale does not explicitly identify the candidate it describes.",
+              "label": "corrected-160m",
+              "pair_id": "d7300b7b6413a48a66ec05a9",
+              "recommended_action": "Exclude this pair's mapped outcome and require candidate-specific reasoning in any re-review.",
+              "severity": "warning"
+            },
+            {
+              "adjudication": "Both teachers identify recurring boilerplate and decisive-versus-tie changes. Reused wording is not independently proof of non-engagement, but combined with swapped-orientation outcome changes it is material process evidence.",
+              "evidence_references": [
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.systemic_patterns",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.systemic_patterns",
+                "qwen_primary_packet.pairs[daaeadfe1865c2f6caee223a]",
+                "qwen_primary_packet.pairs[045e4be2dca5d326ce60db5b]",
+                "qwen_primary_packet.pairs[c2899bde4c74c631421570b9]"
+              ],
+              "issue": "Repeated generic tie rationales and TIE-to-decision flips reduce confidence that judgments are pair-specific and orientation-stable.",
+              "label": null,
+              "pair_id": null,
+              "recommended_action": "Audit all repeated-rationale records and require orientation-consistent re-review before aggregation.",
+              "severity": "warning"
+            },
+            {
+              "adjudication": "Both calibration pairs retain mapped winner ppo after orientation reversal, and the population reports zero calibration inconsistencies. This shows the reviewer can handle clear controls, but it does not negate the documented instability on non-calibration pairs.",
+              "evidence_references": [
+                "qwen_primary_packet.pairs[0569cbf81a99aab701dc5351]",
+                "qwen_primary_packet.pairs[edfe36d998d4a6c09a6478db]",
+                "qwen_primary_packet.protocol.population_summary.calibration",
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.systemic_patterns",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.summary"
+              ],
+              "issue": "Calibration performance is internally consistent but does not validate the harder non-calibration judgments.",
+              "label": null,
+              "pair_id": null,
+              "recommended_action": "Retain calibration results as process-control evidence only; do not use them to waive review of inconsistent non-calibration records.",
+              "severity": "info"
+            },
+            {
+              "adjudication": "Each attempt is completed_valid and supplies route, response model, timing, usage, cost, counts, and hashes. Raw SSE bodies are intentionally archived outside this packet and are not missing under the stated protocol. No contract warnings are present, and no independent hash recomputation is claimed.",
+              "evidence_references": [
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.status",
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.contract_warnings",
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.stream_events_sha256",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.status",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.contract_warnings",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.stream_events_sha256",
+                "protocol.trace_evidence_boundary"
+              ],
+              "issue": "Both outer-teacher attempt traces are complete at the supplied metadata boundary.",
+              "label": null,
+              "pair_id": null,
+              "recommended_action": "Use the attempts as valid process-audit evidence and perform the protocol's separate end-to-end hash validation after adjudication.",
+              "severity": "info"
+            }
+          ],
+          "preserved_disagreements": [
+            {
+              "adjudication": "Both identify a credible raw-A skew and concrete position-anchored cases. Kimi's qualification should be preserved: the supplied population counts show skew but do not by themselves establish that every inconsistent pair is caused by position bias. The strongest conclusion is systemic risk with directly demonstrated failures, not universal pair-level causation.",
+              "evidence_references": [
+                "qwen_primary_packet.protocol.population_summary",
+                "qwen_primary_packet.protocol.selection",
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.systemic_patterns",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.systemic_patterns"
+              ],
+              "glm_position": "GLM characterizes severe systemic position-A bias across every non-calibration label, relying on raw A exceeding raw B in each population subset.",
+              "kimi_position": "Kimi confirms raw-A anchoring in four sampled pairs and emphasizes the corrected-410m and exact-410m subsets, while cautioning that the sample intentionally oversampled position-inconsistent pairs and that the population inconsistency rate is lower.",
+              "subject": "Breadth and strength of systemic position-A bias"
+            },
+            {
+              "adjudication": "The outcome-level defect is established in all four: swapping candidates while retaining raw winner A produces conflicting mapped winners. Critical severity is warranted for b9b01fa50339dc0f10a2cd3c because its rationales also conflict sharply. Warning severity is sufficient for the other three within this bounded process audit, while all four remain unusable as unreviewed winner signals.",
+              "evidence_references": [
+                "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.findings",
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings",
+                "qwen_primary_packet.pairs[b9b01fa50339dc0f10a2cd3c]",
+                "qwen_primary_packet.pairs[0b346d098a49cc126aaa865a]",
+                "qwen_primary_packet.pairs[7a9935ab59dacc1f8f93fcb9]",
+                "qwen_primary_packet.pairs[d7300b7b6413a48a66ec05a9]"
+              ],
+              "glm_position": "GLM assigns critical severity to all four sampled raw-A/raw-A cases: b9b01fa50339dc0f10a2cd3c, 0b346d098a49cc126aaa865a, 7a9935ab59dacc1f8f93fcb9, and d7300b7b6413a48a66ec05a9.",
+              "kimi_position": "Kimi assigns critical severity only to b9b01fa50339dc0f10a2cd3c and warning severity to the other three cases.",
+              "subject": "Severity for raw-A selections in both orientations"
+            },
+            {
+              "adjudication": "Omitting an explicit A/B name weakens auditability but is not automatically a malformed response when the comparative wording can refer to the declared winner. The records remain unreliable because the opposite orientation conflicts, not solely because a pronoun or candidate name is absent.",
+              "evidence_references": [
+                "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings",
+                "qwen_primary_packet.pairs[36a2a634ee5b26c5c4462af4]",
+                "qwen_primary_packet.pairs[d7300b7b6413a48a66ec05a9]"
+              ],
+              "glm_position": "GLM principally treats these records as orientation inconsistency and boilerplate-reasoning evidence.",
+              "kimi_position": "Kimi calls the unnamed rationales vacuous or malformed and treats the declared winner as unsupported.",
+              "subject": "Interpretation of rationales that omit explicit candidate names"
+            }
+          ],
+          "qwen_process_assessment": "fail",
+          "qwen_reviewer_reliability": 0.4,
+          "release_control": {
+            "author_email_dispatch_authorized": false,
+            "automatic_publication_authorized": false,
+            "automatic_training_signal_authorized": false
+          },
+          "release_recommendation": "accept_as_process_audit",
+          "required_human_actions": [
+            "Do not use the affected Qwen reviews as training or reward signals without a separately authorized, independent re-review.",
+            "Review or quarantine all position-inconsistent records before relying on aggregate model-winner estimates.",
+            "If publication is later contemplated, run the separate final-release gate; this process audit does not authorize publication or messaging.",
+            "Complete the protocol's independent end-to-end validation of archived evidence bindings and lifecycle ordering."
+          ],
+          "scope_confirmation": "qwen_records_and_outer_teacher_audits_only",
+          "summary": "Both GLM and Kimi attempts are trace-valid and independently fail the Qwen review process. They agree on concrete position anchoring, orientation-dependent decisions, repeated generic rationales, and reliable calibration controls, but differ on the breadth and severity of the systemic-bias claim. The bounded adjudication therefore accepts the teacher output as a usable process audit, rates Qwen reliability at 0.40, and fails the Qwen process for direct use of affected outcomes. It does not determine underlying candidate quality, alter primary results or rewards, or authorize publication, training changes, or external messaging.",
+          "teacher_assessments": [
+            {
+              "assessment": "fail",
+              "attempt_id": "qwen-teacher-hybrid-20260801-v9-GLM-A1",
+              "model_id": "z-ai/glm-5.2",
+              "notes": "Completed-valid GLM audit with HTTP 200, stop finish, one invocation, recorded route/model/timing/usage/cost, and byte-count/SHA-256 evidence bindings. No contract warnings are recorded. The hashes are accepted as supplied bindings and were not independently recomputed. Its substantive assessment is that Qwen fails as a reliable reviewer for the affected non-calibration comparisons.",
+              "reliability": 0.35,
+              "trace_valid": true
+            },
+            {
+              "assessment": "fail",
+              "attempt_id": "qwen-teacher-hybrid-20260801-v9-KIMI-A1",
+              "model_id": "moonshotai/kimi-k3",
+              "notes": "Completed-valid Kimi audit with HTTP 200, stop finish, one invocation, recorded route/model/timing/usage/cost, and byte-count/SHA-256 evidence bindings. No contract warnings are recorded. The hashes are accepted as supplied bindings and were not independently recomputed. Its substantive assessment is that confirmed position anchoring, orientation instability, and weak rationales make affected Qwen outcomes unreliable.",
+              "reliability": 0.45,
+              "trace_valid": true
+            }
+          ]
+        },
+        "elapsed_seconds": 101.359983,
+        "invocation_count": 1,
+        "last_message_byte_count": 14023,
+        "last_message_sha256": "b18fe2b945ec77fccd7ed84306a39108077725bbe32eee1a0d68d478d3147401",
+        "linked_repair_allowed": true,
+        "prompt_sha256": "df3e16e3b263679abf155437ece81aa6205bc1f549ee87f106f3bc0c077ca08b",
+        "repair_action": {
+          "diagnosis": "ReviewHierarchyError: Codex finding has a partial pair identity",
+          "kind": "reissue_after_invalid_structured_adjudication",
+          "repair_of_attempt_id": "qwen-teacher-hybrid-20260801-v9-CODEX-A1"
+        },
+        "repair_of_attempt_id": "qwen-teacher-hybrid-20260801-v9-CODEX-A1",
+        "requested_model": null,
+        "retry_allowed": false,
+        "return_code": 0,
+        "started_at_utc": "2026-08-01T21:05:38.043623Z",
+        "status": "completed_valid",
+        "stderr_byte_count": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_byte_count": 23704,
+        "stdout_sha256": "db945ebe5ce95f93af203cd4ea3ee206e2084ae10b4775166ee3fd128ea073ef"
+      }
+    ],
+    "codex_cli_version": "codex-cli 0.146.0",
+    "completed_at_utc": "2026-08-01T21:07:19.405353Z",
+    "contract_warnings": [],
+    "decision": {
+      "cross_teacher_agreement": "partial",
+      "findings": [
+        {
+          "adjudication": "The population summary records 196 position-inconsistent non-calibration pairs out of 1,200, while calibration records have zero inconsistent pairs. The targeted sample repeatedly changes mapped outcomes after orientation reversal. This supports a process failure for using affected reviews as direct winner or reward signals, while recognizing that the sample intentionally prioritized inconsistent records.",
+          "evidence_references": [
+            "qwen_primary_packet.protocol.population_summary",
+            "qwen_primary_packet.protocol.sample_size_realized",
+            "qwen_primary_packet.protocol.selection",
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.overall_assessment",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.overall_assessment"
+          ],
+          "issue": "The Qwen process is materially unstable under orientation swaps in the supplied population and targeted sample.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Quarantine position-inconsistent Qwen records from winner aggregation or training use pending independent, position-balanced re-review.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "Every non-calibration subset has more raw-A than raw-B choices, most prominently corrected-410m and exact-410m. This corroborates position-bias risk. Because ties dominate several smaller-model subsets and the supplied sample is enriched for inconsistent pairs, the packet does not establish that position bias explains every inconsistency or every Qwen decision.",
+          "evidence_references": [
+            "qwen_primary_packet.protocol.population_summary.corrected-160m",
+            "qwen_primary_packet.protocol.population_summary.corrected-410m",
+            "qwen_primary_packet.protocol.population_summary.corrected-70m",
+            "qwen_primary_packet.protocol.population_summary.exact-160m",
+            "qwen_primary_packet.protocol.population_summary.exact-410m",
+            "qwen_primary_packet.protocol.population_summary.exact-70m",
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.systemic_patterns",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.systemic_patterns"
+          ],
+          "issue": "Raw-choice counts show a consistent raw-A skew across non-calibration labels, but its causal scope should not be overstated.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Measure position effects on a representative or complete paired dataset and report rates by label rather than generalizing from the targeted sample alone.",
+          "severity": "warning"
+        },
+        {
+          "adjudication": "This is direct evidence of an orientation-sensitive and internally unstable judgment. Both teachers identify it as the strongest sampled position-anchor case.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[b9b01fa50339dc0f10a2cd3c].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.findings[b9b01fa50339dc0f10a2cd3c]",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings[b9b01fa50339dc0f10a2cd3c]"
+          ],
+          "issue": "Qwen selects raw A in both orientations, causing the mapped winner to flip, while its descriptions of the opposing candidate are incompatible.",
+          "label": "corrected-410m",
+          "pair_id": "b9b01fa50339dc0f10a2cd3c",
+          "recommended_action": "Exclude both orientations from outcome aggregation and obtain a new position-balanced independent review.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "The positional outcome conflict is established. The supplied records do not allow determination of the substantively better candidate because underlying candidate outputs are outside scope.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[0b346d098a49cc126aaa865a].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.findings[0b346d098a49cc126aaa865a]",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings[0b346d098a49cc126aaa865a]"
+          ],
+          "issue": "Qwen selects raw A in both orientations, producing mutually conflicting mapped winners.",
+          "label": "corrected-410m",
+          "pair_id": "0b346d098a49cc126aaa865a",
+          "recommended_action": "Exclude this pair's mapped outcome pending independent re-review.",
+          "severity": "warning"
+        },
+        {
+          "adjudication": "Both teachers agree that the pair is position-inconsistent. Claims about exact candidate defects cannot be independently resolved from this bounded packet.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[7a9935ab59dacc1f8f93fcb9].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.findings[7a9935ab59dacc1f8f93fcb9]",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings[7a9935ab59dacc1f8f93fcb9]"
+          ],
+          "issue": "Qwen selects raw A in both orientations and therefore maps the win to different models solely after position reversal.",
+          "label": "corrected-160m",
+          "pair_id": "7a9935ab59dacc1f8f93fcb9",
+          "recommended_action": "Exclude this pair's mapped outcome pending independent re-review.",
+          "severity": "warning"
+        },
+        {
+          "adjudication": "The conflicting mapped winners establish unreliability. The unnamed comparative rationale is weakly auditable, although omission of A/B alone is not enough to classify the structured record as malformed.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[d7300b7b6413a48a66ec05a9].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.findings[d7300b7b6413a48a66ec05a9]",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings[d7300b7b6413a48a66ec05a9]"
+          ],
+          "issue": "Qwen selects raw A in both orientations, and the second rationale does not explicitly identify the candidate it describes.",
+          "label": "corrected-160m",
+          "pair_id": "d7300b7b6413a48a66ec05a9",
+          "recommended_action": "Exclude this pair's mapped outcome and require candidate-specific reasoning in any re-review.",
+          "severity": "warning"
+        },
+        {
+          "adjudication": "Both teachers identify recurring boilerplate and decisive-versus-tie changes. Reused wording is not independently proof of non-engagement, but combined with swapped-orientation outcome changes it is material process evidence.",
+          "evidence_references": [
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.systemic_patterns",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.systemic_patterns",
+            "qwen_primary_packet.pairs[daaeadfe1865c2f6caee223a]",
+            "qwen_primary_packet.pairs[045e4be2dca5d326ce60db5b]",
+            "qwen_primary_packet.pairs[c2899bde4c74c631421570b9]"
+          ],
+          "issue": "Repeated generic tie rationales and TIE-to-decision flips reduce confidence that judgments are pair-specific and orientation-stable.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Audit all repeated-rationale records and require orientation-consistent re-review before aggregation.",
+          "severity": "warning"
+        },
+        {
+          "adjudication": "Both calibration pairs retain mapped winner ppo after orientation reversal, and the population reports zero calibration inconsistencies. This shows the reviewer can handle clear controls, but it does not negate the documented instability on non-calibration pairs.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[0569cbf81a99aab701dc5351]",
+            "qwen_primary_packet.pairs[edfe36d998d4a6c09a6478db]",
+            "qwen_primary_packet.protocol.population_summary.calibration",
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.systemic_patterns",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.summary"
+          ],
+          "issue": "Calibration performance is internally consistent but does not validate the harder non-calibration judgments.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Retain calibration results as process-control evidence only; do not use them to waive review of inconsistent non-calibration records.",
+          "severity": "info"
+        },
+        {
+          "adjudication": "Each attempt is completed_valid and supplies route, response model, timing, usage, cost, counts, and hashes. Raw SSE bodies are intentionally archived outside this packet and are not missing under the stated protocol. No contract warnings are present, and no independent hash recomputation is claimed.",
+          "evidence_references": [
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.status",
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.contract_warnings",
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.stream_events_sha256",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.status",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.contract_warnings",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.stream_events_sha256",
+            "protocol.trace_evidence_boundary"
+          ],
+          "issue": "Both outer-teacher attempt traces are complete at the supplied metadata boundary.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Use the attempts as valid process-audit evidence and perform the protocol's separate end-to-end hash validation after adjudication.",
+          "severity": "info"
+        }
+      ],
+      "preserved_disagreements": [
+        {
+          "adjudication": "Both identify a credible raw-A skew and concrete position-anchored cases. Kimi's qualification should be preserved: the supplied population counts show skew but do not by themselves establish that every inconsistent pair is caused by position bias. The strongest conclusion is systemic risk with directly demonstrated failures, not universal pair-level causation.",
+          "evidence_references": [
+            "qwen_primary_packet.protocol.population_summary",
+            "qwen_primary_packet.protocol.selection",
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.systemic_patterns",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.systemic_patterns"
+          ],
+          "glm_position": "GLM characterizes severe systemic position-A bias across every non-calibration label, relying on raw A exceeding raw B in each population subset.",
+          "kimi_position": "Kimi confirms raw-A anchoring in four sampled pairs and emphasizes the corrected-410m and exact-410m subsets, while cautioning that the sample intentionally oversampled position-inconsistent pairs and that the population inconsistency rate is lower.",
+          "subject": "Breadth and strength of systemic position-A bias"
+        },
+        {
+          "adjudication": "The outcome-level defect is established in all four: swapping candidates while retaining raw winner A produces conflicting mapped winners. Critical severity is warranted for b9b01fa50339dc0f10a2cd3c because its rationales also conflict sharply. Warning severity is sufficient for the other three within this bounded process audit, while all four remain unusable as unreviewed winner signals.",
+          "evidence_references": [
+            "qwen-teacher-hybrid-20260801-v9-GLM-A1.audit.findings",
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings",
+            "qwen_primary_packet.pairs[b9b01fa50339dc0f10a2cd3c]",
+            "qwen_primary_packet.pairs[0b346d098a49cc126aaa865a]",
+            "qwen_primary_packet.pairs[7a9935ab59dacc1f8f93fcb9]",
+            "qwen_primary_packet.pairs[d7300b7b6413a48a66ec05a9]"
+          ],
+          "glm_position": "GLM assigns critical severity to all four sampled raw-A/raw-A cases: b9b01fa50339dc0f10a2cd3c, 0b346d098a49cc126aaa865a, 7a9935ab59dacc1f8f93fcb9, and d7300b7b6413a48a66ec05a9.",
+          "kimi_position": "Kimi assigns critical severity only to b9b01fa50339dc0f10a2cd3c and warning severity to the other three cases.",
+          "subject": "Severity for raw-A selections in both orientations"
+        },
+        {
+          "adjudication": "Omitting an explicit A/B name weakens auditability but is not automatically a malformed response when the comparative wording can refer to the declared winner. The records remain unreliable because the opposite orientation conflicts, not solely because a pronoun or candidate name is absent.",
+          "evidence_references": [
+            "qwen-teacher-hybrid-20260801-v9-KIMI-A1.audit.findings",
+            "qwen_primary_packet.pairs[36a2a634ee5b26c5c4462af4]",
+            "qwen_primary_packet.pairs[d7300b7b6413a48a66ec05a9]"
+          ],
+          "glm_position": "GLM principally treats these records as orientation inconsistency and boilerplate-reasoning evidence.",
+          "kimi_position": "Kimi calls the unnamed rationales vacuous or malformed and treats the declared winner as unsupported.",
+          "subject": "Interpretation of rationales that omit explicit candidate names"
+        }
+      ],
+      "qwen_process_assessment": "fail",
+      "qwen_reviewer_reliability": 0.4,
+      "release_control": {
+        "author_email_dispatch_authorized": false,
+        "automatic_publication_authorized": false,
+        "automatic_training_signal_authorized": false
+      },
+      "release_recommendation": "accept_as_process_audit",
+      "required_human_actions": [
+        "Do not use the affected Qwen reviews as training or reward signals without a separately authorized, independent re-review.",
+        "Review or quarantine all position-inconsistent records before relying on aggregate model-winner estimates.",
+        "If publication is later contemplated, run the separate final-release gate; this process audit does not authorize publication or messaging.",
+        "Complete the protocol's independent end-to-end validation of archived evidence bindings and lifecycle ordering."
+      ],
+      "scope_confirmation": "qwen_records_and_outer_teacher_audits_only",
+      "summary": "Both GLM and Kimi attempts are trace-valid and independently fail the Qwen review process. They agree on concrete position anchoring, orientation-dependent decisions, repeated generic rationales, and reliable calibration controls, but differ on the breadth and severity of the systemic-bias claim. The bounded adjudication therefore accepts the teacher output as a usable process audit, rates Qwen reliability at 0.40, and fails the Qwen process for direct use of affected outcomes. It does not determine underlying candidate quality, alter primary results or rewards, or authorize publication, training changes, or external messaging.",
+      "teacher_assessments": [
+        {
+          "assessment": "fail",
+          "attempt_id": "qwen-teacher-hybrid-20260801-v9-GLM-A1",
+          "model_id": "z-ai/glm-5.2",
+          "notes": "Completed-valid GLM audit with HTTP 200, stop finish, one invocation, recorded route/model/timing/usage/cost, and byte-count/SHA-256 evidence bindings. No contract warnings are recorded. The hashes are accepted as supplied bindings and were not independently recomputed. Its substantive assessment is that Qwen fails as a reliable reviewer for the affected non-calibration comparisons.",
+          "reliability": 0.35,
+          "trace_valid": true
+        },
+        {
+          "assessment": "fail",
+          "attempt_id": "qwen-teacher-hybrid-20260801-v9-KIMI-A1",
+          "model_id": "moonshotai/kimi-k3",
+          "notes": "Completed-valid Kimi audit with HTTP 200, stop finish, one invocation, recorded route/model/timing/usage/cost, and byte-count/SHA-256 evidence bindings. No contract warnings are recorded. The hashes are accepted as supplied bindings and were not independently recomputed. Its substantive assessment is that confirmed position anchoring, orientation instability, and weak rationales make affected Qwen outcomes unreliable.",
+          "reliability": 0.45,
+          "trace_valid": true
+        }
+      ]
+    },
+    "elapsed_seconds": 184.695159,
+    "invocation_count": 2,
+    "last_message_byte_count": 14023,
+    "last_message_sha256": "b18fe2b945ec77fccd7ed84306a39108077725bbe32eee1a0d68d478d3147401",
+    "repair_count": 1,
+    "requested_model": null,
+    "retry_allowed": false,
+    "return_code": 0,
+    "started_at_utc": "2026-08-01T21:04:14.652020Z",
+    "status": "completed_valid",
+    "terminal_attempt_id": "qwen-teacher-hybrid-20260801-v9-CODEX-A2"
+  },
+  "outer_teacher_attempts": [
+    {
+      "assembled_response_byte_count": 23426,
+      "assembled_response_sha256": "6480001e5ba95b6f3f5cdeeb4e22ed90cc7d8dba8b54813dd988ef8155de4186",
+      "attempt_id": "qwen-teacher-hybrid-20260801-v9-GLM-A1",
+      "attempt_number": 1,
+      "audit": {
+        "findings": [
+          {
+            "issue": "Position bias: reviewer selects position A in both orientations, producing conflicting mapped_winners (ppo then sft).",
+            "label": "corrected-410m",
+            "pair_id": "b9b01fa50339dc0f10a2cd3c",
+            "rationale": "Both reviews choose winner A regardless of orientation. In ppo_first, A maps to ppo; in sft_first, A maps to sft. The reasons differ ('A is shorter and less repetitive' vs 'A continues the story; B is empty') but the positional preference is identical, indicating the reviewer anchors on position rather than content.",
+            "recommended_action": "Flag pair as position-biased; do not use either review for reward signal. Consider re-evaluation with a different reviewer model.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position bias: both orientations select position A with differing mapped_winners (ppo then sft).",
+            "label": "corrected-410m",
+            "pair_id": "0b346d098a49cc126aaa865a",
+            "rationale": "ppo_first picks A (\u2192ppo), sft_first also picks A (\u2192sft). Reasons cite A as coherent in both, but the same position always wins regardless of which model occupies it. This is a textbook positional anchor effect.",
+            "recommended_action": "Discard both reviews as position-biased; flag for re-evaluation.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position bias: both orientations select position A with conflicting mapped_winners (ppo then sft).",
+            "label": "corrected-160m",
+            "pair_id": "7a9935ab59dacc1f8f93fcb9",
+            "rationale": "Both reviews select winner A. The mapped_winner flips from ppo to sft because orientation flips, confirming the decision is driven by position rather than content quality.",
+            "recommended_action": "Discard both reviews; flag as position-biased.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position bias: both orientations select position A with conflicting mapped_winners (ppo then sft).",
+            "label": "corrected-160m",
+            "pair_id": "d7300b7b6413a48a66ec05a9",
+            "rationale": "Both reviews select winner A. Mapped_winner changes from ppo to sft as orientation flips. Reasons are near-identical ('less repetitive and slightly more coherent'), suggesting positional anchoring.",
+            "recommended_action": "Discard both reviews; flag as position-biased.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Direct contradiction in quality assessment of the same candidates between orientations.",
+            "label": "corrected-410m",
+            "pair_id": "3f2baff5840b23ea8260d19f",
+            "rationale": "ppo_first states 'A continues more coherently and age-appropriately' while sft_first states 'Both are incoherent, repetitive, and age-inappropriate.' The same candidates are assessed as coherent/age-appropriate in one orientation and incoherent/age-inappropriate in the other. This is not a mere ranking difference but a fundamental disagreement about content quality.",
+            "recommended_action": "Discard both reviews; flag for re-evaluation due to internally contradictory quality assessments.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Direct contradiction: one orientation finds A coherent, the other finds both incoherent.",
+            "label": "exact-410m",
+            "pair_id": "2050cdab2e866beb10606aa3",
+            "rationale": "ppo_first states 'A continues more coherently with fewer repetitions and clearer narrative flow' (winner A \u2192 ppo). sft_first states 'Both are incoherent, repetitive, and fail to continue the story logically' (winner TIE). The same candidate A that is praised in one orientation is deemed incoherent in the other.",
+            "recommended_action": "Discard both reviews; flag for re-evaluation.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Direct contradiction in candidate quality assessment across orientations.",
+            "label": "exact-410m",
+            "pair_id": "045e4be2dca5d326ce60db5b",
+            "rationale": "ppo_first describes A as continuing 'more coherently than B's repetitive, nonsensical dialogue' (winner A). sft_first says 'Both are incoherent, repetitive, and fail to complete the prompt meaningfully' (TIE). The candidate deemed coherent in one orientation is assessed as incoherent in the other.",
+            "recommended_action": "Discard both reviews; flag for re-evaluation.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Direct contradiction: A described as having coherent actions vs both described as failing.",
+            "label": "corrected-160m",
+            "pair_id": "ac070967be598d2fc0cee1e6",
+            "rationale": "ppo_first says 'A continues the story with actions; B is repetitive and adds nothing' (winner A). sft_first says 'Both are repetitive, incoherent, and fail as age-appropriate continuations' (TIE). The same content is assessed differently depending on orientation.",
+            "recommended_action": "Discard both reviews; flag for re-evaluation.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Quality assessment contradiction across orientations: A coherent in one, both incoherent in the other.",
+            "label": "exact-410m",
+            "pair_id": "f45019eb24426368816ee62f",
+            "rationale": "ppo_first: 'A continues more coherently; B is repetitive and logically inconsistent' (winner A \u2192 ppo). sft_first: 'Both are incoherent, repetitive, and fail to continue the story logically' (TIE). The A candidate's coherence is contested across orientations.",
+            "recommended_action": "Flag for re-evaluation; lower confidence in both reviews.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-A flip: first orientation declares TIE, second finds position A superior, suggesting orientation-dependent leniency.",
+            "label": "corrected-160m",
+            "pair_id": "daaeadfe1865c2f6caee223a",
+            "rationale": "ppo_first declares TIE ('Both are repetitive, incoherent'), but sft_first picks A ('A is shorter and less repetitive'). If both candidates are truly equally bad as stated in the first review, the second review's preference for A suggests the reviewer applies a lower bar when A is in the sft position.",
+            "recommended_action": "Flag as orientation-dependent inconsistency; use with caution.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-A flip with contradictory coherence assessment.",
+            "label": "corrected-70m",
+            "pair_id": "d3de7c9bdfd0294dc099c62b",
+            "rationale": "ppo_first: 'Both candidates are incoherent' (TIE). sft_first: 'A continues coherently; B is repetitive and nonsensical' (winner A). If A is truly coherent as the second review claims, the first review's TIE is unjustified; if both are incoherent as the first review claims, the second review's preference is unsupported.",
+            "recommended_action": "Discard both reviews; flag for re-evaluation.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-B flip: opposite position wins in second orientation, but mapped_winner also flips, creating a rare consistent model preference masked as inconsistency.",
+            "label": "exact-70m",
+            "pair_id": "183138ca4386dc960b4d16d4",
+            "rationale": "ppo_first: TIE. sft_first: winner B \u2192 mapped_winner ppo. Although flagged position_inconsistent, the mapped_winner in the second review (ppo) could indicate ppo is genuinely better. However, the first review's TIE contradicts the second's clear preference. The contradiction in quality assessment remains unresolved.",
+            "recommended_action": "Flag for re-evaluation; the TIE may be an error or the B-preference may be unsupported.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-A flip pattern with near-identical boilerplate reasoning.",
+            "label": "exact-160m",
+            "pair_id": "c2899bde4c74c631421570b9",
+            "rationale": "ppo_first: TIE with 'Both are repetitive, incoherent.' sft_first: winner A with 'A is less repetitive and slightly more coherent.' The TIE and the A-win cannot both be accurate descriptions of the same candidates.",
+            "recommended_action": "Flag for re-evaluation.",
+            "severity": "warning"
+          }
+        ],
+        "overall_assessment": "fail",
+        "reviewer_reliability": 0.35,
+        "scope_confirmation": "qwen_records_only",
+        "summary": "The Qwen reviewer exhibits severe systemic position-A bias across all non-calibration labels, with raw A selections consistently exceeding raw B selections by large margins. A recurring TIE-to-A flip pattern (TIE when ppo_first, A wins when sft_first) suggests orientation-dependent leniency rather than genuine quality assessment. At least 5 sampled pairs contain direct contradictions where a candidate described as coherent in one orientation is described as incoherent in the other. Calibration pairs are the only consistently reliable records. The reviewer's reliability is low for distinguishing candidate quality on low-quality outputs, and many position-inconsistent results should not be trusted as training signals.",
+        "systemic_patterns": [
+          "Systemic position-A bias: Across all non-calibration labels, raw A selections exceed raw B selections (corrected-160m: 55 vs 17; corrected-410m: 203 vs 150; corrected-70m: 29 vs 13; exact-160m: 21 vs 7; exact-410m: 185 vs 128; exact-70m: 21 vs 10). The reviewer systematically prefers the first-presented candidate among non-tie decisions.",
+          "TIE-to-A flip pattern: A large proportion of position-inconsistent pairs show TIE in the ppo_first orientation and winner-A in the sft_first orientation (daaeadfe, d3de7c9b, e5f27219, 0cce63fb, 7a64c07c, 36a2a634, f58cf32a, c2899bd). This suggests the reviewer defaults to TIE when the first-presented (ppo) candidate is not clearly superior, but is willing to pick A when sft is presented first, creating an orientation-dependent leniency asymmetry.",
+          "Boilerplate reasoning: Many non-calibration reviews use near-identical phrases ('Both are repetitive, incoherent, and fail to continue the story meaningfully') across different pairs, suggesting insufficient engagement with individual candidate content.",
+          "Calibration pairs are internally consistent: Both calibration pairs (0569cbf8, edfe36d9) show proper orientation-flip consistency with mirrored reasoning and identical mapped_winners, suggesting the reviewer can perform reliably when candidates have clear quality differences but degrades on low-quality outputs.",
+          "Direct quality contradictions: In at least 5 pairs (3f2baff5, 2050cdab, 045e4be2, ac070967, f45019eb), one orientation describes a candidate as coherent while the other describes both candidates as incoherent, indicating the reviewer's quality assessment is unstable and orientation-dependent rather than merely ranking-different."
+        ]
+      },
+      "canonical_slug": "z-ai/glm-5.2",
+      "completed_at_utc": "2026-08-01T21:02:31.688388Z",
+      "content_byte_count": 9905,
+      "content_sha256": "4e52cba9e44c28c599919995b28e704e9ce90ade1d69070b5f28bd2534e435e4",
+      "contract_warnings": [],
+      "decision_weight": 1,
+      "elapsed_seconds": 24.716814,
+      "finish_reason": "stop",
+      "first_event_timeout_seconds": 60,
+      "harness_profile": "glm-qwen-outer-teacher-high-reasoning-max-output-direct-v3",
+      "http_status": 200,
+      "invocation_count": 1,
+      "last_event_elapsed_seconds": 24.716802,
+      "linked_repair_allowed": true,
+      "max_tokens_basis": "provider_documented_maximum_output_tokens",
+      "model_invocation_count": 1,
+      "parsed_audit_byte_count": 10731,
+      "parsed_audit_sha256": "4183717873710e2b7d76d9dd234a95b13045de52f1c3ee0386bcf238c892285c",
+      "provider_context_length": 1048576,
+      "provider_max_completion_tokens": 131072,
+      "provider_model_id": "z-ai/glm-5.2",
+      "provider_route": {
+        "cached_input_usd_per_million": 0.26,
+        "context_length": 1048576,
+        "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+        "input_usd_per_million": 1.4,
+        "max_completion_tokens": 131072,
+        "max_tokens_field": "max_tokens",
+        "output_usd_per_million": 4.4,
+        "pricing_observed_at": "2026-08-01",
+        "provider_model_id": "z-ai/glm-5.2",
+        "provider_name": "OpenRouter",
+        "reasoning_parameters": {
+          "reasoning": {
+            "effort": "high"
+          }
+        },
+        "request_parameters": {
+          "provider": {
+            "allow_fallbacks": true,
+            "data_collection": "deny",
+            "require_parameters": true,
+            "sort": "latency"
+          }
+        },
+        "route_id": "openrouter-latency-routed",
+        "schema_mode": "json_schema"
+      },
+      "provider_route_index": 0,
+      "provider_route_sha256": "0d1827d92cd959f39060792fcbbc22636a1950b76411a2117246b761141d18ff",
+      "raw_response_byte_count": 470485,
+      "raw_response_sha256": "a127b0c15458876934964c9e2daca414e46ec7d0980cb990ec728928aefb8c10",
+      "reasoning_byte_count": 12079,
+      "reasoning_sha256": "08bd8ed347e31098393d41aefa369f28a729f426cc74ba2a00a3de857356ec42",
+      "repair_action": null,
+      "repair_of_attempt_id": null,
+      "request_byte_count": 27972,
+      "request_parameters": {
+        "max_tokens": 131072,
+        "provider": {
+          "allow_fallbacks": true,
+          "data_collection": "deny",
+          "require_parameters": true,
+          "sort": "latency"
+        },
+        "reasoning": {
+          "effort": "high"
+        },
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "temperature": 1.0
+      },
+      "request_sha256": "aa53580d9477cbaa9897f5988a49d55f4bfc72479f57d42359c4494e10483ef0",
+      "requested_model_id": "z-ai/glm-5.2",
+      "response_headers_byte_count": 1045,
+      "response_headers_sha256": "7dbf65056c7f28d514bce26aa4b35d232646bb8cd46bf7ddca19e8df0f7039d3",
+      "response_model": "z-ai/glm-5.2",
+      "retry_allowed": false,
+      "reviewer_family": "GLM",
+      "started_at_utc": "2026-08-01T21:02:06.967230Z",
+      "status": "completed_valid",
+      "stream_event_count": 1354,
+      "stream_events_byte_count": 497652,
+      "stream_events_sha256": "6bba8e39be16299f4619b93652d26a58cbb8c19e972c03933460955120400fc2",
+      "stream_idle_timeout_seconds": 60,
+      "system_prompt_sha256": "63c04cf9f25dc01eb9dfacd8411c075d56dc255c71cdcf5145983c412e1f0878",
+      "time_to_first_event_seconds": 0.56573,
+      "total_response_timeout_seconds": 240,
+      "usage": {
+        "completion_tokens": 5654,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 3074
+        },
+        "cost": 0.01467896,
+        "cost_source": "provider_reported_estimated_cost",
+        "is_byok": false,
+        "prompt_tokens": 6793,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 6720,
+          "video_tokens": 0
+        },
+        "total_tokens": 12447
+      },
+      "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+    },
+    {
+      "assembled_response_byte_count": 16309,
+      "assembled_response_sha256": "a22d93d7eb0fe5e173c1baffaa2ac7849ac838d58d68d20ec0217e6f20814347",
+      "attempt_id": "qwen-teacher-hybrid-20260801-v9-KIMI-A1",
+      "attempt_number": 1,
+      "audit": {
+        "findings": [
+          {
+            "issue": "Systemic position bias with contradictory, confabulated rationales",
+            "label": "corrected-410m",
+            "pair_id": "b9b01fa50339dc0f10a2cd3c",
+            "rationale": "The raw winner is A in both orientations (ppo_first: A; sft_first: A), so mapped_winner flips from ppo to sft purely with candidate position. Worse, the rationales describe the same underlying candidate contradictorily: in ppo_first B is 'excessively repetitive and incoherent', while in sft_first B 'is empty'. The reviewer appears to justify whichever candidate occupies position A rather than evaluate stable content.",
+            "recommended_action": "Exclude this pair from any aggregate winner estimate and flag the reviewer for position-anchor bias; require orientation-swapped re-review before use.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Raw A selected in both orientations",
+            "label": "corrected-410m",
+            "pair_id": "0b346d098a49cc126aaa865a",
+            "rationale": "Winner A is chosen under both ppo_first and sft_first, so mapped_winner flips (ppo vs sft) solely due to candidate placement. The rationales are superficially similar but cannot both be true of the same content, indicating the decision tracks position rather than content.",
+            "recommended_action": "Treat the mapped outcome as unreliable; resample or adjudicate this pair with position-blind review.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Raw A selected in both orientations with divergent rationales",
+            "label": "corrected-160m",
+            "pair_id": "7a9935ab59dacc1f8f93fcb9",
+            "rationale": "Both orientations pick raw A (mapped ppo then sft). The ppo_first rationale hedges ('though both are flawed') while sft_first asserts A 'continues coherently' and B 'cuts off mid-sentence' \u2014 incompatible characterizations of the same two candidates, consistent with position-anchored choice.",
+            "recommended_action": "Flag as position-bias case; do not count toward either model's win tally without re-review.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Raw A selected in both orientations; second rationale is vacuous",
+            "label": "corrected-160m",
+            "pair_id": "d7300b7b6413a48a66ec05a9",
+            "rationale": "Raw A wins in both orientations, flipping mapped_winner with position. The sft_first rationale ('Slightly less repetitive; introduces curiosity, though both are poor.') never identifies which candidate (A or B) it describes, making the recorded winner unsupported by the stated reasoning.",
+            "recommended_action": "Reject the sft_first record as malformed/vacuous reasoning and mark the pair position-inconsistent for exclusion from aggregates.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Vacuous rationale that does not identify the winning candidate",
+            "label": "exact-410m",
+            "pair_id": "36a2a634ee5b26c5c4462af4",
+            "rationale": "The sft_first record declares winner A with the reason 'Slightly less repetitive and more coherent continuation.' \u2014 no reference to A or B, so the rationale cannot support the choice. Combined with a TIE in the opposite orientation, the mapped sft win is unreliable.",
+            "recommended_action": "Require rationales to explicitly name the compared candidates; invalidate this orientation's judgment pending re-review.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Orientation-dependent collapse from decisive win to TIE with boilerplate rationale",
+            "label": "exact-410m",
+            "pair_id": "045e4be2dca5d326ce60db5b",
+            "rationale": "ppo_first asserts a specific comparative judgment ('A continues the prompt's warning more coherently than B's repetitive, nonsensical dialogue'), yet sft_first reverts to a generic 'Both are incoherent, repetitive, and fail to complete the prompt meaningfully.' The same canned tie rationale appears verbatim across many unrelated pairs (e.g., e5f27219d4ce496d69fb1d9d, 0cce63fbd4f9d826a9692ddb, c2899bde4c74c631421570b9), suggesting template responses rather than per-pair evaluation.",
+            "recommended_action": "Audit all records sharing the identical boilerplate tie rationale; down-weight or re-review pairs where one orientation uses a canned justification.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-decision flip across orientations",
+            "label": "corrected-160m",
+            "pair_id": "daaeadfe1865c2f6caee223a",
+            "rationale": "ppo_first is TIE ('Both are repetitive, incoherent...') while sft_first picks raw A (mapped sft) as 'shorter and less repetitive, though both are flawed.' A candidate cannot be both indistinguishable and clearly less flawed; the judgment is unstable under position swap.",
+            "recommended_action": "Mark mapped outcome unreliable; aggregate only after orientation-consistent re-review.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-decision flip across orientations",
+            "label": "exact-70m",
+            "pair_id": "183138ca4386dc960b4d16d4",
+            "rationale": "ppo_first records TIE with the standard boilerplate rationale; sft_first decisively prefers B (mapped ppo) as coherent versus 'repetitive and nonsensical' A. This mirrors a broader pattern where the reviewer's decisiveness depends on orientation rather than content.",
+            "recommended_action": "Include in the systemic position-instability tally; no individual exclusion beyond the aggregate flag.",
+            "severity": "info"
+          }
+        ],
+        "overall_assessment": "fail",
+        "reviewer_reliability": 0.45,
+        "scope_confirmation": "qwen_records_only",
+        "summary": "Audit of the 20 sampled Qwen review pairs shows the calibration pairs are cleanly consistent (opposite raw winners with agreeing mapped winners, as expected), but the non-calibration records exhibit serious process defects. Four sampled pairs chose raw A in both orientations, meaning the mapped winner was decided by candidate position rather than content; population raw-choice counts confirm a raw-A skew in the 410m subsets. Most other sampled pairs flip between a decisive winner and TIE when orientation swaps, and the flip side frequently uses an identical canned rationale reused across unrelated pairs. Several rationales are vacuous (never naming A or B) or describe the same candidate contradictorily across orientations. Because the sample intentionally oversampled position-inconsistent pairs, the true inconsistency rate is lower (~16% of population pairs), but the confirmed position anchoring, boilerplate reasoning, and confabulated justifications make the reviewer's mapped-winner outputs unreliable, particularly for corrected-410m and exact-410m. These are process-audit flags only: they do not alter primary estimates, cannot serve as training reward, and authorize no publication or external message.",
+        "systemic_patterns": [
+          "Position anchoring on raw A: in 4 of 20 sampled pairs (b9b01fa50339dc0f10a2cd3c, 0b346d098a49cc126aaa865a, 7a9935ab59dacc1f8f93fcb9, d7300b7b6413a48a66ec05a9) the reviewer chose raw A in both orientations, so mapped winners were determined entirely by candidate placement; population summaries corroborate this with raw_a exceeding raw_b substantially in corrected-410m (203 vs 150) and exact-410m (185 vs 128).",
+          "Orientation-dependent decisiveness: a recurring pattern where one orientation yields a decisive winner and the swapped orientation collapses to TIE (e.g., daaeadfe1865c2f6caee223a, d3de7c9bdfd0294dc099c62b, e5f27219d4ce496d69fb1d9d, 0cce63fbd4f9d826a9692ddb, f45019eb24426368816ee62f, 3f2baff5840b23ea8260d19f, f58cf32a6b0e067082b36ebd, 2050cdab2e866beb10606aa3, 045e4be2dca5d326ce60db5b, ac070967be598d2fc0cee1e6, c2899bde4c74c631421570b9), indicating judgments are not stable to candidate order.",
+          "Boilerplate rationales: identical or near-identical tie justifications ('Both are repetitive, incoherent, and fail to continue the story meaningfully.') are reused across many distinct pairs, evidencing template-driven rather than content-driven evaluation.",
+          "Vacuous or malformed reasoning: some rationales never reference candidate A or B (e.g., 36a2a634ee5b26c5c4462af4 sft_first, d7300b7b6413a48a66ec05a9 sft_first), so the recorded winner is unsupported by the stated reason.",
+          "Contradictory content descriptions across orientations for the same candidates (most severely in b9b01fa50339dc0f10a2cd3c, where B is 'excessively repetitive' in one orientation and 'empty' in the other), indicating rationales are confabulated to fit the position-driven choice."
+        ]
+      },
+      "canonical_slug": "kimi-k3",
+      "completed_at_utc": "2026-08-01T21:04:14.582702Z",
+      "content_byte_count": 8569,
+      "content_sha256": "8179b86c932fe62ff789cc0cdc57bb2fd35f52d48ad2f5ec85fbb00b20647bbe",
+      "contract_warnings": [],
+      "decision_weight": 1,
+      "elapsed_seconds": 127.611468,
+      "finish_reason": "stop",
+      "first_event_timeout_seconds": 60,
+      "harness_profile": "kimi-qwen-outer-teacher-high-reasoning-max-output-direct-v3",
+      "http_status": 200,
+      "invocation_count": 1,
+      "last_event_elapsed_seconds": 127.611456,
+      "linked_repair_allowed": true,
+      "max_tokens_basis": "provider_context_minus_conservative_input_and_safety",
+      "model_invocation_count": 1,
+      "parsed_audit_byte_count": 8576,
+      "parsed_audit_sha256": "0a772b1a766a4d4de0c5f523cc269fec24a172c6d9b71008c7d3742bafdf4a51",
+      "provider_context_length": 1048576,
+      "provider_max_completion_tokens": 1048576,
+      "provider_model_id": "kimi-k3",
+      "provider_route": {
+        "cached_input_usd_per_million": 0.3,
+        "context_length": 1048576,
+        "endpoint": "https://api.moonshot.ai/v1/chat/completions",
+        "input_usd_per_million": 3.0,
+        "max_completion_tokens": 1048576,
+        "max_tokens_field": "max_completion_tokens",
+        "output_usd_per_million": 15.0,
+        "pricing_observed_at": "2026-08-01",
+        "provider_model_id": "kimi-k3",
+        "provider_name": "Moonshot AI",
+        "reasoning_parameters": {
+          "reasoning_effort": "high"
+        },
+        "request_parameters": {},
+        "route_id": "moonshot-first-party",
+        "schema_mode": "json_schema"
+      },
+      "provider_route_index": 0,
+      "provider_route_sha256": "1365c0980699d99fa659be2e1a28106e32a7a3aa9488b00dd4d79a7a6c177fd4",
+      "raw_response_byte_count": 995841,
+      "raw_response_sha256": "85a213fe2e2d1bf34740599486ceba2427135b6dbb0575f6cfde049cb47b4176",
+      "reasoning_byte_count": 6880,
+      "reasoning_sha256": "de1df64770d1c4e4bd1953aa0eea06524eec49f8d5538f89ff6a5744bef76386",
+      "repair_action": null,
+      "repair_of_attempt_id": null,
+      "request_byte_count": 27985,
+      "request_parameters": {
+        "max_completion_tokens": 1029863,
+        "reasoning_effort": "high",
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "temperature": 1.0
+      },
+      "request_sha256": "a4a81a89221e981be48f767d978c695840e83ecf1920f889726310498c8ba81d",
+      "requested_model_id": "moonshotai/kimi-k3",
+      "response_headers_byte_count": 1136,
+      "response_headers_sha256": "8658eac681ea71a31115719008f372c002682ea647e2170111d1e7a5d4400a0d",
+      "response_model": "kimi-k3",
+      "retry_allowed": false,
+      "reviewer_family": "Kimi",
+      "started_at_utc": "2026-08-01T21:02:06.966129Z",
+      "status": "completed_valid",
+      "stream_event_count": 4224,
+      "stream_events_byte_count": 1038172,
+      "stream_events_sha256": "7cea1060e4688814a94465913d6af7d3a03d8802a59033a8f1a71c3d034d2c68",
+      "stream_idle_timeout_seconds": 60,
+      "system_prompt_sha256": "75a07662169862d4f09bb0f5fcfcd7c61904422b5db1b5b30b3e5c04c353550b",
+      "time_to_first_event_seconds": 2.79364,
+      "total_response_timeout_seconds": 240,
+      "usage": {
+        "cached_tokens": 6912,
+        "completion_tokens": 4236,
+        "completion_tokens_details": {
+          "reasoning_tokens": 2081
+        },
+        "cost": 0.0661746,
+        "cost_source": "calculated_from_Moonshot AI_rate_card_2026-08-01",
+        "prompt_tokens": 7099,
+        "prompt_tokens_details": {
+          "cached_tokens": 6912
+        },
+        "total_tokens": 11335
+      },
+      "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+    }
+  ],
+  "outer_teacher_chains": [
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "assembled_response_byte_count": 23426,
+          "assembled_response_sha256": "6480001e5ba95b6f3f5cdeeb4e22ed90cc7d8dba8b54813dd988ef8155de4186",
+          "attempt_id": "qwen-teacher-hybrid-20260801-v9-GLM-A1",
+          "attempt_number": 1,
+          "audit": {
+            "findings": [
+              {
+                "issue": "Position bias: reviewer selects position A in both orientations, producing conflicting mapped_winners (ppo then sft).",
+                "label": "corrected-410m",
+                "pair_id": "b9b01fa50339dc0f10a2cd3c",
+                "rationale": "Both reviews choose winner A regardless of orientation. In ppo_first, A maps to ppo; in sft_first, A maps to sft. The reasons differ ('A is shorter and less repetitive' vs 'A continues the story; B is empty') but the positional preference is identical, indicating the reviewer anchors on position rather than content.",
+                "recommended_action": "Flag pair as position-biased; do not use either review for reward signal. Consider re-evaluation with a different reviewer model.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Position bias: both orientations select position A with differing mapped_winners (ppo then sft).",
+                "label": "corrected-410m",
+                "pair_id": "0b346d098a49cc126aaa865a",
+                "rationale": "ppo_first picks A (\u2192ppo), sft_first also picks A (\u2192sft). Reasons cite A as coherent in both, but the same position always wins regardless of which model occupies it. This is a textbook positional anchor effect.",
+                "recommended_action": "Discard both reviews as position-biased; flag for re-evaluation.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Position bias: both orientations select position A with conflicting mapped_winners (ppo then sft).",
+                "label": "corrected-160m",
+                "pair_id": "7a9935ab59dacc1f8f93fcb9",
+                "rationale": "Both reviews select winner A. The mapped_winner flips from ppo to sft because orientation flips, confirming the decision is driven by position rather than content quality.",
+                "recommended_action": "Discard both reviews; flag as position-biased.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Position bias: both orientations select position A with conflicting mapped_winners (ppo then sft).",
+                "label": "corrected-160m",
+                "pair_id": "d7300b7b6413a48a66ec05a9",
+                "rationale": "Both reviews select winner A. Mapped_winner changes from ppo to sft as orientation flips. Reasons are near-identical ('less repetitive and slightly more coherent'), suggesting positional anchoring.",
+                "recommended_action": "Discard both reviews; flag as position-biased.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Direct contradiction in quality assessment of the same candidates between orientations.",
+                "label": "corrected-410m",
+                "pair_id": "3f2baff5840b23ea8260d19f",
+                "rationale": "ppo_first states 'A continues more coherently and age-appropriately' while sft_first states 'Both are incoherent, repetitive, and age-inappropriate.' The same candidates are assessed as coherent/age-appropriate in one orientation and incoherent/age-inappropriate in the other. This is not a mere ranking difference but a fundamental disagreement about content quality.",
+                "recommended_action": "Discard both reviews; flag for re-evaluation due to internally contradictory quality assessments.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Direct contradiction: one orientation finds A coherent, the other finds both incoherent.",
+                "label": "exact-410m",
+                "pair_id": "2050cdab2e866beb10606aa3",
+                "rationale": "ppo_first states 'A continues more coherently with fewer repetitions and clearer narrative flow' (winner A \u2192 ppo). sft_first states 'Both are incoherent, repetitive, and fail to continue the story logically' (winner TIE). The same candidate A that is praised in one orientation is deemed incoherent in the other.",
+                "recommended_action": "Discard both reviews; flag for re-evaluation.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Direct contradiction in candidate quality assessment across orientations.",
+                "label": "exact-410m",
+                "pair_id": "045e4be2dca5d326ce60db5b",
+                "rationale": "ppo_first describes A as continuing 'more coherently than B's repetitive, nonsensical dialogue' (winner A). sft_first says 'Both are incoherent, repetitive, and fail to complete the prompt meaningfully' (TIE). The candidate deemed coherent in one orientation is assessed as incoherent in the other.",
+                "recommended_action": "Discard both reviews; flag for re-evaluation.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Direct contradiction: A described as having coherent actions vs both described as failing.",
+                "label": "corrected-160m",
+                "pair_id": "ac070967be598d2fc0cee1e6",
+                "rationale": "ppo_first says 'A continues the story with actions; B is repetitive and adds nothing' (winner A). sft_first says 'Both are repetitive, incoherent, and fail as age-appropriate continuations' (TIE). The same content is assessed differently depending on orientation.",
+                "recommended_action": "Discard both reviews; flag for re-evaluation.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Quality assessment contradiction across orientations: A coherent in one, both incoherent in the other.",
+                "label": "exact-410m",
+                "pair_id": "f45019eb24426368816ee62f",
+                "rationale": "ppo_first: 'A continues more coherently; B is repetitive and logically inconsistent' (winner A \u2192 ppo). sft_first: 'Both are incoherent, repetitive, and fail to continue the story logically' (TIE). The A candidate's coherence is contested across orientations.",
+                "recommended_action": "Flag for re-evaluation; lower confidence in both reviews.",
+                "severity": "warning"
+              },
+              {
+                "issue": "TIE-to-A flip: first orientation declares TIE, second finds position A superior, suggesting orientation-dependent leniency.",
+                "label": "corrected-160m",
+                "pair_id": "daaeadfe1865c2f6caee223a",
+                "rationale": "ppo_first declares TIE ('Both are repetitive, incoherent'), but sft_first picks A ('A is shorter and less repetitive'). If both candidates are truly equally bad as stated in the first review, the second review's preference for A suggests the reviewer applies a lower bar when A is in the sft position.",
+                "recommended_action": "Flag as orientation-dependent inconsistency; use with caution.",
+                "severity": "warning"
+              },
+              {
+                "issue": "TIE-to-A flip with contradictory coherence assessment.",
+                "label": "corrected-70m",
+                "pair_id": "d3de7c9bdfd0294dc099c62b",
+                "rationale": "ppo_first: 'Both candidates are incoherent' (TIE). sft_first: 'A continues coherently; B is repetitive and nonsensical' (winner A). If A is truly coherent as the second review claims, the first review's TIE is unjustified; if both are incoherent as the first review claims, the second review's preference is unsupported.",
+                "recommended_action": "Discard both reviews; flag for re-evaluation.",
+                "severity": "warning"
+              },
+              {
+                "issue": "TIE-to-B flip: opposite position wins in second orientation, but mapped_winner also flips, creating a rare consistent model preference masked as inconsistency.",
+                "label": "exact-70m",
+                "pair_id": "183138ca4386dc960b4d16d4",
+                "rationale": "ppo_first: TIE. sft_first: winner B \u2192 mapped_winner ppo. Although flagged position_inconsistent, the mapped_winner in the second review (ppo) could indicate ppo is genuinely better. However, the first review's TIE contradicts the second's clear preference. The contradiction in quality assessment remains unresolved.",
+                "recommended_action": "Flag for re-evaluation; the TIE may be an error or the B-preference may be unsupported.",
+                "severity": "warning"
+              },
+              {
+                "issue": "TIE-to-A flip pattern with near-identical boilerplate reasoning.",
+                "label": "exact-160m",
+                "pair_id": "c2899bde4c74c631421570b9",
+                "rationale": "ppo_first: TIE with 'Both are repetitive, incoherent.' sft_first: winner A with 'A is less repetitive and slightly more coherent.' The TIE and the A-win cannot both be accurate descriptions of the same candidates.",
+                "recommended_action": "Flag for re-evaluation.",
+                "severity": "warning"
+              }
+            ],
+            "overall_assessment": "fail",
+            "reviewer_reliability": 0.35,
+            "scope_confirmation": "qwen_records_only",
+            "summary": "The Qwen reviewer exhibits severe systemic position-A bias across all non-calibration labels, with raw A selections consistently exceeding raw B selections by large margins. A recurring TIE-to-A flip pattern (TIE when ppo_first, A wins when sft_first) suggests orientation-dependent leniency rather than genuine quality assessment. At least 5 sampled pairs contain direct contradictions where a candidate described as coherent in one orientation is described as incoherent in the other. Calibration pairs are the only consistently reliable records. The reviewer's reliability is low for distinguishing candidate quality on low-quality outputs, and many position-inconsistent results should not be trusted as training signals.",
+            "systemic_patterns": [
+              "Systemic position-A bias: Across all non-calibration labels, raw A selections exceed raw B selections (corrected-160m: 55 vs 17; corrected-410m: 203 vs 150; corrected-70m: 29 vs 13; exact-160m: 21 vs 7; exact-410m: 185 vs 128; exact-70m: 21 vs 10). The reviewer systematically prefers the first-presented candidate among non-tie decisions.",
+              "TIE-to-A flip pattern: A large proportion of position-inconsistent pairs show TIE in the ppo_first orientation and winner-A in the sft_first orientation (daaeadfe, d3de7c9b, e5f27219, 0cce63fb, 7a64c07c, 36a2a634, f58cf32a, c2899bd). This suggests the reviewer defaults to TIE when the first-presented (ppo) candidate is not clearly superior, but is willing to pick A when sft is presented first, creating an orientation-dependent leniency asymmetry.",
+              "Boilerplate reasoning: Many non-calibration reviews use near-identical phrases ('Both are repetitive, incoherent, and fail to continue the story meaningfully') across different pairs, suggesting insufficient engagement with individual candidate content.",
+              "Calibration pairs are internally consistent: Both calibration pairs (0569cbf8, edfe36d9) show proper orientation-flip consistency with mirrored reasoning and identical mapped_winners, suggesting the reviewer can perform reliably when candidates have clear quality differences but degrades on low-quality outputs.",
+              "Direct quality contradictions: In at least 5 pairs (3f2baff5, 2050cdab, 045e4be2, ac070967, f45019eb), one orientation describes a candidate as coherent while the other describes both candidates as incoherent, indicating the reviewer's quality assessment is unstable and orientation-dependent rather than merely ranking-different."
+            ]
+          },
+          "canonical_slug": "z-ai/glm-5.2",
+          "completed_at_utc": "2026-08-01T21:02:31.688388Z",
+          "content_byte_count": 9905,
+          "content_sha256": "4e52cba9e44c28c599919995b28e704e9ce90ade1d69070b5f28bd2534e435e4",
+          "contract_warnings": [],
+          "decision_weight": 1,
+          "elapsed_seconds": 24.716814,
+          "finish_reason": "stop",
+          "first_event_timeout_seconds": 60,
+          "harness_profile": "glm-qwen-outer-teacher-high-reasoning-max-output-direct-v3",
+          "http_status": 200,
+          "invocation_count": 1,
+          "last_event_elapsed_seconds": 24.716802,
+          "linked_repair_allowed": true,
+          "max_tokens_basis": "provider_documented_maximum_output_tokens",
+          "model_invocation_count": 1,
+          "parsed_audit_byte_count": 10731,
+          "parsed_audit_sha256": "4183717873710e2b7d76d9dd234a95b13045de52f1c3ee0386bcf238c892285c",
+          "provider_context_length": 1048576,
+          "provider_max_completion_tokens": 131072,
+          "provider_model_id": "z-ai/glm-5.2",
+          "provider_route": {
+            "cached_input_usd_per_million": 0.26,
+            "context_length": 1048576,
+            "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+            "input_usd_per_million": 1.4,
+            "max_completion_tokens": 131072,
+            "max_tokens_field": "max_tokens",
+            "output_usd_per_million": 4.4,
+            "pricing_observed_at": "2026-08-01",
+            "provider_model_id": "z-ai/glm-5.2",
+            "provider_name": "OpenRouter",
+            "reasoning_parameters": {
+              "reasoning": {
+                "effort": "high"
+              }
+            },
+            "request_parameters": {
+              "provider": {
+                "allow_fallbacks": true,
+                "data_collection": "deny",
+                "require_parameters": true,
+                "sort": "latency"
+              }
+            },
+            "route_id": "openrouter-latency-routed",
+            "schema_mode": "json_schema"
+          },
+          "provider_route_index": 0,
+          "provider_route_sha256": "0d1827d92cd959f39060792fcbbc22636a1950b76411a2117246b761141d18ff",
+          "raw_response_byte_count": 470485,
+          "raw_response_sha256": "a127b0c15458876934964c9e2daca414e46ec7d0980cb990ec728928aefb8c10",
+          "reasoning_byte_count": 12079,
+          "reasoning_sha256": "08bd8ed347e31098393d41aefa369f28a729f426cc74ba2a00a3de857356ec42",
+          "repair_action": null,
+          "repair_of_attempt_id": null,
+          "request_byte_count": 27972,
+          "request_parameters": {
+            "max_tokens": 131072,
+            "provider": {
+              "allow_fallbacks": true,
+              "data_collection": "deny",
+              "require_parameters": true,
+              "sort": "latency"
+            },
+            "reasoning": {
+              "effort": "high"
+            },
+            "stream": true,
+            "stream_options": {
+              "include_usage": true
+            },
+            "temperature": 1.0
+          },
+          "request_sha256": "aa53580d9477cbaa9897f5988a49d55f4bfc72479f57d42359c4494e10483ef0",
+          "requested_model_id": "z-ai/glm-5.2",
+          "response_headers_byte_count": 1045,
+          "response_headers_sha256": "7dbf65056c7f28d514bce26aa4b35d232646bb8cd46bf7ddca19e8df0f7039d3",
+          "response_model": "z-ai/glm-5.2",
+          "retry_allowed": false,
+          "reviewer_family": "GLM",
+          "started_at_utc": "2026-08-01T21:02:06.967230Z",
+          "status": "completed_valid",
+          "stream_event_count": 1354,
+          "stream_events_byte_count": 497652,
+          "stream_events_sha256": "6bba8e39be16299f4619b93652d26a58cbb8c19e972c03933460955120400fc2",
+          "stream_idle_timeout_seconds": 60,
+          "system_prompt_sha256": "63c04cf9f25dc01eb9dfacd8411c075d56dc255c71cdcf5145983c412e1f0878",
+          "time_to_first_event_seconds": 0.56573,
+          "total_response_timeout_seconds": 240,
+          "usage": {
+            "completion_tokens": 5654,
+            "completion_tokens_details": {
+              "audio_tokens": 0,
+              "image_tokens": 0,
+              "reasoning_tokens": 3074
+            },
+            "cost": 0.01467896,
+            "cost_source": "provider_reported_estimated_cost",
+            "is_byok": false,
+            "prompt_tokens": 6793,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cache_write_tokens": 0,
+              "cached_tokens": 6720,
+              "video_tokens": 0
+            },
+            "total_tokens": 12447
+          },
+          "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+        }
+      ],
+      "completed_at_utc": "2026-08-01T21:02:31.690345Z",
+      "execution_mode": "parallel_independent",
+      "maximum_attempts": 3,
+      "repair_count": 0,
+      "reported_cost_usd": 0.01467896,
+      "requested_model_id": "z-ai/glm-5.2",
+      "reviewer_family": "GLM",
+      "started_at_utc": "2026-08-01T21:02:06.964652Z",
+      "status": "completed_valid",
+      "teacher_id": "qwen-teacher-hybrid-20260801-v9-GLM",
+      "terminal_attempt_id": "qwen-teacher-hybrid-20260801-v9-GLM-A1",
+      "terminal_audit": {
+        "findings": [
+          {
+            "issue": "Position bias: reviewer selects position A in both orientations, producing conflicting mapped_winners (ppo then sft).",
+            "label": "corrected-410m",
+            "pair_id": "b9b01fa50339dc0f10a2cd3c",
+            "rationale": "Both reviews choose winner A regardless of orientation. In ppo_first, A maps to ppo; in sft_first, A maps to sft. The reasons differ ('A is shorter and less repetitive' vs 'A continues the story; B is empty') but the positional preference is identical, indicating the reviewer anchors on position rather than content.",
+            "recommended_action": "Flag pair as position-biased; do not use either review for reward signal. Consider re-evaluation with a different reviewer model.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position bias: both orientations select position A with differing mapped_winners (ppo then sft).",
+            "label": "corrected-410m",
+            "pair_id": "0b346d098a49cc126aaa865a",
+            "rationale": "ppo_first picks A (\u2192ppo), sft_first also picks A (\u2192sft). Reasons cite A as coherent in both, but the same position always wins regardless of which model occupies it. This is a textbook positional anchor effect.",
+            "recommended_action": "Discard both reviews as position-biased; flag for re-evaluation.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position bias: both orientations select position A with conflicting mapped_winners (ppo then sft).",
+            "label": "corrected-160m",
+            "pair_id": "7a9935ab59dacc1f8f93fcb9",
+            "rationale": "Both reviews select winner A. The mapped_winner flips from ppo to sft because orientation flips, confirming the decision is driven by position rather than content quality.",
+            "recommended_action": "Discard both reviews; flag as position-biased.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position bias: both orientations select position A with conflicting mapped_winners (ppo then sft).",
+            "label": "corrected-160m",
+            "pair_id": "d7300b7b6413a48a66ec05a9",
+            "rationale": "Both reviews select winner A. Mapped_winner changes from ppo to sft as orientation flips. Reasons are near-identical ('less repetitive and slightly more coherent'), suggesting positional anchoring.",
+            "recommended_action": "Discard both reviews; flag as position-biased.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Direct contradiction in quality assessment of the same candidates between orientations.",
+            "label": "corrected-410m",
+            "pair_id": "3f2baff5840b23ea8260d19f",
+            "rationale": "ppo_first states 'A continues more coherently and age-appropriately' while sft_first states 'Both are incoherent, repetitive, and age-inappropriate.' The same candidates are assessed as coherent/age-appropriate in one orientation and incoherent/age-inappropriate in the other. This is not a mere ranking difference but a fundamental disagreement about content quality.",
+            "recommended_action": "Discard both reviews; flag for re-evaluation due to internally contradictory quality assessments.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Direct contradiction: one orientation finds A coherent, the other finds both incoherent.",
+            "label": "exact-410m",
+            "pair_id": "2050cdab2e866beb10606aa3",
+            "rationale": "ppo_first states 'A continues more coherently with fewer repetitions and clearer narrative flow' (winner A \u2192 ppo). sft_first states 'Both are incoherent, repetitive, and fail to continue the story logically' (winner TIE). The same candidate A that is praised in one orientation is deemed incoherent in the other.",
+            "recommended_action": "Discard both reviews; flag for re-evaluation.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Direct contradiction in candidate quality assessment across orientations.",
+            "label": "exact-410m",
+            "pair_id": "045e4be2dca5d326ce60db5b",
+            "rationale": "ppo_first describes A as continuing 'more coherently than B's repetitive, nonsensical dialogue' (winner A). sft_first says 'Both are incoherent, repetitive, and fail to complete the prompt meaningfully' (TIE). The candidate deemed coherent in one orientation is assessed as incoherent in the other.",
+            "recommended_action": "Discard both reviews; flag for re-evaluation.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Direct contradiction: A described as having coherent actions vs both described as failing.",
+            "label": "corrected-160m",
+            "pair_id": "ac070967be598d2fc0cee1e6",
+            "rationale": "ppo_first says 'A continues the story with actions; B is repetitive and adds nothing' (winner A). sft_first says 'Both are repetitive, incoherent, and fail as age-appropriate continuations' (TIE). The same content is assessed differently depending on orientation.",
+            "recommended_action": "Discard both reviews; flag for re-evaluation.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Quality assessment contradiction across orientations: A coherent in one, both incoherent in the other.",
+            "label": "exact-410m",
+            "pair_id": "f45019eb24426368816ee62f",
+            "rationale": "ppo_first: 'A continues more coherently; B is repetitive and logically inconsistent' (winner A \u2192 ppo). sft_first: 'Both are incoherent, repetitive, and fail to continue the story logically' (TIE). The A candidate's coherence is contested across orientations.",
+            "recommended_action": "Flag for re-evaluation; lower confidence in both reviews.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-A flip: first orientation declares TIE, second finds position A superior, suggesting orientation-dependent leniency.",
+            "label": "corrected-160m",
+            "pair_id": "daaeadfe1865c2f6caee223a",
+            "rationale": "ppo_first declares TIE ('Both are repetitive, incoherent'), but sft_first picks A ('A is shorter and less repetitive'). If both candidates are truly equally bad as stated in the first review, the second review's preference for A suggests the reviewer applies a lower bar when A is in the sft position.",
+            "recommended_action": "Flag as orientation-dependent inconsistency; use with caution.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-A flip with contradictory coherence assessment.",
+            "label": "corrected-70m",
+            "pair_id": "d3de7c9bdfd0294dc099c62b",
+            "rationale": "ppo_first: 'Both candidates are incoherent' (TIE). sft_first: 'A continues coherently; B is repetitive and nonsensical' (winner A). If A is truly coherent as the second review claims, the first review's TIE is unjustified; if both are incoherent as the first review claims, the second review's preference is unsupported.",
+            "recommended_action": "Discard both reviews; flag for re-evaluation.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-B flip: opposite position wins in second orientation, but mapped_winner also flips, creating a rare consistent model preference masked as inconsistency.",
+            "label": "exact-70m",
+            "pair_id": "183138ca4386dc960b4d16d4",
+            "rationale": "ppo_first: TIE. sft_first: winner B \u2192 mapped_winner ppo. Although flagged position_inconsistent, the mapped_winner in the second review (ppo) could indicate ppo is genuinely better. However, the first review's TIE contradicts the second's clear preference. The contradiction in quality assessment remains unresolved.",
+            "recommended_action": "Flag for re-evaluation; the TIE may be an error or the B-preference may be unsupported.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-A flip pattern with near-identical boilerplate reasoning.",
+            "label": "exact-160m",
+            "pair_id": "c2899bde4c74c631421570b9",
+            "rationale": "ppo_first: TIE with 'Both are repetitive, incoherent.' sft_first: winner A with 'A is less repetitive and slightly more coherent.' The TIE and the A-win cannot both be accurate descriptions of the same candidates.",
+            "recommended_action": "Flag for re-evaluation.",
+            "severity": "warning"
+          }
+        ],
+        "overall_assessment": "fail",
+        "reviewer_reliability": 0.35,
+        "scope_confirmation": "qwen_records_only",
+        "summary": "The Qwen reviewer exhibits severe systemic position-A bias across all non-calibration labels, with raw A selections consistently exceeding raw B selections by large margins. A recurring TIE-to-A flip pattern (TIE when ppo_first, A wins when sft_first) suggests orientation-dependent leniency rather than genuine quality assessment. At least 5 sampled pairs contain direct contradictions where a candidate described as coherent in one orientation is described as incoherent in the other. Calibration pairs are the only consistently reliable records. The reviewer's reliability is low for distinguishing candidate quality on low-quality outputs, and many position-inconsistent results should not be trusted as training signals.",
+        "systemic_patterns": [
+          "Systemic position-A bias: Across all non-calibration labels, raw A selections exceed raw B selections (corrected-160m: 55 vs 17; corrected-410m: 203 vs 150; corrected-70m: 29 vs 13; exact-160m: 21 vs 7; exact-410m: 185 vs 128; exact-70m: 21 vs 10). The reviewer systematically prefers the first-presented candidate among non-tie decisions.",
+          "TIE-to-A flip pattern: A large proportion of position-inconsistent pairs show TIE in the ppo_first orientation and winner-A in the sft_first orientation (daaeadfe, d3de7c9b, e5f27219, 0cce63fb, 7a64c07c, 36a2a634, f58cf32a, c2899bd). This suggests the reviewer defaults to TIE when the first-presented (ppo) candidate is not clearly superior, but is willing to pick A when sft is presented first, creating an orientation-dependent leniency asymmetry.",
+          "Boilerplate reasoning: Many non-calibration reviews use near-identical phrases ('Both are repetitive, incoherent, and fail to continue the story meaningfully') across different pairs, suggesting insufficient engagement with individual candidate content.",
+          "Calibration pairs are internally consistent: Both calibration pairs (0569cbf8, edfe36d9) show proper orientation-flip consistency with mirrored reasoning and identical mapped_winners, suggesting the reviewer can perform reliably when candidates have clear quality differences but degrades on low-quality outputs.",
+          "Direct quality contradictions: In at least 5 pairs (3f2baff5, 2050cdab, 045e4be2, ac070967, f45019eb), one orientation describes a candidate as coherent while the other describes both candidates as incoherent, indicating the reviewer's quality assessment is unstable and orientation-dependent rather than merely ranking-different."
+        ]
+      }
+    },
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "assembled_response_byte_count": 16309,
+          "assembled_response_sha256": "a22d93d7eb0fe5e173c1baffaa2ac7849ac838d58d68d20ec0217e6f20814347",
+          "attempt_id": "qwen-teacher-hybrid-20260801-v9-KIMI-A1",
+          "attempt_number": 1,
+          "audit": {
+            "findings": [
+              {
+                "issue": "Systemic position bias with contradictory, confabulated rationales",
+                "label": "corrected-410m",
+                "pair_id": "b9b01fa50339dc0f10a2cd3c",
+                "rationale": "The raw winner is A in both orientations (ppo_first: A; sft_first: A), so mapped_winner flips from ppo to sft purely with candidate position. Worse, the rationales describe the same underlying candidate contradictorily: in ppo_first B is 'excessively repetitive and incoherent', while in sft_first B 'is empty'. The reviewer appears to justify whichever candidate occupies position A rather than evaluate stable content.",
+                "recommended_action": "Exclude this pair from any aggregate winner estimate and flag the reviewer for position-anchor bias; require orientation-swapped re-review before use.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Raw A selected in both orientations",
+                "label": "corrected-410m",
+                "pair_id": "0b346d098a49cc126aaa865a",
+                "rationale": "Winner A is chosen under both ppo_first and sft_first, so mapped_winner flips (ppo vs sft) solely due to candidate placement. The rationales are superficially similar but cannot both be true of the same content, indicating the decision tracks position rather than content.",
+                "recommended_action": "Treat the mapped outcome as unreliable; resample or adjudicate this pair with position-blind review.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Raw A selected in both orientations with divergent rationales",
+                "label": "corrected-160m",
+                "pair_id": "7a9935ab59dacc1f8f93fcb9",
+                "rationale": "Both orientations pick raw A (mapped ppo then sft). The ppo_first rationale hedges ('though both are flawed') while sft_first asserts A 'continues coherently' and B 'cuts off mid-sentence' \u2014 incompatible characterizations of the same two candidates, consistent with position-anchored choice.",
+                "recommended_action": "Flag as position-bias case; do not count toward either model's win tally without re-review.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Raw A selected in both orientations; second rationale is vacuous",
+                "label": "corrected-160m",
+                "pair_id": "d7300b7b6413a48a66ec05a9",
+                "rationale": "Raw A wins in both orientations, flipping mapped_winner with position. The sft_first rationale ('Slightly less repetitive; introduces curiosity, though both are poor.') never identifies which candidate (A or B) it describes, making the recorded winner unsupported by the stated reasoning.",
+                "recommended_action": "Reject the sft_first record as malformed/vacuous reasoning and mark the pair position-inconsistent for exclusion from aggregates.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Vacuous rationale that does not identify the winning candidate",
+                "label": "exact-410m",
+                "pair_id": "36a2a634ee5b26c5c4462af4",
+                "rationale": "The sft_first record declares winner A with the reason 'Slightly less repetitive and more coherent continuation.' \u2014 no reference to A or B, so the rationale cannot support the choice. Combined with a TIE in the opposite orientation, the mapped sft win is unreliable.",
+                "recommended_action": "Require rationales to explicitly name the compared candidates; invalidate this orientation's judgment pending re-review.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Orientation-dependent collapse from decisive win to TIE with boilerplate rationale",
+                "label": "exact-410m",
+                "pair_id": "045e4be2dca5d326ce60db5b",
+                "rationale": "ppo_first asserts a specific comparative judgment ('A continues the prompt's warning more coherently than B's repetitive, nonsensical dialogue'), yet sft_first reverts to a generic 'Both are incoherent, repetitive, and fail to complete the prompt meaningfully.' The same canned tie rationale appears verbatim across many unrelated pairs (e.g., e5f27219d4ce496d69fb1d9d, 0cce63fbd4f9d826a9692ddb, c2899bde4c74c631421570b9), suggesting template responses rather than per-pair evaluation.",
+                "recommended_action": "Audit all records sharing the identical boilerplate tie rationale; down-weight or re-review pairs where one orientation uses a canned justification.",
+                "severity": "warning"
+              },
+              {
+                "issue": "TIE-to-decision flip across orientations",
+                "label": "corrected-160m",
+                "pair_id": "daaeadfe1865c2f6caee223a",
+                "rationale": "ppo_first is TIE ('Both are repetitive, incoherent...') while sft_first picks raw A (mapped sft) as 'shorter and less repetitive, though both are flawed.' A candidate cannot be both indistinguishable and clearly less flawed; the judgment is unstable under position swap.",
+                "recommended_action": "Mark mapped outcome unreliable; aggregate only after orientation-consistent re-review.",
+                "severity": "warning"
+              },
+              {
+                "issue": "TIE-to-decision flip across orientations",
+                "label": "exact-70m",
+                "pair_id": "183138ca4386dc960b4d16d4",
+                "rationale": "ppo_first records TIE with the standard boilerplate rationale; sft_first decisively prefers B (mapped ppo) as coherent versus 'repetitive and nonsensical' A. This mirrors a broader pattern where the reviewer's decisiveness depends on orientation rather than content.",
+                "recommended_action": "Include in the systemic position-instability tally; no individual exclusion beyond the aggregate flag.",
+                "severity": "info"
+              }
+            ],
+            "overall_assessment": "fail",
+            "reviewer_reliability": 0.45,
+            "scope_confirmation": "qwen_records_only",
+            "summary": "Audit of the 20 sampled Qwen review pairs shows the calibration pairs are cleanly consistent (opposite raw winners with agreeing mapped winners, as expected), but the non-calibration records exhibit serious process defects. Four sampled pairs chose raw A in both orientations, meaning the mapped winner was decided by candidate position rather than content; population raw-choice counts confirm a raw-A skew in the 410m subsets. Most other sampled pairs flip between a decisive winner and TIE when orientation swaps, and the flip side frequently uses an identical canned rationale reused across unrelated pairs. Several rationales are vacuous (never naming A or B) or describe the same candidate contradictorily across orientations. Because the sample intentionally oversampled position-inconsistent pairs, the true inconsistency rate is lower (~16% of population pairs), but the confirmed position anchoring, boilerplate reasoning, and confabulated justifications make the reviewer's mapped-winner outputs unreliable, particularly for corrected-410m and exact-410m. These are process-audit flags only: they do not alter primary estimates, cannot serve as training reward, and authorize no publication or external message.",
+            "systemic_patterns": [
+              "Position anchoring on raw A: in 4 of 20 sampled pairs (b9b01fa50339dc0f10a2cd3c, 0b346d098a49cc126aaa865a, 7a9935ab59dacc1f8f93fcb9, d7300b7b6413a48a66ec05a9) the reviewer chose raw A in both orientations, so mapped winners were determined entirely by candidate placement; population summaries corroborate this with raw_a exceeding raw_b substantially in corrected-410m (203 vs 150) and exact-410m (185 vs 128).",
+              "Orientation-dependent decisiveness: a recurring pattern where one orientation yields a decisive winner and the swapped orientation collapses to TIE (e.g., daaeadfe1865c2f6caee223a, d3de7c9bdfd0294dc099c62b, e5f27219d4ce496d69fb1d9d, 0cce63fbd4f9d826a9692ddb, f45019eb24426368816ee62f, 3f2baff5840b23ea8260d19f, f58cf32a6b0e067082b36ebd, 2050cdab2e866beb10606aa3, 045e4be2dca5d326ce60db5b, ac070967be598d2fc0cee1e6, c2899bde4c74c631421570b9), indicating judgments are not stable to candidate order.",
+              "Boilerplate rationales: identical or near-identical tie justifications ('Both are repetitive, incoherent, and fail to continue the story meaningfully.') are reused across many distinct pairs, evidencing template-driven rather than content-driven evaluation.",
+              "Vacuous or malformed reasoning: some rationales never reference candidate A or B (e.g., 36a2a634ee5b26c5c4462af4 sft_first, d7300b7b6413a48a66ec05a9 sft_first), so the recorded winner is unsupported by the stated reason.",
+              "Contradictory content descriptions across orientations for the same candidates (most severely in b9b01fa50339dc0f10a2cd3c, where B is 'excessively repetitive' in one orientation and 'empty' in the other), indicating rationales are confabulated to fit the position-driven choice."
+            ]
+          },
+          "canonical_slug": "kimi-k3",
+          "completed_at_utc": "2026-08-01T21:04:14.582702Z",
+          "content_byte_count": 8569,
+          "content_sha256": "8179b86c932fe62ff789cc0cdc57bb2fd35f52d48ad2f5ec85fbb00b20647bbe",
+          "contract_warnings": [],
+          "decision_weight": 1,
+          "elapsed_seconds": 127.611468,
+          "finish_reason": "stop",
+          "first_event_timeout_seconds": 60,
+          "harness_profile": "kimi-qwen-outer-teacher-high-reasoning-max-output-direct-v3",
+          "http_status": 200,
+          "invocation_count": 1,
+          "last_event_elapsed_seconds": 127.611456,
+          "linked_repair_allowed": true,
+          "max_tokens_basis": "provider_context_minus_conservative_input_and_safety",
+          "model_invocation_count": 1,
+          "parsed_audit_byte_count": 8576,
+          "parsed_audit_sha256": "0a772b1a766a4d4de0c5f523cc269fec24a172c6d9b71008c7d3742bafdf4a51",
+          "provider_context_length": 1048576,
+          "provider_max_completion_tokens": 1048576,
+          "provider_model_id": "kimi-k3",
+          "provider_route": {
+            "cached_input_usd_per_million": 0.3,
+            "context_length": 1048576,
+            "endpoint": "https://api.moonshot.ai/v1/chat/completions",
+            "input_usd_per_million": 3.0,
+            "max_completion_tokens": 1048576,
+            "max_tokens_field": "max_completion_tokens",
+            "output_usd_per_million": 15.0,
+            "pricing_observed_at": "2026-08-01",
+            "provider_model_id": "kimi-k3",
+            "provider_name": "Moonshot AI",
+            "reasoning_parameters": {
+              "reasoning_effort": "high"
+            },
+            "request_parameters": {},
+            "route_id": "moonshot-first-party",
+            "schema_mode": "json_schema"
+          },
+          "provider_route_index": 0,
+          "provider_route_sha256": "1365c0980699d99fa659be2e1a28106e32a7a3aa9488b00dd4d79a7a6c177fd4",
+          "raw_response_byte_count": 995841,
+          "raw_response_sha256": "85a213fe2e2d1bf34740599486ceba2427135b6dbb0575f6cfde049cb47b4176",
+          "reasoning_byte_count": 6880,
+          "reasoning_sha256": "de1df64770d1c4e4bd1953aa0eea06524eec49f8d5538f89ff6a5744bef76386",
+          "repair_action": null,
+          "repair_of_attempt_id": null,
+          "request_byte_count": 27985,
+          "request_parameters": {
+            "max_completion_tokens": 1029863,
+            "reasoning_effort": "high",
+            "stream": true,
+            "stream_options": {
+              "include_usage": true
+            },
+            "temperature": 1.0
+          },
+          "request_sha256": "a4a81a89221e981be48f767d978c695840e83ecf1920f889726310498c8ba81d",
+          "requested_model_id": "moonshotai/kimi-k3",
+          "response_headers_byte_count": 1136,
+          "response_headers_sha256": "8658eac681ea71a31115719008f372c002682ea647e2170111d1e7a5d4400a0d",
+          "response_model": "kimi-k3",
+          "retry_allowed": false,
+          "reviewer_family": "Kimi",
+          "started_at_utc": "2026-08-01T21:02:06.966129Z",
+          "status": "completed_valid",
+          "stream_event_count": 4224,
+          "stream_events_byte_count": 1038172,
+          "stream_events_sha256": "7cea1060e4688814a94465913d6af7d3a03d8802a59033a8f1a71c3d034d2c68",
+          "stream_idle_timeout_seconds": 60,
+          "system_prompt_sha256": "75a07662169862d4f09bb0f5fcfcd7c61904422b5db1b5b30b3e5c04c353550b",
+          "time_to_first_event_seconds": 2.79364,
+          "total_response_timeout_seconds": 240,
+          "usage": {
+            "cached_tokens": 6912,
+            "completion_tokens": 4236,
+            "completion_tokens_details": {
+              "reasoning_tokens": 2081
+            },
+            "cost": 0.0661746,
+            "cost_source": "calculated_from_Moonshot AI_rate_card_2026-08-01",
+            "prompt_tokens": 7099,
+            "prompt_tokens_details": {
+              "cached_tokens": 6912
+            },
+            "total_tokens": 11335
+          },
+          "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+        }
+      ],
+      "completed_at_utc": "2026-08-01T21:04:14.586678Z",
+      "execution_mode": "parallel_independent",
+      "maximum_attempts": 3,
+      "repair_count": 0,
+      "reported_cost_usd": 0.0661746,
+      "requested_model_id": "moonshotai/kimi-k3",
+      "reviewer_family": "Kimi",
+      "started_at_utc": "2026-08-01T21:02:06.964991Z",
+      "status": "completed_valid",
+      "teacher_id": "qwen-teacher-hybrid-20260801-v9-KIMI",
+      "terminal_attempt_id": "qwen-teacher-hybrid-20260801-v9-KIMI-A1",
+      "terminal_audit": {
+        "findings": [
+          {
+            "issue": "Systemic position bias with contradictory, confabulated rationales",
+            "label": "corrected-410m",
+            "pair_id": "b9b01fa50339dc0f10a2cd3c",
+            "rationale": "The raw winner is A in both orientations (ppo_first: A; sft_first: A), so mapped_winner flips from ppo to sft purely with candidate position. Worse, the rationales describe the same underlying candidate contradictorily: in ppo_first B is 'excessively repetitive and incoherent', while in sft_first B 'is empty'. The reviewer appears to justify whichever candidate occupies position A rather than evaluate stable content.",
+            "recommended_action": "Exclude this pair from any aggregate winner estimate and flag the reviewer for position-anchor bias; require orientation-swapped re-review before use.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Raw A selected in both orientations",
+            "label": "corrected-410m",
+            "pair_id": "0b346d098a49cc126aaa865a",
+            "rationale": "Winner A is chosen under both ppo_first and sft_first, so mapped_winner flips (ppo vs sft) solely due to candidate placement. The rationales are superficially similar but cannot both be true of the same content, indicating the decision tracks position rather than content.",
+            "recommended_action": "Treat the mapped outcome as unreliable; resample or adjudicate this pair with position-blind review.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Raw A selected in both orientations with divergent rationales",
+            "label": "corrected-160m",
+            "pair_id": "7a9935ab59dacc1f8f93fcb9",
+            "rationale": "Both orientations pick raw A (mapped ppo then sft). The ppo_first rationale hedges ('though both are flawed') while sft_first asserts A 'continues coherently' and B 'cuts off mid-sentence' \u2014 incompatible characterizations of the same two candidates, consistent with position-anchored choice.",
+            "recommended_action": "Flag as position-bias case; do not count toward either model's win tally without re-review.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Raw A selected in both orientations; second rationale is vacuous",
+            "label": "corrected-160m",
+            "pair_id": "d7300b7b6413a48a66ec05a9",
+            "rationale": "Raw A wins in both orientations, flipping mapped_winner with position. The sft_first rationale ('Slightly less repetitive; introduces curiosity, though both are poor.') never identifies which candidate (A or B) it describes, making the recorded winner unsupported by the stated reasoning.",
+            "recommended_action": "Reject the sft_first record as malformed/vacuous reasoning and mark the pair position-inconsistent for exclusion from aggregates.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Vacuous rationale that does not identify the winning candidate",
+            "label": "exact-410m",
+            "pair_id": "36a2a634ee5b26c5c4462af4",
+            "rationale": "The sft_first record declares winner A with the reason 'Slightly less repetitive and more coherent continuation.' \u2014 no reference to A or B, so the rationale cannot support the choice. Combined with a TIE in the opposite orientation, the mapped sft win is unreliable.",
+            "recommended_action": "Require rationales to explicitly name the compared candidates; invalidate this orientation's judgment pending re-review.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Orientation-dependent collapse from decisive win to TIE with boilerplate rationale",
+            "label": "exact-410m",
+            "pair_id": "045e4be2dca5d326ce60db5b",
+            "rationale": "ppo_first asserts a specific comparative judgment ('A continues the prompt's warning more coherently than B's repetitive, nonsensical dialogue'), yet sft_first reverts to a generic 'Both are incoherent, repetitive, and fail to complete the prompt meaningfully.' The same canned tie rationale appears verbatim across many unrelated pairs (e.g., e5f27219d4ce496d69fb1d9d, 0cce63fbd4f9d826a9692ddb, c2899bde4c74c631421570b9), suggesting template responses rather than per-pair evaluation.",
+            "recommended_action": "Audit all records sharing the identical boilerplate tie rationale; down-weight or re-review pairs where one orientation uses a canned justification.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-decision flip across orientations",
+            "label": "corrected-160m",
+            "pair_id": "daaeadfe1865c2f6caee223a",
+            "rationale": "ppo_first is TIE ('Both are repetitive, incoherent...') while sft_first picks raw A (mapped sft) as 'shorter and less repetitive, though both are flawed.' A candidate cannot be both indistinguishable and clearly less flawed; the judgment is unstable under position swap.",
+            "recommended_action": "Mark mapped outcome unreliable; aggregate only after orientation-consistent re-review.",
+            "severity": "warning"
+          },
+          {
+            "issue": "TIE-to-decision flip across orientations",
+            "label": "exact-70m",
+            "pair_id": "183138ca4386dc960b4d16d4",
+            "rationale": "ppo_first records TIE with the standard boilerplate rationale; sft_first decisively prefers B (mapped ppo) as coherent versus 'repetitive and nonsensical' A. This mirrors a broader pattern where the reviewer's decisiveness depends on orientation rather than content.",
+            "recommended_action": "Include in the systemic position-instability tally; no individual exclusion beyond the aggregate flag.",
+            "severity": "info"
+          }
+        ],
+        "overall_assessment": "fail",
+        "reviewer_reliability": 0.45,
+        "scope_confirmation": "qwen_records_only",
+        "summary": "Audit of the 20 sampled Qwen review pairs shows the calibration pairs are cleanly consistent (opposite raw winners with agreeing mapped winners, as expected), but the non-calibration records exhibit serious process defects. Four sampled pairs chose raw A in both orientations, meaning the mapped winner was decided by candidate position rather than content; population raw-choice counts confirm a raw-A skew in the 410m subsets. Most other sampled pairs flip between a decisive winner and TIE when orientation swaps, and the flip side frequently uses an identical canned rationale reused across unrelated pairs. Several rationales are vacuous (never naming A or B) or describe the same candidate contradictorily across orientations. Because the sample intentionally oversampled position-inconsistent pairs, the true inconsistency rate is lower (~16% of population pairs), but the confirmed position anchoring, boilerplate reasoning, and confabulated justifications make the reviewer's mapped-winner outputs unreliable, particularly for corrected-410m and exact-410m. These are process-audit flags only: they do not alter primary estimates, cannot serve as training reward, and authorize no publication or external message.",
+        "systemic_patterns": [
+          "Position anchoring on raw A: in 4 of 20 sampled pairs (b9b01fa50339dc0f10a2cd3c, 0b346d098a49cc126aaa865a, 7a9935ab59dacc1f8f93fcb9, d7300b7b6413a48a66ec05a9) the reviewer chose raw A in both orientations, so mapped winners were determined entirely by candidate placement; population summaries corroborate this with raw_a exceeding raw_b substantially in corrected-410m (203 vs 150) and exact-410m (185 vs 128).",
+          "Orientation-dependent decisiveness: a recurring pattern where one orientation yields a decisive winner and the swapped orientation collapses to TIE (e.g., daaeadfe1865c2f6caee223a, d3de7c9bdfd0294dc099c62b, e5f27219d4ce496d69fb1d9d, 0cce63fbd4f9d826a9692ddb, f45019eb24426368816ee62f, 3f2baff5840b23ea8260d19f, f58cf32a6b0e067082b36ebd, 2050cdab2e866beb10606aa3, 045e4be2dca5d326ce60db5b, ac070967be598d2fc0cee1e6, c2899bde4c74c631421570b9), indicating judgments are not stable to candidate order.",
+          "Boilerplate rationales: identical or near-identical tie justifications ('Both are repetitive, incoherent, and fail to continue the story meaningfully.') are reused across many distinct pairs, evidencing template-driven rather than content-driven evaluation.",
+          "Vacuous or malformed reasoning: some rationales never reference candidate A or B (e.g., 36a2a634ee5b26c5c4462af4 sft_first, d7300b7b6413a48a66ec05a9 sft_first), so the recorded winner is unsupported by the stated reason.",
+          "Contradictory content descriptions across orientations for the same candidates (most severely in b9b01fa50339dc0f10a2cd3c, where B is 'excessively repetitive' in one orientation and 'empty' in the other), indicating rationales are confabulated to fit the position-driven choice."
+        ]
+      }
+    }
+  ],
+  "outer_teacher_total_reported_cost_usd": 0.08085356,
+  "outer_teacher_valid_count": 2,
+  "qwen_packet": {
+    "byte_count": 19942,
+    "sha256": "c6a809d61e49102d0cf4d29649379587eeaa4a02fb99b5e3aa7134dcbf51b6b6"
+  },
+  "release_control": {
+    "author_email_dispatch_authorized": false,
+    "publication_authorized": false,
+    "separate_final_release_review_required": true,
+    "training_signal_change_authorized": false
+  },
+  "run_id": "qwen-teacher-hybrid-20260801-v9",
+  "schema_version": "nulspec-qwen-review-hierarchy-public-v2",
+  "trace_index": {
+    "contents": "Ignored local archive includes provider routes, system and user prompts, request bodies, raw SSE streams, parsed outputs, Codex JSONL events, stderr, version, and state records.",
+    "evidence_aggregate_sha256": "7c3924a87b4ba6c9b431b26a042e964f930f27182676b3901608c9857d11cb91",
+    "evidence_file_count": 45,
+    "raw_trace_public": false
+  }
+}

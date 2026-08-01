@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "scope_confirmation": {
+      "type": "string",
+      "enum": ["qwen_records_and_outer_teacher_audits_only"]
+    },
+    "teacher_assessments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "attempt_id": {"type": "string"},
+          "model_id": {"type": "string"},
+          "trace_valid": {"type": "boolean"},
+          "assessment": {
+            "type": "string",
+            "enum": ["pass", "warn", "fail", "unavailable"]
+          },
+          "reliability": {
+            "type": ["number", "null"],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "notes": {"type": "string"}
+        },
+        "required": [
+          "attempt_id",
+          "model_id",
+          "trace_valid",
+          "assessment",
+          "reliability",
+          "notes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "cross_teacher_agreement": {
+      "type": "string",
+      "enum": ["agree", "partial", "disagree", "insufficient_valid_audits"]
+    },
+    "preserved_disagreements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "subject": {"type": "string"},
+          "glm_position": {"type": "string"},
+          "kimi_position": {"type": "string"},
+          "adjudication": {"type": "string"},
+          "evidence_references": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        },
+        "required": [
+          "subject",
+          "glm_position",
+          "kimi_position",
+          "adjudication",
+          "evidence_references"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "qwen_process_assessment": {
+      "type": "string",
+      "enum": ["pass", "warn", "fail", "indeterminate"]
+    },
+    "qwen_reviewer_reliability": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pair_id": {"type": ["string", "null"]},
+          "label": {"type": ["string", "null"]},
+          "severity": {
+            "type": "string",
+            "enum": ["info", "warning", "critical"]
+          },
+          "issue": {"type": "string"},
+          "adjudication": {"type": "string"},
+          "evidence_references": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "recommended_action": {"type": "string"}
+        },
+        "required": [
+          "pair_id",
+          "label",
+          "severity",
+          "issue",
+          "adjudication",
+          "evidence_references",
+          "recommended_action"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "release_recommendation": {
+      "type": "string",
+      "enum": [
+        "accept_as_process_audit",
+        "require_additional_human_review",
+        "block_for_trace_or_scope_failure"
+      ]
+    },
+    "required_human_actions": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "release_control": {
+      "type": "object",
+      "properties": {
+        "automatic_publication_authorized": {"type": "boolean", "const": false},
+        "automatic_training_signal_authorized": {"type": "boolean", "const": false},
+        "author_email_dispatch_authorized": {"type": "boolean", "const": false}
+      },
+      "required": [
+        "automatic_publication_authorized",
+        "automatic_training_signal_authorized",
+        "author_email_dispatch_authorized"
+      ],
+      "additionalProperties": false
+    },
+    "summary": {"type": "string"}
+  },
+  "required": [
+    "scope_confirmation",
+    "teacher_assessments",
+    "cross_teacher_agreement",
+    "preserved_disagreements",
+    "qwen_process_assessment",
+    "qwen_reviewer_reliability",
+    "findings",
+    "release_recommendation",
+    "required_human_actions",
+    "release_control",
+    "summary"
+  ],
+  "additionalProperties": false
+}

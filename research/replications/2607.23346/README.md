@@ -64,6 +64,12 @@ resubmission. `HARD_FAIL` alone stops publication for human review. Fable can
 only make the author-email draft eligible for a separate final human approval;
 it can never authorize or send the email.
 
+The one permitted invocation ended in a technical `HARD_FAIL`: Fable's
+biomedical-content safeguard refused the malaria packet before returning any
+substantive review. The request is not being resubmitted. Publication is
+therefore blocked for human review, and the refusal is not evidence about the
+paper or this replication's scientific result.
+
 Raw source, datasets, virtual environments, checkpoints, and run logs are
 ignored. Small manifests, scripts, derived tables, and the final report are
 tracked.

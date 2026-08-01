@@ -28,7 +28,7 @@ side records those in `RESEARCH_FIX_ME.md`.
 - Status: OPEN
 - Blocking: publication
 - Observed in: [NULSPEC PR #18](https://github.com/Atlas3DSS/nulspec/pull/18),
-  head commit `9cc6bafba42f19b144f45d02c9c1d71ac4ea9816`
+  head commit `de208e670de4dd9a902e531679b6acdba21ff9a5`
 - Affected study: `260723346` (`sprkd-malaria`)
 - Reported by: research
 - Reported at: 2026-08-01T16:15:57Z
@@ -58,11 +58,15 @@ immutable choices behind **Vote to extend this paper**; votes schedule new
 evidence and never rewrite the frozen result.
 
 The importer must also enforce `final_peer_review`. Fable receives exactly one
-review submission: `PASS` authorizes publication, a normal `FAIL` authorizes it
-only after the exact three-action closure, and `HARD_FAIL` stops for human
-review. There is no Fable resubmission. Author-email dispatch is a separate
-gate and always requires final human approval of the exact hashed draft; Fable
-can make the draft eligible but can never authorize or send it.
+review submission: `PASS` authorizes publication and a normal `FAIL` authorizes
+it only after the exact three-action closure. After a technical `HARD_FAIL`,
+only independently schema-valid PASS decisions from both the pinned GLM and
+Kimi reviewers can satisfy the publication gate; a malformed, truncated,
+refused, or non-PASS result remains a hard fail for human review. There is no
+Fable resubmission, fallback retry, or tiebreaker. Author-email dispatch is a
+separate gate and always requires final human approval of the exact hashed
+draft and applicable disposition; external review can make the draft eligible
+but can never authorize or send it.
 
 #### Requested website change
 
@@ -106,6 +110,11 @@ prosecutorial even where individual sentences are fair. Authors are not
 identified on the study page, and NULSPEC's own mistakes are less visible than
 limitations of the upstream record.
 
+In practical terms, the current site is an excellent index and appendix, but it
+asks that layer to do the work of an explainer. It makes the receipts easy to
+find without first telling a general reader what happened, why it matters, or
+what they should carry forward.
+
 The complete evidence and recommendations are in
 `PUBLISHING_PRESENTATION_REVIEW.md`.
 
@@ -115,7 +124,7 @@ Before the detailed ledger, each study should present original authors and
 contribution, exact tested scope, equally ranked “What held up” and “What did
 not,” unresolved questions, learning value, and the next decisive evidence.
 Credit released assets explicitly. Pair limits of the public record with limits
-and mistakes in our replication. Provide a versioned author-response path.
+and mistakes during our replication. Provide a versioned author-response path.
 Keep every verdict, null, error, deviation, and artifact accessible without
 making audit machinery the dominant narrative.
 
@@ -131,6 +140,65 @@ making audit machinery the dominant narrative.
    visual rank.
 5. Record the implementing PR, production route, screenshots, accessibility
    checks, and research-side meaning verification below.
+
+#### Website response
+
+Pending.
+
+#### Resolution evidence
+
+Pending research-side verification after implementation and deployment.
+
+### WF-20260801-03 — Render reviewer provenance, costs, and fail-closed consensus
+
+- Status: OPEN
+- Blocking: publication
+- Observed in: [NULSPEC PR #18](https://github.com/Atlas3DSS/nulspec/pull/18),
+  head commit `de208e670de4dd9a902e531679b6acdba21ff9a5`
+- Affected study: `260723346` (`sprkd-malaria`); reusable for later studies
+- Reported by: research
+- Reported at: 2026-08-01T18:16:18Z
+
+#### Observed
+
+Fable's one permitted submission ended in a safeguard refusal with no review
+findings and a $3.224742 charge. The human-directed GLM/Kimi fallback produced
+two raw PASS declarations, but neither primary response was schema-valid; a
+later valid GLM recovery call is retained but ineligible. The supplemental
+disposition therefore remains `HARD_FAIL`. Six provider events cost
+$4.44176232 in total.
+
+Research now supplies an append-only public event/cost ledger, a sanitized
+training-ready trace projection, the pinned model manifest, and human- and
+machine-readable consensus records. Exact provider envelopes remain private by
+hash because they contain request/session identifiers and machine context.
+
+#### Expected
+
+The study page should show external review as release-governance provenance,
+not scientific evidence. Render the total and per-event costs—including what a
+refusal cost—plus declared versus validated verdicts and why an event was
+excluded. Link the sanitized traces and ledgers. Do not expose credentials,
+provider request/session IDs, UUIDs, private paths, or raw provider envelopes.
+
+The importer must fail closed unless both consensus-eligible GLM/Kimi rows are
+structured-valid PASS decisions bound to the same frozen packet. A later retry
+cannot replace either row. The current record must remain blocked for human
+review, and author-email dispatch must remain independently blocked pending
+final human approval of the exact draft.
+
+#### Requested website change
+
+1. Import and validate the external-review ledger, model manifest, and
+   supplemental consensus schemas without recomputing their outcomes.
+2. Render the cost/event chronology and sanitized trace links behind a compact
+   review-provenance summary.
+3. Enforce the two-valid-PASS rule, no-retry exclusion, and separate mandatory
+   human email-approval gate.
+4. Add privacy tests that reject request/session IDs, UUIDs, credentials, and
+   private paths in public reviewer artifacts.
+5. Record the implementing PR, production route, screenshots, validator tests,
+   and research-side semantic verification below.
 
 #### Website response
 

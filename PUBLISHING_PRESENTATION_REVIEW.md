@@ -19,6 +19,11 @@ The fix is not to soften verdicts, hide errors, or turn null results into praise
 It is to give readers a complete scientific handoff before presenting the full
 audit ledger.
 
+Put another way: the current site is an excellent index and appendix, but it
+asks that layer to do the work of an explainer. An appendix tells readers where
+the receipts are; the narrative must explain what happened, why it matters,
+and what they should carry forward.
+
 ## What already works
 
 - The study-level classification is distinct from arm-level labels.
@@ -102,7 +107,7 @@ procedure” section. Our local errors and process limitations are mainly inside
 artifacts. Equal transparency requires a visible paired presentation:
 
 - **Limits of the available public record**; and
-- **Limits and mistakes in our replication**.
+- **Limits and mistakes during our replication**.
 
 Use evidence-centered phrasing such as “No complete dependency lock was
 available in the linked release” rather than repeatedly centering an actor with
@@ -188,3 +193,4 @@ missing evidence neutrally, then state why it matters.
 |---|---|---|---|
 | WPR-EXT-001 | External tooling | The search index and safe-open layer did not recognize the newly registered live domain. | Retrieved the public routes directly over HTTPS and rendered them in an isolated headless browser; all four reviewed routes returned HTTP 200. |
 | WPR-LOCAL-001 | Research/web review | The first staged-diff check found two Markdown hard-break spaces and an extra final blank line in this new review. | The check stopped before staging or commit. Removed the whitespace and repeated the diff gate. |
+| WPR-LOCAL-002 | Research/web handoff | While refreshing two queue references, the first edit expanded the visible short research commit using an unverified suffix. | The malformed value was still uncommitted and no website import or deployment used it. Read the exact research HEAD, replaced both references, and required the cited object to resolve before staging. |

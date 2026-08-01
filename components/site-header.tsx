@@ -15,6 +15,9 @@ export function SiteHeader() {
         <nav aria-label="Primary navigation">
           <ul className="site-nav">
             <li>
+              <Link href="/papers">Candidates</Link>
+            </li>
+            <li>
               <Link href={`/studies/${study.study_id}`}>Study {study.study_id}</Link>
             </li>
             <li>

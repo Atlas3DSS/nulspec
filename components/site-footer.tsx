@@ -19,6 +19,7 @@ export function SiteFooter() {
             </p>
           </div>
           <div className="footer-actions">
+            <Link href="/papers">Candidate papers</Link>
             <a href={NOMINATE_URL}>Nominate a paper ↗</a>
             <a href={KOFI_URL}>Support replication work ↗</a>
             <a href={GITHUB_URL}>GitHub ↗</a>

@@ -28,7 +28,7 @@ side records those in `RESEARCH_FIX_ME.md`.
 - Status: OPEN
 - Blocking: publication
 - Observed in: [NULSPEC PR #18](https://github.com/Atlas3DSS/nulspec/pull/18),
-  head commit `68188afc7305e5168d33c5278968f7a26b403a40`
+  head commit `9cc6bafba42f19b144f45d02c9c1d71ac4ea9816`
 - Affected study: `260723346` (`sprkd-malaria`)
 - Reported by: research
 - Reported at: 2026-08-01T16:15:57Z
@@ -76,6 +76,61 @@ can make the draft eligible but can never authorize or send it.
    evidence.
 5. Record the implementing PR, merged commit, production route, and validation
    evidence below.
+
+#### Website response
+
+Pending.
+
+#### Resolution evidence
+
+Pending research-side verification after implementation and deployment.
+
+### WF-20260801-02 — Balance audit evidence with contribution and learning
+
+- Status: OPEN
+- Blocking: publication
+- Observed in: live home page, Study 260725091, and a linked arm-evidence page
+  reviewed at 2026-08-01T16:48:50Z
+- Affected study: all studies; first required for `260723346`
+- Reported by: research
+- Reported at: 2026-08-01T16:48:50Z
+
+#### Observed
+
+The live study is scientifically careful and visually coherent, but the page
+allocates more space and earlier placement to the run ledger, deviations,
+warning states, and verdict machinery than to the original contribution, what
+reproduced, what the released artifacts enabled, what the replication taught,
+and what evidence would resolve uncertainty. The result can therefore feel
+prosecutorial even where individual sentences are fair. Authors are not
+identified on the study page, and NULSPEC's own mistakes are less visible than
+limitations of the upstream record.
+
+The complete evidence and recommendations are in
+`PUBLISHING_PRESENTATION_REVIEW.md`.
+
+#### Expected
+
+Before the detailed ledger, each study should present original authors and
+contribution, exact tested scope, equally ranked “What held up” and “What did
+not,” unresolved questions, learning value, and the next decisive evidence.
+Credit released assets explicitly. Pair limits of the public record with limits
+and mistakes in our replication. Provide a versioned author-response path.
+Keep every verdict, null, error, deviation, and artifact accessible without
+making audit machinery the dominant narrative.
+
+#### Requested website change
+
+1. Implement the result-at-a-glance hierarchy and progressive disclosure in
+   `PUBLISHING_PRESENTATION_REVIEW.md`.
+2. Add typed presentation fields supplied by research; do not infer or invent
+   contribution, credit, learning, or author-response copy in the frontend.
+3. Move the complete arm ledger below the balanced result narrative on study
+   pages and substantially abbreviate it on the home page.
+4. Render upstream-record limitations and replicator limitations with equal
+   visual rank.
+5. Record the implementing PR, production route, screenshots, accessibility
+   checks, and research-side meaning verification below.
 
 #### Website response
 

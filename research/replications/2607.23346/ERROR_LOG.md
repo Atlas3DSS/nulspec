@@ -129,3 +129,4 @@ it.
 |---|---|---|
 | SPRKD-EXT-001 | The Hugging Face paper endpoint returned 404 because this new arXiv record was not indexed there yet. | Acquired the PDF/source from arXiv and the code from the paper-linked GitHub repository. |
 | SPRKD-EXT-002 | The current NULSPEC publication-contract validator and arm pages encode the prior study's reward-delta/prompt-interval metric shape rather than a generic quantitative-arm schema. | Do not mislabel classification accuracy as reward. Deliver a typed accuracy/run projection and frontend contract; canonical site import remains a website-schema task and does not gate the scientific replication result. |
+| SPRKD-EXT-003 | The preferred GitHub app returned HTTP 403 when asked to open the draft PR after the branch had been pushed successfully. | The commit and remote branch were intact. Used the documented authenticated GitHub CLI fallback to create the same draft PR without changing study content. |

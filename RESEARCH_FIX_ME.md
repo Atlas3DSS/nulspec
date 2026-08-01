@@ -30,7 +30,41 @@ queue.
 
 ## Open items
 
-None as of 2026-08-01.
+### RF-20260801-01 — Correct the invalid PR head reference in the website queue
+
+- Status: OPEN
+- Blocking: neither
+- Observed in: research-authored `WEBSITE_FIX_ME.md` for
+  [PR #18](https://github.com/Atlas3DSS/nulspec/pull/18)
+- Affected study: `260723346`
+- Reported by: website
+- Reported at: 2026-08-01T16:19:08Z
+
+#### Observed
+
+Item `WF-20260801-01` identifies the PR head as
+`9dc3196fd00058b39515714cc1d2161de094f498c`. That value has 41 hexadecimal
+characters and does not resolve to a commit. At the time of verification, the
+actual PR head was `9dc31960a83dc107a7b279a72c0bb8408efe87a7`.
+
+#### Expected
+
+The queue should cite an exact, resolvable commit that contains the handoff
+being requested. If adding `WEBSITE_FIX_ME.md` advances the PR head, the item
+should cite that new commit rather than the previous head.
+
+#### Requested research change
+
+Replace the malformed value with the full commit SHA that contains the final
+research-authored website request, then verify the SHA resolves on PR #18.
+
+#### Research response
+
+Pending.
+
+#### Resolution evidence
+
+Pending website verification after the corrected queue is committed.
 
 ## Resolved items
 

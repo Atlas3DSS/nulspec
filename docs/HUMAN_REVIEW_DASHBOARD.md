@@ -310,6 +310,13 @@ After draft PR creation, the first read-only verification query requested
 The query stopped with its supported-field list; it did not modify the PR or
 repository. Verification was repeated using fields supported by that version.
 
+### HREVIEW-LOCAL-009 — Installed GitHub CLI lacks check-watch support
+
+The first attempt to wait for PR checks used `gh pr checks --watch`, which is
+not available in the host's GitHub CLI version. The command rejected the flag
+before contacting or changing the PR. The two checks were then polled through
+supported read-only PR metadata and both completed successfully.
+
 ### HREVIEW-EXTERNAL-001 — GitHub App could not create the draft PR
 
 The preferred GitHub App call returned `403 Resource not accessible by

@@ -1,10 +1,10 @@
 {
   "artifacts": [
     {
-      "bytes": 7659,
+      "bytes": 8220,
       "path": "README.md",
       "role": "study_readme",
-      "sha256": "5c00e2d8552d912b6363fe0f710d1971bda23657a560b0f922d7640e352db3a7"
+      "sha256": "7ee8a3e45f706b5d57188f704e01473baf4f2671b5841c49e534ba3b0db0dd16"
     },
     {
       "bytes": 6246,
@@ -13,16 +13,16 @@
       "sha256": "1aca344b5269bb493706008e2f4572f78efdd640caa0424363900d2e0a872854"
     },
     {
-      "bytes": 18667,
+      "bytes": 19300,
       "path": "REPORT.md",
       "role": "full_report",
-      "sha256": "74132bdb2fbea8744c8d6a9ad5cb618fa8b5ea841fcd831f912339d3e23dec91"
+      "sha256": "343898ab7e8864413083fd87ce0c39ee8c4af49da0a6d92104cc8dda34f1c4fa"
     },
     {
-      "bytes": 7840,
+      "bytes": 8876,
       "path": "TESTS.md",
       "role": "verification_log",
-      "sha256": "b8cc6a87ad7e7fccf6bc218cb20b3af3e63e21184cd44138530f98ba8d325fb2"
+      "sha256": "dc22d1f9f8d52d8f2591f55007b4a00b101576bbb78ca65fc873f6a3acf5f5a2"
     },
     {
       "bytes": 8213,
@@ -55,10 +55,10 @@
       "sha256": "da4d8d9f789a1404a9e93cd158c6295d7663813880038649c0d2473c031594c4"
     },
     {
-      "bytes": 48781,
+      "bytes": 51351,
       "path": "ERROR_LOG.md",
       "role": "origin_separated_error_ledger",
-      "sha256": "d364479d8bad37a526063a10111214c0ef029d7eea65a113cf645526478ef6b8"
+      "sha256": "2a13094b2793c9dd23f893af3fc9608d0c3eaf2f1bd208862dffb0cad1692d6a"
     },
     {
       "bytes": 3273,
@@ -115,10 +115,10 @@
       "sha256": "385a28e4b12973e0804e1eaa3f41e3aebb044fd29c2f1acb4f1529e0d82b60a1"
     },
     {
-      "bytes": 4565,
+      "bytes": 5251,
       "path": "FRONTEND_HANDOFF.md",
       "role": "typed_frontend_contract",
-      "sha256": "85a54cf6c8ea68e8944223dc9b309c5fa205f6186a18da2bc6666c2fdf77ecc4"
+      "sha256": "03976b48e1a03bb8041628f7787b0eeec87ee3c75dd24e64aed95a716a91296f"
     },
     {
       "bytes": 2424,
@@ -127,16 +127,28 @@
       "sha256": "6b5c6578467e28432801b7ff85f17b1e405e258933d280c41d09e30ee700b6e7"
     },
     {
-      "bytes": 3698,
+      "bytes": 3970,
       "path": "AUTHOR_EMAIL.md",
       "role": "unsent_author_email_draft",
-      "sha256": "b929d0bf7cac970594006eb84619b18586b5bd664ad4984e930ac6c051277277"
+      "sha256": "ed70bd19f91a8aabc3dcce26c7c9d9e5c61bab7b4888128e48a8d85f2194cb2b"
     },
     {
-      "bytes": 4152,
+      "bytes": 4040,
+      "path": "FABLE_REVIEW_PROTOCOL.md",
+      "role": "final_peer_review_protocol",
+      "sha256": "e35f241324e40d7bb3d9315db2fabb0f49577d3812d1d3eaa3d3b85424d4fab7"
+    },
+    {
+      "bytes": 42559,
+      "path": "scripts/fable_final_review.py",
+      "role": "final_peer_review_gate",
+      "sha256": "5452b3b52a0cef713dc850706d8dedce3d3efd21fc0b681be35b3f1b3706ed2c"
+    },
+    {
+      "bytes": 4366,
       "path": "results/executed_code_manifest.json",
       "role": "executed_code_identity",
-      "sha256": "1c5a260d6d35f933ed92f6ec967c492dff0a629d7d9edf2862f0c071c3c86545"
+      "sha256": "96366f8055fbfd0915a012f634efd963a71a05e6f17150a1754c21bf064faf61"
     },
     {
       "bytes": 151170,
@@ -5882,6 +5894,21 @@
     "effect": "Schedules new evidence and never rewrites the frozen result.",
     "question": "Which follow-up would most improve confidence in this result?"
   },
+  "final_peer_review": {
+    "action_closure_required": false,
+    "author_email_approval_status": "blocked_pending_fable_review",
+    "author_email_dispatch_authorized": false,
+    "author_email_eligible_for_human_approval": false,
+    "author_email_human_approval_required": true,
+    "human_review_required": false,
+    "protocol": "nulspec-fable-one-shot-final-gate-v1",
+    "protocol_document": "FABLE_REVIEW_PROTOCOL.md",
+    "publication_authorized": false,
+    "resubmission_allowed": false,
+    "reviewer": "Fable",
+    "single_invocation": true,
+    "status": "blocked_pending_fable_one_shot_review"
+  },
   "metrics_schema": {
     "id": "sprkd_trial_accuracy_v1",
     "not_equivalence_test": true,
@@ -7572,9 +7599,20 @@
     ]
   },
   "publication_status": {
+    "author_email_dispatch": "blocked_pending_fable_review",
     "canonical_site_import": "blocked_pending_typed_accuracy_frontend",
     "frontend_contract": "FRONTEND_HANDOFF.md",
-    "reason": "The current site validator accepts reward-delta arms, not classification-accuracy trials. Accuracy is not relabeled as reward."
+    "reason": "The current site validator accepts reward-delta arms, not classification-accuracy trials. Accuracy is not relabeled as reward.",
+    "research_release_gate": {
+      "action_closure_required": false,
+      "author_email_approval_status": "blocked_pending_fable_review",
+      "author_email_dispatch_authorized": false,
+      "author_email_eligible_for_human_approval": false,
+      "author_email_human_approval_required": true,
+      "human_review_required": false,
+      "publication_authorized": false,
+      "status": "blocked_pending_fable_one_shot_review"
+    }
   },
   "routes": {
     "arms": [

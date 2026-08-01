@@ -149,6 +149,25 @@ probes, unique artifact paths, and the SHA-256/byte count of every allowlisted
 artifact. The handoff deliberately reports the canonical site import as
 blocked until the frontend accepts a typed classification-accuracy arm.
 
+The final peer-review runner has a deterministic contract test covering all
+three decisions, rejection of a two-action `FAIL`, the blocked pre-closure
+state, exact F1/F2/F3 closure, `HARD_FAIL` human escalation, and the separate
+human approval binding for the author email:
+
+```bash
+work/.venv/bin/python scripts/fable_final_review.py self-test
+```
+
+Before the single external invocation, `build-packet` validates the complete
+seed set and result schemas, checks the pending typed website handoff, compacts
+only duplicated machine rows while retaining canonical hashes, and writes the
+review packet. The candidate tree and packet must then match the committed Git
+blob exactly. `review-once` writes its attempt marker before invoking Fable and
+refuses any second attempt. `check-gate` authorizes publication after a `PASS`,
+or after exact F1/F2/F3 closure for `FAIL`; `HARD_FAIL` always requires a human.
+Email dispatch remains closed until a separate human approval record binds the
+exact draft, final review, and any action closure.
+
 ## Container status
 
 The Dockerfile and shell/Python syntax are checked, but neither Docker nor

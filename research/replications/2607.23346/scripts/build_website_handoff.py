@@ -10,6 +10,8 @@ import math
 from pathlib import Path
 from typing import Any
 
+from fable_final_review import gate_for_paths
+
 
 EXPECTED_SEEDS = list(range(5))
 EXPECTED_RESULT_SCHEMAS = {
@@ -281,6 +283,7 @@ def main() -> int:
     stability = loaded["stability"]
     loss_contract = loaded["loss_contract"]
     citation = loaded["citations"]
+    final_review_gate = gate_for_paths(root)
     device_process_seconds = {
         "primary_training": finite(
             primary["operations"]["sum_recorded_training_stage_seconds_all_seeds"],
@@ -315,6 +318,8 @@ def main() -> int:
         ("FRONTEND_HANDOFF.md", "typed_frontend_contract"),
         ("AUTHOR_QUESTIONS.md", "constructive_author_questions"),
         ("AUTHOR_EMAIL.md", "unsent_author_email_draft"),
+        ("FABLE_REVIEW_PROTOCOL.md", "final_peer_review_protocol"),
+        ("scripts/fable_final_review.py", "final_peer_review_gate"),
         ("results/executed_code_manifest.json", "executed_code_identity"),
         ("results/PRIMARY_ACCURACY_BY_SEED.png", "primary_figure"),
         ("results/SCRATCH_RESULTS.md", "primary_human_table"),
@@ -332,6 +337,39 @@ def main() -> int:
         ("results/CITATION_AUDIT_RESULTS.md", "citation_audit_human_table"),
         *[(path, f"machine_{name}") for name, path in result_paths.items()],
     ]
+    final_review_path = root / "results/fable_final_peer_review.json"
+    optional_review_artifacts = []
+    if final_review_path.is_file():
+        optional_review_artifacts.extend(
+            [
+                (
+                    "results/fable_final_review_packet.json",
+                    "final_peer_review_packet",
+                ),
+                (
+                    "results/fable_final_peer_review.json",
+                    "final_peer_review_result",
+                ),
+                ("FABLE_FINAL_REVIEW.md", "final_peer_review_human_record"),
+            ]
+        )
+    optional_review_artifacts.extend(
+        [
+            (
+                "results/fable_action_closure.json",
+                "final_peer_review_action_closure",
+            ),
+            (
+                "results/author_email_human_approval.json",
+                "author_email_human_approval",
+            ),
+        ]
+    )
+    artifact_specs.extend(
+        (path, role)
+        for path, role in optional_review_artifacts
+        if (root / path).is_file()
+    )
     artifacts = [artifact(root, path, role) for path, role in artifact_specs]
 
     payload = {
@@ -398,6 +436,14 @@ def main() -> int:
             "local_reviewer_quality": citation["model_quality"],
             "trace_provenance": citation["trace_provenance"],
         },
+        "final_peer_review": {
+            "protocol": "nulspec-fable-one-shot-final-gate-v1",
+            "protocol_document": "FABLE_REVIEW_PROTOCOL.md",
+            "reviewer": "Fable",
+            "single_invocation": True,
+            "resubmission_allowed": False,
+            **final_review_gate,
+        },
         "compute": {
             "recorded_device_process_seconds": device_process_seconds,
             "recorded_device_process_hours_total": device_process_seconds["total"]
@@ -426,6 +472,12 @@ def main() -> int:
                 "classification-accuracy trials. Accuracy is not relabeled as reward."
             ),
             "frontend_contract": "FRONTEND_HANDOFF.md",
+            "research_release_gate": final_review_gate,
+            "author_email_dispatch": (
+                "authorized"
+                if final_review_gate["author_email_dispatch_authorized"]
+                else final_review_gate["author_email_approval_status"]
+            ),
         },
     }
 

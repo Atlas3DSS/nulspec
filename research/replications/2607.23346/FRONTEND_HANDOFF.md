@@ -90,6 +90,18 @@ analysis, while each plotted seed marker may link to its arm route. Do not link
 ignored checkpoints, raw logs, citation source packets, private paths, raw
 hostnames, service identifiers, IP addresses, or physical GPU UUIDs.
 
+## Final peer-review and email state
+
+Render and enforce `final_peer_review` from `WEBSITE_HANDOFF.json`. The release
+candidate receives exactly one Fable review and is never resubmitted. `PASS`
+authorizes publication; `FAIL` remains blocked until its machine-readable
+three-action closure is complete, then authorizes publication without a second
+review; `HARD_FAIL` remains blocked pending human disposition. Separately,
+every author email requires final human approval of the exact hashed draft.
+Fable can make the draft eligible for that approval but can never authorize
+dispatch. Review status is release governance and must not be presented as
+evidence about the paper's method.
+
 ## Extension control
 
 Render **Vote to extend this paper** with the six ranked choices in

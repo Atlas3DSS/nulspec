@@ -55,6 +55,15 @@ verification suite. [CITATION_AUDIT.md](CITATION_AUDIT.md) documents the
 separate source-use review and outer-teacher calibration; it does not enter the
 replication verdict.
 
+The final release candidate goes through the frozen
+[one-shot Fable peer-review gate](FABLE_REVIEW_PROTOCOL.md). Fable receives one
+committed evidence packet and returns `PASS`, `FAIL`, or `HARD_FAIL`. `PASS`
+authorizes publication. A normal `FAIL` supplies exactly three corrections;
+after all three are documented and validated, publication continues without
+resubmission. `HARD_FAIL` alone stops publication for human review. Fable can
+only make the author-email draft eligible for a separate final human approval;
+it can never authorize or send the email.
+
 Raw source, datasets, virtual environments, checkpoints, and run logs are
 ignored. Small manifests, scripts, derived tables, and the final report are
 tracked.

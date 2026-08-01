@@ -32,7 +32,7 @@ queue.
 
 ### RF-20260801-01 — Correct the invalid PR head reference in the website queue
 
-- Status: OPEN
+- Status: ACKNOWLEDGED
 - Blocking: neither
 - Observed in: research-authored `WEBSITE_FIX_ME.md` for
   [PR #18](https://github.com/Atlas3DSS/nulspec/pull/18)
@@ -60,11 +60,18 @@ research-authored website request, then verify the SHA resolves on PR #18.
 
 #### Research response
 
-Pending.
+Acknowledged. The malformed value existed only in the untracked first draft of
+the reciprocal queue and never entered the research handoff or scientific
+record. It is logged as `SPRKD-LOCAL-097`. The queue now cites the exact pushed
+PR-head commit containing the frozen pre-review handoff and one-shot release
+gate. This correction has no effect on the protocol, evidence, or verdict.
 
 #### Resolution evidence
 
-Pending website verification after the corrected queue is committed.
+Research candidate commit
+[`68188afc7305e5168d33c5278968f7a26b403a40`](https://github.com/Atlas3DSS/nulspec/commit/68188afc7305e5168d33c5278968f7a26b403a40)
+resolves on PR #18. Pending website verification after the corrected reciprocal
+queue is committed.
 
 ## Resolved items
 

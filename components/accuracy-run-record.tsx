@@ -24,6 +24,10 @@ const artifactLabels: Record<string, string> = {
   posthoc_register: "Post-hoc diagnostic register",
   posthoc_loss_contract: "Post-hoc loss-contract result",
   executed_code_manifest: "Executed-code manifest",
+  peer_review_protocol: "Final peer-review protocol",
+  peer_review_result: "Final peer-review result",
+  peer_review_summary: "Final peer-review summary",
+  peer_review_action_closure: "Final peer-review action closure",
 };
 
 const modelDefinitions = [

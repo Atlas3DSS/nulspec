@@ -43,6 +43,9 @@ const requiredAccuracyArtifactRoles = new Set([
   "posthoc_register",
   "posthoc_loss_contract",
   "executed_code_manifest",
+  "peer_review_protocol",
+  "peer_review_result",
+  "peer_review_summary",
 ]);
 const armRouteComponent = /^[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*$/;
 const privateText = new RegExp(
@@ -249,6 +252,43 @@ async function validateAccuracyBundle(bundle, bundleBytes, file, studyId) {
   ) {
     fail(studyId, "extension vote contract is missing or malformed");
   }
+  const review = bundle.final_peer_review;
+  const authorizedReviewStatuses = new Set([
+    "approved",
+    "approved_after_three_action_closure",
+  ]);
+  if (
+    !isObject(review) ||
+    review.protocol !== "nulspec-fable-one-shot-final-gate-v1" ||
+    review.protocol_document !== "FABLE_REVIEW_PROTOCOL.md" ||
+    review.reviewer !== "Fable" ||
+    review.single_invocation !== true ||
+    review.resubmission_allowed !== false ||
+    !authorizedReviewStatuses.has(review.status) ||
+    review.publication_authorized !== true ||
+    review.author_email_eligible_for_human_approval !== true ||
+    review.author_email_human_approval_required !== true ||
+    review.human_review_required !== false ||
+    review.action_closure_required !== false
+  ) {
+    fail(studyId, "one-shot final peer-review gate is not publication-authorized");
+  }
+  const authorEmail = bundle.author_email;
+  if (
+    !isObject(authorEmail) ||
+    !/^[0-9a-f]{64}$/.test(authorEmail.draft_sha256 ?? "") ||
+    authorEmail.public_draft !== false ||
+    authorEmail.eligible_for_human_approval !== true ||
+    authorEmail.human_approval_required !== true ||
+    authorEmail.dispatch_authorized !== review.author_email_dispatch_authorized ||
+    authorEmail.approval_status !== review.author_email_approval_status ||
+    (authorEmail.dispatch_authorized === true &&
+      authorEmail.approval_status !== "approved_for_exact_draft_once") ||
+    (authorEmail.dispatch_authorized === false &&
+      authorEmail.approval_status !== "pending_final_human_approval")
+  ) {
+    fail(studyId, "author-email human approval state is malformed or conflated");
+  }
   if (
     !isObject(bundle.diagnostics?.posthoc_loss_contract) ||
     !bundle.diagnostics.posthoc_loss_contract.scope
@@ -262,6 +302,7 @@ async function validateAccuracyBundle(bundle, bundleBytes, file, studyId) {
   if (!Array.isArray(bundle.artifacts)) fail(studyId, "artifacts are missing");
   const roles = new Set();
   const publicPaths = new Set();
+  const artifactBytesByRole = new Map();
   for (const artifact of bundle.artifacts) {
     if (!isObject(artifact) || roles.has(artifact.role)) {
       fail(studyId, `missing or duplicate artifact role ${artifact?.role}`);
@@ -290,6 +331,7 @@ async function validateAccuracyBundle(bundle, bundleBytes, file, studyId) {
     ) {
       fail(studyId, `artifact bytes or digest mismatch: ${artifact.public_path}`);
     }
+    artifactBytesByRole.set(artifact.role, artifactBytes);
     if (
       (artifact.media_type?.startsWith("text/") ||
         ["application/json", "application/yaml"].includes(artifact.media_type)) &&
@@ -300,6 +342,29 @@ async function validateAccuracyBundle(bundle, bundleBytes, file, studyId) {
   }
   for (const role of requiredAccuracyArtifactRoles) {
     if (!roles.has(role)) fail(studyId, `missing required artifact role ${role}`);
+  }
+  if (
+    review.status === "approved_after_three_action_closure" &&
+    !roles.has("peer_review_action_closure")
+  ) {
+    fail(studyId, "closed FAIL is missing its exact three-action closure artifact");
+  }
+  const peerReviewResult = JSON.parse(
+    artifactBytesByRole.get("peer_review_result").toString("utf8"),
+  );
+  if (
+    peerReviewResult.single_invocation !== true ||
+    peerReviewResult.resubmission_allowed !== false ||
+    !isObject(peerReviewResult.decision) ||
+    !isObject(peerReviewResult.packet) ||
+    peerReviewResult.decision.reviewed_packet_sha256 !==
+      peerReviewResult.packet.sha256 ||
+    (review.status === "approved" &&
+      peerReviewResult.decision.verdict !== "PASS") ||
+    (review.status === "approved_after_three_action_closure" &&
+      peerReviewResult.decision.verdict !== "FAIL")
+  ) {
+    fail(studyId, "public peer-review result does not bind the authorized gate");
   }
 
   console.log(

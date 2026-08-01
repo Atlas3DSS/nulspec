@@ -283,6 +283,38 @@ export interface AccuracyExtensionVote {
   effect: string;
 }
 
+export interface FinalPeerReviewState {
+  protocol: "nulspec-fable-one-shot-final-gate-v1";
+  protocol_document: string;
+  reviewer: "Fable";
+  single_invocation: true;
+  resubmission_allowed: false;
+  status:
+    | "approved"
+    | "approved_after_three_action_closure"
+    | "approved_after_human_disposition";
+  publication_authorized: true;
+  author_email_eligible_for_human_approval: true;
+  author_email_dispatch_authorized: boolean;
+  author_email_human_approval_required: true;
+  author_email_approval_status:
+    | "pending_final_human_approval"
+    | "approved_for_exact_draft_once";
+  human_review_required: false;
+  action_closure_required: false;
+}
+
+export interface AuthorEmailReleaseState {
+  draft_sha256: string;
+  public_draft: false;
+  eligible_for_human_approval: true;
+  dispatch_authorized: boolean;
+  human_approval_required: true;
+  approval_status:
+    | "pending_final_human_approval"
+    | "approved_for_exact_draft_once";
+}
+
 interface DiagnosticAccuracyAggregate {
   mean: number;
   n: number;
@@ -362,6 +394,8 @@ export interface AccuracyPublicationBundle {
     arms: string[];
   };
   extension_vote: AccuracyExtensionVote;
+  final_peer_review: FinalPeerReviewState;
+  author_email: AuthorEmailReleaseState;
   completion: {
     registered_runs: number;
     terminal_runs: number;

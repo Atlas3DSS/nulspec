@@ -31,6 +31,10 @@ const artifactLabels: Record<string, string> = {
   posthoc_register: "Post-hoc diagnostic register",
   posthoc_loss_contract: "Post-hoc loss-contract result",
   executed_code_manifest: "Executed-code manifest",
+  peer_review_protocol: "Final peer-review protocol",
+  peer_review_result: "Final peer-review result",
+  peer_review_summary: "Final peer-review summary",
+  peer_review_action_closure: "Final peer-review action closure",
 };
 
 const extensionSummaries: Record<string, string> = {
@@ -137,6 +141,16 @@ function hardwareProfiles(study: AccuracyStudyDocument) {
     });
   }
   return [...profiles.values()];
+}
+
+function peerReviewStatus(study: AccuracyStudyDocument) {
+  if (study.final_peer_review.status === "approved") {
+    return "Publication authorized by the one-shot final review";
+  }
+  if (study.final_peer_review.status === "approved_after_three_action_closure") {
+    return "Publication authorized after the exact three-action closure";
+  }
+  return "Publication authorized after recorded human disposition";
 }
 
 export function AccuracyStudyRecord({
@@ -381,6 +395,39 @@ export function AccuracyStudyRecord({
                   outcome-motivated diagnostic cannot replace the frozen primary
                   result.
                 </p>
+              </aside>
+
+              <aside
+                className="release-governance"
+                aria-labelledby="release-governance-heading"
+              >
+                <div className="release-governance__heading">
+                  <p className="section-kicker">Release governance · not scientific evidence</p>
+                  <h3 id="release-governance-heading">Final review and author-email state</h3>
+                </div>
+                <div className="release-governance__grid">
+                  <article>
+                    <span>Final peer review</span>
+                    <strong>{peerReviewStatus(study)}</strong>
+                    <p>
+                      Reviewer: {study.final_peer_review.reviewer}. Exactly one review
+                      invocation was permitted; resubmission is forbidden.
+                    </p>
+                  </article>
+                  <article>
+                    <span>Author email</span>
+                    <strong>
+                      {study.author_email.dispatch_authorized
+                        ? "Human approval recorded for the exact draft"
+                        : "Pending final human approval; dispatch closed"}
+                    </strong>
+                    <p>
+                      Fable can make the draft eligible for approval but cannot
+                      authorize or send it. Draft SHA-256{" "}
+                      <code>{study.author_email.draft_sha256.slice(0, 12)}</code>.
+                    </p>
+                  </article>
+                </div>
               </aside>
             </div>
           </div>

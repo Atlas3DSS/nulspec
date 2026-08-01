@@ -1,4 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { chromium } from "playwright-core";
@@ -8,6 +9,9 @@ const baseUrl = process.env.NULSPEC_TEST_URL ?? "http://127.0.0.1:4321";
 const outputDir = resolve(process.cwd(), ".artifacts/screenshots");
 const browserPath =
   process.env.NULSPEC_CHROME_PATH ?? "/usr/bin/google-chrome-stable";
+const accuracyPublicationAvailable = existsSync(
+  resolve(process.cwd(), "site-data/publications/study-260723346.json"),
+);
 
 await mkdir(outputDir, { recursive: true });
 
@@ -45,11 +49,11 @@ const scenarios = [
     path: "/",
     width: 1440,
     height: 900,
-    expectedLedgerRows: 5,
-    expectedEvidenceLinks: 5,
+    expectedLedgerRows: accuracyPublicationAvailable ? 5 : 30,
+    expectedEvidenceLinks: accuracyPublicationAvailable ? 5 : 30,
     expectedNominationFields: 2,
     expectedExtensionOptions: 0,
-    expectedSignalVerdicts: 0,
+    expectedSignalVerdicts: accuracyPublicationAvailable ? 0 : 7,
     expectedArmSections: 0,
     expectedHorizontalRegions: 1,
   },
@@ -58,11 +62,11 @@ const scenarios = [
     path: "/",
     width: 390,
     height: 844,
-    expectedLedgerRows: 5,
-    expectedEvidenceLinks: 5,
+    expectedLedgerRows: accuracyPublicationAvailable ? 5 : 30,
+    expectedEvidenceLinks: accuracyPublicationAvailable ? 5 : 30,
     expectedNominationFields: 2,
     expectedExtensionOptions: 0,
-    expectedSignalVerdicts: 0,
+    expectedSignalVerdicts: accuracyPublicationAvailable ? 0 : 7,
     expectedArmSections: 0,
     expectedHorizontalRegions: 1,
   },
@@ -71,11 +75,11 @@ const scenarios = [
     path: "/",
     width: 320,
     height: 700,
-    expectedLedgerRows: 5,
-    expectedEvidenceLinks: 5,
+    expectedLedgerRows: accuracyPublicationAvailable ? 5 : 30,
+    expectedEvidenceLinks: accuracyPublicationAvailable ? 5 : 30,
     expectedNominationFields: 2,
     expectedExtensionOptions: 0,
-    expectedSignalVerdicts: 0,
+    expectedSignalVerdicts: accuracyPublicationAvailable ? 0 : 7,
     expectedArmSections: 0,
     expectedHorizontalRegions: 1,
   },
@@ -301,7 +305,10 @@ const scenarios = [
     expectedCandidateRows: 25,
     voteResponse: "success",
   },
-];
+].filter(
+  (scenario) =>
+    accuracyPublicationAvailable || !scenario.name.startsWith("accuracy-"),
+);
 
 const report = [];
 let failed = false;

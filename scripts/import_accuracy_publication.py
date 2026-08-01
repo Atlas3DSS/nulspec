@@ -54,6 +54,22 @@ PUBLIC_ARTIFACTS = {
         "posthoc-loss-contract.md",
     ),
     "executed_code_identity": ("executed_code_manifest", "executed-code.json"),
+    "final_peer_review_protocol": (
+        "peer_review_protocol",
+        "peer-review-protocol.md",
+    ),
+}
+
+OPTIONAL_REVIEW_ARTIFACTS = {
+    "final_peer_review_result": ("peer_review_result", "peer-review-result.json"),
+    "final_peer_review_human_record": (
+        "peer_review_summary",
+        "peer-review-summary.md",
+    ),
+    "final_peer_review_action_closure": (
+        "peer_review_action_closure",
+        "peer-review-action-closure.json",
+    ),
 }
 
 
@@ -82,7 +98,9 @@ def require_object(value: Any, label: str) -> dict[str, Any]:
     return value
 
 
-def validate_handoff(bundle: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
+def validate_handoff(
+    bundle: dict[str, Any], require_release_authorized: bool
+) -> tuple[str, list[dict[str, Any]], dict[str, Any], str]:
     if bundle.get("schema_version") != HANDOFF_SCHEMA:
         raise ImportError(f"schema_version must be {HANDOFF_SCHEMA}")
 
@@ -231,6 +249,54 @@ def validate_handoff(bundle: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]
         if required not in diagnostics:
             raise ImportError(f"diagnostic section is missing: {required}")
 
+    review = require_object(bundle.get("final_peer_review"), "final_peer_review")
+    if (
+        review.get("protocol") != "nulspec-fable-one-shot-final-gate-v1"
+        or review.get("protocol_document") != "FABLE_REVIEW_PROTOCOL.md"
+        or review.get("reviewer") != "Fable"
+        or review.get("single_invocation") is not True
+        or review.get("resubmission_allowed") is not False
+        or review.get("author_email_human_approval_required") is not True
+    ):
+        raise ImportError("one-shot final peer-review contract is malformed")
+    release_gate = require_object(status.get("research_release_gate"), "research_release_gate")
+    for key in (
+        "status",
+        "publication_authorized",
+        "author_email_eligible_for_human_approval",
+        "author_email_dispatch_authorized",
+        "author_email_human_approval_required",
+        "author_email_approval_status",
+        "human_review_required",
+        "action_closure_required",
+    ):
+        if review.get(key) != release_gate.get(key):
+            raise ImportError(f"final peer review disagrees with publication gate at {key}")
+
+    authorized_statuses = {
+        "approved",
+        "approved_after_three_action_closure",
+    }
+    if require_release_authorized:
+        if (
+            review.get("publication_authorized") is not True
+            or review.get("status") not in authorized_statuses
+            or review.get("author_email_eligible_for_human_approval") is not True
+            or review.get("human_review_required") is not False
+            or review.get("action_closure_required") is not False
+        ):
+            raise ImportError(
+                "research release gate is not authorized: "
+                + str(review.get("status") or "unknown")
+            )
+        if review.get("author_email_dispatch_authorized") is True:
+            if review.get("author_email_approval_status") != "approved_for_exact_draft_once":
+                raise ImportError("author-email dispatch lacks exact-draft human approval")
+        elif review.get("author_email_approval_status") != "pending_final_human_approval":
+            raise ImportError("author-email approval state is inconsistent after peer review")
+    elif review.get("publication_authorized") not in {True, False}:
+        raise ImportError("final peer-review publication state is not Boolean")
+
     artifacts = bundle.get("artifacts")
     if not isinstance(artifacts, list):
         raise ImportError("artifacts must be an array")
@@ -243,7 +309,32 @@ def validate_handoff(bundle: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]
             "handoff is missing required declared artifacts: "
             + ", ".join(sorted(missing_roles))
         )
-    return study_id, artifacts
+    draft = next(
+        (
+            item
+            for item in artifacts
+            if isinstance(item, dict) and item.get("role") == "unsent_author_email_draft"
+        ),
+        None,
+    )
+    if not isinstance(draft, dict) or not isinstance(draft.get("sha256"), str):
+        raise ImportError("exact author-email draft digest is missing")
+    if not HEX64.fullmatch(draft["sha256"]):
+        raise ImportError("exact author-email draft digest is malformed")
+    if require_release_authorized:
+        required_review_roles = {
+            "final_peer_review_result",
+            "final_peer_review_human_record",
+        }
+        if review.get("status") == "approved_after_three_action_closure":
+            required_review_roles.add("final_peer_review_action_closure")
+        missing_review_roles = required_review_roles - declared_roles
+        if missing_review_roles:
+            raise ImportError(
+                "authorized release is missing peer-review artifacts: "
+                + ", ".join(sorted(missing_review_roles))
+            )
+    return study_id, artifacts, review, draft["sha256"]
 
 
 def media_type(path: str) -> str:
@@ -260,13 +351,16 @@ def import_accuracy_publication(
     source_root: Path,
     site_root: Path,
     evidence_revision: str,
+    check_only: bool = False,
 ) -> None:
     if not FULL_GIT_SHA.fullmatch(evidence_revision):
         raise ImportError("evidence revision must be a full 40-character Git SHA")
 
     handoff, raw_handoff = load_bundle(handoff_path)
     verify_public_value(handoff)
-    study_id, declared_artifacts = validate_handoff(handoff)
+    study_id, declared_artifacts, final_review, author_email_sha256 = validate_handoff(
+        handoff, require_release_authorized=not check_only
+    )
 
     repository_root = Path(str(git(source_root, "rev-parse", "--show-toplevel"))).resolve()
     try:
@@ -298,7 +392,16 @@ def import_accuracy_publication(
     source_root = source_root.resolve()
     staged: list[tuple[Path, bytes]] = []
     public_artifacts: list[dict[str, Any]] = []
-    for declared_role, (site_role, filename) in PUBLIC_ARTIFACTS.items():
+    artifact_selection = dict(PUBLIC_ARTIFACTS)
+    artifact_selection.update(
+        {
+            role: projection
+            for role, projection in OPTIONAL_REVIEW_ARTIFACTS.items()
+            if role in declared_by_role
+        }
+    )
+    artifact_contents: dict[str, bytes] = {}
+    for declared_role, (site_role, filename) in artifact_selection.items():
         item = declared_by_role[declared_role]
         source_relative = safe_relative(item.get("path", ""), "artifact path")
         source = (source_root / Path(*source_relative.parts)).resolve()
@@ -313,6 +416,7 @@ def import_accuracy_publication(
             raise ImportError(f"invalid artifact digest: {source_relative}")
         if sha256(content) != expected_digest:
             raise ImportError(f"artifact digest mismatch: {source_relative}")
+        artifact_contents[declared_role] = content
         detected_type = media_type(str(source_relative))
         if (
             detected_type.startswith("text/")
@@ -335,6 +439,64 @@ def import_accuracy_publication(
                 "byte_count": expected_bytes,
             }
         )
+
+    if final_review.get("publication_authorized") is True:
+        try:
+            review_result = json.loads(artifact_contents["final_peer_review_result"])
+        except (KeyError, json.JSONDecodeError) as exc:
+            raise ImportError("authorized peer-review result is unavailable or invalid") from exc
+        if (
+            review_result.get("single_invocation") is not True
+            or review_result.get("resubmission_allowed") is not False
+            or not isinstance(review_result.get("decision"), dict)
+            or review_result["decision"].get("verdict") not in {"PASS", "FAIL"}
+            or not isinstance(review_result.get("packet"), dict)
+            or review_result["decision"].get("reviewed_packet_sha256")
+            != review_result["packet"].get("sha256")
+        ):
+            raise ImportError("authorized peer-review result violates the one-shot contract")
+        if final_review.get("status") == "approved":
+            if review_result["decision"].get("verdict") != "PASS":
+                raise ImportError("approved peer-review gate is not backed by PASS")
+            for key in (
+                "status",
+                "publication_authorized",
+                "author_email_eligible_for_human_approval",
+                "author_email_dispatch_authorized",
+                "author_email_human_approval_required",
+                "author_email_approval_status",
+                "human_review_required",
+                "action_closure_required",
+            ):
+                if review_result.get("gate", {}).get(key) != final_review.get(key):
+                    raise ImportError(
+                        f"peer-review result disagrees with release gate at {key}"
+                    )
+        elif final_review.get("status") == "approved_after_three_action_closure":
+            if review_result["decision"].get("verdict") != "FAIL":
+                raise ImportError("three-action closure is not backed by FAIL")
+            try:
+                closure = json.loads(
+                    artifact_contents["final_peer_review_action_closure"]
+                )
+            except (KeyError, json.JSONDecodeError) as exc:
+                raise ImportError("three-action closure is unavailable or invalid") from exc
+            actions = closure.get("actions")
+            if (
+                closure.get("no_resubmission_performed") is not True
+                or not isinstance(actions, list)
+                or [action.get("id") for action in actions] != ["F1", "F2", "F3"]
+                or any(action.get("status") != "RESOLVED" for action in actions)
+            ):
+                raise ImportError("three-action closure does not close exact F1/F2/F3")
+
+    if check_only:
+        print(
+            "NULSPEC_ACCURACY_HANDOFF_COMPATIBLE "
+            f"study={study_id} runs={len(handoff['primary']['runs'])} "
+            f"release_gate={final_review.get('status')}"
+        )
+        return
 
     runs = handoff["primary"]["runs"]
     site_bundle = {
@@ -360,6 +522,21 @@ def import_accuracy_publication(
         "artifacts": public_artifacts,
         "routes": handoff["routes"],
         "extension_vote": handoff["extension_vote"],
+        "final_peer_review": final_review,
+        "author_email": {
+            "draft_sha256": author_email_sha256,
+            "public_draft": False,
+            "eligible_for_human_approval": final_review[
+                "author_email_eligible_for_human_approval"
+            ],
+            "dispatch_authorized": final_review[
+                "author_email_dispatch_authorized"
+            ],
+            "human_approval_required": final_review[
+                "author_email_human_approval_required"
+            ],
+            "approval_status": final_review["author_email_approval_status"],
+        },
         "completion": {
             "registered_runs": len(runs),
             "terminal_runs": len(runs),
@@ -397,6 +574,11 @@ def main() -> int:
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--site-root", type=Path, default=Path.cwd())
     parser.add_argument("--evidence-revision", required=True)
+    parser.add_argument(
+        "--check-only",
+        action="store_true",
+        help="validate typed compatibility without resolving a pending research gate",
+    )
     args = parser.parse_args()
     try:
         import_accuracy_publication(
@@ -404,6 +586,7 @@ def main() -> int:
             args.source_root.resolve(),
             args.site_root.resolve(),
             args.evidence_revision,
+            args.check_only,
         )
     except (ImportError, OSError, TypeError, KeyError, ValueError) as exc:
         print(f"NULSPEC_ACCURACY_IMPORT_FAILED: {exc}", file=sys.stderr)

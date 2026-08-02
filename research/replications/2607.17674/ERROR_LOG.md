@@ -552,6 +552,16 @@ limitations. Entries are never removed after correction.
   the absolute frozen upstream tree and Python environment in the active
   execution checkout. No generated experiment artifact was read or changed.
 
+### LRS-LOCAL-054 — PR status query requested an unsupported field
+
+- **State:** corrected immediately; no scientific effect
+- **Observation:** a read-only GitHub CLI query requested `headRefOid`, which
+  is not exposed by the installed `gh pr view` JSON field set. The preceding
+  check query still reported both required checks as passing.
+- **Disposition:** query the supported commit list and select its final OID.
+  The corrected read confirmed the draft PR was clean at the expected branch
+  commit. No repository or pull-request state changed.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

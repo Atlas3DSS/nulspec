@@ -1390,14 +1390,15 @@ limitations. Entries are never removed after correction.
 - **Disposition:** use the explicit Windows PowerShell path and single-quoted
   PowerShell source. Neither attempt signaled a process.
 
-### LRS-LOCAL-127 — WSL-only process check missed the Windows Palworld client
+### LRS-LOCAL-127 — WSL-only process check missed a Windows GPU workload
 
 - **State:** corrected before any process action
 - **Observation:** `pgrep` inside WSL led to the incorrect statement that no
-  local Palworld client was active. Windows GPU counters and `Get-Process`
-  showed responsive PID 6740.
+  local interactive Windows GPU workload was active. Windows GPU counters and
+  `Get-Process` showed that it was responsive.
 - **Disposition:** inspect Windows processes through Windows APIs before making
-  cross-OS resource claims. Palworld was never signaled or reconfigured.
+  cross-OS resource claims. The unrelated process was never signaled or
+  reconfigured.
 
 ### LRS-LOCAL-128 — one slot query used the wrong loopback port
 
@@ -1432,12 +1433,12 @@ limitations. Entries are never removed after correction.
   this nonce from equality, records each observed value, and retains strict
   comparison for every other field. Start a fresh trace.
 
-### LRS-LOCAL-132 — Palworld coexistence diagnostic consumed an attempt slot
+### LRS-LOCAL-132 — workload-coexistence diagnostic consumed an attempt slot
 
 - **State:** terminal v1.0.6 operator stop; no citation weight
 - **Observation:** after exact marker pinning, the operator resumed while the
-  responsive Windows Palworld client was still rendering. Prompt evaluation
-  slowed from seconds to more than one minute per 2,048-token batch. The runner
+  responsive, unrelated Windows GPU workload was still active. Prompt
+  evaluation slowed from seconds to more than one minute per 2,048-token batch. The runner
   was stopped before its first model event or timeout, but the immutable
   `attempt-02` directory had already been created.
 - **Disposition:** retain both incomplete calls and their bounded 734.054536
@@ -1508,6 +1509,17 @@ limitations. Entries are never removed after correction.
 - **Disposition:** use only fields listed by this client and obtain the head SHA
   verbatim from `git rev-parse`. The corrected PR query showed both checks in
   progress on draft PR 26.
+
+### LRS-LOCAL-140 — v1.0.7 draft reintroduced a private workload name
+
+- **State:** corrected before preflight or any v1.0.7 model request
+- **Observation:** the first tracked v1.0.7 wording named an unrelated personal
+  workload despite the prior decision to keep personal operations out of the
+  research draft.
+- **Disposition:** retain exact details only in the ignored private trace, use
+  neutral resource-contention language in tracked research records, and replace
+  the prospective runtime tag before any execution. Scientific settings and
+  trace findings are unchanged.
 
 ## External acquisition limitations
 

@@ -647,8 +647,8 @@ reconstruct that pinned upstream tree and pass before any live v1.0.6 request.
 
 The fresh v1.0.6 calibration passed its outer gate and six remaining sources
 completed. The operator then stopped the second Galichin evidence call when an
-active Windows Palworld client reduced throughput enough to threaten the frozen
-timeouts. Two incomplete calls are retained at zero weight. The standard
+active, unrelated Windows GPU workload reduced throughput enough to threaten
+the frozen timeouts. Two incomplete calls are retained at zero weight. The standard
 accounting covers 5,992.068087 accelerator-seconds from 46 terminal calls; the
 incomplete calls add a separately bounded 734.054536 seconds without terminal
 usage records.
@@ -668,7 +668,7 @@ runner and both imported validators. No v1.0.6 model output will be reused.
 The prospective config, runtime amendment, runner, preflight, and accounting
 summarizer SHA-256 values are
 `fcf865a88998fc4962c46bb165d7219d33353fecf73a2440766c5ae068c400ea`,
-`a03b3ce0dd75aea1701a636896342550837dd2c8c09e952f1e0f928a9c9b28f5`,
+`e8817dde538ef9f830875d6d20fbf16ecd8511ead4d6f85a483c4f3a7bea8c52`,
 `1c28f1535f9075ff40a62134fa8e4be043dafbb8a0cd0d02ec450e62c5c75086`,
 `cd4be40356d27a99381ff4d44547775dcea88c709eebe0826f2c3d04980b2c64`,
 and `0be2764b26e3ce41a6b31ce4fab260b13cc4d937932b4a84b1ca5ced74fe6252`.

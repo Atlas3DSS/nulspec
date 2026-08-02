@@ -2,8 +2,8 @@
 
 Runtime v1.0.6 completed its fresh six-source calibration, passed the bounded
 outer gate, and completed six additional source reviews. It was then stopped by
-the operator during the second Galichin et al. evidence chunk after a Windows
-Palworld client began actively sharing the workstation RTX 4090. The first
+the operator during the second Galichin et al. evidence chunk after an unrelated
+interactive Windows workload began actively sharing the workstation RTX 4090. The first
 interrupted call retained 5,371 streamed events but no terminal response or
 usage record. An exact-identity diagnostic resume received no model event before
 the operator stopped it. Neither incomplete call has evidentiary weight, and the

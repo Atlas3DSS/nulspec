@@ -132,8 +132,8 @@ invalid attempts remain zero-weight where validation failed. Prospective
 runtime v1.0.6 adds a hash-bound conservative exact-line prompt only on evidence
 retries and permits a third evidence attempt; synthesis remains capped at two.
 Its fresh calibration passed, but the remaining pass was stopped locally when
-a Windows Palworld client made registered request timeouts likely. The restart
-also exposed that the harness had bound llama.cpp's process-random,
+an unrelated Windows GPU workload made registered request timeouts likely. The
+restart also exposed that the harness had bound llama.cpp's process-random,
 nonsemantic `props.media_marker` inside stable run identity. Prospective runtime
 v1.0.7 removes exactly that nonce from resume equality, records it on every
 resume, and prevents duplicate phase-start events. Nothing from v1.0.6 will be

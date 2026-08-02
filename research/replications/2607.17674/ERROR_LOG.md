@@ -104,6 +104,15 @@ limitations. Entries are never removed after correction.
 - **Disposition:** reran the comparison without an explicit deletion command;
   the operating system may reclaim the isolated temporary directory normally.
 
+### LRS-LOCAL-012 — source search included a nonexistent root path
+
+- **State:** corrected; no scientific effect
+- **Observation:** a repository-wide search for prior analysis patterns also
+  named a conventional `src/` directory that this repository does not have.
+  `rg` reported that missing path while still returning matches from every
+  existing requested directory.
+- **Disposition:** subsequent searches use paths confirmed by `rg --files`.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404
@@ -173,3 +182,15 @@ limitations. Entries are never removed after correction.
   preregistered primary run. Treat exact-run comparisons as seed-conditional,
   record complete environment and artifact hashes, and evaluate fresh-run
   variability only in a separately labeled extension.
+
+### LRS-UPSTREAM-008 — evaluator discards per-example metric outcomes
+
+- **State:** open; blocks the registered conditional bootstrap
+- **Observation:** the released evaluator writes only aggregate Distributional
+  Fidelity and Analogical Consistency scalars. It does not retain the 10,000
+  fidelity-generation outcomes or the 1,024 analogical-pair outcomes needed to
+  audit individual classifications or bootstrap within-evaluation uncertainty.
+- **Disposition:** preserve the exact aggregate-only evaluator in primary
+  runs. Report the registered interval as unavailable, not zero-width; any
+  record-preserving rerun requires a separately labeled instrumentation
+  extension and cannot replace the primary observation.

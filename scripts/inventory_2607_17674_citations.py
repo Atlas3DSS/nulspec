@@ -25,7 +25,13 @@ def balanced_entries(text: str) -> list[tuple[str, str, str]]:
             index += 1
         if depth:
             raise ValueError(f"unterminated BibTeX entry: {match.group(2)}")
-        entries.append((match.group(1), match.group(2).strip(), text[match.end() : index - 1]))
+        entries.append(
+            (
+                match.group(1),
+                match.group(2).strip(),
+                text[match.end() : index - 1],
+            )
+        )
         cursor = index
     return entries
 
@@ -134,7 +140,9 @@ def main() -> None:
                 "doi": fields.get("doi"),
                 "eprint": fields.get("eprint"),
                 "source_url": source_url,
-                "source_acquisition": "pending" if key in occurrences else "not-required",
+                "source_acquisition": (
+                    "pending" if key in occurrences else "not-required"
+                ),
                 "review_state": "pending" if key in occurrences else "not-cited",
                 "occurrences": occurrences.get(key, []),
             }
@@ -150,7 +158,8 @@ def main() -> None:
     }
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, indent=2) + "\n")
-    print(json.dumps({key: payload[key] for key in payload if key != "records"}, indent=2))
+    summary = {key: payload[key] for key in payload if key != "records"}
+    print(json.dumps(summary, indent=2))
 
 
 if __name__ == "__main__":

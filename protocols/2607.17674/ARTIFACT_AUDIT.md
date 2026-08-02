@@ -40,6 +40,14 @@ full environment remain recorded, but bit-identical reruns are not guaranteed.
   random-initialization grid;
 - independent training seeds or run-to-run uncertainty.
 
+The released standalone evaluator consumes all 10,000 multi-task test records
+for Distributional Fidelity and samples 1,024 pairs for Analogical
+Consistency, but writes only the two aggregate scalars. It does not preserve
+per-generation or per-pair classifications. The protocol's conditional
+within-evaluation bootstrap is therefore unavailable for an unmodified primary
+run; a record-preserving evaluation must be reported as an instrumentation
+extension.
+
 These gaps prevent exact end-to-end reconstruction of every paper figure from
 public artifacts alone. They do not prevent execution of the four primary arms
 registered in protocol v1.0.0.

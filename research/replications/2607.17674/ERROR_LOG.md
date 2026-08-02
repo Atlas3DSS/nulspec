@@ -1310,6 +1310,186 @@ limitations. Entries are never removed after correction.
   focused v1.0.6 tests and scoped validators locally, and require the normal
   GitHub workflow to pass after push.
 
+### LRS-LOCAL-117 — long-lived server poll exceeded the display budget
+
+- **State:** corrected operational practice; append-only server log unaffected
+- **Observation:** a second interactive poll of the long-lived llama-server
+  session returned more buffered output than the tool display budget.
+- **Disposition:** use bounded on-disk tails and `/slots`; never treat truncated
+  terminal display as loss of the authoritative server log.
+
+### LRS-LOCAL-118 — first private v1.0.6 context helper failed style checks
+
+- **State:** corrected before any audit request
+- **Observation:** Ruff found unsorted imports in the private context-audit
+  helper.
+- **Disposition:** format and lint generated diagnostic code before execution;
+  retain the corrected helper and its manifest.
+
+### LRS-LOCAL-119 — remote read-only probe assumed `rg` was installed
+
+- **State:** corrected; no experiment effect
+- **Observation:** one dev-box inspection exited 127 because that host lacks
+  `rg`.
+- **Disposition:** use the available bounded `grep`/`find` tools on that host.
+
+### LRS-LOCAL-120 — first accepted-line diagnostic needed formatting
+
+- **State:** corrected before producing a diagnostic result
+- **Observation:** the private v1.0.5 accepted-line audit helper initially had
+  import-order and formatting errors.
+- **Disposition:** apply deterministic formatting, repeat checks, then manifest
+  the corrected diagnostic tree.
+
+### LRS-LOCAL-121 — combined diagnostic and hash output was truncated
+
+- **State:** corrected by bounded commands; artifacts unaffected
+- **Observation:** one combined read-only accepted-line check and hash dump
+  exceeded the tool-output budget.
+- **Disposition:** run bounded diagnostics and hash reports separately.
+
+### LRS-LOCAL-122 — guard heartbeat poll accumulated excessive output
+
+- **State:** corrected by shorter deltas; guard remained active
+- **Observation:** a Qwen-guard poll accumulated enough heartbeat lines to
+  truncate the display.
+- **Disposition:** poll frequent, bounded deltas; the guard log remains the
+  complete source.
+
+### LRS-LOCAL-123 — exploratory probes used several wrong paths or fields
+
+- **State:** corrected; all were read-only precondition failures
+- **Observation:** exploratory commands used a wrong diagnostic filename, an
+  incomplete trace-index filename, incorrect JSON fields, one malformed `jq`
+  quote, and a venv interpreter for a globally installed Ruff executable.
+- **Disposition:** inspect exact paths and schemas first, then repeat with the
+  correct executable. None changed a trace or contacted a model.
+
+### LRS-LOCAL-124 — first remaining launch used the wrong Python runtime
+
+- **State:** rejected before an event or request; corrected
+- **Observation:** the first v1.0.6 remaining-phase launch used the repository
+  Python 3.12 venv instead of the calibration-bound system Python 3.10. Stable
+  input equality failed closed.
+- **Disposition:** relaunch with `/usr/bin/python3`; preserve the rejection as a
+  no-call local error.
+
+### LRS-LOCAL-125 — instruction-file search crossed too broad a tree
+
+- **State:** interrupted; no file or experiment effect
+- **Observation:** `find .. -name AGENTS.md` crossed an unnecessarily large
+  parent tree and did not return promptly.
+- **Disposition:** inspect only the repository and direct instruction-bearing
+  ancestors.
+
+### LRS-LOCAL-126 — first Windows process probes used bad path and quoting
+
+- **State:** corrected; both failed read-only
+- **Observation:** the first probe used an unavailable `powershell.exe` path;
+  the next allowed Bash to expand PowerShell `$` expressions.
+- **Disposition:** use the explicit Windows PowerShell path and single-quoted
+  PowerShell source. Neither attempt signaled a process.
+
+### LRS-LOCAL-127 — WSL-only process check missed the Windows Palworld client
+
+- **State:** corrected before any process action
+- **Observation:** `pgrep` inside WSL led to the incorrect statement that no
+  local Palworld client was active. Windows GPU counters and `Get-Process`
+  showed responsive PID 6740.
+- **Disposition:** inspect Windows processes through Windows APIs before making
+  cross-OS resource claims. Palworld was never signaled or reconfigured.
+
+### LRS-LOCAL-128 — one slot query used the wrong loopback port
+
+- **State:** corrected; no server effect
+- **Observation:** a read-only `/slots` query used port 8091 although the frozen
+  route was port 8080 and received connection refused.
+- **Disposition:** derive the port from the bound route before diagnostics.
+
+### LRS-LOCAL-129 — two parallel status helpers had a JavaScript syntax error
+
+- **State:** corrected; nested commands did not run
+- **Observation:** two ad hoc parallel poll wrappers omitted a closing
+  parenthesis and failed during parsing.
+- **Disposition:** use explicit named promises for multi-session polls.
+
+### LRS-LOCAL-130 — completed server-session poll returned 67,035 tokens
+
+- **State:** display-only truncation; on-disk log intact
+- **Observation:** polling a completed llama-server terminal session returned
+  its full buffered history and far exceeded the requested display budget.
+- **Disposition:** never poll that session again; use the hash-bound log file.
+
+### LRS-LOCAL-131 — v1.0.6 bound a process-random media marker
+
+- **State:** terminal local harness defect; prospective v1.0.7 fix registered
+- **Observation:** llama.cpp randomizes text-only `/props.media_marker` on each
+  process. v1.0.6 included it in stable run-input equality, so a scientifically
+  identical restart failed before an event or model request. A restart with
+  `LLAMA_MEDIA_MARKER` pinned to the immutable original proved it was the sole
+  difference.
+- **Disposition:** never edit the v1.0.6 input. Runtime v1.0.7 removes exactly
+  this nonce from equality, records each observed value, and retains strict
+  comparison for every other field. Start a fresh trace.
+
+### LRS-LOCAL-132 — Palworld coexistence diagnostic consumed an attempt slot
+
+- **State:** terminal v1.0.6 operator stop; no citation weight
+- **Observation:** after exact marker pinning, the operator resumed while the
+  responsive Windows Palworld client was still rendering. Prompt evaluation
+  slowed from seconds to more than one minute per 2,048-token batch. The runner
+  was stopped before its first model event or timeout, but the immutable
+  `attempt-02` directory had already been created.
+- **Disposition:** retain both incomplete calls and their bounded 734.054536
+  seconds separately from completed-call accounting. Do not remove a retry
+  directory. Fresh v1.0.7 work waits for natural GPU availability.
+
+### LRS-LOCAL-133 — first operator-stop events were inserted before later events
+
+- **State:** corrected before the final trace seal; superseded indexes retained
+  privately
+- **Observation:** the first manual terminal-event patch matched an older line
+  rather than end-of-file, placing the stop before events already appended by a
+  resume. The first accounting attempt therefore rejected a nonterminal phase,
+  and two preliminary indexes became stale.
+- **Disposition:** use journal timestamps to reconstruct the two operator-stop
+  boundaries, correct the still-unreleased event order, disclose this repair,
+  and designate only the final index ending `operator-stop-final.json` as
+  authoritative.
+
+### LRS-LOCAL-134 — one error-ledger probe used the repository root
+
+- **State:** corrected; read-only
+- **Observation:** a status command tried `ERROR_LOG.md` at repository root
+  instead of the study-local path and returned file-not-found.
+- **Disposition:** use `research/replications/2607.17674/ERROR_LOG.md`.
+
+### LRS-LOCAL-135 — active-server metrics probe timed out
+
+- **State:** diagnostic-only; no request or server change
+- **Observation:** one five-second `/metrics` read timed out while a heavily
+  contended model request occupied the single llama.cpp slot.
+- **Disposition:** use `/slots`, bounded log tails, and process telemetry; a
+  diagnostic timeout is not a model or paper failure.
+
+### LRS-LOCAL-136 — first v1.0.7 format check found three files
+
+- **State:** corrected before commit, tag, preflight, or model request
+- **Observation:** lint, compilation, and 35 focused tests passed, but Ruff's
+  check-only formatter identified three edited Python files.
+- **Disposition:** apply deterministic formatting and repeat all focused checks;
+  the repeated suite passed 36 tests after the additional source-binding test.
+
+### LRS-LOCAL-137 — full v1.0.7 suite repeated the known ignored fixture
+
+- **State:** isolated; no effect on this study
+- **Observation:** the repository-wide run passed 189 tests and repeated the
+  one known different-study failure because ignored
+  `paper_repro/SLM-RL-Agents/results/all_results.json` is absent locally.
+- **Disposition:** do not manufacture or copy that unrelated result. Require
+  the GitHub workflow to reconstruct its pinned upstream fixture and pass, while
+  retaining the 36 focused passes and both scoped validator passes locally.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

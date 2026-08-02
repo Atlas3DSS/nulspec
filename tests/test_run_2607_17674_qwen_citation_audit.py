@@ -448,6 +448,7 @@ def test_v105_only_expands_evidence_output_ceiling() -> None:
         "1.0.4",
         "1.0.5",
         "1.0.6",
+        "1.0.7",
     }
 
 
@@ -478,6 +479,29 @@ def test_v106_only_adds_conservative_evidence_repair() -> None:
         == prior["primary_reviewer"]["synthesis_generation"]
     )
     assert RUNNER.RUNTIME_AMENDMENTS["1.0.6"].is_file()
+
+
+def test_v107_only_adds_registered_resume_identity_policy() -> None:
+    protocol_root = WORKSPACE / "protocols/2607.17674"
+    prior = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.6.json").read_text()
+    )
+    amended = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.7.json").read_text()
+    )
+    normalized = copy.deepcopy(amended)
+    normalized["protocol_version"] = prior["protocol_version"]
+    normalized["prior_protocol_tag"] = prior["prior_protocol_tag"]
+    normalized["protocol_tag"] = prior["protocol_tag"]
+    normalized.pop("resume_identity")
+    assert normalized == prior
+    assert amended["protocol_version"] == "1.0.7"
+    assert amended["resume_identity"] == {
+        "comparison_mode": ("stable-input-minus-registered-volatile-route-props-v1"),
+        "volatile_route_props_excluded_from_equality": ["media_marker"],
+        "record_excluded_values_on_resume": True,
+    }
+    assert RUNNER.RUNTIME_AMENDMENTS["1.0.7"].is_file()
 
 
 def test_v106_binds_repair_prompt_only_after_evidence_failure() -> None:

@@ -131,9 +131,15 @@ text that was not grounded in one physical PDF line. The sealed trace and all
 invalid attempts remain zero-weight where validation failed. Prospective
 runtime v1.0.6 adds a hash-bound conservative exact-line prompt only on evidence
 retries and permits a third evidence attempt; synthesis remains capped at two.
-Nothing from v1.0.5 will be reused, and a fresh calibration, context audit, and
-exclusive-lock preflight are required. No teacher input, training projection,
-publication, or email is yet authorized.
+Its fresh calibration passed, but the remaining pass was stopped locally when
+a Windows Palworld client made registered request timeouts likely. The restart
+also exposed that the harness had bound llama.cpp's process-random,
+nonsemantic `props.media_marker` inside stable run identity. Prospective runtime
+v1.0.7 removes exactly that nonce from resume equality, records it on every
+resume, and prevents duplicate phase-start events. Nothing from v1.0.6 will be
+reused; a fresh calibration, context audit, and exclusive-lock preflight are
+required. No teacher input, training projection, publication, or email is yet
+authorized.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the

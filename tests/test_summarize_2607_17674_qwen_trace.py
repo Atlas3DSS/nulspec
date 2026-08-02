@@ -177,6 +177,42 @@ def test_summarize_rejects_nonterminal_phase(tmp_path: Path) -> None:
         MODULE.summarize(trace, trace_index, "full")
 
 
+def test_phase_intervals_accept_registered_resume_event() -> None:
+    intervals = MODULE.phase_intervals(
+        [
+            {
+                "at_utc": "2026-08-02T00:00:00Z",
+                "event": "qwen_phase_started",
+                "phase": "remaining",
+            },
+            {
+                "at_utc": "2026-08-02T00:01:00Z",
+                "event": "qwen_phase_resumed",
+                "phase": "remaining",
+            },
+            {
+                "at_utc": "2026-08-02T00:02:00Z",
+                "event": "qwen_phase_completed",
+                "phase": "remaining",
+            },
+        ]
+    )
+    assert intervals[0]["elapsed_seconds"] == 120
+
+
+def test_phase_intervals_reject_resume_without_start() -> None:
+    with pytest.raises(MODULE.AccountingError, match="resume lacks"):
+        MODULE.phase_intervals(
+            [
+                {
+                    "at_utc": "2026-08-02T00:01:00Z",
+                    "event": "qwen_phase_resumed",
+                    "phase": "remaining",
+                }
+            ]
+        )
+
+
 def test_summarize_rejects_trace_changed_after_index(tmp_path: Path) -> None:
     trace, trace_index = build_trace(tmp_path)
     write_json(trace / "sources" / "sourceA" / "final-review.json", {"changed": True})

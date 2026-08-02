@@ -9,10 +9,11 @@ the traces, or send email.
 - Use citation-audit evidence contract `2607.17674-citation-audit-v1.0.1` and
   trace-only harness amendment `2607.17674-citation-audit-harness-v1.0.4`.
 - After the preserved v1.0.1, v1.0.2, and v1.0.3 zero-weight calibration
-  failures, the terminal v1.0.4 output-budget failure, and the terminal v1.0.5
-  exact-line repair failure, use prospective runtime amendment
-  `2607.17674-citation-audit-runtime-v1.0.6` and pass
-  `citation_audit_config.v1.0.6.json` explicitly.
+  failures, the terminal v1.0.4 output-budget failure, the terminal v1.0.5
+  exact-line repair failure, and the locally interrupted v1.0.6 trace, use
+  prospective runtime amendment
+  `2607.17674-citation-audit-runtime-v1.0.7` and pass
+  `citation_audit_config.v1.0.7.json` explicitly.
 - Use teacher hierarchy `2607.17674-citation-teachers-v1.0.3`.
 - Require the exact registered GGUF basename and record its runtime SHA-256.
 - Bind a natively built llama-server from commit
@@ -29,13 +30,19 @@ the traces, or send email.
 - Runtime schema preflight v1.0.1 must acquire that same lock and produce a
   fresh eligible pass before replacement calibration. The earlier concurrent
   parser check is retained as diagnostic-only evidence.
-- Evidence runtime v1.0.6 presents the immutable chunk as exact page-labeled
+- Evidence runtime v1.0.7 retains v1.0.6's immutable exact page-labeled
   physical source lines. Every excerpt must come from one line without joining
   a split PDF word. After, and only after, a failed evidence attempt, the runner
   appends the hash-bound conservative repair prompt. Evidence calls have at
   most three attempts; synthesis calls remain at two. The unchanged client
   validator grounds every excerpt against the original packet, and every
   invalid attempt remains immutable with zero weight.
+- Resume identity excludes exactly llama.cpp's process-random
+  `props.media_marker` from equality and records its observed value. Any other
+  runtime difference still fails closed. An unmatched phase emits one
+  `qwen_phase_resumed` event rather than a duplicate phase start.
+- The run input binds the runner and both imported validators by path, size, and
+  SHA-256. Commit and tag those exact bytes before preflight or calibration.
 
 ## 1. Start the local Qwen route
 
@@ -68,7 +75,7 @@ python scripts/run_2607_17674_qwen_citation_audit.py \
   --route workstation=http://127.0.0.1:8080 \
   --gguf-path /path/to/registered-reviewer.gguf \
   --llama-binary /path/to/pinned/llama-server \
-  --config protocols/2607.17674/citation_audit_config.v1.0.6.json \
+  --config protocols/2607.17674/citation_audit_config.v1.0.7.json \
   --phase calibration
 ```
 

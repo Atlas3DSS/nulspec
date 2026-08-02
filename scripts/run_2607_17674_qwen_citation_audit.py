@@ -31,7 +31,7 @@ from validate_2607_17674_citation_packets import validate_packet_tree
 WORKSPACE = Path(__file__).resolve().parents[1]
 PROTOCOL_ROOT = WORKSPACE / "protocols" / "2607.17674"
 STUDY_WORK_ROOT = WORKSPACE / "research" / "replications" / "2607.17674" / "work"
-DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.1.json"
+DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.7.json"
 DEFAULT_EVIDENCE_SCHEMA = PROTOCOL_ROOT / "citation_evidence_chunk.schema.json"
 DEFAULT_REVIEW_SCHEMA = PROTOCOL_ROOT / "citation_review.schema.json"
 DEFAULT_EVIDENCE_PROMPT = PROTOCOL_ROOT / "prompts" / "citation_evidence_system.txt"
@@ -42,6 +42,7 @@ RUNTIME_AMENDMENTS = {
     "1.0.4": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.4.md",
     "1.0.5": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.5.md",
     "1.0.6": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.6.md",
+    "1.0.7": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.7.md",
 }
 SUPPORTED_RUNTIME_PROTOCOL_VERSIONS = frozenset({"1.0.1", *RUNTIME_AMENDMENTS})
 EVENT_LOCK = threading.Lock()
@@ -1001,6 +1002,102 @@ def route_metadata(label: str, base_url: str) -> dict[str, Any]:
     }
 
 
+def resume_identity_policy(config: dict[str, Any]) -> tuple[str, ...]:
+    """Return the exact prospective set of nonsemantic route properties."""
+
+    policy = config.get("resume_identity")
+    if policy is None:
+        return ()
+    expected = {
+        "comparison_mode": ("stable-input-minus-registered-volatile-route-props-v1"),
+        "volatile_route_props_excluded_from_equality": ["media_marker"],
+        "record_excluded_values_on_resume": True,
+    }
+    if config.get("protocol_version") != "1.0.7" or policy != expected:
+        raise AuditError("resume-identity policy is unregistered")
+    return ("media_marker",)
+
+
+def run_input_comparison_view(
+    value: dict[str, Any], volatile_route_props: tuple[str, ...]
+) -> dict[str, Any]:
+    """Remove only registered process-local nonces from an identity copy."""
+
+    normalized = copy.deepcopy(value)
+    routes = normalized.get("routes")
+    if not isinstance(routes, list) or not routes:
+        raise AuditError("run input lacks route metadata")
+    for route in routes:
+        if not isinstance(route, dict):
+            raise AuditError("run input route metadata is malformed")
+        props = route.get("props")
+        if not isinstance(props, dict):
+            raise AuditError("run input route properties are malformed")
+        for key in volatile_route_props:
+            if key not in props:
+                raise AuditError(f"run input lacks registered volatile prop: {key}")
+            del props[key]
+    return normalized
+
+
+def run_inputs_match(
+    existing: dict[str, Any], candidate: dict[str, Any], config: dict[str, Any]
+) -> bool:
+    volatile_route_props = resume_identity_policy(config)
+    return run_input_comparison_view(
+        existing, volatile_route_props
+    ) == run_input_comparison_view(candidate, volatile_route_props)
+
+
+def volatile_route_prop_observations(
+    routes: list[dict[str, Any]], volatile_route_props: tuple[str, ...]
+) -> list[dict[str, Any]]:
+    observations: list[dict[str, Any]] = []
+    for route in routes:
+        props = route.get("props")
+        if not isinstance(props, dict):
+            raise AuditError("route properties are malformed")
+        observations.append(
+            {
+                "route_label": route.get("label"),
+                "properties": {key: props.get(key) for key in volatile_route_props},
+            }
+        )
+    return observations
+
+
+def phase_is_open(event_log: Path, phase: str) -> bool:
+    """Return whether the append-only event stream has an unmatched phase start."""
+
+    if not event_log.exists():
+        return False
+    opened = False
+    for line_number, line in enumerate(
+        event_log.read_text(encoding="utf-8").splitlines(), start=1
+    ):
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError as error:
+            raise AuditError(
+                f"event log contains malformed JSON at line {line_number}"
+            ) from error
+        if not isinstance(event, dict) or event.get("phase") != phase:
+            continue
+        event_name = event.get("event")
+        if event_name == "qwen_phase_started":
+            if opened:
+                raise AuditError(f"phase {phase} has duplicate unmatched starts")
+            opened = True
+        elif event_name == "qwen_phase_resumed":
+            if not opened:
+                raise AuditError(f"phase {phase} resume lacks an unmatched start")
+        elif event_name in {"qwen_phase_completed", "qwen_phase_failed"}:
+            if not opened:
+                raise AuditError(f"phase {phase} terminal event lacks a start")
+            opened = False
+    return opened
+
+
 def command_output(arguments: list[str]) -> dict[str, Any]:
     result = subprocess.run(
         arguments,
@@ -1023,6 +1120,21 @@ def executable_record(path: Path) -> dict[str, Any]:
         "bytes": path.stat().st_size,
         "sha256": sha256_file(path),
         "version": command_output([str(path), "--version"]),
+    }
+
+
+def source_file_record(path: Path) -> dict[str, Any]:
+    resolved = path.resolve()
+    if path.is_symlink() or not resolved.is_file():
+        raise AuditError("runtime source binding is missing or symlinked")
+    try:
+        relative_path = resolved.relative_to(WORKSPACE).as_posix()
+    except ValueError as error:
+        raise AuditError("runtime source binding escaped the workspace") from error
+    return {
+        "relative_path": relative_path,
+        "bytes": resolved.stat().st_size,
+        "sha256": sha256_file(resolved),
     }
 
 
@@ -1078,9 +1190,20 @@ def run_phase(
             for source in route_sources[route_index]
         ]
 
-    append_event(
-        event_log, "qwen_phase_started", phase=name, source_count=len(source_records)
-    )
+    if phase_is_open(event_log, name):
+        append_event(
+            event_log,
+            "qwen_phase_resumed",
+            phase=name,
+            source_count=len(source_records),
+        )
+    else:
+        append_event(
+            event_log,
+            "qwen_phase_started",
+            phase=name,
+            source_count=len(source_records),
+        )
     results: list[dict[str, Any]] = []
     errors: list[str] = []
     with ThreadPoolExecutor(max_workers=len(routes)) as executor:
@@ -1165,6 +1288,10 @@ def main() -> None:
         or config.get("protocol_version") not in SUPPORTED_RUNTIME_PROTOCOL_VERSIONS
     ):
         raise SystemExit("citation runtime config identity or version differs")
+    try:
+        volatile_route_props = resume_identity_policy(config)
+    except AuditError as error:
+        raise SystemExit(str(error)) from error
     for label, binding in review_plan["bindings"].items():
         if label == "acquisition_manifest":
             continue
@@ -1220,6 +1347,15 @@ def main() -> None:
             "sha256": sha256_file(gguf_path),
         },
         "llama_server": executable_record(llama_binary),
+        "runtime_code": {
+            "citation_runner": source_file_record(Path(__file__)),
+            "citation_review_contract": source_file_record(
+                WORKSPACE / "scripts" / "citation_review_contract.py"
+            ),
+            "packet_validator": source_file_record(
+                WORKSPACE / "scripts" / "validate_2607_17674_citation_packets.py"
+            ),
+        },
         "host": {
             "python": sys.version,
             "platform": platform.platform(),
@@ -1238,8 +1374,23 @@ def main() -> None:
         },
     }
     if run_input_path.exists():
-        if load_object(run_input_path) != stable_input:
+        try:
+            inputs_match = run_inputs_match(
+                load_object(run_input_path), stable_input, config
+            )
+        except AuditError as error:
+            raise SystemExit(str(error)) from error
+        if not inputs_match:
             raise SystemExit("existing trace root is bound to different run inputs")
+        if volatile_route_props:
+            append_event(
+                event_log,
+                "qwen_audit_resumed",
+                volatile_route_props_excluded_from_equality=list(volatile_route_props),
+                observed_values=volatile_route_prop_observations(
+                    routes, volatile_route_props
+                ),
+            )
     else:
         write_new_json(run_input_path, stable_input)
         append_event(

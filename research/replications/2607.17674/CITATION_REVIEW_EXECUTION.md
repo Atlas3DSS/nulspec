@@ -642,3 +642,41 @@ upstream checks explicitly skipped all pass. The local repository-wide suite
 passed 181 tests and repeated the already logged different-study failure caused
 by its intentionally absent ignored result fixture; the GitHub workflow must
 reconstruct that pinned upstream tree and pass before any live v1.0.6 request.
+
+### Prospective v1.0.7 restart-identity hardening
+
+The fresh v1.0.6 calibration passed its outer gate and six remaining sources
+completed. The operator then stopped the second Galichin evidence call when an
+active Windows Palworld client reduced throughput enough to threaten the frozen
+timeouts. Two incomplete calls are retained at zero weight. The standard
+accounting covers 5,992.068087 accelerator-seconds from 46 terminal calls; the
+incomplete calls add a separately bounded 734.054536 seconds without terminal
+usage records.
+
+A safe restart failed before any request because llama.cpp randomizes
+`props.media_marker` per process and v1.0.6 treated the complete `/props` object
+as stable identity. An exact diagnostic restart with the original marker pinned
+confirmed it was the sole identity difference. No immutable input was edited.
+
+Runtime v1.0.7 prospectively removes exactly `media_marker` from both sides of
+resume equality, records the newly observed excluded value, and emits
+`qwen_phase_resumed` for an unmatched phase instead of another start. All model,
+prompt, source, validation, context, full-offload, f16-KV, decoding, retry, and
+outer-gate settings remain unchanged. The new run input also hash-binds the
+runner and both imported validators. No v1.0.6 model output will be reused.
+
+The prospective config, runtime amendment, runner, preflight, and accounting
+summarizer SHA-256 values are
+`fcf865a88998fc4962c46bb165d7219d33353fecf73a2440766c5ae068c400ea`,
+`a03b3ce0dd75aea1701a636896342550837dd2c8c09e952f1e0f928a9c9b28f5`,
+`1c28f1535f9075ff40a62134fa8e4be043dafbb8a0cd0d02ec450e62c5c75086`,
+`cd4be40356d27a99381ff4d44547775dcea88c709eebe0826f2c3d04980b2c64`,
+and `0be2764b26e3ce41a6b31ce4fab260b13cc4d937932b4a84b1ca5ced74fe6252`.
+The unchanged review-contract and packet-validator hashes bound by each new run
+are `c2d51dcf8fdc2addcf1a86559c743310f8b0b212f24d1c1269e05ed4793b674a`
+and `cb25471a8e604e23d46612745474952f68ff9887f6da1c25f5b6d1261cacff54`.
+Thirty-six focused tests, scoped Ruff lint and formatting, JSON parsing, Python
+compilation, whitespace validation, and both scoped protocol validators pass.
+The full local suite passed 189 tests and repeated only the already logged
+different-study ignored-fixture failure; CI must reconstruct that fixture and
+pass before a live v1.0.7 request.

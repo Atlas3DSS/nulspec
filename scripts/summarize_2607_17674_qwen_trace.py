@@ -186,6 +186,9 @@ def phase_intervals(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
             if not isinstance(phase, str) or phase in starts:
                 raise AccountingError("phase start is missing or duplicated")
             starts[phase] = parse_utc(event.get("at_utc"))
+        elif event_name == "qwen_phase_resumed":
+            if not isinstance(phase, str) or phase not in starts:
+                raise AccountingError("phase resume lacks an unmatched start")
         elif event_name in {"qwen_phase_completed", "qwen_phase_failed"}:
             if not isinstance(phase, str) or phase not in starts:
                 raise AccountingError("phase terminal event lacks a unique start")
@@ -333,6 +336,9 @@ def summarize(
     final_reviews = sorted(trace_root.glob("sources/*/final-review.json"))
     terminal_events = [interval["terminal_event"] for interval in intervals]
     phase_wall_clock = sum(interval["elapsed_seconds"] for interval in intervals)
+    phase_resume_count = sum(
+        event.get("event") == "qwen_phase_resumed" for event in events
+    )
     return {
         "schema_version": 1,
         "paper_id": "2607.17674",
@@ -392,7 +398,15 @@ def summarize(
                 "timestamp_elapsed_attempt_count"
             ],
             "experimental_phase_wall_clock_seconds": phase_wall_clock,
-            "definition": "Request time sums every retained local model attempt; phase time sums each traced phase interval and excludes gaps between phases.",
+            "phase_resume_event_count": phase_resume_count,
+            "definition": (
+                "Request time sums every retained local model attempt; phase time "
+                "spans each first start through terminal event and therefore includes "
+                "offline time inside a resumed phase."
+                if phase_resume_count
+                else "Request time sums every retained local model attempt; phase time "
+                "sums each traced phase interval and excludes gaps between phases."
+            ),
         },
         "cost": {
             "currency": "USD",

@@ -6,7 +6,7 @@ Codex receive Qwen reviewer records, never the underlying policy outputs,
 prompts, checkpoints, rewards, or training state. Every invocation attempt is
 immutable and trace-complete. Fable is deliberately excluded from this
 recurring teacher loop and reserved for separate final-release review and one
-bounded critique after the pipeline is complete.
+bounded sampled critique after each ten completed paper pipelines.
 """
 
 from __future__ import annotations
@@ -768,7 +768,8 @@ def codex_packet(
             ),
             "excluded_reviewer": (
                 "Fable is not part of the recurring teacher loop. It is reserved "
-                "for final-release review and one completed-pipeline critique."
+                "for final-release review and one sampled critique per ten "
+                "completed paper pipelines."
             ),
         },
         "qwen_primary_packet": qwen_packet,

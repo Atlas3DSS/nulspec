@@ -72,6 +72,12 @@ Invalid invocations enter immutable linked repair chains; Codex starts only
 after both chains contain valid audits. Fable is excluded because this is a
 recurring process audit, not the final-release review.
 
+Process-level Fable auditing is sampled for cost control. Once ten distinct
+paper pipelines are complete and validated, one immutable batch records a
+fresh random seed and sends three reproducibly selected pipeline traces in one
+Fable request. That critique has zero decision weight and cannot alter any
+paper result, teacher decision, publication state, or email authorization.
+
 The current transport is explicit: GLM-5.2 is streamed through OpenRouter with
 latency-based provider selection, while Kimi K3 is streamed from Moonshot AI's
 first-party API. Each attempt has 60-second first-event and idle deadlines and

@@ -30,6 +30,10 @@ remaining seed replicates are intentionally left as confirmatory work.
   Kimi streams directly from Moonshot AI. Fable is excluded from this recurring
   teacher loop. The runner preserves complete ignored traces and cannot see or
   modify the small models or their outputs.
+- `fable_pipeline_critique.py`: prospective cost-bounded process audit. It
+  requires ten distinct validated paper pipelines, records a random seed,
+  samples three reproducibly, and sends those three in one zero-weight Fable
+  critique packet. Its append-only ignored registry prevents paper reuse.
 - `matrixctl.py` and `run_matrix_arm.sh`: the executable three-model ×
   three-seed × two-protocol matrix without overwriting the original runs.
 
@@ -115,7 +119,9 @@ hybrid traces remain available for comparison but are explicitly ineligible in
 The separately authorized advisory Fable critique is preserved in
 `extension/artifacts/fable_pipeline_critique_20260801_v2.json`; it assessed the
 pipeline as `sound_with_changes` and has zero teacher, scientific, release, and
-email decision weight.
+email decision weight. That historical single-pipeline call predates the
+prospective ten-paper cadence. New calls use one request per ten completed
+pipelines and sample three of those ten in one immutable packet.
 
 ## Matrix
 

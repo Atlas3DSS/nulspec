@@ -259,6 +259,25 @@ an explicit security event.
 
 ## Implementation error record
 
+### HREVIEW-DEPLOY-001 — First Caddy validation omitted the Caddyfile adapter
+
+The first production candidate-validation command passed a temporary Caddyfile
+to `caddy validate` without specifying `--adapter caddyfile`. Caddy interpreted
+the input as native JSON and rejected it before installation or reload. The
+active configuration and services were unchanged. The candidate was validated
+again with the explicit adapter before it was backed up, installed, and
+reloaded.
+
+### HREVIEW-DEPLOY-002 — Global referrer header overrode the private-page value
+
+Initial live header verification found `strict-origin-when-cross-origin` on the
+review login page even though the review matcher declared `no-referrer`. The
+global header handler executed later and replaced the route-specific value.
+The review header is now deferred, so its stricter value is written after the
+global header. This was a response-header ordering defect; authentication,
+private task data, the review database, and decision state were not exposed or
+changed.
+
 ### HREVIEW-LOCAL-001 — Wrong interpreter in first adapter smoke
 
 The first read-only adapter smoke invoked the host's generic `python` command,

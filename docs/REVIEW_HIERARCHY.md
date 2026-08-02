@@ -21,8 +21,8 @@ independent GLM audit   independent Kimi audit
 
 Fable is deliberately excluded from this recurring teacher loop because its
 cost profile is inappropriate for repeated process audits. Its separate roles
-are final-release review and one advisory critique after the pipeline is
-complete and validated.
+are final-release review and one sampled advisory process critique per ten
+completed, validated paper pipelines.
 
 ## Evidence boundary
 
@@ -144,22 +144,60 @@ immutable publication packet. This is separate from the Qwen teacher loop.
 - Malformed, missing, or disagreeing final reviews block for human adjudication.
 - Email dispatch always requires separate human approval of the exact draft.
 
-## One-time Fable pipeline critique
+## Batched Fable pipeline critique
 
-After the GLM/Kimi/Codex teacher pipeline passes its end-to-end trace checks,
-Fable receives one separate sanitized packet describing the architecture,
-schemas, decision boundaries, completed run summary, validation evidence,
-recorded integration failures, and costs. Fable is asked to critique the
-pipeline's design and controls, not to teach Qwen or cast another teacher vote.
+GLM and Kimi audit every eligible Qwen paper pipeline, and Codex adjudicates
+every valid pair. Fable is not called for each paper. After ten distinct paper
+pipelines pass their end-to-end trace checks, the batch runner sorts their
+study IDs, records a fresh 256-bit random seed, and ranks each ID by SHA-256 of
+the seed and ID to reproducibly sample three of the ten. One sanitized packet
+contains the shared architecture and schema
+sources plus the three sampled completed-run summaries, validation records,
+recorded integration failures, and costs. The other seven study IDs remain in
+the cadence record so no paper can be reused to assemble another batch.
 
-This critique is invoked at maximum effort with no tools and no session
-persistence. Its prompt, wrapper, parsed response, usage, exact model, cost,
-timing, stderr, and hashes are retained. A refusal or malformed response is
-logged and not retried automatically. An operator may explicitly authorize a
-new trace only when a prior attempt is proven not to have reached the model;
-the new trace must bind the failed record and stderr by hash. The critique may
-produce follow-up work, but it cannot silently alter Qwen judgments, the
-teacher adjudication, a frozen scientific result, or publication authority.
+The batch uses exactly one Fable invocation at maximum effort, with no tools or
+session persistence. Its seed, selected IDs, prompt, wrapper, parsed response,
+usage, exact model, cost, timing, stderr, and hashes are retained. The ignored,
+append-only registry refuses a repeated batch ID or any paper used in an
+earlier batch. All ten inputs must validate and the complete packet must remain
+under the enforced byte ceiling before the registry claim or model call. A
+refusal or malformed response is logged and not retried automatically. The
+critique may produce follow-up work, but it has zero decision weight and cannot
+alter Qwen judgments, teacher adjudication, a frozen scientific result,
+publication authority, or email authority.
+
+Use repository-relative paths in a manifest containing exactly ten unique
+papers:
+
+```json
+{
+  "schema_version": "nulspec-fable-pipeline-critique-batch-input-v1",
+  "batch_id": "papers-001",
+  "papers": [
+    {
+      "study_id": "arxiv-study-id",
+      "pipeline_summary": "path/to/review-summary.json",
+      "validation": "path/to/review-validation.json",
+      "corrections": "path/to/architecture-corrections.json"
+    }
+  ]
+}
+```
+
+The shown paper object is repeated for ten distinct study IDs. Run the batch
+with unique trace and public-result paths:
+
+```bash
+python3 extension/fable_pipeline_critique.py \
+  --batch-manifest .artifacts/fable-pipeline-critique/papers-001.json \
+  --run-id fable-papers-001 \
+  --trace-root .artifacts/fable-pipeline-critique/fable-papers-001 \
+  --public-result extension/artifacts/fable_pipeline_critique_papers-001.json
+```
+
+`--historical-single-run` exists only to reproduce the explicitly authorized
+2026-08-01 single-pipeline traces. It is not the prospective cadence.
 
 ## Running the teacher hierarchy
 

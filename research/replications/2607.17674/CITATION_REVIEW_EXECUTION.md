@@ -515,3 +515,62 @@ Prospective harness v1.0.4 derives the accepted set from that amendment map and
 adds a focused exact-set assertion. It changes no runtime or evidence setting;
 a fresh invocation remains blocked until this harness repair is committed,
 tagged, synchronized, and verified.
+
+### Terminal v1.0.5 calibration and bounded outer gate
+
+Harness v1.0.4 was committed as `1a8a08fe3a81`, tagged
+`2607.17674-citation-audit-harness-v1.0.4`, synchronized to the workstation,
+and passed CI before a new invocation. The fresh v1.0.5 calibration ran from
+`2026-08-02T11:41:44.186365Z` through
+`2026-08-02T12:30:26.186507Z`. All six preregistered sources produced
+schema-valid final reviews for all ten occurrences. The terminal calibration-
+completion record has SHA-256
+`1ad0d218b2f84b901dc1a9c841eede8d49fd5894d5241b2524ede9754f765fff`.
+
+The trace contains 26 local-model calls: 22 valid attempts and four invalid
+first attempts, all retained and repaired within the frozen two-attempt limit.
+The Allman first call reached a normal `finish_reason: stop` after 9,422
+completion tokens, demonstrating that the prior 8,192-token truncation was
+removed; the exact validator then rejected two ungrounded excerpts and accepted
+the repair. The other three retained failures were one Kingma ungrounded
+excerpt, two Tuyls ungrounded excerpts, and a false Wang coverage-confirmation
+value. The server cgroup recorded zero low, high, max, OOM, OOM-kill, or OOM-
+group-kill memory events, and no resource or scientific parameter changed
+during calibration.
+
+Five final source reviews—LoRA, Kingma, the Qwen2.5 report, Tuyls, and
+Wang—are byte-identical to the eligible v1.0.4 calibration. Allman changed
+because its formerly truncated evidence response reached a normal stop. The
+new deterministic blind comparison again matched all six source identities
+and 9/10 occurrence support classes and scores. Independent outer review
+retains the two bounded corrections: Allman supports the mixture-
+identifiability portion of its broader co-cited sentence, and Wang et al.'s
+diverse-path sampling is exploration-like but is not presented as an
+exploration method. The overall Qwen reviewer-quality score remains 7/10, and
+the gate remains `pass_with_mandatory_outer_correction`.
+
+The calibration-era trace snapshot contains 298 files and 51,094,934 bytes.
+Its record-stream SHA-256 is
+`ca6934207e370a56f76060b17a7a295382c8e6d8953da28991b389fb98ba4d25`;
+the separate index SHA-256 is
+`d5d622debb01fad367c5ed71a9112d02ee6dd8f14d9ea7171b64f85ce25120b5`.
+The blind comparison, accounting record, and outer-label SHA-256 values are
+respectively
+`b7792d8e12eb58baf0edadc7f579e4bd83a224a6ed4ca680980656766bc9d212`,
+`bf52057a1bd278717d2ed69ba05d15343f489344d71a7176def9833e40678ec7`,
+and
+`6d380c9859a8a9a93e34da8f4570d1919212ab2f58c5d1803fa8bec84a54fee8`.
+The accounting record reports 311,612 prompt tokens, 118,101 completion
+tokens, 429,713 total tokens, and 2,921.817390 seconds of local accelerator
+request wall-clock. Provider charge was exactly $0; electricity and hardware
+capital cost remain unmeasured.
+
+At `2026-08-02T12:35:21.586209Z`, the same clean
+`1a8a08fe3a81` checkout, append-only trace, loopback route, GGUF,
+llama.cpp binary, and v1.0.5 inputs began the remaining 35-source phase after
+reacquiring the exclusive workstation lock. Its runner is bounded to 6/8 GiB
+memory high/max, 1 GiB swap, and two CPU cores; the model server retains its
+32/40 GiB, 4 GiB swap, and eight-core envelope. The calibration index is an
+immutable point-in-time snapshot; a new full-trace index and accounting record
+are required after the remaining phase terminates. Teacher input, publication,
+email, and automatic training use remain blocked.

@@ -1145,6 +1145,81 @@ limitations. Entries are never removed after correction.
   v1.0.1 and assert the exact set in a focused test. Commit and tag this as
   trace-only harness v1.0.4, then use a new invocation ID and trace root.
 
+### LRS-LOCAL-101 — buffered runner output produced one stale progress report
+
+- **State:** corrected from the append-only event stream; no research effect
+- **Observation:** while the fresh v1.0.5 calibration was running, the wrapper's
+  terminal output remained buffered. One operator update therefore described
+  the first Allman evidence repair as still active after the trace had already
+  accepted it and advanced to the second chunk.
+- **Disposition:** treat `events.jsonl`, not wrapper stdout, as the authoritative
+  live progress source and correct the update immediately. No request, trace
+  record, acceptance decision, or model process was changed.
+
+### LRS-LOCAL-102 — first event watcher assumed a scope had a main PID
+
+- **State:** corrected with a path-bound append-only watcher; no research effect
+- **Observation:** the first prospective live watcher tried to pass a transient
+  systemd scope's empty `MainPID` value to `tail --pid`, which rejected the
+  invalid PID before beginning to follow the trace.
+- **Disposition:** follow the exact immutable trace's `events.jsonl` path with
+  `tail -F` and separately query the exact runner scope for lifecycle state.
+  The failed watcher issued no model request and changed no trace content.
+
+### LRS-LOCAL-103 — first calibration-seal command used a stale virtualenv path
+
+- **State:** corrected before either helper ran; no artifact or research effect
+- **Observation:** the first post-calibration comparator and private-index
+  invocations named a guessed virtualenv path that does not exist on the
+  workstation. Both shells exited 127 before Python started, and both requested
+  output paths remained absent.
+- **Disposition:** verify the helpers are standard-library-only and rerun them
+  with the host's explicit `python3` interpreter. Both corrected helpers
+  completed successfully, and the failed commands are not represented as model
+  or scientific attempts.
+
+### LRS-LOCAL-104 — first Qwen scope probes used the system manager
+
+- **State:** corrected before any process action; no trace or resource effect
+- **Observation:** two read-only status probes queried the system service
+  manager even though the transient Qwen scopes belong to the user service
+  manager. The probes therefore reported inactive units while the authoritative
+  event stream and GPU telemetry showed active work.
+- **Disposition:** use `systemctl --user` for every Qwen unit query and retain
+  the append-only event stream as the progress authority. No process was
+  stopped, restarted, or reconfigured because of the incorrect read.
+
+### LRS-LOCAL-105 — combined terminal-documentation patch missed README context
+
+- **State:** rejected atomically; corrected as two exact-context patches
+- **Observation:** the first combined patch for the v1.0.5 terminal execution
+  record and README summary omitted the preceding word from the README's
+  wrapped sentence. The patch tool rejected the entire operation before either
+  file changed.
+- **Disposition:** apply the execution record and README summary separately
+  against their exact current contexts, then run whitespace and content checks.
+  The failed patch did not touch the active trace or model process.
+
+### LRS-LOCAL-106 — first parallel documentation-check wrapper had invalid syntax
+
+- **State:** rejected before any nested command; no repository effect
+- **Observation:** the first JavaScript wrapper for three independent
+  post-documentation checks closed its promise array with the wrong bracket.
+  The orchestrator rejected the wrapper before launching any shell.
+- **Disposition:** correct the bracket and rerun all three checks; do not count
+  the rejected wrapper as a completed validation.
+
+### LRS-LOCAL-107 — generic validator first expected an absent upstream checkout
+
+- **State:** corrected check scope; no protocol or research effect
+- **Observation:** the generic protocol validator was first invoked with only
+  `--skip-data` in the documentation worktree, which does not contain the
+  separate upstream checkout at its default path. It reported that missing
+  checkout; repository hygiene and the paper-specific frozen validator passed.
+- **Disposition:** rerun the generic structural check with both `--skip-data`
+  and `--skip-upstream`, which passed, while retaining the independently
+  successful paper-specific validator as the upstream-aware authority.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

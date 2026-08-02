@@ -211,6 +211,27 @@ limitations. Entries are never removed after correction.
   execution and rerun the unchanged provider assertions. No network request,
   model review, experimental artifact, or service was affected.
 
+### LRS-LOCAL-022 — copied llama binary was incompatible with workstation libc
+
+- **State:** diagnosed before server start or GPU allocation; no scientific effect
+- **Observation:** the exact dev-box llama.cpp binary and shared libraries were
+  staged to the workstation, but a read-only version check showed that they
+  require glibc 2.38 and `GLIBCXX_3.4.32`; the workstation exposes glibc 2.35
+  and an older libstdc++. The model file itself transferred and hashed normally.
+- **Disposition:** preserve the failed version output, build the same pinned
+  llama.cpp commit natively on the workstation at low CPU/I/O priority, and
+  require its commit/version plus the GGUF hash in the eventual Qwen trace.
+  No llama server was started and the workstation GPU remained untouched.
+
+### LRS-LOCAL-023 — teacher event writer initially emitted pretty-printed JSON
+
+- **State:** corrected during offline implementation; no execution or scientific effect
+- **Observation:** the first unexecuted draft of the external-teacher runner
+  reused the pretty-printed artifact serializer for its event stream, which
+  would have produced multi-line JSON records instead of JSON Lines.
+- **Disposition:** use a dedicated compact, one-object-per-line event encoder
+  and cover the emitted format in offline tests before any provider call.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

@@ -77,6 +77,14 @@ preflight v1.0.1 now shares the lock. A replacement calibration will not start
 until the primary workload releases that lock, an uncontended preflight passes,
 and a fresh append-only trace is allocated.
 
+Those execution conditions have now been satisfied. The eligible replacement
+preflight and calibration both acquired the workstation lock while no other
+NULSPEC experiment was active on that host. The completed calibration contains
+six final reviews, ten occurrence decisions, a terminal completion record, a
+297-file private content index, exact local usage/timing accounting, and a
+separate Codex gate. The gate permits only the remaining Qwen first pass; it
+continues to block teacher input, training use, publication, and email.
+
 #### Resolution evidence
 
 [Commit `cad3c93`](https://github.com/Atlas3DSS/nulspec/commit/cad3c933a810c9cc700dc3cd462a96a66dabd1d2)
@@ -89,7 +97,11 @@ both received the registered contention rejection. [Commit
 and tag `2607.17674-citation-runtime-preflight-v1.0.1` extend the same guard to
 schema preflight; host-specific probes rejected contention without creating a
 trace. Final resolution remains pending an eligible fresh preflight and
-calibration trace plus website-side verification.
+calibration trace plus website-side verification. The eligible replacement is
+now recorded in `CITATION_REVIEW_EXECUTION.md`; its private record-stream digest
+is `c0771fbc34ca8862a878fbad13458fe1da48f4d7872a7059707a3cdf18fbdee7`,
+and the tracked record deliberately exposes no private host path or raw trace.
+Website verification remains pending, so this item stays acknowledged.
 
 ### RF-20260801-02 — Add the recorded human-disposition path for Fable HARD_FAIL
 

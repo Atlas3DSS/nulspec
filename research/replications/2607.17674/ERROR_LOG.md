@@ -971,6 +971,43 @@ limitations. Entries are never removed after correction.
   Add focused nonterminal and in-trace-output cases and rerun every check before
   staging.
 
+### LRS-LOCAL-086 — old-gh CI listing used two unsupported options
+
+- **State:** corrected after the push; no repository or research effect
+- **Observation:** after commit `c7bd744` was pushed successfully, the first
+  read-only CI listing used the unsupported `--branch` option on this host's
+  older GitHub CLI. The next query replaced that option but requested the
+  unsupported `workflowName` JSON field. Neither command changed GitHub state.
+- **Disposition:** use only fields printed by the installed client's own error
+  response and filter the returned records by `headBranch` and `headSha`.
+  Workflow `ci`, run `30744720045`, initially reported `in_progress` and later
+  completed successfully for exact commit
+  `c7bd744bca027f7a4031be9efa8296d68f3ccc11`.
+
+### LRS-LOCAL-087 — outer-label validation used ambiguous jq precedence
+
+- **State:** corrected immediately; no artifact-content or research effect
+- **Observation:** the first read-only JSON assertion for the completed
+  calibration outer label omitted parentheses around a piped array-length
+  check. jq applied `length` to the preceding boolean and exited nonzero before
+  the command reached its hash and permission checks. The label file itself was
+  valid JSON and was not modified by the failed assertion.
+- **Disposition:** parenthesize both boolean operands, rerun the assertion under
+  fail-fast behavior, and then record the label's SHA-256 and mode. The corrected
+  validation passed; the label is 9,027 bytes, mode 0600, with SHA-256
+  `d53c73dc22824b06d06b15865d04bcc254da936b6d883a2642b9a969e66ccb3b`.
+
+### LRS-LOCAL-088 — private-reference scan used an unbounded short token
+
+- **State:** corrected read-only search; no repository or research effect
+- **Observation:** the first post-documentation privacy scan searched for the
+  three-letter token `arc` without word boundaries. It therefore matched many
+  harmless substrings such as “research” and “archive,” producing noisy output
+  rather than a useful private-reference check.
+- **Disposition:** rerun with case-insensitive word boundaries around each
+  prohibited name. The corrected scan returned no match in the tracked study,
+  root README, or reciprocal research queue.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

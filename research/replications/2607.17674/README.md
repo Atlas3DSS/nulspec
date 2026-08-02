@@ -106,9 +106,15 @@ and the six-source gate are unchanged. Its fresh calibration again failed
 closed on the first source: page selection improved, but Qwen still silently
 joined words across physical PDF line-wrap hyphens. That complete attempt also
 has zero weight. Prospective runtime v1.0.4 instead presents each page as exact
-physical source lines and requires every excerpt to come from one line. A fresh
-attempt remains blocked until that contract is frozen, fully verified, and
-passes a new eligible runtime preflight.
+physical source lines and requires every excerpt to come from one line. After a
+fully preserved local resource-envelope failure and a successful repaired
+preflight, the eligible replacement calibration completed all six sources and
+ten occurrences. Nine of ten blind class/score checks matched. Qwen overread
+self-consistency as direct support for “exploration”; the outer record corrects
+that use to partial support without rewriting the raw model output. The gate is
+`pass_with_mandatory_outer_correction`, and the remaining 35-source Qwen pass is
+active. No teacher input, training projection, publication, or email is yet
+authorized.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the

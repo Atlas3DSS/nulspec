@@ -369,3 +369,62 @@ memory. No request was canceled or restarted, and no model, route, packet,
 prompt, schema, validator, generation parameter, or accepted output changed.
 The append-only resource amendment and cgroup counters are retained with the
 private server trace.
+
+### Terminal replacement v1.0.4 calibration and bounded outer gate
+
+The resource-repaired replacement calibration completed from
+`2026-08-02T10:15:07.348700Z` through `2026-08-02T11:02:15.330828Z` without a
+model, prompt, packet, schema, validator, retry-budget, or generation-parameter
+change. All six preregistered sources produced schema-valid final reviews for
+all ten occurrences. The terminal completion-record SHA-256 is
+`7ad48e4b3d6a14fac9ab6b825b60596ec2c9e8f7075ca9728d71c70a1e746e18`.
+
+The trace contains 26 local-model calls. Twenty-two were valid on that attempt;
+four invalid first calls were preserved and repaired within the frozen
+two-attempt limit: one output-budget/malformed-JSON response, two exact-
+grounding failures, and one false coverage-confirmation value. No attempt was
+deleted or silently replaced. The server cgroup's high-event counter was
+50,712 both before and after calibration, with zero max-limit, OOM, or OOM-kill
+events. Thus the earlier host-envelope error did not recur during the eligible
+calibration.
+
+The deterministic comparison against the blind, pre-Qwen expectations found
+all six source identities and all ten occurrences, with 9/10 support classes
+and 9/10 scores inside their frozen ranges. The single mismatch was the
+deliberately difficult use of Wang et al.'s self-consistency paper as an
+“exploration” citation. Qwen called it direct support at 8/10. The source does
+sample diverse reasoning paths, but presents this as an accuracy-oriented
+decoding method rather than an exploration method. The outer label therefore
+records `partially_supports`, 6/10, without modifying Qwen's raw review. It also
+narrows the first Allman et al. use from 8/10 to 7/10 because that source
+supports only the mixture-identifiability portion of a broader co-cited claim.
+
+The six source-level Qwen quality scores are 7, 9, 8, 9, 9, and 5, with an
+overall calibration score of 7/10: reliable enough for a non-authoritative
+first pass, but only with mandatory independent review. The outer gate is
+therefore `pass_with_mandatory_outer_correction`. It authorizes the remaining
+35 Qwen sources and nothing else. Teacher input, publication, email, automatic
+training use, and scientific decision weight remain blocked.
+
+The calibration-era trace snapshot covers 297 files and 49,373,123 bytes. Its
+record-stream SHA-256 is
+`c0771fbc34ca8862a878fbad13458fe1da48f4d7872a7059707a3cdf18fbdee7`;
+the separately stored machine index has SHA-256
+`25854fbf94bbcb8a0b587eff204cbfd6a3afd5b8a19847cbb2d218f04a257d75`.
+The blind comparison, accounting record, and outer-label SHA-256 values are
+respectively
+`9452682d6d7d9df30a502dad1dc100f35784fc48e5df3135fcb039918e36ff9a`,
+`36569c607d6a8954a401eee2b44178282e2e7d6e949e109c7fa3102bebe5119a`,
+and
+`d53c73dc22824b06d06b15865d04bcc254da936b6d883a2642b9a969e66ccb3b`.
+The accounting record reports 311,259 prompt tokens, 114,028 completion
+tokens, 425,287 total tokens, and 2,827.797587 seconds of local accelerator
+request wall-clock. Provider charge was exactly $0; electricity and hardware
+capital cost remain unmeasured.
+
+At `2026-08-02T11:06:46.261364Z`, the same clean `aee74a96a30a` checkout,
+trace root, loopback route, GGUF, llama.cpp binary, and v1.0.4 inputs began the
+remaining phase after reacquiring the exclusive workstation experiment lock.
+The calibration index remains an immutable point-in-time snapshot; a new full-
+trace index and accounting record are required after the remaining phase
+terminates.

@@ -880,6 +880,97 @@ limitations. Entries are never removed after correction.
   rerun all four focused tests. The final checks pass; no trace, hash input, or
   live process was changed.
 
+### LRS-LOCAL-079 — PR inspection requested an unsupported old-gh JSON field
+
+- **State:** corrected after the push; no repository or research effect
+- **Observation:** the explicit `HEAD` push of commit `156cc4a` succeeded, but
+  the chained read-only PR inspection requested `headRefOid`, which this host's
+  older GitHub CLI does not expose. The inspection command exited nonzero after
+  the remote update was already complete.
+- **Disposition:** query only fields listed by the installed client and obtain
+  the latest commit from the final item in its supported `commits` array. PR
+  #26 then reported the expected head commit and two running checks.
+
+### LRS-LOCAL-080 — calibration comparator used JSON booleans in Python source
+
+- **State:** caught by lint and focused tests; corrected before commit or use
+- **Observation:** the first draft of the frozen-expectation comparator wrote
+  lowercase JSON literals in one Python dictionary. Ruff reported six
+  undefined names, and two of three focused tests failed at that construction;
+  no comparison artifact was written.
+- **Disposition:** replace the six literals with Python booleans, rerun Ruff
+  lint and formatting, compilation, and all focused tests before applying the
+  comparator to a completed calibration. No live process or research artifact
+  was affected.
+
+### LRS-LOCAL-081 — CI inspection requested unsupported job detail from old gh
+
+- **State:** corrected read-only query; no repository or research effect
+- **Observation:** a post-push CI query requested the `jobs` field from this
+  host's older GitHub CLI, which lists only run-level fields for `gh run view
+  --json`. The command changed no local or remote state.
+- **Disposition:** repeat the query with the supported run-level fields. CI run
+  `30743847152` then reported `success` for exact head commit `156cc4a`.
+
+### LRS-LOCAL-082 — accounting-helper checks first used the wrong Python route
+
+- **State:** corrected before commit or trace accounting; no research effect
+- **Observation:** the first focused-check invocation used the system Python,
+  which does not contain `pytest` or Ruff. A second command also lacked shell
+  fail-fast behavior, so its successful compilation step masked Ruff's
+  nonzero format-check status even though the output plainly reported two
+  files requiring formatting. No research trace or accounting artifact was
+  read or written by either failed check.
+- **Disposition:** use the registered shared development environment, run the
+  formatter, and repeat lint, format verification, compilation, and all eleven
+  focused tests under `set -e`. Every final check passes. Future chained check
+  invocations must enable fail-fast behavior before the first validator.
+
+### LRS-LOCAL-083 — first accounting draft rejected a no-response attempt
+
+- **State:** corrected before commit or trace accounting; no research effect
+- **Observation:** code review after the focused checks found that the first
+  accounting-helper draft required every attempt to contain a transport
+  object. The citation runner deliberately records `transport: null` when a
+  request fails before a response is assembled, so that draft could not have
+  summarized a terminal resource or network failure like the retained v1.0.4
+  resource-envelope attempt. The helper had not been used on a research trace.
+- **Disposition:** count such records explicitly as no-response attempts and
+  derive their elapsed request interval from the attempt's exact traced start
+  and completion timestamps. Keep transport-reported and timestamp-derived
+  timing counts separate. Add a focused null-transport case before rerunning
+  lint, formatting, compilation, and the test suite.
+
+### LRS-LOCAL-084 — first accounting draft trusted trace-index metadata
+
+- **State:** corrected before commit or trace accounting; no research effect
+- **Observation:** a second code review found that the accounting helper bound
+  the supplied trace-index file but did not independently prove that the
+  current trace still matched every indexed path, size, and hash. A trace
+  changed after indexing could therefore have produced accounting over new
+  records while citing the older content digest. The helper had not been used
+  on any research trace.
+- **Disposition:** verify the complete current tree against the index's
+  bytewise path order, file count, sizes, individual SHA-256 values, aggregate
+  byte count, and record-stream digest; reject symlinks, non-regular files,
+  changes observed during hashing, and unsupported algorithms. Add a stale-
+  index test, then rerun every focused check.
+
+### LRS-LOCAL-085 — prospective diagnostics lacked two terminal-boundary checks
+
+- **State:** corrected before commit or research-artifact use
+- **Observation:** the pre-commit audit found that the calibration comparator
+  could read six final-review files without first binding them to the terminal
+  calibration-completion record. It also found that both new helpers trusted
+  the runbook's outside-trace output path rather than rejecting an output
+  placed inside the sealed trace, which would immediately make the index
+  stale. No comparator or accounting output existed.
+- **Disposition:** require the exact calibration source set, final-review
+  relative paths, and SHA-256 values recorded by the terminal completion file.
+  Both command-line entry points now reject an output beneath the trace root.
+  Add focused nonterminal and in-trace-output cases and rerun every check before
+  staging.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

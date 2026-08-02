@@ -74,6 +74,41 @@ source syntheses are structurally valid and the human/Codex operator has read
 the six final reviews for obvious grounding or calibration failures. Preserve
 all invalid attempts and reasoning traces.
 
+After the process exits successfully, compare the ten final occurrence records
+with the expectations frozen before Qwen review. The comparison is an
+append-only diagnostic outside the trace; mismatches trigger source-based
+operator adjudication and never act as automatic labels or vetoes.
+
+```bash
+python scripts/compare_2607_17674_citation_calibration.py \
+  --trace-root research/replications/2607.17674/work/citation-qwen/attempt-ID \
+  --output research/replications/2607.17674/work/citation-qwen/calibration-comparison-ID.json
+```
+
+Seal each terminal private tree with a machine-readable index stored outside
+the indexed directory, so the index cannot hash itself. The index contains only
+relative paths, sizes, and SHA-256 values; it rejects symlinks and overwrites.
+
+```bash
+python scripts/build_private_tree_index.py \
+  --root research/replications/2607.17674/work/citation-qwen/attempt-ID \
+  --output research/replications/2607.17674/work/citation-qwen/trace-index-ID.json
+```
+
+Use that immutable index to produce exact local-provider token and accelerator
+wall-clock accounting. The helper distinguishes summed model-request time from
+summed phase time, excludes any operator-review gap between phases, records
+unmeasured electricity and hardware cost as unknown, and grants no downstream
+authority.
+
+```bash
+python scripts/summarize_2607_17674_qwen_trace.py \
+  --trace-root research/replications/2607.17674/work/citation-qwen/attempt-ID \
+  --trace-index research/replications/2607.17674/work/citation-qwen/trace-index-ID.json \
+  --scope-label calibration \
+  --output research/replications/2607.17674/work/citation-qwen/accounting-ID.json
+```
+
 ## 3. Complete Qwen review and build the bounded teacher packet
 
 ```bash

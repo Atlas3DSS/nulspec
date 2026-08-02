@@ -64,7 +64,7 @@ This is a confirmed code-to-equation difference. Its numerical effect is not
 known in advance, so the faithful primary retains it. A mask-corrected paired
 rerun belongs in an extension and must not replace the released-code result.
 
-### 3. Fidelity decoding restarts the same RNG stream for every batch
+### 3. Released sampling helpers restart the same RNG stream for every batch
 
 The standalone fidelity evaluator passes one fixed sampling seed into every
 batch. Its generation helper calls `torch.manual_seed(seed)` at the start of
@@ -74,9 +74,18 @@ from the configured categorical distribution, but the 10,000 outcomes are not
 independent conditional draws. This can alter realized Monte Carlo variance
 and makes a naive independent-example interval inappropriate.
 
-The analogical evaluator does vary its seed by batch. The faithful primary
-retains both released paths. A record-preserving, monotonically advanced RNG
-evaluation is an extension/sensitivity analysis.
+The same pattern is present earlier in Track M: model-sampled factorization
+responses call the shared Hugging Face generation helper once per batch with
+the same seed, and reuse that seed again for train, validation, and test splits.
+Thus every response has the correct marginal sampling rule, but corresponding
+batch rows across the 120,000 source prompts share random-number streams. This
+is a released-code difference from the ordinary independent-sampling reading
+of the manuscript algorithm.
+
+The analogical evaluator does vary its seed by batch. Faithful primary arms
+retain all released paths. Record-preserving, monotonically advanced RNG
+sampling is an extension/sensitivity analysis for both Track M response
+construction and final fidelity evaluation.
 
 ### 4. Ambiguous strategy agreement is implemented as set overlap
 
@@ -104,9 +113,10 @@ and a faithful within-evaluation bootstrap from those artifacts.
    fidelity questions.
 3. Treat digitized Figure 3 bars as approximate references, not author data.
 4. Mark uncertainty unavailable for aggregate-only primary evaluations.
-5. After primary completion, run four explicitly labeled sensitivities where
+5. After primary completion, run explicitly labeled sensitivities where
    resources permit: record-preserving evaluation, advancing-RNG evaluation,
-   literal/set-overlap ambiguity comparison, and boundary-mask correction.
+   independent Track M response sampling, literal/set-overlap ambiguity
+   comparison, and boundary-mask correction.
 6. Report whether each sensitivity changes the substantive conclusion, even if
    the result is null.
 
@@ -115,6 +125,6 @@ and a faithful within-evaluation bootstrap from those artifacts.
 The core mathematical proposal is recognizably and mostly directly implemented
 in the released code. The response-source conflict is the largest known threat
 to manuscript-faithful replication. The newly confirmed `</z>` supervision and
-batchwise RNG restart are narrower but scientifically relevant implementation
+batchwise RNG restarts are narrower but scientifically relevant implementation
 details. They do not invalidate the active run; they determine what that run
 can honestly claim and define the most valuable paired extensions.

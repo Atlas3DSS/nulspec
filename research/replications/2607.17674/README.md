@@ -68,10 +68,11 @@ hash without changing the v1.0.1 evidence or generation contract.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the
-handling of three interpretation-relevant details found before the first arm
+handling of interpretation-relevant details found before the first arm
 completed: response-source divergence, supervision of the latent closing
-delimiter, and batchwise fidelity RNG restarts. Primary runs retain released
-behavior; corrections are extension-only.
+delimiter, batchwise model-response and fidelity RNG restarts, and ambiguous
+strategy-set matching. Primary runs retain released behavior; corrections are
+extension-only.
 
 The separate reviewer-of-reviewers hierarchy is now frozen prospectively at
 `2607.17674-citation-teachers-v1.0.2`. It preserves every Qwen record, runs GLM

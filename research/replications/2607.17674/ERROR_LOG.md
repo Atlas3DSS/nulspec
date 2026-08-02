@@ -498,3 +498,16 @@ limitations. Entries are never removed after correction.
 - **Disposition:** retain the released rule for the primary. In a
   record-preserving extension, report ambiguous-pair prevalence and recompute
   under literal set equality and unique-only conventions.
+
+### LRS-UPSTREAM-012 — Track M response batches also restart one sampling stream
+
+- **State:** open; affects manuscript-method sampling dependence
+- **Observation:** base-model response construction invokes the shared
+  generation helper separately for each batch with one unchanged seed. The
+  helper reseeds on every call, and the train, validation, and test loops reuse
+  the same configuration. Corresponding rows across batches and splits
+  therefore share underlying random draws rather than advancing an independent
+  stream through the 120,000 prompts.
+- **Disposition:** preserve the released behavior in primary Track M so it is
+  code-reproducible. Treat monotonically advanced, record-preserving response
+  sampling as a paired extension and report whether it changes results.

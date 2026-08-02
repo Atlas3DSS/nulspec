@@ -172,6 +172,8 @@ echo "model: $MODEL_ID at $MODEL_REVISION"
 echo "GPU: $actual_gpu"
 
 BASE_DIR="$RUN_ROOT/base_model"
+BASE_SOURCE_ARM="$ARM_ID"
+BASE_SOURCE_ATTEMPT="$ATTEMPT_ID"
 if [[ "$TRACK" == "R" ]]; then
   (
     cd "$UPSTREAM"
@@ -201,8 +203,27 @@ else
     exit 2
   fi
   BASE_DIR="$source_base"
+  BASE_SOURCE_ARM="$SOURCE_ARM"
+  BASE_SOURCE_ATTEMPT="$(basename "$(dirname "$source_base")")"
   echo "reusing Track R base model: $BASE_DIR"
 fi
+
+BASE_INPUT_MANIFEST="$RUN_ROOT/base-model.input.file-manifest.json"
+"$PYTHON_BIN" "$WORKSPACE/scripts/hash_artifact_tree.py" \
+  "$BASE_DIR" \
+  --output "$BASE_INPUT_MANIFEST"
+jq -n \
+  --arg source_arm "$BASE_SOURCE_ARM" \
+  --arg source_attempt "$BASE_SOURCE_ATTEMPT" \
+  --arg manifest "$(basename "$BASE_INPUT_MANIFEST")" \
+  --arg manifest_sha256 "$(sha256sum "$BASE_INPUT_MANIFEST" | cut -d' ' -f1)" \
+  '{
+    schema_version: 1,
+    source_arm: $source_arm,
+    source_attempt: $source_attempt,
+    file_manifest: $manifest,
+    file_manifest_sha256: $manifest_sha256
+  }' > "$RUN_ROOT/base-model.input.json"
 
 FACTORIZATION_DIR="$RUN_ROOT/factorization"
 (

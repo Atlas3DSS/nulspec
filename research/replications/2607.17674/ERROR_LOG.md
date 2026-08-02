@@ -253,6 +253,18 @@ limitations. Entries are never removed after correction.
   command-line execution and rerun the unchanged identity assertion. No service,
   model process, review artifact, or experimental result was affected.
 
+### LRS-LOCAL-026 — Track M base input lacked a content manifest
+
+- **State:** corrected prospectively before every Track M and 1.5B arm; no result effect
+- **Observation:** primary runner v1.0.0 recorded which Track R base directory a
+  Track M arm reused, but did not hash the files in that trained-model input.
+  This became material when preparing a byte-exact copy for a second host. The
+  first Track R 0.5B arm was already active when the gap was identified.
+- **Disposition:** do not mutate the active attempt. Add a read-only input-tree
+  manifest plus source arm/attempt record to harness amendment v1.0.1, freeze it
+  before Track M, and separately audit the active Track R base after completion.
+  No data, model parameter, training command, metric, or interpretation changes.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

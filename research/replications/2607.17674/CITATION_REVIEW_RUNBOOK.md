@@ -24,6 +24,9 @@ the traces, or send email.
   every primary arm before it inspects a route, writes a trace, or sends a
   request. Lock contention is a terminal preflight rejection, not a review
   attempt. Stop an already-started idle model server after such a rejection.
+- Runtime schema preflight v1.0.1 must acquire that same lock and produce a
+  fresh eligible pass before replacement calibration. The earlier concurrent
+  parser check is retained as diagnostic-only evidence.
 
 ## 1. Start the local Qwen route
 

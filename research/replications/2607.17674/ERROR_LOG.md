@@ -573,6 +573,18 @@ limitations. Entries are never removed after correction.
   corrected probe confirmed current saves and backups without issuing a server
   command.
 
+### LRS-LOCAL-056 — schema preflight did not acquire the host experiment lock
+
+- **State:** preserved and prospectively corrected; no scientific result
+- **Observation:** the first exact-runtime transport-schema preflight ran on
+  the same host and GPU as the active primary arm. It made two one-token parser
+  requests and no citation judgment, but it did not acquire the host-wide
+  experiment lock and therefore violated the resource policy.
+- **Disposition:** retain the complete trace as diagnostic-only evidence and do
+  not treat it as an eligible reference execution. Preflight v1.0.1 acquires
+  and records the shared lock before route inspection, trace creation, or a
+  request. Require a fresh uncontended pass before replacement calibration.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

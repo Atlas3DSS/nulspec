@@ -81,8 +81,14 @@ transport-schema hashes are respectively
 `7386b7c08b6b83c93afcb7fd4dfa0eac170cb66426867bbecb554ee82a301870`
 and
 `090a3a6928393624cf71563654e79f0284d1294b64b47653d6263251170649b1`.
-The preflight is only a compatibility result: it does not count as a citation
-review or show that the expanded output budgets are sufficient.
+The preflight ran concurrently with the active primary factorization arm and
+did not acquire the host experiment lock. This is a process deviation even
+though the requests were limited to parser compatibility. The result is
+therefore diagnostic only: it does not count as an eligible reference
+execution or citation review, and it does not show that the expanded output
+budgets are sufficient. Prospective preflight v1.0.1 applies the same
+fail-closed host lock as the primary and citation runners; an uncontended fresh
+preflight is required before replacement calibration.
 
 After server shutdown, the complete preflight trace was copied back without
 deletion. Source and destination path/size inventories both hash to
@@ -90,4 +96,5 @@ deletion. Source and destination path/size inventories both hash to
 The trace includes the server log, canonical and transport schemas, requests,
 raw SSE streams, normalized events, assembled responses, route metadata, and
 the machine-readable completion record. A new scientific calibration attempt
-must use a fresh trace directory and the v1.0.2 runtime contract.
+must use a fresh trace directory, the v1.0.2 runtime contract, and an eligible
+uncontended schema preflight.

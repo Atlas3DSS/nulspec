@@ -80,8 +80,10 @@ and disposition are recorded in `CITATION_REVIEW_EXECUTION.md`. Prospective
 runtime amendment `2607.17674-citation-audit-runtime-v1.0.2` retains the full
 client-side acceptance schema and thinking mode, uses a structure-only decoding
 grammar, and raises the traced output ceilings before a fresh attempt. Both
-transport schemas passed the exact pinned runtime preflight; this compatibility
-check is not a citation review and does not establish output quality.
+transport schemas passed an exact pinned-runtime diagnostic, but that check ran
+concurrently with the primary arm and is not an eligible reference execution.
+Preflight amendment `2607.17674-citation-runtime-preflight-v1.0.1` now applies
+the shared host lock; a fresh uncontended pass is required before calibration.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the

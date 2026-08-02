@@ -9,11 +9,14 @@ from pathlib import Path
 import time
 
 from run_2607_17674_qwen_citation_audit import (
+    AuditError,
     DEFAULT_EVIDENCE_SCHEMA,
     DEFAULT_REVIEW_SCHEMA,
     PROTOCOL_ROOT,
     STUDY_WORK_ROOT,
+    acquire_experiment_lock,
     build_request,
+    experiment_lock_path,
     load_object,
     route_metadata,
     sha256_file,
@@ -55,7 +58,24 @@ def main() -> None:
     if config.get("protocol_version") != "1.0.2":
         raise SystemExit("runtime preflight requires config v1.0.2")
 
+    try:
+        experiment_lock = acquire_experiment_lock()
+    except AuditError as error:
+        raise SystemExit(str(error)) from error
     output_root.mkdir(parents=True)
+    write_new_json(
+        output_root / "preflight-input.json",
+        {
+            "schema_version": 1,
+            "paper_id": "2607.17674",
+            "config_sha256": sha256_file(config_path),
+            "experiment_lock": {
+                "basename": experiment_lock_path().name,
+                "mechanism": "flock-exclusive-nonblocking",
+                "held": not experiment_lock.closed,
+            },
+        },
+    )
     log_start = server_log.stat().st_size
     route = route_metadata("runtime-preflight", args.route)
     write_new_json(output_root / "route.json", route)
@@ -133,6 +153,11 @@ def main() -> None:
         "preflight_type": "exact_llama_runtime_transport_grammar",
         "completed_at_utc": utc_now(),
         "config_sha256": sha256_file(config_path),
+        "experiment_lock": {
+            "basename": experiment_lock_path().name,
+            "mechanism": "flock-exclusive-nonblocking",
+            "held": not experiment_lock.closed,
+        },
         "server_log_snapshot_sha256": sha256_file(server_log),
         "server_log_snapshot_bytes": server_log.stat().st_size,
         "server_log_start_bytes": log_start,

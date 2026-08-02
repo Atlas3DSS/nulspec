@@ -71,9 +71,11 @@ ineligible, and has zero citation or scientific evidentiary weight. Prospective
 harness v1.0.3 makes the Qwen citation runner acquire the same exclusive,
 nonblocking host lock as every primary arm before route inspection, trace
 creation, or a model request. It retains the lock for the process lifetime and
-records the held state and mechanism in private run input. A replacement
-calibration will not start until the primary workload releases that lock and
-must use a fresh append-only trace.
+records the held state and mechanism in private run input. The earlier
+concurrent one-token schema check is also classified as diagnostic-only;
+preflight v1.0.1 now shares the lock. A replacement calibration will not start
+until the primary workload releases that lock, an uncontended preflight passes,
+and a fresh append-only trace is allocated.
 
 #### Resolution evidence
 

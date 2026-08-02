@@ -99,6 +99,43 @@ Published audits retain version history and a visible author-response or
 correction path. A later clarification never overwrites the originally audited
 version; it becomes linked follow-up evidence.
 
+## Prepublication outreach and elevated allegation gate
+
+A reproducible non-replication result is scientifically distinct from an
+allegation of plagiarism, fabrication, falsification, or fraud. The former may
+be published with calibrated limitations while a potential misconduct finding
+remains privately embargoed.
+
+Before NULSPEC publicly uses plagiarism or misconduct language, it must:
+
+1. freeze and hash the private evidence packet;
+2. have at least two qualified humans independently review the underlying
+   source material, chronology, attribution context, and benign alternatives;
+3. prepare a neutral, evidence-specific inquiry for the target paper's
+   corresponding team and, for textual-overlap concerns, the earlier source
+   team when contactable;
+4. obtain final human approval for the exact outbound message before sending;
+5. provide a declared, reasonable response window; and
+6. incorporate the response fairly, or state the contact attempts and lack of
+   response without treating silence as admission.
+
+Model agreement, similarity magnitude, failed replication, anomalous
+statistics, or missing artifacts cannot satisfy this gate by themselves.
+Plagiarism language additionally requires substantial and distinctive earlier
+text, verified source identity and chronology, absent or materially inadequate
+attribution, and documented exclusion of common language, legitimate
+quotation, related versions, templates, and shared-author explanations. Fraud
+language requires direct evidence of intentional deception or a competent
+authoritative finding; inconsistent results alone do not establish intent.
+
+A truly egregious exception may shorten the response wait, but it does not
+permit automatic publication. At least two human reviewers must unanimously
+document the direct evidence, the public-interest reason that delay would be
+harmful, all attempted outreach, and approval of the exact public wording.
+Named allegations should receive appropriate independent subject-matter and
+legal review before release. This exception never grants a model or automated
+pipeline publication authority.
+
 ## Scheduling and corpus reuse
 
 Integrity jobs run at low priority inside explicit CPU, RAM, and GPU limits.

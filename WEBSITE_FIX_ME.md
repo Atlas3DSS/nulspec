@@ -72,6 +72,14 @@ material unsupported or contradictory claim cannot disappear into a vague
 6. Preserve the audited-version history and provide an author-response or
    correction route that adds linked evidence without overwriting the original
    record.
+7. Treat plagiarism or misconduct wording as privately embargoed unless the
+   handoff records two independent human reviews, exact-message human approval,
+   target-team outreach, source-team outreach when applicable, the response
+   window, and disposition of every response. Silence is never an admission.
+8. Support a separately documented `egregious_exception` that may shorten the
+   response wait only when two human reviewers unanimously approve the direct
+   evidence, public-interest rationale, outreach attempts, and exact release
+   language. Models cannot set this state.
 
 #### Website response
 

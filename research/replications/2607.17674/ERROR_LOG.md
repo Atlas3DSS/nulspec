@@ -1519,7 +1519,10 @@ limitations. Entries are never removed after correction.
 - **Disposition:** retain exact details only in the ignored private trace, use
   neutral resource-contention language in tracked research records, and replace
   the prospective runtime tag before any execution. Scientific settings and
-  trace findings are unchanged.
+  trace findings are unchanged. The deleted provisional tag object
+  `8b3cc34031cd651f5014341ae030b620f6e393b9` pointed to `09e8250`; replacement
+  tag object `7cb819465dff12f3e242bc6b1beed969f3968619` points to corrected commit
+  `f9a78ce4dc0608e45170f5fa295a688341598ed8`.
 
 ## External acquisition limitations
 

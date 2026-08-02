@@ -428,3 +428,58 @@ remaining phase after reacquiring the exclusive workstation experiment lock.
 The calibration index remains an immutable point-in-time snapshot; a new full-
 trace index and accounting record are required after the remaining phase
 terminates.
+
+### Terminal v1.0.4 remaining-phase failure and full-trace seal
+
+The remaining phase failed closed at `2026-08-02T11:23:32.589175Z`. Bao et al.
+completed two evidence chunks and one valid synthesis, bringing the trace to
+seven completed source reviews including calibration. The first Bowman et al.
+evidence chunk then exhausted both frozen attempts. Each response ended with
+llama.cpp `finish_reason: length` at exactly 8,192 completion tokens. Attempt
+one retained 29,787 reasoning characters and 2,631 final-content characters,
+ending in malformed JSON. The repair attempt retained 30,436 reasoning
+characters and reached the ceiling before producing any final content. Its
+prompt contained 15,045 tokens, so this was an output allowance failure rather
+than a context-window, transport, memory, or grounding failure.
+
+No Bowman evidence record, remaining-phase completion, full-audit completion,
+teacher packet, or external-teacher request exists. The local server stopped
+normally after the runner terminated. This trace cannot be resumed or supplied
+to a teacher.
+
+The terminal full-trace snapshot contains 360 files and 67,187,763 bytes. Its
+record-stream SHA-256 is
+`cff2008e8b2d9d54d2f465f25736290213f363f2d27a86ed8585cba71c75f4a0`;
+the separate index SHA-256 is
+`a8602eb2dcf6e94a304f0e382a30406af2381f7d38087651280fbfadf590c9c1`.
+The accounting record has SHA-256
+`65614fb352f665ab29282aac829489751cb4f776ea38a89562c418b28886956c`
+and reports 32 local calls: 25 valid attempts and seven retained invalid
+attempts, 383,691 prompt tokens, 155,951 completion tokens, 539,642 total
+tokens, and 3,834.079274 seconds of accelerator request wall-clock. Provider
+charge was exactly $0; electricity and hardware cost remain unmeasured.
+
+### Prospective v1.0.5 output-ceiling repair
+
+Runtime v1.0.5 raises only the evidence-call ceiling from 8,192 to 12,288
+tokens. The synthesis ceiling remains 12,288. Model bytes, llama.cpp revision,
+thinking mode, seed, decoding parameters, prompt text, exact-line presentation,
+packets, source order, schemas, validator, grounding rule, calibration set, and
+two-attempt limit are unchanged. No v1.0.4 output is reused. A new immutable
+trace remains blocked until the amended code and config are committed and
+tagged, all focused checks pass, the largest request is shown to fit the frozen
+context, and a fresh lock-held runtime preflight succeeds.
+
+The static amendment check confirms that, after normalizing the three version
+fields and the one evidence ceiling, v1.0.5 is JSON-semantically identical to
+v1.0.4. The amended configuration SHA-256 is
+`71aa17dd397f991d79f8127952f37cb3e9008e98e9c139e0b75a06f8acf7d6de`;
+the amendment SHA-256 is
+`3595371fc6103c3810f67df34bb56135317e569e020b2b0644f99ec112645dab`.
+The previously measured maximum exact rendered prompt remains 35,644 tokens
+because no prompt or packet changed. Reserving 12,288 output tokens totals
+47,932, leaving 2,068 tokens against the registered 50,000-token minimum and
+2,244 against the observed 50,176-token server context. A fresh live audit must
+reconfirm that maximum before calibration. Thirty-six focused tests, scoped
+Ruff lint and formatting, JSON parsing, Python compilation, repository hygiene,
+whitespace validation, and the frozen primary protocol validator pass.

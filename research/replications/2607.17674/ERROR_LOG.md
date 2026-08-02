@@ -1008,6 +1008,101 @@ limitations. Entries are never removed after correction.
   prohibited name. The corrected scan returned no match in the tracked study,
   root README, or reciprocal research queue.
 
+### LRS-LOCAL-089 — monitor launch strings conflicted with orchestration parsing
+
+- **State:** corrected before either monitor launched; no workload or research
+  effect
+- **Observation:** two first attempts to start read-only resource monitors
+  embedded shell parameter-expansion syntax in JavaScript template literals.
+  The orchestration parser rejected each command before a shell or monitor
+  process started.
+- **Disposition:** remove the ambiguous shell expansion and relaunch each
+  monitor with simpler assignments. Both corrected monitors started normally;
+  no experiment, service, trace, or accepted output was touched by the rejected
+  calls.
+
+### LRS-LOCAL-090 — workstation health probe unnecessarily used SSH
+
+- **State:** corrected immediately; read-only and no research effect
+- **Observation:** an initial workstation health probe tried to SSH to the
+  workstation's own hostname because the controlling shell was incorrectly
+  treated as a third host. Authentication failed before any remote command ran.
+- **Disposition:** verify the controlling hostname first and query local
+  systemd, cgroup, memory-pressure, and GPU state directly. The corrected probe
+  found both citation scopes active, zero max-limit or OOM events, ample memory
+  headroom, and a healthy accelerator temperature.
+
+### LRS-LOCAL-091 — first redacted credential-presence check had invalid quoting
+
+- **State:** corrected before any credential value was printed or used; no
+  provider or research effect
+- **Observation:** the first shell-only attempt to report whether registered
+  provider variables existed mixed nested quote styles in an `awk` expression.
+  Bash rejected the command at parse time, before the loop inspected any file.
+- **Disposition:** replace the expression with a simpler anchored-name search
+  and redact everything after the first equals sign. The corrected read-only
+  check found one registered route for each logical external teacher and did
+  not expose a credential value.
+
+### LRS-LOCAL-092 — failed-trace helper lookup used the frozen execution checkout
+
+- **State:** corrected read-only lookup; no trace or research effect
+- **Observation:** the first attempt to inspect the accounting helper ran from
+  the deliberately frozen Qwen execution checkout. That checkout predates the
+  helper, so the shell reported three missing script paths and exited before
+  reading or writing an artifact.
+- **Disposition:** run the already tested helper from the maintenance checkout
+  against the absolute immutable trace path. The resulting terminal index and
+  accounting files were created outside the indexed tree and verified by hash.
+
+### LRS-LOCAL-093 — v1.0.4 remaining pass exhausted the evidence output ceiling
+
+- **State:** terminal failed trace; prospective v1.0.5 repair registered
+- **Observation:** the first Bowman et al. evidence call and its only permitted
+  repair both returned HTTP 200 with `finish_reason: length` and exactly 8,192
+  completion tokens. The first response ended in malformed JSON; the second
+  used its whole allowance in reasoning and returned no final content. The
+  runner emitted `qwen_phase_failed` and exited nonzero as designed. No OOM,
+  context overflow, grounding failure, accepted Bowman record, or teacher call
+  occurred.
+- **Disposition:** seal the entire v1.0.4 trace and give it zero remaining-phase
+  decision weight. Runtime v1.0.5 changes only the evidence ceiling to 12,288
+  tokens. It requires a committed and tagged amendment, focused tests, context-
+  headroom audit, fresh lock-held preflight, new trace, and new six-source gate.
+
+### LRS-LOCAL-094 — first v1.0.5 validation command selected incomplete tools
+
+- **State:** corrected before commit or compute; no research effect
+- **Observation:** the first focused-check command used the system Python,
+  which lacked pytest, and then named a Ruff binary absent from the citation
+  environment. Inspection also caught a missing `copy` import in the new test
+  before that test ran under the correct environment.
+- **Disposition:** add the import, use the registered research-test
+  environment for pytest, and use the installed repository linter only with
+  the project's configured checks. The corrected focused test completed 19/19;
+  no model request or artifact depended on the rejected command.
+
+### LRS-LOCAL-095 — v1.0.5 test initially missed deterministic formatting
+
+- **State:** corrected before commit or compute; no research effect
+- **Observation:** scoped lint passed, but Ruff's format check found that the
+  newly added configuration-delta test did not match deterministic wrapping.
+- **Disposition:** apply Ruff formatting to that test only, then rerun scoped
+  lint, formatting, the 19 focused tests, and whitespace validation. All passed.
+
+### LRS-LOCAL-096 — first v1.0.5 draft exceeded the largest packet's context
+
+- **State:** corrected before commit, preflight, server start, or model request
+- **Observation:** the first prospective draft doubled the evidence ceiling to
+  16,384 tokens. Comparing it with the already recorded 35,644-token maximum
+  rendered prompt showed a 52,028-token total, above both the registered 50,000
+  minimum and the observed 50,176-token server context.
+- **Disposition:** reduce the ceiling to 12,288 tokens. This is 50% above the
+  failed allowance, totals 47,932 tokens for the largest frozen request, and
+  preserves at least 2,068 tokens of headroom against the registered minimum.
+  Rerun the exact live prompt audit before calibration; the 16,384-token draft
+  has never been an execution input.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

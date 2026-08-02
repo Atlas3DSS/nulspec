@@ -26,7 +26,7 @@ from run_2607_17674_qwen_citation_audit import (
     write_new_text,
 )
 
-DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.4.json"
+DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.5.json"
 GRAMMAR_FAILURE_MARKERS = (
     "error parsing grammar",
     "failed to parse grammar",
@@ -54,8 +54,15 @@ def main() -> None:
     if not server_log.is_file():
         raise SystemExit("server log is missing")
     config = load_object(config_path)
-    if config.get("protocol_version") not in {"1.0.2", "1.0.3", "1.0.4"}:
-        raise SystemExit("runtime preflight requires config v1.0.2, v1.0.3, or v1.0.4")
+    if config.get("protocol_version") not in {
+        "1.0.2",
+        "1.0.3",
+        "1.0.4",
+        "1.0.5",
+    }:
+        raise SystemExit(
+            "runtime preflight requires config v1.0.2, v1.0.3, v1.0.4, or v1.0.5"
+        )
 
     try:
         experiment_lock = acquire_experiment_lock()

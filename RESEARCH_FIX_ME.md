@@ -83,7 +83,11 @@ NULSPEC experiment was active on that host. The completed calibration contains
 six final reviews, ten occurrence decisions, a terminal completion record, a
 297-file private content index, exact local usage/timing accounting, and a
 separate Codex gate. The gate permits only the remaining Qwen first pass; it
-continues to block teacher input, training use, publication, and email.
+continues to block teacher input, training use, publication, and email. That
+remaining pass subsequently failed closed at its frozen evidence-output
+ceiling. The complete failed trace is sealed; no teacher packet exists.
+Prospective runtime v1.0.5 requires a fresh preflight and six-source calibration
+before another remaining pass.
 
 #### Resolution evidence
 

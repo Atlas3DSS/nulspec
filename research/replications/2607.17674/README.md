@@ -112,9 +112,13 @@ preflight, the eligible replacement calibration completed all six sources and
 ten occurrences. Nine of ten blind class/score checks matched. Qwen overread
 self-consistency as direct support for “exploration”; the outer record corrects
 that use to partial support without rewriting the raw model output. The gate is
-`pass_with_mandatory_outer_correction`, and the remaining 35-source Qwen pass is
-active. No teacher input, training projection, publication, or email is yet
-authorized.
+`pass_with_mandatory_outer_correction`. The authorized remaining pass then
+failed closed on Bowman et al.: both attempts reached the exact 8,192-token
+evidence ceiling, the first with truncated JSON and the second before any final
+content. Its sealed trace has zero remaining-source decision weight, and no
+teacher received it. Prospective runtime v1.0.5 changes only that evidence
+ceiling to 12,288 tokens and requires a fresh preflight and calibration. No
+teacher input, training projection, publication, or email is yet authorized.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the

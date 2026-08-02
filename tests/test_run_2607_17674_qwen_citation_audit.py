@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import importlib.util
 import json
 import sys
@@ -412,6 +413,34 @@ def test_v104_binds_single_line_prompt_and_preserves_generation_contract() -> No
         "response_format_mode": "structure_only_json_schema",
     }
     assert reviewer["synthesis_generation"]["maximum_output_tokens"] == 12288
+
+
+def test_v105_only_expands_evidence_output_ceiling() -> None:
+    protocol_root = WORKSPACE / "protocols/2607.17674"
+    prior = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.4.json").read_text()
+    )
+    amended = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.5.json").read_text()
+    )
+    normalized = copy.deepcopy(amended)
+    normalized["protocol_version"] = prior["protocol_version"]
+    normalized["prior_protocol_tag"] = prior["prior_protocol_tag"]
+    normalized["protocol_tag"] = prior["protocol_tag"]
+    normalized["primary_reviewer"]["evidence_generation"]["maximum_output_tokens"] = (
+        prior["primary_reviewer"]["evidence_generation"]["maximum_output_tokens"]
+    )
+    assert normalized == prior
+    assert amended["protocol_version"] == "1.0.5"
+    assert (
+        amended["primary_reviewer"]["evidence_generation"]["maximum_output_tokens"]
+        == 12288
+    )
+    assert (
+        amended["primary_reviewer"]["synthesis_generation"]
+        == prior["primary_reviewer"]["synthesis_generation"]
+    )
+    assert RUNNER.RUNTIME_AMENDMENTS["1.0.5"].is_file()
 
 
 @pytest.mark.parametrize(

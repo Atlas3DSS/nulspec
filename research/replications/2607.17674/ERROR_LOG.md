@@ -335,6 +335,18 @@ limitations. Entries are never removed after correction.
   self-contained read-only probe if upstream coverage is absent. No upstream
   file, environment, trace, process, or result changed.
 
+### LRS-LOCAL-034 — unrelated protocol test required an absent ignored fixture
+
+- **State:** isolated; no scientific effect
+- **Observation:** an over-broad verification command included the repository's
+  earlier-study `tests/test_protocol.py`. One test requires an ignored
+  `paper_repro/SLM-RL-Agents/results/all_results.json` fixture that is not
+  present in this worktree, so the combined command ended after 18 passes and
+  that unrelated missing-file failure.
+- **Disposition:** record the failure and run the new evaluator tests, matrix
+  analyzer tests, and 2607.17674 protocol validator as separate scoped checks.
+  No artifact, process, metric, or source file was altered by the failed read.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

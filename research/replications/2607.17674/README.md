@@ -74,6 +74,12 @@ delimiter, batchwise model-response and fidelity RNG restarts, and ambiguous
 strategy-set matching. Primary runs retain released behavior; corrections are
 extension-only.
 
+The preregistered trace-preserving evaluation extension is documented in
+`protocols/2607.17674/EVALUATION_INSTRUMENTATION_EXTENSION_v1.0.0.md`. It was
+implemented and frozen before any primary standalone metric existed. It can
+exactly replay the released batch-reseed policy or advance one RNG stream while
+retaining all 10,000 fidelity outcomes and 1,024 analogical pair outcomes.
+
 The separate reviewer-of-reviewers hierarchy is now frozen prospectively at
 `2607.17674-citation-teachers-v1.0.2`. It preserves every Qwen record, runs GLM
 and Kimi as independent teachers, and uses subscription-authenticated Codex for

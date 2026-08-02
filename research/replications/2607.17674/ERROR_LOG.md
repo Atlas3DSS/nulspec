@@ -387,6 +387,28 @@ limitations. Entries are never removed after correction.
   before continuing the audit. No run file, process, checkpoint, or source was
   changed.
 
+### LRS-LOCAL-039 — preflight hash process handle was not retained
+
+- **State:** contained; no scientific effect
+- **Observation:** a read-only workstation preflight began hashing the 16.5 GB
+  Qwen GGUF, but the orchestration wrapper printed only incremental command
+  output and omitted the returned terminal-session identifier while the hash
+  was still running.
+- **Disposition:** observe the identifiable `sha256sum` process to normal
+  completion and retain structured session metadata for subsequent long-lived
+  commands. The registered model had already been hashed independently; no
+  model, trace, service, or primary process was changed.
+
+### LRS-LOCAL-040 — first citation-packet transfer lacked its ignored parent
+
+- **State:** corrected before transfer or review; no scientific effect
+- **Observation:** the first bounded `rsync` into the new dev-box citation
+  checkout failed with code 11 because a clean clone does not contain the
+  ignored `research/replications/2607.17674/work/` parent tree.
+- **Disposition:** create only the exact packet parent, repeat the non-deleting
+  transfer, and compare deterministic source/destination inventories before
+  use. The failed call created no packet and no reviewer request was made.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

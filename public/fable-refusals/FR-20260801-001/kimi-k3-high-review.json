@@ -1,0 +1,134 @@
+{
+  "attempt_id": "SR-20260801-007",
+  "comparison_group": "reviewer-depth-20260801",
+  "comparison_label": "kimi-high-max-output",
+  "completed_at_utc": "2026-08-01T18:30:47.942916Z",
+  "decision": {
+    "action_items": [],
+    "checks": [
+      {
+        "area": "scientific_fidelity",
+        "evidence": "machine_evidence.primary.models (sprkd_upstream_direct_init, sprkd_paper_random_init, rkd_paper_weak_teacher, rkd_upstream_asr_teacher, control_student, control_teacher, weak_teacher_ensemble_mean); machine_evidence.primary.comparisons; PROTOCOL.md 'Claim under test', 'Scope boundary', 'Decision language'; REPORT.md 'Bottom line' and 'Claim-by-claim assessment'; ONE_PAGE.md 'Outcome' and 'Result'; study.frozen_replication_outcome 'not_replicated' / frozen_underlying_method_claim 'inconclusive'.",
+        "finding": "The study targets the paper's only fully tabulated head-to-head claim (Table 1: SPRKD 94.80%, Control-S 94.47%, RKD 70.10% over five 500-epoch trials) and applies the frozen PROTOCOL.md decision rule honestly. The observed five-seed final results (machine_evidence.primary.models: sprkd_upstream_direct_init mean 85.74165457184326 with one chance-level final at 49.97; sprkd_paper_random_init mean 67.97677793904208 with three chance-level finals) materially contradict the headline target, and the paper-intent SPRKD-minus-RKD difference of -3.5297532656023236 points (machine_evidence.primary.comparisons.sprkd_paper_random_init_minus_rkd_paper_weak_teacher) reverses the claimed +24.70-point advantage, so 'not replicated' for the public final-result recipe is the correct frozen call. Crucially, the bundle does not reinterpret missing provenance as confirmation and does not reward the favorable post-hoc D2 result (94.792%) by promoting it into the verdict: REPORT.md and ONE_PAGE.md keep the method claim at 'inconclusive, not disproved', explicitly attributing that to unknown historical checkpoint selection/failed-run policy plus the best-epoch evidence (every SPRKD run reached at least 92.61%; exact-path best-epoch mean 94.827%). The exact-track +35.745-point SPRKD-over-RKD figure is correctly flagged as not the paper's comparison because that path distills from the ASR-mutated teacher (rkd_upstream_asr_teacher mean 49.997%, reported_accuracy_inside_t95 false). Scope discipline is maintained: only Experiment 1 is judged; MNIST/CIFAR-100/TinyImageNet are excluded as preliminary without silent reconstruction (PROTOCOL.md scope boundary; REPORT.md).",
+        "status": "PASS"
+      },
+      {
+        "area": "internal_consistency",
+        "evidence": "Cross-comparison of REPORT.md tables, ONE_PAGE.md table, FRONTEND_HANDOFF.md 'Study-level outcome', AUTHOR_EMAIL.md paragraphs 3-5 against machine_evidence.primary, preregistered_extensions, posthoc_loss_contract, posthoc_stability, common_probe_hessian, released_artifacts, citation_audit (including machine_evidence.citation_audit.model_quality, coverage, cross_gpu.metrics, qwen_primary_verdicts, teacher_primary_verdicts, trace_provenance.inventory of 38 entries); UPSTREAM_AUDIT.md artifact observations vs released_artifacts.historical_metric_traces and released_hessian_artifacts.",
+        "finding": "Prose and machine evidence agree everywhere I checked. Primary table in REPORT.md matches machine_evidence.primary exactly after stated rounding: exact SPRKD 85.742 \u00b1 20.012 [60.893, 110.590]; paper-intent SPRKD 67.977 \u00b1 24.634 [37.390, 98.564]; Control-S 86.421 \u00b1 20.078; exact RKD 49.997 \u00b1 0.322; paper-intent RKD 71.507 \u00b1 1.361 [69.817, 73.196]; Control-T 95.237 \u00b1 0.130; weak-teacher ensemble 69.006 \u00b1 4.177 [63.820, 74.193]. Best-epoch summaries match (exact 94.827 \u00b1 1.027; intent 94.149 \u00b1 1.198; Control-S 95.574 \u00b1 0.391). Extensions match preregistered_extensions: E1 71.669 \u00b1 1.443 with paired +0.163 [-0.130, 0.455]; E2 86.099 \u00b1 20.299 with finals 95.573/49.797/94.340/95.283/95.501 and paired +18.122 [-12.170, 48.414]. D2 matches posthoc_loss_contract: SPRKD 94.792 \u00b1 0.193 [94.553, 95.032], logit Control-S 95.152 \u00b1 0.385, difference -0.360 [-0.846, 0.126], five finals 95.109/94.819/94.746/94.615/94.673, n_nhe_taken 0 in all five sprkd_final_state blocks with four nonzero stored_loss values (REPORT's 'Four retained a nonzero stored-loss marker'). D1 stability means match posthoc_stability.aggregates (31.767 and 35.085 largest one-epoch drops; Control-S seed-2 drop 44.409). E3 matches common_probe_hessian.ordering (full ordering 1/5 exact, 2/5 intent; seed-1 exact SPRKD trace -1911.6524440561234). Released-artifact numbers match released_artifacts (checkpoints 84/80/74% on the 100-image set; SPRKD checkpoint 81.64% serialized-split; traces 54.963/35.477/209.471 vs paper 33.39/71.33/408.27; historical traces 94.543%/95.399% final). Citation audit prose matches citation_audit machine fields (Qwen 30/8/1/1/7 vs teacher 6/25/5/1/10; mean 7.0222, SD 1.5882, bootstrap [6.5778, 7.4889]; 27/45 critical; 8 evidence-clean; 38-entry trace inventory; cross-route identity/role 4/4, verdict 2/4). FRONTEND_HANDOFF.md figures (85.742/67.977/71.507/3.530/94.827/94.149/94.792/95.152) and AUTHOR_EMAIL.md figures (85.74/20.01; 67.98/24.63; 71.51; 92.61; 94.83; 94.792/0.193; 95.152) are all consistent with the same aggregates.",
+        "status": "PASS"
+      },
+      {
+        "area": "statistics_and_uncertainty",
+        "evidence": "REPORT.md 'Five-seed scratch results' note on unbounded intervals, 'Limitations and reproducibility'; PROTOCOL.md 'Outcomes and statistics'; UPSTREAM_AUDIT.md McNemar bullets; TESTS.md McNemar verification paragraph; machine_evidence.primary comparisons per_seed_mcnemar_exact method 'exact binomial (scipy.stats.binomtest)'; machine_evidence.common_probe_hessian.interpretation_scope; FRONTEND_HANDOFF.md metrics_schema and arm-page requirement 6; CITATION_AUDIT.md 'Reproducibility and limits'.",
+        "finding": "Uncertainty language is disciplined. The five-seed Student t intervals are repeatedly described as descriptive estimates of fresh-training variability, not prompt bootstraps and not equivalence evidence (REPORT.md 'Evidence layers'; FRONTEND_HANDOFF.md arm-page requirement 6; metrics_schema.not_prompt_bootstrap / not_equivalence_test). The report candidly states the key statistical caveat: the unbounded t intervals 'assume a roughly mean-like sampling distribution and are poor summaries of a high/chance mixture', and it refuses to treat interval containment of 94.80 (machine reported_accuracy_inside_t95: true for both SPRKD tracks) as satisfying the frozen rule because the headline ordering/gap fails \u2014 this is the honest reading rather than the convenient one. The paper's McNemar 'statistical equivalence' framing is correctly rejected (UPSTREAM-014; REPORT claim table: 'McNemar failure to reject is not an equivalence test'), including for the D2 SPRKD-vs-control difference (-0.360 points; 'this is not an equivalence test'). McNemar tests are strictly within-seed on identical 6,890-target splits, never pooled (PROTOCOL.md; REPORT.md 'We do not pool tests across their different validation splits'). The upstream exact-binomial overflow is handled by a numerically stable SciPy replacement cross-validated on all 2,601 small-count (b,c) pairs, with log10 p-values retained where binary64 underflows (TESTS.md; machine per_seed_mcnemar_exact entries carry both p_value and log10_p_value). Sample-weighted final metrics are primary while unweighted batch-mean histories are separately labeled (POSTHOC_DIAGNOSTICS D1; machine accuracy_weighting field). The cross-route citation comparison is correctly framed as operational route consistency, not a hardware-causal claim (CITATION_AUDIT.md 'Reproducibility and limits'; LOCAL-038). E3's small fixed 100-image probe batch is explicitly scoped as a curvature probe 'not a generalization estimate' and 'not numerically comparable to Table 1' (EXTENSION_PROTOCOL.md E3; common_probe_hessian.interpretation_scope).",
+        "status": "PASS"
+      },
+      {
+        "area": "replication_extension_boundary",
+        "evidence": "PROTOCOL.md 'Tracks'; EXTENSION_PROTOCOL.md header freeze notes and E3 section; POSTHOC_DIAGNOSTICS.md D1/D2 headers; ERROR_LOG.md SPRKD-LOCAL-047, -051, -053; REPORT.md 'Stability, extensions, and curvature' and D2 paragraph; ONE_PAGE.md 'What we learned'; FRONTEND_HANDOFF.md 'post-hoc diagnostic callout' and 'Extension control'; machine_evidence.posthoc_loss_contract.interpretation_scope; website_handoff_candidate.diagnostics and extension_vote.effect; AUTHOR_EMAIL.md paragraph 4.",
+        "finding": "Evidence-layer boundaries are drawn clearly and enforced everywhere. PROTOCOL.md froze tracks A (artifact replay), B (exact public path), and C (narrow two-conflict paper-intent diagnostic) before scratch training, with seeds 0-4 fixed in advance. EXTENSION_PROTOCOL.md froze E1/E2 before inspecting any scratch-run result and records E3 as frozen after jobs began but before outcome inspection, explicitly 'exploratory and cannot alter the Track A/B/C verdict'. POSTHOC_DIAGNOSTICS.md labels D1 (specified after seeds 0-1 completed) and D2 (specified after seeds 0-2 completed) as outcome-motivated with the statement 'cannot alter the frozen verdict'; LOCAL-053 discloses the audit miss that delayed D2, and LOCAL-047 explains why no mechanism is invented for the seed-1 collapse. The strongest post-hoc result (D2 SPRKD 94.792% \u00b1 0.193, nearly the paper's 94.80%) is consistently framed as a plausible-cause lead and author-intent question, not confirmation: REPORT.md ('does not isolate or confirm the proposed negative-curvature mechanism'), ONE_PAGE.md ('not prospective confirmation of the proposed mechanism'), FRONTEND_HANDOFF.md ('cannot alter the primary classification and must not be displayed as the preregistered replication'), and the machine scope field ('Outcome-motivated post-hoc one-change diagnostic; cannot alter the preregistered replication verdict'). The website handoff keeps diagnostics in a separate 'diagnostics' object and the extension vote 'never rewrites the frozen result'. The email mirrors this boundary ('We do not use this post-hoc result to rewrite the frozen classification'). No frozen numerical result was changed and no favorable finding was rewarded.",
+        "status": "PASS"
+      },
+      {
+        "area": "reproducibility_and_provenance",
+        "evidence": "SOURCE_MANIFEST.md hash table and rights section; machine_evidence.primary.integrity_checks 0-4 (status passed, stage_checkpoint_sha256s, predictions_sha256, split_indices_sha256); machine_evidence.primary.environments; TESTS.md verification commands and 'Container status'; CONTAINER.md; ERROR_LOG.md SPRKD-LOCAL-051, -057, -058, -063, -064, -069; REPORT.md 'Limitations and reproducibility'; ONE_PAGE.md 'Limits and next move'.",
+        "finding": "Reproducibility within the disclosed boundary is strong and its limits are candid. SOURCE_MANIFEST.md pins every external input by SHA-256 (paper PDF/source, upstream commit 7f1655ff1295c9a6dcf8d24f6410a036cd7e3497, released checkpoints, Hessian artifacts, 27,558-image dataset manifest digest 4fc7205c...) plus a fetch script and an explicit rights/redistribution boundary for the NLM images. Each seed's integrity block binds config, split indices, validation indices, all ten stage checkpoints, and predictions by hash, and the fail-closed analyzer rechecks completion flags, target counts, label ranges, and prediction-derived accuracy before aggregation (TESTS.md; machine_evidence.primary.integrity_checks all 'passed'). Per-seed environments (GPU, CUDA runtime, torch, numpy, python, platform) are recorded in machine_evidence.primary.environments, and the protocol honestly declines bitwise cross-GPU repeatability. Dependency closures are hash-pinned locks validated by dry-run installation plans; the artifact-replay lock was validated in a disposable clean environment with a zero-difference recursive comparison (TESTS.md). Three genuine provenance weaknesses are disclosed rather than hidden: the protocols were not committed/pushed to Git before compute (LOCAL-057; REPORT.md 'Most importantly...'; ONE_PAGE.md 'Our largest process limitation'), the Docker image was not built because Docker/Podman were unavailable (CONTAINER.md; TESTS.md 'Container status': 'an image build is therefore not represented as tested'), and the first two extension configs did not embed teacher-checkpoint hashes directly (LOCAL-051, disclosed in REPORT.md limitations). The resume behavior that rewrites config.json is disclosed with its boundary (LOCAL-069). Under the review contract, candidly disclosed limitations are not automatic failures, and the disclosure quality here is exemplary.",
+        "status": "PASS"
+      },
+      {
+        "area": "error_transparency",
+        "evidence": "ERROR_LOG.md full tables (SPRKD-LOCAL-001..100, SPRKD-UPSTREAM-001..016, SPRKD-EXT-001..003) and its header rule 'A failed command is not promoted into a scientific finding unless independent evidence supports it'; UPSTREAM_AUDIT.md closing note; TESTS.md upstream suite result '175 passed, 2 failed, 9 skipped' and repository-wide suite '46 passed and 1 failed'; AUTHOR_EMAIL.md paragraph 2.",
+        "finding": "The ledger is origin-separated and disciplined: 100 NULSPEC/local entries (SPRKD-LOCAL-001 through 100, contiguous), 16 upstream/release entries (SPRKD-UPSTREAM-001 through 016), and 3 external/operational entries (SPRKD-EXT-001 through 003), matching the namespaces asserted by the release gate (LOCAL-080 corrected the assertion to the published SPRKD-LOCAL format; LOCAL-099 confirmed the SPRKD-EXT namespace). Local mistakes are consistently recorded with impact and resolution, and none is promoted into a scientific finding: e.g., the McNemar overflow (LOCAL-049) and the two upstream test failures (UPSTREAM-008) are framed as tooling/packaging issues, not algorithm outcomes; the seed-3/seed-4 resume events (LOCAL-021/025/069) state explicitly that no completed checkpoint or reported result changed; the D2-delaying audit miss (LOCAL-053) is disclosed; the hardware-migration idea (LOCAL-071) was rejected to protect pairing; and the cross-route verdict disagreement (LOCAL-038) is reported as 50% operational agreement with hardware causality explicitly rejected. Upstream issues are stated neutrally with evidence ('evidence about the release bundle, not accusations about intent', UPSTREAM_AUDIT.md). Failed commands are retained, which the email accurately summarizes as 'every failed command'. The 46-vs-1 repository test outcome (LOCAL-093) preserves an unrelated pre-existing failure rather than fabricating a pass.",
+        "status": "PASS"
+      },
+      {
+        "area": "publication_handoff",
+        "evidence": "machine_evidence.website_handoff_candidate (schema_version, metrics_schema, classification, routes, primary.runs with per-seed integrity, diagnostics scopes, extension_vote, final_peer_review block, publication_status, artifacts list with sha256/bytes); FRONTEND_HANDOFF.md ('Do not coerce accuracy into the reward schema', canonical hierarchy, 'Final peer-review and email state'); ERROR_LOG.md SPRKD-LOCAL-070, -072, -073, -076, -078, -098; TESTS.md final handoff validation description; ERROR_LOG.md SPRKD-EXT-002.",
+        "finding": "The website handoff candidate is correct and internally consistent with FRONTEND_HANDOFF.md. It declares metrics_schema id 'sprkd_trial_accuracy_v1' (the identifier reconciliation from LOCAL-072), primary estimator 'final_sample_weighted_full_validation_accuracy', and refuses to coerce accuracy into the reward schema, with canonical_site_import 'blocked_pending_typed_accuracy_frontend' for the stated reason (EXT-002) \u2014 a website-schema task that does not gate the science. The five arm routes /studies/260723346/arms/seed-0..4 are present with per-seed metrics, comparisons (McNemar cells and log10 p-values), environments, and integrity hashes projected from the validated aggregate; classification is 'not_replicated'/'inconclusive' with the matching rationale. Diagnostics (preregistered extensions, D1 stability, D2 loss-contract, E3 Hessian) are separately scoped objects and the extension vote carries the six ranked choices with 'never rewrites the frozen result'. The artifact allowlist covers the documents and machine/human tables with SHA-256 and byte counts (the LOCAL-070 allowlist expansion), and the pre-review handoff correctly excludes the review packet itself to break the digest cycle (LOCAL-098). final_peer_review shows the true pre-review state: status 'blocked_pending_fable_one_shot_review', publication_authorized false, author_email_dispatch_authorized false, author_email_human_approval_required true, single_invocation true, resubmission_allowed false \u2014 exactly the governance the protocol requires, and it instructs that review status must not be presented as evidence about the method.",
+        "status": "PASS"
+      },
+      {
+        "area": "author_email_fairness",
+        "evidence": "AUTHOR_EMAIL.md full text and header; cross-checked values against machine_evidence.primary.models, machine_evidence.posthoc_loss_contract.models and runs sprkd_final_state, machine_evidence.common_probe_hessian.ordering; AUTHOR_QUESTIONS.md items 1-11; UPSTREAM_AUDIT.md 'Material conflicts'; FABLE_REVIEW_PROTOCOL.md 'Closure and email gate'; FRONTEND_HANDOFF.md 'Final peer-review and email state'.",
+        "finding": "The draft email is factually accurate, fair to the authors, and properly gated. Its numbers match the machine evidence: exact-path SPRKD 85.74% (SD 20.01; one chance-level final), paper-intent 67.98% (SD 24.63; three chance-level finals), unmodified-weak-teacher RKD 71.51%, every SPRKD run reaching at least 92.61%, exact-path best-epoch mean 94.83%, D2 SPRKD 94.792% (SD 0.193) vs paired control 95.152%, and zero negative-Hessian eigensteps in corrected runs (posthoc_loss_contract sprkd_final_state n_nhe_taken 0 in all five seeds). It classifies the public final-result replication as not reproduced while calling the method 'inconclusive, not disproved', does not use the post-hoc D2 result to rewrite the frozen classification, and accurately describes the artifact/provenance conflicts without alleging intent ('We may still have misunderstood the intended historical configuration'). The question list (commit/environment, final-vs-checkpoint reporting, logit-vs-probability loss inputs, initialization and ASR selection, teacher identity for RKD, Hessian/McNemar provenance) maps directly to the genuine gaps in UPSTREAM_AUDIT.md and AUTHOR_QUESTIONS.md. Tone is constructive and humble ('The aim is not embarrassment'), offers to freeze and run a clarified author-intent configuration, publish the authors' response, and correct inaccuracies. The header states the draft is unsent, that dispatch always requires final human approval, and that a review outcome can only make the draft eligible \u2014 consistent with FABLE_REVIEW_PROTOCOL.md and FRONTEND_HANDOFF.md.",
+        "status": "PASS"
+      }
+    ],
+    "hard_fail_reason": "",
+    "human_email_approval_acknowledged": true,
+    "no_resubmission_acknowledged": true,
+    "reviewed_packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+    "single_review_acknowledged": true,
+    "summary": "I reviewed the committed packet (documents, input hashes, and machine evidence) against all eight required areas. Every headline number in the prose (ONE_PAGE.md, REPORT.md, FRONTEND_HANDOFF.md, AUTHOR_EMAIL.md) matches the machine aggregates in machine_evidence.primary, preregistered_extensions, posthoc_loss_contract, posthoc_stability, common_probe_hessian, released_artifacts, and citation_audit to the stated rounding. The frozen classification (not_replicated for the public final-result recipe; inconclusive for the underlying method) follows the PROTOCOL.md decision rule: the five-seed final means (exact-path SPRKD 85.742%, paper-intent SPRKD 67.977% vs. paper 94.80%) and the reversed paper-intent SPRKD-minus-RKD gap (-3.530 vs. +24.70 points) materially contradict the headline target and ordering, and the report correctly refuses to let the wide mixture-distribution t intervals (which technically contain 94.80) or the post-hoc D2 result (94.792%) overturn that rule. Replication tracks (A/B/C), preregistered extensions (E1/E2), the later-frozen exploratory E3, and outcome-motivated post-hoc diagnostics (D1/D2) are separated and labeled consistently across the report, one-pager, frontend contract, website handoff, and author email. Statistical language is careful: descriptive-only t intervals, explicit mixture-distribution caveat, no equivalence claim from McNemar non-rejection, exact binomial tests with log10 tails for underflow, and no pooling across splits. Provenance is strong (per-seed config/checkpoint/prediction/split SHA-256 digests, source manifest, environment capture) and the genuine weaknesses (protocol not committed to Git before compute, container not built, extension-config hash gap, resume config rewriting) are candidly disclosed in REPORT.md, ONE_PAGE.md, and ERROR_LOG.md (LOCAL-051, LOCAL-057, LOCAL-069) rather than hidden; under the review contract, disclosed limitations are not automatic failures. The origin-separated error ledger (100 local, 16 upstream, 3 external) is contiguous and disciplined about not promoting failed commands into findings. The website handoff candidate is internally consistent with FRONTEND_HANDOFF.md (typed sprkd_trial_accuracy_v1 schema, five seed routes, artifact allowlist with hashes, pre-review blocked final_peer_review state, canonical import correctly blocked on the typed-accuracy frontend without mislabeling accuracy as reward). The author email is factual, fair, non-accusatory, and explicitly a draft requiring human approval. This is a single, one-shot review with no resubmission; a PASS makes the exact author-email draft eligible for mandatory separate human approval but does not authorize dispatch. I find no correction that would materially improve truthfulness, reproducibility, or fairness.",
+    "verdict": "PASS"
+  },
+  "elapsed_seconds": 250.073779,
+  "harness": {
+    "profile": "kimi-high-depth-structured-review-v2",
+    "request_parameters": {
+      "max_tokens": 870000,
+      "provider": {
+        "allow_fallbacks": true,
+        "ignore": [
+          "fireworks"
+        ],
+        "order": [
+          "modal",
+          "together",
+          "morph",
+          "moonshotai"
+        ],
+        "require_parameters": true
+      },
+      "reasoning": {
+        "effort": "high"
+      },
+      "temperature": 1.0
+    },
+    "user_prompt_wrapped": true
+  },
+  "http_status": 200,
+  "invocation_count": 1,
+  "model": {
+    "canonical_slug": "moonshotai/kimi-k3-20260715",
+    "catalog_entry_sha256": "76e5f2549c3c848056871c2cb9db88b758cf606ee29acfa464f376a00c22704e",
+    "context_length": 1048576,
+    "requested_id": "moonshotai/kimi-k3"
+  },
+  "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+  "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+  "raw_response_byte_count": 106926,
+  "raw_response_public": false,
+  "raw_response_sha256": "666b961b0b246a62bb13bd177b06239904b4ad381073843734c800ee50f9e9e6",
+  "recovery_of": null,
+  "release_control": {
+    "author_email_dispatch_authorized": false,
+    "human_disposition_required": true,
+    "publication_authorized": false
+  },
+  "retry_allowed": false,
+  "schema_version": "nulspec-openrouter-supplemental-review-v4",
+  "started_at_utc": "2026-08-01T18:26:37.866672Z",
+  "status": "completed_valid",
+  "submitted_user_prompt_sha256": "7b712bd2302fc2988b19c27f063b6c61135827eb6be2d0e616a1c822b3946d09",
+  "system_prompt_sha256": "05a07cf54c0db7c8ee80e94a7d7900e6b9dd35327aa5f09543796d30fef7b894",
+  "usage": {
+    "completion_tokens": 15554,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 9631
+    },
+    "cost": 0.742362,
+    "is_byok": false,
+    "prompt_tokens": 169684,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 185238
+  }
+}

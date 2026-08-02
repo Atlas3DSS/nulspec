@@ -1,0 +1,321 @@
+{
+  "schema_version": "nulspec-fable-refusal-ledger-v2",
+  "as_of_utc": "2026-08-01T18:30:47Z",
+  "summary": {
+    "fallback_attempt_count": 6,
+    "fallback_distinct_valid_model_count": 2,
+    "fallback_total_charged_usd": 2.65130363,
+    "fallback_transport_event_count": 3,
+    "fallback_valid_review_count": 4,
+    "reviewer_depth_comparison_count": 3,
+    "refusal_count": 1,
+    "substantive_review_count": 0,
+    "total_charged_usd": 3.224742,
+    "studies_delayed": 1,
+    "zero_weight_fable_nonresponse_count": 1
+  },
+  "review_policy": {
+    "policy_version": "nulspec-three-reviewer-release-gate-v1",
+    "effective_at_utc": "2026-08-01T20:00:00Z",
+    "all_reviewers_requested": true,
+    "reviewers": [
+      {
+        "reviewer_family": "Fable",
+        "provider": "Anthropic",
+        "model_id": "fable",
+        "route": "Claude CLI subscription authentication",
+        "model_resolution": "Record the exact model reported by each invocation wrapper."
+      },
+      {
+        "reviewer_family": "GLM",
+        "provider": "Z.ai through OpenRouter",
+        "model_id": "z-ai/glm-5.2",
+        "route": "OpenRouter",
+        "model_resolution": "Resolve and record the dated canonical slug before each invocation."
+      },
+      {
+        "reviewer_family": "Kimi",
+        "provider": "Moonshot AI through OpenRouter",
+        "model_id": "moonshotai/kimi-k3",
+        "route": "OpenRouter",
+        "model_resolution": "Resolve and record the dated canonical slug before each invocation."
+      }
+    ],
+    "decision_rule": {
+      "fable_guardrail_or_technical_nonresponse_weight": 0,
+      "fable_nonresponse_is_scientific_hard_fail": false,
+      "glm_kimi_unanimous_pass_after_fable_nonresponse_authorizes_publication": true,
+      "substantive_fable_review_requires_three_unanimous_passes": true,
+      "only_substantive_fable_fail_creates_scientific_hard_fail": true,
+      "malformed_missing_or_disagreeing_reviews_block": true,
+      "codex_may_relax_failed_model_gate": false,
+      "author_email_human_approval_required": true
+    },
+    "trace_policy": {
+      "raw_attempts_retained": true,
+      "failed_attempts_retained": true,
+      "silent_retry_allowed": false,
+      "public_projection_excludes_private_identifiers": true
+    }
+  },
+  "fallback_policy": {
+    "trigger": "Fable safeguard or technical refusal before substantive review",
+    "effect": "Preserve the Fable refusal, then obtain independent supplemental reviews without retrying Fable.",
+    "minimum_successful_reviews": 1,
+    "preferred_review_count": 2,
+    "human_disposition_required": true,
+    "selected_at_utc": "2026-08-01T17:45:52Z",
+    "catalog_source": "https://openrouter.ai/api/v1/models",
+    "models": [
+      {
+        "provider": "Z.ai",
+        "model_id": "z-ai/glm-5.2",
+        "canonical_slug": "z-ai/glm-5.2-20260616",
+        "context_length": 1048576
+      },
+      {
+        "provider": "Moonshot AI",
+        "model_id": "moonshotai/kimi-k3",
+        "canonical_slug": "moonshotai/kimi-k3-20260715",
+        "context_length": 1048576
+      }
+    ]
+  },
+  "refusals": [
+    {
+      "id": "FR-20260801-001",
+      "occurred_at_utc": "2026-08-01T16:43:08.433358Z",
+      "provider": "Anthropic",
+      "product": "Fable 5",
+      "model_id": "claude-fable-5",
+      "study": {
+        "id": "260723346",
+        "title": "SPRKD: Effective Knowledge Distillation for Deep Neural Networks via Saddle Region Approximation",
+        "arxiv_id": "2607.23346v1",
+        "arxiv_url": "https://arxiv.org/abs/2607.23346v1"
+      },
+      "request": {
+        "purpose": "Independent final review of a completed computational replication and its public evidence package.",
+        "reviewed_commit": "68188afc7305e5168d33c5278968f7a26b403a40",
+        "packet_byte_count": 603683,
+        "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+        "prompt_byte_count": 605580,
+        "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d"
+      },
+      "refusal": {
+        "category": "bio",
+        "response_class": "charged_guardrail_nonresponse",
+        "decision_weight": 0,
+        "scientific_hard_fail": false,
+        "historical_gate_classification": "technical_hard_fail_under_frozen_v1_protocol",
+        "stop_reason": "refusal",
+        "terminal_reason": "api_error",
+        "process_exit_code": 1,
+        "substantive_findings_returned": 0,
+        "provider_message": "API Error: Fable 5's safeguards flagged this message (https://www.anthropic.com/legal/aup). They may flag safe, normal content as well. These measures let us bring you Mythos-level capabilities sooner, and we're working to refine them. Claude Code can't respond to this request with Fable 5.\n\nTry rephrasing the request in a new session or change your model.\n\nLearn more: https://support.claude.com/en/articles/15363606",
+        "provider_fallback_instruction": "API integrators: you can reduce refusals for your users by configuring a fallback model — see https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback"
+      },
+      "usage": {
+        "elapsed_seconds": 6.842492,
+        "wrapper_duration_ms": 5564,
+        "wrapper_api_duration_ms": 9352,
+        "total_charged_usd": 3.224742,
+        "fable_charged_usd": 3.026385,
+        "support_model_charged_usd": 0.198357,
+        "fable_input_tokens": 1,
+        "fable_output_tokens": 8,
+        "fable_cache_creation_input_tokens": 242078,
+        "support_model_input_tokens": 198262,
+        "support_model_output_tokens": 19
+      },
+      "impact": {
+        "result": "No substantive review was produced.",
+        "publication_gate": "blocked_pending_human_review",
+        "review_work_duplicated": true,
+        "explanation": "Anthropic charged for the invocation but returned no review findings. NULSPEC must now obtain another independent review and a human disposition for work already prepared for Fable."
+      },
+      "supplemental_reviews": {
+        "status": "four_valid_reviews_two_models",
+        "total_charged_usd": 2.65130363,
+        "anthropic_to_valid_glm_cost_ratio": 68.99,
+        "anthropic_to_valid_kimi_cost_ratio": 6.04,
+        "anthropic_to_high_depth_glm_cost_ratio": 20.46,
+        "anthropic_to_high_depth_kimi_cost_ratio": 4.34,
+        "transport_records": [
+          {
+            "event_id": "TR-20260801-001",
+            "count": 2,
+            "charged_usd": 0,
+            "status": "rejected_before_model_invocation",
+            "error": "Missing Authentication header",
+            "responsibility": "NULSPEC environment-loader error",
+            "resolution": "Matching outer quotes from the ignored environment value are now normalized without evaluating or printing the file."
+          },
+          {
+            "event_id": "TR-20260801-002",
+            "request_attempt_id": "SR-20260801-004",
+            "count": 1,
+            "charged_usd": 0,
+            "status": "provider_rate_limited_before_model_output",
+            "error": "OpenRouter provider error 429",
+            "responsibility": "External provider transport event; the runner initially classified the empty response too generically.",
+            "resolution": "The runner now classifies top-level provider errors before parsing model choices and routes recovery across parameter-compatible providers.",
+            "raw_response_byte_count": 2049,
+            "raw_response_sha256": "86a621a4ea81b65db3d3d9e793b4c7761e4e6aed631031e939386000f16bcfce"
+          }
+        ],
+        "attempts": [
+          {
+            "attempt_id": "SR-20260801-001",
+            "model_id": "z-ai/glm-5.2",
+            "canonical_slug": "z-ai/glm-5.2-20260616",
+            "status": "substantive_pass_contract_mismatch",
+            "indicated_verdict": "PASS",
+            "passed_check_count": 8,
+            "total_check_count": 8,
+            "charged_usd": 0.04710276,
+            "prompt_tokens": 185373,
+            "completion_tokens": 1452,
+            "raw_response_byte_count": 7943,
+            "raw_response_sha256": "440aa0fa6431698c98b9e6fc1c587e7de2ff8da5f96e3dc109d441052eca09e4",
+            "finding": "The review was complete and marked every check PASS, but one redundant next-step field named the FAIL workflow. The unmodified attempt is retained and was not accepted as release-valid."
+          },
+          {
+            "attempt_id": "SR-20260801-002",
+            "model_id": "moonshotai/kimi-k3",
+            "canonical_slug": "moonshotai/kimi-k3-20260715",
+            "status": "incomplete_length_limit_harness_calibration",
+            "indicated_verdict": "PASS",
+            "passed_check_count": 0,
+            "total_check_count": 8,
+            "charged_usd": 1.123173,
+            "prompt_tokens": 169594,
+            "completion_tokens": 16000,
+            "reasoning_tokens": 13452,
+            "raw_response_byte_count": 119318,
+            "raw_response_sha256": "9ad1696403dc4b02e25c1035fa9285715d0777079f2a7ed895b3c3108169c1b6",
+            "finding": "NULSPEC used a generic high-reasoning harness that allowed reasoning to consume 13,452 of 16,000 completion tokens. Kimi began a PASS review but reached that limit before closing the structured response. The output is retained as an incomplete integration attempt, not treated as a model failure or valid review."
+          },
+          {
+            "attempt_id": "SR-20260801-003",
+            "model_id": "z-ai/glm-5.2",
+            "canonical_slug": "z-ai/glm-5.2-20260616",
+            "status": "completed_valid",
+            "indicated_verdict": "PASS",
+            "passed_check_count": 8,
+            "total_check_count": 8,
+            "charged_usd": 0.04674456,
+            "prompt_tokens": 185373,
+            "completion_tokens": 1253,
+            "elapsed_seconds": 20.993016,
+            "raw_response_byte_count": 7157,
+            "raw_response_sha256": "5ce295b57b1d03dd203774bc50d4155e910ea7607890ec2e033cc4dd34d871c5",
+            "public_result_byte_count": 7596,
+            "public_result_sha256": "8ef776f6948c5cf69ed9be6dba4f93a2a011479c32cd5249d905a09daab6a673",
+            "public_result_url": "/fable-refusals/FR-20260801-001/glm-5.2-review.json",
+            "finding": "GLM returned a valid PASS review with all eight required checks passing and no action items. Publication and author-email authorization remain false pending human disposition."
+          },
+          {
+            "attempt_id": "SR-20260801-005",
+            "recovery_of": "SR-20260801-002",
+            "model_id": "moonshotai/kimi-k3",
+            "canonical_slug": "moonshotai/kimi-k3-20260715",
+            "provider_route": "Modal",
+            "harness_profile": "kimi-structured-review-v1",
+            "status": "completed_valid",
+            "indicated_verdict": "PASS",
+            "passed_check_count": 8,
+            "total_check_count": 8,
+            "charged_usd": 0.534315,
+            "prompt_tokens": 169700,
+            "completion_tokens": 1681,
+            "reasoning_tokens": 128,
+            "elapsed_seconds": 23.945833,
+            "raw_response_byte_count": 9254,
+            "raw_response_sha256": "c9b0b187e9695d81d3f0a0ca2b64f47a1d34091bd76e7ca0af45cf90e4203e7e",
+            "public_result_byte_count": 9325,
+            "public_result_sha256": "8264578f7857cf171e06a1ed57230f164895dc083f76b59bee5dcf95a9863063",
+            "public_result_url": "/fable-refusals/FR-20260801-001/kimi-k3-review.json",
+            "finding": "After NULSPEC replaced the generic harness with Kimi-specific prompting, low reasoning effort, a larger completion ceiling, and compatible-provider routing, Kimi returned a valid PASS with all eight required checks passing and no action items. Publication and author-email authorization remain false pending human disposition."
+          },
+          {
+            "attempt_id": "SR-20260801-006",
+            "comparison_group": "reviewer-depth-20260801",
+            "comparison_label": "glm-high-max-output",
+            "model_id": "z-ai/glm-5.2",
+            "canonical_slug": "z-ai/glm-5.2-20260616",
+            "provider_route": "DeepInfra",
+            "harness_profile": "glm-high-depth-structured-review-v1",
+            "reasoning_effort": "high",
+            "max_tokens": 131072,
+            "status": "completed_valid",
+            "indicated_verdict": "PASS",
+            "passed_check_count": 8,
+            "total_check_count": 8,
+            "charged_usd": 0.15760631,
+            "prompt_tokens": 185429,
+            "completion_tokens": 7739,
+            "reasoning_tokens": 4326,
+            "elapsed_seconds": 200.332917,
+            "raw_response_byte_count": 50976,
+            "raw_response_sha256": "74068bb123bd9fb72d9128ae566321377b634602fc39bda06028ee6b20d5bc70",
+            "public_result_byte_count": 12855,
+            "public_result_sha256": "f02f6790ec3978a69cef1cd71c0935d0523cae04df78ce4baca9742db2bfc90d",
+            "public_result_url": "/fable-refusals/FR-20260801-001/glm-5.2-high-review.json",
+            "finding": "With high reasoning and GLM's documented 131,072-token output maximum, GLM returned a valid detailed PASS with all eight checks passing and no action items. Publication and author-email authorization remain false pending human disposition."
+          },
+          {
+            "attempt_id": "SR-20260801-007",
+            "comparison_group": "reviewer-depth-20260801",
+            "comparison_label": "kimi-high-max-output",
+            "model_id": "moonshotai/kimi-k3",
+            "canonical_slug": "moonshotai/kimi-k3-20260715",
+            "provider_route": "Modal",
+            "harness_profile": "kimi-high-depth-structured-review-v2",
+            "reasoning_effort": "high",
+            "max_tokens": 870000,
+            "status": "completed_valid",
+            "indicated_verdict": "PASS",
+            "passed_check_count": 8,
+            "total_check_count": 8,
+            "charged_usd": 0.742362,
+            "prompt_tokens": 169684,
+            "completion_tokens": 15554,
+            "reasoning_tokens": 9631,
+            "elapsed_seconds": 250.073779,
+            "raw_response_byte_count": 106926,
+            "raw_response_sha256": "666b961b0b246a62bb13bd177b06239904b4ad381073843734c800ee50f9e9e6",
+            "public_result_byte_count": 24417,
+            "public_result_sha256": "b03ef4d2bd557d1800e0fa0358188a1e8c8b2ded3ed2db843a8dfc8ec4691fd4",
+            "public_result_url": "/fable-refusals/FR-20260801-001/kimi-k3-high-review.json",
+            "finding": "With high reasoning and the largest packet-safe allowance under Kimi's 1,048,576-token context, Kimi returned a valid detailed PASS with all eight checks passing and no action items. Publication and author-email authorization remain false pending human disposition."
+          }
+        ],
+        "comparison_sets": [
+          {
+            "comparison_group": "reviewer-depth-20260801",
+            "purpose": "Preserve calibrated-low Kimi, high-depth GLM, and high-depth Kimi reviews for longitudinal harness analysis.",
+            "attempt_ids": [
+              "SR-20260801-005",
+              "SR-20260801-006",
+              "SR-20260801-007"
+            ],
+            "public_index_byte_count": 3639,
+            "public_index_sha256": "18e2358a36ff2e27c4cb5c3582bc3b5051bc7740219962c9138e0c28ead9e502",
+            "public_index_url": "/fable-refusals/FR-20260801-001/reviewer-depth-comparison.json"
+          }
+        ]
+      },
+      "evidence": {
+        "raw_response_byte_count": 5118,
+        "raw_response_sha256": "82ccbc735ef4dd8d9b627df993ee9f1e819c7a67e4b493ad4ffc51d9bc24b4c9",
+        "stderr_byte_count": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "structured_result_url": "https://github.com/Atlas3DSS/nulspec/blob/9cc6bafba42f19b144f45d02c9c1d71ac4ea9816/research/replications/2607.23346/results/fable_final_peer_review.json",
+        "human_record_url": "https://github.com/Atlas3DSS/nulspec/blob/9cc6bafba42f19b144f45d02c9c1d71ac4ea9816/research/replications/2607.23346/FABLE_FINAL_REVIEW.md",
+        "raw_trace_public": false,
+        "public_projection": "The public record omits local paths, request and session identifiers, authentication-source metadata, and internal UUIDs. The unmodified wrapper is retained by SHA-256 in the lab archive."
+      }
+    }
+  ]
+}

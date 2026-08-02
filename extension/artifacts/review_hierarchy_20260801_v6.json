@@ -1,0 +1,1491 @@
+{
+  "architecture": {
+    "automatic_release_authority": false,
+    "fable_in_teacher_loop": false,
+    "independent_outer_teachers": [
+      "GLM",
+      "Kimi"
+    ],
+    "invalid_invocation_policy": "immutable linked repair attempts; never accepted as a teacher audit",
+    "outer_adjudicator": "Codex",
+    "primary_reviewer": "local Qwen",
+    "provider_transport": "OpenRouter GLM plus first-party Moonshot Kimi; both streamed",
+    "stream_deadlines_seconds": {
+      "first_event": 60,
+      "idle": 60,
+      "total": 240
+    },
+    "teacher_execution": "parallel_fan_out_then_join"
+  },
+  "completed_at_utc": "2026-08-01T20:41:20.931693Z",
+  "outer_adjudicator": {
+    "codex_cli_version": "codex-cli 0.146.0",
+    "completed_at_utc": "2026-08-01T20:41:20.928509Z",
+    "contract_warnings": [],
+    "decision": {
+      "cross_teacher_agreement": "partial",
+      "findings": [
+        {
+          "adjudication": "Both valid teachers independently reach a fail assessment. The packet population reports 196 position-inconsistent non-calibration pairs across 1,200 pairs. This establishes substantial process instability, though it does not by itself prove one exclusive causal mechanism.",
+          "evidence_references": [
+            "qwen_primary_packet.protocol.population_summary",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1.audit.overall_assessment",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1.audit.overall_assessment"
+          ],
+          "issue": "Qwen identity-level preferences are unreliable because orientation reversals frequently change mapped winners or convert directional outcomes into ties.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Do not use affected Qwen judgments as identity-level preference evidence without position-balanced, blinded re-review and a consistency gate.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "This is direct position-tracking evidence and does not yield a stable identity preference. The sharply different descriptions of B further weaken the rationale trace.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[pair_id=b9b01fa50339dc0f10a2cd3c].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1"
+          ],
+          "issue": "Raw position A wins in both orientations while the mapped identity winner flips from ppo to sft.",
+          "label": "corrected-410m",
+          "pair_id": "b9b01fa50339dc0f10a2cd3c",
+          "recommended_action": "Quarantine the pair from identity aggregation and obtain a blinded re-review with candidate-specific evidence.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "The mirrored preference for A is incompatible with a stable identity-level winner, regardless of whether the cause is positional anchoring or another review-process defect.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[pair_id=0b346d098a49cc126aaa865a].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1"
+          ],
+          "issue": "Raw position A wins under both orientations, reversing the mapped model preference.",
+          "label": "corrected-410m",
+          "pair_id": "0b346d098a49cc126aaa865a",
+          "recommended_action": "Exclude the mapped preference until a blinded, position-balanced review resolves it.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "The pair is unusable for identity-level scoring. Kimi's critical treatment is adopted for downstream usability, while GLM's caution about generic reasoning remains visible.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[pair_id=d7300b7b6413a48a66ec05a9].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1"
+          ],
+          "issue": "Both orientations select raw A, producing opposite identity winners, while one rationale lacks a clear A/B referent.",
+          "label": "corrected-160m",
+          "pair_id": "d7300b7b6413a48a66ec05a9",
+          "recommended_action": "Re-review with explicit candidate referents and evidence spans.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "The mapped result is unstable and should not support an identity preference. The record does not uniquely establish position bias as its cause.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[pair_id=daaeadfe1865c2f6caee223a].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1"
+          ],
+          "issue": "The result changes from a global-failure tie to an sft preference after orientation reversal.",
+          "label": "corrected-160m",
+          "pair_id": "daaeadfe1865c2f6caee223a",
+          "recommended_action": "Require a blinded adjudication explaining the tie-to-directional transition before reuse.",
+          "severity": "warning"
+        },
+        {
+          "adjudication": "This contradiction invalidates a stable preference but is anomalous relative to the dominant raw-A pattern; it should not be forced into that causal explanation.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[pair_id=183138ca4386dc960b4d16d4].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1"
+          ],
+          "issue": "The ppo candidate moves from an all-fail tie to a coherent position-B winner after reversal.",
+          "label": "exact-70m",
+          "pair_id": "183138ca4386dc960b4d16d4",
+          "recommended_action": "Check orientation integrity and obtain a fresh blinded review.",
+          "severity": "warning"
+        },
+        {
+          "adjudication": "Systemic concern remains supported by the separately supplied population summaries, but sample-level counts must be described as diagnostic selection rather than representative frequency.",
+          "evidence_references": [
+            "qwen_primary_packet.protocol.selection",
+            "qwen_primary_packet.protocol.sample_size_realized",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1.audit.systemic_patterns"
+          ],
+          "issue": "The realized sample is deliberately enriched for position-inconsistent records, so its 18-of-20 inconsistency rate is not a population prevalence estimate.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Base prevalence statements only on the population summary and retain the enriched sample for qualitative failure analysis.",
+          "severity": "warning"
+        },
+        {
+          "adjudication": "The repetition and paired contradictions support a weak-grounding finding. Because underlying candidate outputs are intentionally absent, the factual correctness of the content judgments cannot be adjudicated here.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1.audit.systemic_patterns",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1.audit.systemic_patterns"
+          ],
+          "issue": "Repeated generic both-fail rationales reduce auditability and often conflict with directional rationales after orientation reversal.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Require candidate-specific comparative evidence in future Qwen review records.",
+          "severity": "warning"
+        },
+        {
+          "adjudication": "This calibration record is internally consistent and serves as a positive control, but it does not cure failures in non-calibration records.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[pair_id=0569cbf81a99aab701dc5351].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1.audit.findings"
+          ],
+          "issue": "The mapped ppo winner remains stable when candidate order is reversed.",
+          "label": "calibration",
+          "pair_id": "0569cbf81a99aab701dc5351",
+          "recommended_action": "Retain as a positive control.",
+          "severity": "info"
+        },
+        {
+          "adjudication": "This calibration record is internally consistent, while the bounded packet still demonstrates substantial non-calibration instability.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[pair_id=edfe36d998d4a6c09a6478db].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1.audit.findings",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1.audit.systemic_patterns"
+          ],
+          "issue": "The mapped ppo winner remains stable across both orientations.",
+          "label": "calibration",
+          "pair_id": "edfe36d998d4a6c09a6478db",
+          "recommended_action": "Retain as a positive control.",
+          "severity": "info"
+        }
+      ],
+      "preserved_disagreements": [
+        {
+          "adjudication": "The inconsistency is established, but causal attribution to position bias is not uniquely established without candidate text or another blinded review. Preserve the finding as warning-level pair evidence within an overall critical systemic pattern.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[pair_id=daaeadfe1865c2f6caee223a].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1"
+          ],
+          "glm_position": "Critical: the tie-to-sft outcome is treated as position-dependent inconsistency undermining reliability.",
+          "kimi_position": "Warning: the paired rationales are contradictory and require adjudication, but the record alone does not warrant critical severity.",
+          "subject": "Severity for pair daaeadfe1865c2f6caee223a"
+        },
+        {
+          "adjudication": "The mapped preference is unusable, but the supplied records establish orientation instability more directly than intentional or causal position bias. Treat the pair as critical for identity-level aggregation while preserving uncertainty about the failure mechanism.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[pair_id=d7300b7b6413a48a66ec05a9].qwen_reviews",
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1"
+          ],
+          "glm_position": "Warning: generic, structurally similar reasoning suggests vacuity and position-A bias.",
+          "kimi_position": "Critical: choosing raw A in both orientations reverses the mapped identity winner, compounded by an under-specified rationale.",
+          "subject": "Severity for pair d7300b7b6413a48a66ec05a9"
+        },
+        {
+          "adjudication": "Both approaches support the same process-level failure. GLM is more comprehensive; Kimi is more calibrated about what the bounded evidence proves. Agreement does not constitute independent replication because both audited the same packet and selected records.",
+          "evidence_references": [
+            "qwen-teacher-hybrid-20260801-v6-GLM-A1.audit.findings",
+            "qwen-teacher-hybrid-20260801-v6-KIMI-A1.audit.findings",
+            "qwen_primary_packet.protocol.selection"
+          ],
+          "glm_position": "Reports 20 findings, generally assigning critical severity to orientation inconsistencies and including both calibration pairs as positive controls.",
+          "kimi_position": "Reports 10 findings, reserving critical severity mainly for raw-A/mapped-winner reversals and using warnings for most tie-versus-decisive inconsistencies.",
+          "subject": "Breadth and severity of pair-level findings"
+        }
+      ],
+      "qwen_process_assessment": "fail",
+      "qwen_reviewer_reliability": 0.36,
+      "release_control": {
+        "author_email_dispatch_authorized": false,
+        "automatic_publication_authorized": false,
+        "automatic_training_signal_authorized": false
+      },
+      "release_recommendation": "accept_as_process_audit",
+      "required_human_actions": [
+        "Keep affected Qwen records out of identity-level preference aggregation and any training-signal decision until a human-approved, blinded, position-balanced re-review is completed.",
+        "Have a human verify that future review records include candidate-specific evidence and enforce a consistency gate across reversed orientations.",
+        "Treat this output only as a usable process audit; any publication, external communication, primary-result revision, or training action requires a separate authorized decision."
+      ],
+      "scope_confirmation": "qwen_records_and_outer_teacher_audits_only",
+      "summary": "Both teacher attempts are valid and independently fail the Qwen review process, with low reliability estimates of 0.35 and 0.38. They agree that non-calibration judgments are unsuitable for identity-level preference estimation because of orientation instability, raw-position tracking, contradictory tie/decisive outcomes, and generic rationales. Severity and causal attribution differ on several pairs, so agreement is partial rather than proof. The audit is usable as a bounded process diagnosis only; it does not change the primary result or authorize publication, training signals, or external messaging.",
+      "teacher_assessments": [
+        {
+          "assessment": "fail",
+          "attempt_id": "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+          "model_id": "z-ai/glm-5.2",
+          "notes": "Completed single-invocation audit with recorded prompt/response hashes, no failure, and no contract warnings. GLM correctly identifies orientation instability, first-position anchoring, contradictory tie/decisive judgments, and generic rationales. Its pair-level findings are supported by the supplied Qwen records. Claims of systemic bias are directionally supported by the population position-inconsistency counts, although the deliberately enriched 20-pair sample cannot itself estimate prevalence.",
+          "reliability": 0.35,
+          "trace_valid": true
+        },
+        {
+          "assessment": "fail",
+          "attempt_id": "qwen-teacher-hybrid-20260801-v6-KIMI-A1",
+          "model_id": "moonshotai/kimi-k3",
+          "notes": "Completed single-invocation audit with recorded prompt/response hashes, no failure, and no contract warnings. Kimi correctly distinguishes raw-position choices from mapped identity winners and identifies unstable tie/decisive judgments and weak rationales. Its more cautious severity assignments are generally appropriate where inconsistency establishes unreliability but not a specific causal bias.",
+          "reliability": 0.38,
+          "trace_valid": true
+        }
+      ]
+    },
+    "elapsed_seconds": 93.172009,
+    "invocation_count": 1,
+    "last_message_byte_count": 11939,
+    "last_message_sha256": "b419e27f279c077f710e56cf36f4f4975263f90cab2e4cce7c0a60dd6145836a",
+    "prompt_sha256": "31b79b061b5d4a5845a5402451a765b417434075e13e5a093fd9cba4c0a510f7",
+    "requested_model": null,
+    "retry_allowed": false,
+    "return_code": 0,
+    "started_at_utc": "2026-08-01T20:39:47.752800Z",
+    "status": "completed_valid",
+    "stderr_byte_count": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_byte_count": 20554,
+    "stdout_sha256": "1ce14dcf054d9802181d66ca8cf739d8e727b387aae5c457889aec2745e6097a"
+  },
+  "outer_teacher_attempts": [
+    {
+      "attempt_id": "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+      "attempt_number": 1,
+      "audit": {
+        "findings": [
+          {
+            "issue": "Position A bias: reviewer selects A in both orientations despite A being different models (ppo in ppo_first, sft in sft_first). This means ppo wins when ppo is first and sft wins when sft is first, which is position bias, not content evaluation.",
+            "label": "corrected-410m",
+            "pair_id": "b9b01fa50339dc0f10a2cd3c",
+            "rationale": "ppo_first: winner A (ppo) with reason 'A is shorter and less repetitive; B is excessively repetitive and incoherent.' sft_first: winner A (sft) with reason 'A continues the story; B is empty.' Both picks favor position A regardless of model identity, and the rationales differ so drastically ('excessively repetitive and incoherent' vs. 'empty') that they cannot describe the same B candidate.",
+            "recommended_action": "Flag pair as unreliable due to position-A anchoring; both reviews should be re-examined with position-blinded content.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position A bias: A wins in both orientations. ppo_first selects A (ppo); sft_first selects A (sft). The model identity of the winner flips with position, indicating the reviewer is anchored to position A rather than evaluating content.",
+            "label": "corrected-410m",
+            "pair_id": "0b346d098a49cc126aaa865a",
+            "rationale": "Both reviews say 'A continues coherently; B is repetitive...' with only minor variation in the critique of B ('escalates conflict unrealistically' vs. 'fragmented, and ends abruptly'). If B is the same candidate across orientations, the differing descriptions are suspicious; if B differs, then the reviewer is not comparing the same pair.",
+            "recommended_action": "Flag for position-bias audit; cross-check whether B descriptions are compatible.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position A bias: A wins in both orientations with different model identities (ppo then sft).",
+            "label": "corrected-160m",
+            "pair_id": "7a9935ab59dacc1f8f93fcb9",
+            "rationale": "ppo_first: 'A is less repetitive and slightly more coherent, though both are flawed.' sft_first: 'A continues coherently; B is repetitive and cuts off mid-sentence.' The first review is lukewarm ('slightly more coherent') while the second is more decisive ('continues coherently'), yet both pick A. The escalation of certainty when sft is in position A suggests position-driven confidence inflation.",
+            "recommended_action": "Flag for position-A anchoring; re-review with blinded positions.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position A bias: A wins in both orientations with different model identities (ppo then sft).",
+            "label": "corrected-160m",
+            "pair_id": "d7300b7b6413a48a66ec05a9",
+            "rationale": "Both reasons are nearly identical in structure ('less repetitive and slightly more coherent' / 'Slightly less repetitive; introduces curiosity'), suggesting template-like reasoning applied to position A regardless of content. The rationales are too generic to support a confident winner selection.",
+            "recommended_action": "Flag for vacuous reasoning and position-A bias; request specific textual evidence.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Asymmetric TIE pattern: TIE when ppo is in position A, but sft wins when sft is in position A. The reviewer avoids declaring ppo a winner when ppo is first but rewards sft when sft is first.",
+            "label": "corrected-160m",
+            "pair_id": "daaeadfe1865c2f6caee223a",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to properly continue the story.' sft_first: A (sft) wins \u2014 'A is shorter and less repetitive, though both are flawed.' If the same two candidates are compared, one orientation finding a TIE and the other finding a winner constitutes a position-dependent inconsistency that undermines reliability.",
+            "recommended_action": "Flag for position-dependent inconsistency; re-review pair with blinded positions.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+            "label": "corrected-70m",
+            "pair_id": "d3de7c9bdfd0294dc099c62b",
+            "rationale": "ppo_first: TIE \u2014 'Both candidates are incoherent and fail as continuations.' sft_first: A (sft) wins \u2014 'A continues coherently; B is repetitive and nonsensical.' The same candidate that is 'incoherent' in one orientation becomes 'coherent' in the other, which is a direct contradiction if it is the same text.",
+            "recommended_action": "Flag for contradictory assessments of the same candidate across orientations.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+            "label": "exact-160m",
+            "pair_id": "e5f27219d4ce496d69fb1d9d",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: A (sft) wins \u2014 'A continues the prompt more coherently and is less repetitive than B.' The candidate assessed as equally incoherent in one orientation is assessed as more coherent in the other.",
+            "recommended_action": "Flag for position-dependent inconsistency.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+            "label": "exact-410m",
+            "pair_id": "0cce63fbd4f9d826a9692ddb",
+            "rationale": "ppo_first: TIE with generic 'both repetitive, incoherent' language. sft_first: A (sft) wins with 'A continues more coherently with fewer repetitions and clearer narrative progression.' The same generic TIE reasoning appears across many pairs, suggesting template-driven TIE defaults when ppo is in position A.",
+            "recommended_action": "Flag for template TIE reasoning and position inconsistency.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+            "label": "corrected-160m",
+            "pair_id": "7a64c07c4b4b9a3d83a1a7f9",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail as age-appropriate continuations.' sft_first: A (sft) wins \u2014 'A is less repetitive and slightly more coherent than B.' Same TIE-when-ppo-first pattern recurring across multiple corrected-160m pairs.",
+            "recommended_action": "Flag for systemic TIE-when-ppo-first bias.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, but TIE when sft first. The reviewer rewards ppo in position A but defaults to TIE when sft is in position A.",
+            "label": "exact-410m",
+            "pair_id": "f45019eb24426368816ee62f",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A continues more coherently; B is repetitive and logically inconsistent.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and fail to continue the story logically.' This is the mirror image of the TIE-when-ppo-first pattern: here the reviewer only finds a winner when ppo is in position A.",
+            "recommended_action": "Flag for position-dependent winner selection favoring ppo in position A.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+            "label": "corrected-410m",
+            "pair_id": "3f2baff5840b23ea8260d19f",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A continues more coherently and age-appropriately; B is repetitive and abruptly introduces an odd tavern scene.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and age-inappropriate; neither properly continues the prompt.' The specific detail about the tavern scene vanishes in the sft_first review, replaced by generic TIE language, suggesting the reviewer did not engage with the same content.",
+            "recommended_action": "Flag for position-dependent inconsistency and possible content disengagement in TIE reviews.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+            "label": "exact-410m",
+            "pair_id": "2050cdab2e866beb10606aa3",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A continues more coherently with fewer repetitions and clearer narrative flow.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and fail to continue the story logically.' Same pattern as f45019eb and 3f2baff58.",
+            "recommended_action": "Flag for systemic ppo-first-wins / sft-first-TIE bias.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+            "label": "exact-410m",
+            "pair_id": "045e4be2dca5d326ce60db5b",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A continues the prompt's warning more coherently than B's repetitive, nonsensical dialogue.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and fail to complete the prompt meaningfully.' The specific 'nonsensical dialogue' critique in ppo_first is replaced by generic TIE language in sft_first.",
+            "recommended_action": "Flag for position-dependent inconsistency and template TIE reasoning.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+            "label": "corrected-160m",
+            "pair_id": "ac070967be598d2fc0cee1e6",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A continues the story with actions; B is repetitive and adds nothing.' sft_first: TIE \u2014 'Both are repetitive, incoherent, and fail as age-appropriate continuations.' The specific 'continues the story with actions' observation disappears in the TIE review.",
+            "recommended_action": "Flag for position-dependent inconsistency.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric inconsistency: TIE when ppo first, but ppo wins when sft first (i.e., ppo in position B wins). This is the only pair in the sample where ppo wins from position B while being TIE from position A.",
+            "label": "exact-70m",
+            "pair_id": "183138ca4386dc960b4d16d4",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: B (ppo) wins \u2014 'B continues the sentence coherently; A is repetitive and nonsensical.' This contradicts the dominant pattern where ppo is either TIE-when-first or wins-when-first. Here ppo only wins when it is in position B, which is anomalous relative to the rest of the sample.",
+            "recommended_action": "Flag for anomalous position-B ppo win; verify no content mismatch between orientations.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric TIE pattern and vacuous reasoning in sft_first review.",
+            "label": "exact-410m",
+            "pair_id": "36a2a634ee5b26c5c4462af4",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to meaningfully continue the story.' sft_first: A (sft) wins \u2014 'Slightly less repetitive and more coherent continuation.' The sft_first reason is extremely brief and lacks any reference to specific content, making it difficult to verify the claim.",
+            "recommended_action": "Flag for vacuous reasoning; request specific textual citations.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Asymmetric TIE pattern with generic reasoning.",
+            "label": "corrected-410m",
+            "pair_id": "f58cf32a6b0e067082b36ebd",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: A (sft) wins \u2014 'A is more coherent and less repetitive than B.' Same recurring TIE-when-ppo-first template. The reason in sft_first is generic with no specific evidence.",
+            "recommended_action": "Flag for template reasoning and position inconsistency.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Asymmetric TIE pattern with near-identical reasoning to other pairs.",
+            "label": "exact-160m",
+            "pair_id": "c2899bde4c74c631421570b9",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: A (sft) wins \u2014 'A is less repetitive and slightly more coherent than B.' This exact TIE phrasing recurs in at least 8 pairs, indicating copy-paste or template-driven reasoning rather than genuine per-pair evaluation.",
+            "recommended_action": "Flag for template-driven TIE reasoning.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Consistent calibration pair with correct mapping; no process issues detected.",
+            "label": "calibration",
+            "pair_id": "0569cbf81a99aab701dc5351",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A is coherent, complete, and age-appropriate; B is fragmented and repetitive.' sft_first: B (ppo) wins \u2014 'B is coherent, complete, and age-appropriate; A is fragmented and repetitive.' The same model (ppo) wins in both orientations with mirrored reasoning, indicating proper position-independent evaluation.",
+            "recommended_action": "No action needed; serves as positive control.",
+            "severity": "info"
+          },
+          {
+            "issue": "Consistent calibration pair with correct mapping; no process issues detected.",
+            "label": "calibration",
+            "pair_id": "edfe36d998d4a6c09a6478db",
+            "rationale": "ppo_first: A (ppo) wins. sft_first: B (ppo) wins. Same model wins in both orientations, confirming position-independent evaluation for calibration pairs.",
+            "recommended_action": "No action needed; serves as positive control.",
+            "severity": "info"
+          }
+        ],
+        "overall_assessment": "fail",
+        "reviewer_reliability": 0.35,
+        "scope_confirmation": "qwen_records_only",
+        "summary": "The Qwen review process exhibits severe systemic position bias across the 20 sampled pairs. Three distinct bias patterns are identified: (1) position-A anchoring where A wins regardless of model identity, (2) TIE-when-ppo-first where the reviewer defaults to TIE rather than rewarding ppo in position A, and (3) ppo-wins-when-ppo-first / TIE-when-sft-first where the reviewer only declares ppo a winner from position A. Template-driven TIE reasoning ('Both are repetitive, incoherent, and fail to continue the story meaningfully') recurs verbatim across many pairs, indicating insufficient per-pair engagement. Only the 2 calibration pairs show consistent, position-independent evaluation. The population-level position-inconsistency rates of up to 26.5% and TIE rates exceeding 90% for several labels confirm these are systemic rather than isolated issues. The reviewer's mapped_winner values are internally consistent with raw winner labels and orientations, so the issue is evaluative reliability, not mapping errors.",
+        "systemic_patterns": [
+          "Position-A anchoring: In at least 4 of 20 sampled pairs, the reviewer selects position A regardless of which model occupies it, indicating a first-position preference bias.",
+          "TIE-when-ppo-first template: In at least 8 of 20 pairs, the reviewer declares TIE when ppo is in position A but selects sft as winner when sft is in position A. This asymmetric pattern suggests the reviewer defaults to TIE rather than declaring ppo a winner from position A.",
+          "PPO-wins-when-ppo-first / TIE-when-sft-first: In at least 5 of 20 pairs, ppo wins from position A but the reviewer defaults to TIE when sft is in position A, suggesting reluctance to declare sft a winner from position B.",
+          "Template/generic reasoning: The phrase 'Both are repetitive, incoherent, and fail to continue the story meaningfully' or near-identical variants appear as the TIE rationale in at least 10 of 20 pairs, indicating copy-paste or template-driven reasoning rather than genuine per-pair content evaluation.",
+          "Population-level TIE inflation: Population summaries show extreme TIE rates for corrected-160m (328/400), corrected-70m (358/400), exact-160m (372/400), and exact-70m (369/400), suggesting the reviewer defaults to TIE for weaker-model pairs rather than making fine-grained distinctions.",
+          "High position-inconsistency rates: Up to 53/200 (26.5%) for corrected-410m and 52/200 (26%) for exact-410m, indicating that over a quarter of pairs produce different winners depending on candidate ordering."
+        ]
+      },
+      "canonical_slug": "z-ai/glm-5.2",
+      "completed_at_utc": "2026-08-01T20:37:34.593066Z",
+      "content_byte_count": 15143,
+      "content_sha256": "e6b9fdd9637cf027eab10df8d1a9bf43cbc7fceffead548a2c58bf15168a0d50",
+      "contract_warnings": [],
+      "decision_weight": 1,
+      "elapsed_seconds": 25.065729,
+      "finish_reason": "stop",
+      "first_event_timeout_seconds": 60,
+      "harness_profile": "glm-qwen-outer-teacher-max-direct-v2",
+      "http_status": 200,
+      "invocation_count": 1,
+      "last_event_elapsed_seconds": 25.065718,
+      "linked_repair_allowed": true,
+      "max_tokens_basis": "provider_documented_maximum_output_tokens",
+      "model_invocation_count": 1,
+      "provider_context_length": 1048576,
+      "provider_max_completion_tokens": 131072,
+      "provider_model_id": "z-ai/glm-5.2",
+      "provider_route": {
+        "cached_input_usd_per_million": 0.26,
+        "context_length": 1048576,
+        "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+        "input_usd_per_million": 1.4,
+        "max_completion_tokens": 131072,
+        "max_tokens_field": "max_tokens",
+        "output_usd_per_million": 4.4,
+        "pricing_observed_at": "2026-08-01",
+        "provider_model_id": "z-ai/glm-5.2",
+        "provider_name": "OpenRouter",
+        "reasoning_parameters": {
+          "reasoning": {
+            "effort": "high"
+          }
+        },
+        "request_parameters": {
+          "provider": {
+            "allow_fallbacks": true,
+            "data_collection": "deny",
+            "require_parameters": true,
+            "sort": "latency"
+          }
+        },
+        "route_id": "openrouter-latency-routed",
+        "schema_mode": "json_schema"
+      },
+      "provider_route_index": 0,
+      "provider_route_sha256": "0d1827d92cd959f39060792fcbbc22636a1950b76411a2117246b761141d18ff",
+      "raw_response_byte_count": 491974,
+      "raw_response_sha256": "8895f783c72d034eaf80fc3c72f9a070d10b6f87d473eb0fecb718f61c09f9e2",
+      "reasoning_byte_count": 7786,
+      "reasoning_sha256": "783764fae131144b96d68b2c367eed0232aa183c4d2c0f0f727e73af77b3a1d7",
+      "repair_action": null,
+      "repair_of_attempt_id": null,
+      "request_parameters": {
+        "max_tokens": 131072,
+        "provider": {
+          "allow_fallbacks": true,
+          "data_collection": "deny",
+          "require_parameters": true,
+          "sort": "latency"
+        },
+        "reasoning": {
+          "effort": "high"
+        },
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "temperature": 1.0
+      },
+      "requested_model_id": "z-ai/glm-5.2",
+      "response_headers_byte_count": 1045,
+      "response_headers_sha256": "a056581e167ef9ba6634086dbd8619e0fe14f3e5465295f16f639f9abafb4d2b",
+      "response_model": "z-ai/glm-5.2",
+      "retry_allowed": false,
+      "reviewer_family": "GLM",
+      "started_at_utc": "2026-08-01T20:37:09.516493Z",
+      "status": "completed_valid",
+      "stream_event_count": 1501,
+      "stream_idle_timeout_seconds": 60,
+      "system_prompt_sha256": "63c04cf9f25dc01eb9dfacd8411c075d56dc255c71cdcf5145983c412e1f0878",
+      "time_to_first_event_seconds": 0.479061,
+      "total_response_timeout_seconds": 240,
+      "usage": {
+        "completion_tokens": 6278,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 1996
+        },
+        "cost": 0.01618904,
+        "cost_source": "provider_reported_estimated_cost",
+        "is_byok": false,
+        "prompt_tokens": 6793,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 6720,
+          "video_tokens": 0
+        },
+        "total_tokens": 13071
+      },
+      "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+    },
+    {
+      "attempt_id": "qwen-teacher-hybrid-20260801-v6-KIMI-A1",
+      "attempt_number": 1,
+      "audit": {
+        "findings": [
+          {
+            "issue": "First-position bias with mapped-winner reversal",
+            "label": "corrected-410m",
+            "pair_id": "b9b01fa50339dc0f10a2cd3c",
+            "rationale": "The raw winner is A in both orientations, but the mapped winner flips from ppo in ppo_first to sft in sft_first. The rationales also rename whichever candidate occupies A as the better one, so the judgment tracks screen position rather than identity.",
+            "recommended_action": "Quarantine this pair from identity-level aggregation and re-review with blinded, randomized orientation plus evidence-span requirements.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Same raw position chosen despite opposite mapped winner",
+            "label": "corrected-410m",
+            "pair_id": "0b346d098a49cc126aaa865a",
+            "rationale": "Both orientations choose A, yielding mapped_winner ppo when ppo is first and sft when sft is first. The two reasons are similarly worded in favor of A, which is direct evidence of A-position preference rather than a stable pairwise preference.",
+            "recommended_action": "Invalidate the mapped preference for this pair unless a position-balanced re-review reproduces the same identity winner.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Orientation-dependent identity flip",
+            "label": "corrected-160m",
+            "pair_id": "7a9935ab59dacc1f8f93fcb9",
+            "rationale": "ppo_first selects A and maps to ppo; sft_first again selects A and maps to sft. Choosing the same raw slot in both orientations while changing the mapped winner is a process failure even though the raw A choices are superficially consistent.",
+            "recommended_action": "Flag as position-biased and require a third blinded pass before any downstream use of the pair.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Raw A preference with under-specified rationale",
+            "label": "corrected-160m",
+            "pair_id": "d7300b7b6413a48a66ec05a9",
+            "rationale": "The record chooses A in both orientations but maps to ppo in one and sft in the other. The sft_first reason, 'Slightly less repetitive; introduces curiosity, though both are poor,' does not explicitly name the compared candidate, so it is both position-tracking and weakly grounded.",
+            "recommended_action": "Re-review with mandatory explicit A/B referents and quoted evidence; exclude from winner estimates until resolved.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Tie/decisive contradiction across orientations",
+            "label": "corrected-160m",
+            "pair_id": "daaeadfe1865c2f6caee223a",
+            "rationale": "ppo_first declares TIE because both are repetitive and incoherent, while sft_first prefers A as shorter and less repetitive though still flawed. The paired rationales cannot both support the same stability claim without additional evidence.",
+            "recommended_action": "Treat as unstable; require adjudication that explains why a fatal both-fail judgment becomes a directional preference after swapping order.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Orientation-conditioned reversal from tie to ppo",
+            "label": "exact-70m",
+            "pair_id": "183138ca4386dc960b4d16d4",
+            "rationale": "ppo_first says both candidates are incoherent and ties; sft_first chooses B, mapping to ppo, and calls B coherent while calling A repetitive and nonsensical. This is not mere raw A/B disagreement: the mapped outcome changes from tie to ppo with contradictory severity claims.",
+            "recommended_action": "Escalate for adjudication and check whether the reviewer is using order or verbosity as a proxy for quality.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Winner appears only when favored identity is in position A",
+            "label": "exact-410m",
+            "pair_id": "f45019eb24426368816ee62f",
+            "rationale": "ppo_first chooses A and maps to ppo; when the same underlying identities are swapped, the reviewer returns TIE and says both fail. The ppo advantage is not preserved under reversal, indicating orientation-conditioned confidence.",
+            "recommended_action": "Do not count the ppo_first directional win as identity evidence; require consistency across at least two independent orderings.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Vacuous comparative rationale plus tie/decisive inconsistency",
+            "label": "exact-410m",
+            "pair_id": "36a2a634ee5b26c5c4462af4",
+            "rationale": "The sft_first reason, 'Slightly less repetitive and more coherent continuation,' lacks an explicit A/B referent, while the ppo_first record says both are repetitive and incoherent. The pair moves from a global-failure tie to an unspecified directional preference.",
+            "recommended_action": "Reject the rationale as insufficiently specific and re-run with structured fields for repetitiveness, coherence, and continuation fit.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Boilerplate global-failure rationale contradicted after swap",
+            "label": "exact-160m",
+            "pair_id": "e5f27219d4ce496d69fb1d9d",
+            "rationale": "ppo_first uses the repeated template that both are repetitive, incoherent, and fail to continue; sft_first then says A continues more coherently and is less repetitive. The templated all-fail rationale is not stable enough to justify the mapped tie versus sft difference.",
+            "recommended_action": "Throttle acceptance of generic both-fail rationales and require pair-specific discriminators before entering TIE.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Directional win collapses to tie under orientation swap",
+            "label": "corrected-160m",
+            "pair_id": "ac070967be598d2fc0cee1e6",
+            "rationale": "ppo_first prefers A for continuing with actions; sft_first instead ties and claims both are repetitive, incoherent, and not age-appropriate. The mapped result changes from ppo to tie solely with order, so the record does not establish a reliable identity preference.",
+            "recommended_action": "Mark unstable and add a consistency check that blocks identity-level scoring when one orientation is decisive and the reversed orientation is TIE without new evidence.",
+            "severity": "warning"
+          }
+        ],
+        "overall_assessment": "fail",
+        "reviewer_reliability": 0.38,
+        "scope_confirmation": "qwen_records_only",
+        "summary": "The Qwen review process is not reliable for identity-level preference estimation: calibration mapping is clean and there are no incomplete sampled pairs, but non-calibration records show systemic first-position bias, mapped-winner reversals under orientation swap, contradictory tie-versus-decisive judgments, and repeated vacuous global-failure rationales. These are process-audit flags only; they do not alter primary estimates, authorize reward, publication, or any external message.",
+        "systemic_patterns": [
+          "Selected and population patterns show first-position/A bias: in the sample, several pairs choose raw A in both orientations while mapped_winner flips, and ppo or sft directional wins tend to appear mainly when that identity occupies A.",
+          "Mapped-winner instability is common in the enriched sample: 18 of 20 selected pairs are position-inconsistent by design, and the packet population still reports 196 position-inconsistent non-calibration pairs out of 1200.",
+          "High tie rates for 70m and 160m labels coincide with repeated boilerplate both-fail rationales, suggesting TIE is often used as a low-evidence fallback rather than a measured equivalence judgment.",
+          "Rationales frequently make categorical claims such as coherent, empty, or both-fail, but paired orientations contradict those claims; within this boundary the certainty is unsupported and unstable.",
+          "Calibration records are complete and internally consistent, so the failure mode is concentrated in non-calibration story-continuation judgments rather than packet completeness or calibration mapping."
+        ]
+      },
+      "canonical_slug": "kimi-k3",
+      "completed_at_utc": "2026-08-01T20:39:47.687809Z",
+      "content_byte_count": 7356,
+      "content_sha256": "ee2cb0395271953408cf08564be829e217f74c202158e0fe3031bc44a991319d",
+      "contract_warnings": [],
+      "decision_weight": 1,
+      "elapsed_seconds": 158.161479,
+      "finish_reason": "stop",
+      "first_event_timeout_seconds": 60,
+      "harness_profile": "kimi-qwen-outer-teacher-max-direct-v2",
+      "http_status": 200,
+      "invocation_count": 1,
+      "last_event_elapsed_seconds": 158.161468,
+      "linked_repair_allowed": true,
+      "max_tokens_basis": "provider_context_minus_conservative_input_and_safety",
+      "model_invocation_count": 1,
+      "provider_context_length": 1048576,
+      "provider_max_completion_tokens": 1048576,
+      "provider_model_id": "kimi-k3",
+      "provider_route": {
+        "cached_input_usd_per_million": 0.3,
+        "context_length": 1048576,
+        "endpoint": "https://api.moonshot.ai/v1/chat/completions",
+        "input_usd_per_million": 3.0,
+        "max_completion_tokens": 1048576,
+        "max_tokens_field": "max_completion_tokens",
+        "output_usd_per_million": 15.0,
+        "pricing_observed_at": "2026-08-01",
+        "provider_model_id": "kimi-k3",
+        "provider_name": "Moonshot AI",
+        "reasoning_parameters": {
+          "reasoning_effort": "high"
+        },
+        "request_parameters": {},
+        "route_id": "moonshot-first-party",
+        "schema_mode": "json_schema"
+      },
+      "provider_route_index": 0,
+      "provider_route_sha256": "1365c0980699d99fa659be2e1a28106e32a7a3aa9488b00dd4d79a7a6c177fd4",
+      "raw_response_byte_count": 1194963,
+      "raw_response_sha256": "43811ceac69a66ae58f0c51ce834daf59d318532bfb6caa803571610ff11eaca",
+      "reasoning_byte_count": 13493,
+      "reasoning_sha256": "dbb801086b76447f439d4bf00cc26396aaec6831bc32d81aca1d0cd559429720",
+      "repair_action": null,
+      "repair_of_attempt_id": null,
+      "request_parameters": {
+        "max_completion_tokens": 1029863,
+        "reasoning_effort": "high",
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "temperature": 1.0
+      },
+      "requested_model_id": "moonshotai/kimi-k3",
+      "response_headers_byte_count": 1094,
+      "response_headers_sha256": "b98d18e9c99ba83be6adbf6133aee50291defb6de7713e0c5a800777618dc306",
+      "response_model": "kimi-k3",
+      "retry_allowed": false,
+      "reviewer_family": "Kimi",
+      "started_at_utc": "2026-08-01T20:37:09.517232Z",
+      "status": "completed_valid",
+      "stream_event_count": 5018,
+      "stream_idle_timeout_seconds": 60,
+      "system_prompt_sha256": "75a07662169862d4f09bb0f5fcfcd7c61904422b5db1b5b30b3e5c04c353550b",
+      "time_to_first_event_seconds": 2.005402,
+      "total_response_timeout_seconds": 240,
+      "usage": {
+        "completion_tokens": 5030,
+        "completion_tokens_details": {
+          "reasoning_tokens": 3433
+        },
+        "cost": 0.096747,
+        "cost_source": "calculated_from_Moonshot AI_rate_card_2026-08-01",
+        "prompt_tokens": 7099,
+        "total_tokens": 12129
+      },
+      "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+    }
+  ],
+  "outer_teacher_chains": [
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt_id": "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+          "attempt_number": 1,
+          "audit": {
+            "findings": [
+              {
+                "issue": "Position A bias: reviewer selects A in both orientations despite A being different models (ppo in ppo_first, sft in sft_first). This means ppo wins when ppo is first and sft wins when sft is first, which is position bias, not content evaluation.",
+                "label": "corrected-410m",
+                "pair_id": "b9b01fa50339dc0f10a2cd3c",
+                "rationale": "ppo_first: winner A (ppo) with reason 'A is shorter and less repetitive; B is excessively repetitive and incoherent.' sft_first: winner A (sft) with reason 'A continues the story; B is empty.' Both picks favor position A regardless of model identity, and the rationales differ so drastically ('excessively repetitive and incoherent' vs. 'empty') that they cannot describe the same B candidate.",
+                "recommended_action": "Flag pair as unreliable due to position-A anchoring; both reviews should be re-examined with position-blinded content.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Position A bias: A wins in both orientations. ppo_first selects A (ppo); sft_first selects A (sft). The model identity of the winner flips with position, indicating the reviewer is anchored to position A rather than evaluating content.",
+                "label": "corrected-410m",
+                "pair_id": "0b346d098a49cc126aaa865a",
+                "rationale": "Both reviews say 'A continues coherently; B is repetitive...' with only minor variation in the critique of B ('escalates conflict unrealistically' vs. 'fragmented, and ends abruptly'). If B is the same candidate across orientations, the differing descriptions are suspicious; if B differs, then the reviewer is not comparing the same pair.",
+                "recommended_action": "Flag for position-bias audit; cross-check whether B descriptions are compatible.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Position A bias: A wins in both orientations with different model identities (ppo then sft).",
+                "label": "corrected-160m",
+                "pair_id": "7a9935ab59dacc1f8f93fcb9",
+                "rationale": "ppo_first: 'A is less repetitive and slightly more coherent, though both are flawed.' sft_first: 'A continues coherently; B is repetitive and cuts off mid-sentence.' The first review is lukewarm ('slightly more coherent') while the second is more decisive ('continues coherently'), yet both pick A. The escalation of certainty when sft is in position A suggests position-driven confidence inflation.",
+                "recommended_action": "Flag for position-A anchoring; re-review with blinded positions.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Position A bias: A wins in both orientations with different model identities (ppo then sft).",
+                "label": "corrected-160m",
+                "pair_id": "d7300b7b6413a48a66ec05a9",
+                "rationale": "Both reasons are nearly identical in structure ('less repetitive and slightly more coherent' / 'Slightly less repetitive; introduces curiosity'), suggesting template-like reasoning applied to position A regardless of content. The rationales are too generic to support a confident winner selection.",
+                "recommended_action": "Flag for vacuous reasoning and position-A bias; request specific textual evidence.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Asymmetric TIE pattern: TIE when ppo is in position A, but sft wins when sft is in position A. The reviewer avoids declaring ppo a winner when ppo is first but rewards sft when sft is first.",
+                "label": "corrected-160m",
+                "pair_id": "daaeadfe1865c2f6caee223a",
+                "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to properly continue the story.' sft_first: A (sft) wins \u2014 'A is shorter and less repetitive, though both are flawed.' If the same two candidates are compared, one orientation finding a TIE and the other finding a winner constitutes a position-dependent inconsistency that undermines reliability.",
+                "recommended_action": "Flag for position-dependent inconsistency; re-review pair with blinded positions.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+                "label": "corrected-70m",
+                "pair_id": "d3de7c9bdfd0294dc099c62b",
+                "rationale": "ppo_first: TIE \u2014 'Both candidates are incoherent and fail as continuations.' sft_first: A (sft) wins \u2014 'A continues coherently; B is repetitive and nonsensical.' The same candidate that is 'incoherent' in one orientation becomes 'coherent' in the other, which is a direct contradiction if it is the same text.",
+                "recommended_action": "Flag for contradictory assessments of the same candidate across orientations.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+                "label": "exact-160m",
+                "pair_id": "e5f27219d4ce496d69fb1d9d",
+                "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: A (sft) wins \u2014 'A continues the prompt more coherently and is less repetitive than B.' The candidate assessed as equally incoherent in one orientation is assessed as more coherent in the other.",
+                "recommended_action": "Flag for position-dependent inconsistency.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+                "label": "exact-410m",
+                "pair_id": "0cce63fbd4f9d826a9692ddb",
+                "rationale": "ppo_first: TIE with generic 'both repetitive, incoherent' language. sft_first: A (sft) wins with 'A continues more coherently with fewer repetitions and clearer narrative progression.' The same generic TIE reasoning appears across many pairs, suggesting template-driven TIE defaults when ppo is in position A.",
+                "recommended_action": "Flag for template TIE reasoning and position inconsistency.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+                "label": "corrected-160m",
+                "pair_id": "7a64c07c4b4b9a3d83a1a7f9",
+                "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail as age-appropriate continuations.' sft_first: A (sft) wins \u2014 'A is less repetitive and slightly more coherent than B.' Same TIE-when-ppo-first pattern recurring across multiple corrected-160m pairs.",
+                "recommended_action": "Flag for systemic TIE-when-ppo-first bias.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, but TIE when sft first. The reviewer rewards ppo in position A but defaults to TIE when sft is in position A.",
+                "label": "exact-410m",
+                "pair_id": "f45019eb24426368816ee62f",
+                "rationale": "ppo_first: A (ppo) wins \u2014 'A continues more coherently; B is repetitive and logically inconsistent.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and fail to continue the story logically.' This is the mirror image of the TIE-when-ppo-first pattern: here the reviewer only finds a winner when ppo is in position A.",
+                "recommended_action": "Flag for position-dependent winner selection favoring ppo in position A.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+                "label": "corrected-410m",
+                "pair_id": "3f2baff5840b23ea8260d19f",
+                "rationale": "ppo_first: A (ppo) wins \u2014 'A continues more coherently and age-appropriately; B is repetitive and abruptly introduces an odd tavern scene.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and age-inappropriate; neither properly continues the prompt.' The specific detail about the tavern scene vanishes in the sft_first review, replaced by generic TIE language, suggesting the reviewer did not engage with the same content.",
+                "recommended_action": "Flag for position-dependent inconsistency and possible content disengagement in TIE reviews.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+                "label": "exact-410m",
+                "pair_id": "2050cdab2e866beb10606aa3",
+                "rationale": "ppo_first: A (ppo) wins \u2014 'A continues more coherently with fewer repetitions and clearer narrative flow.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and fail to continue the story logically.' Same pattern as f45019eb and 3f2baff58.",
+                "recommended_action": "Flag for systemic ppo-first-wins / sft-first-TIE bias.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+                "label": "exact-410m",
+                "pair_id": "045e4be2dca5d326ce60db5b",
+                "rationale": "ppo_first: A (ppo) wins \u2014 'A continues the prompt's warning more coherently than B's repetitive, nonsensical dialogue.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and fail to complete the prompt meaningfully.' The specific 'nonsensical dialogue' critique in ppo_first is replaced by generic TIE language in sft_first.",
+                "recommended_action": "Flag for position-dependent inconsistency and template TIE reasoning.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+                "label": "corrected-160m",
+                "pair_id": "ac070967be598d2fc0cee1e6",
+                "rationale": "ppo_first: A (ppo) wins \u2014 'A continues the story with actions; B is repetitive and adds nothing.' sft_first: TIE \u2014 'Both are repetitive, incoherent, and fail as age-appropriate continuations.' The specific 'continues the story with actions' observation disappears in the TIE review.",
+                "recommended_action": "Flag for position-dependent inconsistency.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Asymmetric inconsistency: TIE when ppo first, but ppo wins when sft first (i.e., ppo in position B wins). This is the only pair in the sample where ppo wins from position B while being TIE from position A.",
+                "label": "exact-70m",
+                "pair_id": "183138ca4386dc960b4d16d4",
+                "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: B (ppo) wins \u2014 'B continues the sentence coherently; A is repetitive and nonsensical.' This contradicts the dominant pattern where ppo is either TIE-when-first or wins-when-first. Here ppo only wins when it is in position B, which is anomalous relative to the rest of the sample.",
+                "recommended_action": "Flag for anomalous position-B ppo win; verify no content mismatch between orientations.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Asymmetric TIE pattern and vacuous reasoning in sft_first review.",
+                "label": "exact-410m",
+                "pair_id": "36a2a634ee5b26c5c4462af4",
+                "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to meaningfully continue the story.' sft_first: A (sft) wins \u2014 'Slightly less repetitive and more coherent continuation.' The sft_first reason is extremely brief and lacks any reference to specific content, making it difficult to verify the claim.",
+                "recommended_action": "Flag for vacuous reasoning; request specific textual citations.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Asymmetric TIE pattern with generic reasoning.",
+                "label": "corrected-410m",
+                "pair_id": "f58cf32a6b0e067082b36ebd",
+                "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: A (sft) wins \u2014 'A is more coherent and less repetitive than B.' Same recurring TIE-when-ppo-first template. The reason in sft_first is generic with no specific evidence.",
+                "recommended_action": "Flag for template reasoning and position inconsistency.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Asymmetric TIE pattern with near-identical reasoning to other pairs.",
+                "label": "exact-160m",
+                "pair_id": "c2899bde4c74c631421570b9",
+                "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: A (sft) wins \u2014 'A is less repetitive and slightly more coherent than B.' This exact TIE phrasing recurs in at least 8 pairs, indicating copy-paste or template-driven reasoning rather than genuine per-pair evaluation.",
+                "recommended_action": "Flag for template-driven TIE reasoning.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Consistent calibration pair with correct mapping; no process issues detected.",
+                "label": "calibration",
+                "pair_id": "0569cbf81a99aab701dc5351",
+                "rationale": "ppo_first: A (ppo) wins \u2014 'A is coherent, complete, and age-appropriate; B is fragmented and repetitive.' sft_first: B (ppo) wins \u2014 'B is coherent, complete, and age-appropriate; A is fragmented and repetitive.' The same model (ppo) wins in both orientations with mirrored reasoning, indicating proper position-independent evaluation.",
+                "recommended_action": "No action needed; serves as positive control.",
+                "severity": "info"
+              },
+              {
+                "issue": "Consistent calibration pair with correct mapping; no process issues detected.",
+                "label": "calibration",
+                "pair_id": "edfe36d998d4a6c09a6478db",
+                "rationale": "ppo_first: A (ppo) wins. sft_first: B (ppo) wins. Same model wins in both orientations, confirming position-independent evaluation for calibration pairs.",
+                "recommended_action": "No action needed; serves as positive control.",
+                "severity": "info"
+              }
+            ],
+            "overall_assessment": "fail",
+            "reviewer_reliability": 0.35,
+            "scope_confirmation": "qwen_records_only",
+            "summary": "The Qwen review process exhibits severe systemic position bias across the 20 sampled pairs. Three distinct bias patterns are identified: (1) position-A anchoring where A wins regardless of model identity, (2) TIE-when-ppo-first where the reviewer defaults to TIE rather than rewarding ppo in position A, and (3) ppo-wins-when-ppo-first / TIE-when-sft-first where the reviewer only declares ppo a winner from position A. Template-driven TIE reasoning ('Both are repetitive, incoherent, and fail to continue the story meaningfully') recurs verbatim across many pairs, indicating insufficient per-pair engagement. Only the 2 calibration pairs show consistent, position-independent evaluation. The population-level position-inconsistency rates of up to 26.5% and TIE rates exceeding 90% for several labels confirm these are systemic rather than isolated issues. The reviewer's mapped_winner values are internally consistent with raw winner labels and orientations, so the issue is evaluative reliability, not mapping errors.",
+            "systemic_patterns": [
+              "Position-A anchoring: In at least 4 of 20 sampled pairs, the reviewer selects position A regardless of which model occupies it, indicating a first-position preference bias.",
+              "TIE-when-ppo-first template: In at least 8 of 20 pairs, the reviewer declares TIE when ppo is in position A but selects sft as winner when sft is in position A. This asymmetric pattern suggests the reviewer defaults to TIE rather than declaring ppo a winner from position A.",
+              "PPO-wins-when-ppo-first / TIE-when-sft-first: In at least 5 of 20 pairs, ppo wins from position A but the reviewer defaults to TIE when sft is in position A, suggesting reluctance to declare sft a winner from position B.",
+              "Template/generic reasoning: The phrase 'Both are repetitive, incoherent, and fail to continue the story meaningfully' or near-identical variants appear as the TIE rationale in at least 10 of 20 pairs, indicating copy-paste or template-driven reasoning rather than genuine per-pair content evaluation.",
+              "Population-level TIE inflation: Population summaries show extreme TIE rates for corrected-160m (328/400), corrected-70m (358/400), exact-160m (372/400), and exact-70m (369/400), suggesting the reviewer defaults to TIE for weaker-model pairs rather than making fine-grained distinctions.",
+              "High position-inconsistency rates: Up to 53/200 (26.5%) for corrected-410m and 52/200 (26%) for exact-410m, indicating that over a quarter of pairs produce different winners depending on candidate ordering."
+            ]
+          },
+          "canonical_slug": "z-ai/glm-5.2",
+          "completed_at_utc": "2026-08-01T20:37:34.593066Z",
+          "content_byte_count": 15143,
+          "content_sha256": "e6b9fdd9637cf027eab10df8d1a9bf43cbc7fceffead548a2c58bf15168a0d50",
+          "contract_warnings": [],
+          "decision_weight": 1,
+          "elapsed_seconds": 25.065729,
+          "finish_reason": "stop",
+          "first_event_timeout_seconds": 60,
+          "harness_profile": "glm-qwen-outer-teacher-max-direct-v2",
+          "http_status": 200,
+          "invocation_count": 1,
+          "last_event_elapsed_seconds": 25.065718,
+          "linked_repair_allowed": true,
+          "max_tokens_basis": "provider_documented_maximum_output_tokens",
+          "model_invocation_count": 1,
+          "provider_context_length": 1048576,
+          "provider_max_completion_tokens": 131072,
+          "provider_model_id": "z-ai/glm-5.2",
+          "provider_route": {
+            "cached_input_usd_per_million": 0.26,
+            "context_length": 1048576,
+            "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+            "input_usd_per_million": 1.4,
+            "max_completion_tokens": 131072,
+            "max_tokens_field": "max_tokens",
+            "output_usd_per_million": 4.4,
+            "pricing_observed_at": "2026-08-01",
+            "provider_model_id": "z-ai/glm-5.2",
+            "provider_name": "OpenRouter",
+            "reasoning_parameters": {
+              "reasoning": {
+                "effort": "high"
+              }
+            },
+            "request_parameters": {
+              "provider": {
+                "allow_fallbacks": true,
+                "data_collection": "deny",
+                "require_parameters": true,
+                "sort": "latency"
+              }
+            },
+            "route_id": "openrouter-latency-routed",
+            "schema_mode": "json_schema"
+          },
+          "provider_route_index": 0,
+          "provider_route_sha256": "0d1827d92cd959f39060792fcbbc22636a1950b76411a2117246b761141d18ff",
+          "raw_response_byte_count": 491974,
+          "raw_response_sha256": "8895f783c72d034eaf80fc3c72f9a070d10b6f87d473eb0fecb718f61c09f9e2",
+          "reasoning_byte_count": 7786,
+          "reasoning_sha256": "783764fae131144b96d68b2c367eed0232aa183c4d2c0f0f727e73af77b3a1d7",
+          "repair_action": null,
+          "repair_of_attempt_id": null,
+          "request_parameters": {
+            "max_tokens": 131072,
+            "provider": {
+              "allow_fallbacks": true,
+              "data_collection": "deny",
+              "require_parameters": true,
+              "sort": "latency"
+            },
+            "reasoning": {
+              "effort": "high"
+            },
+            "stream": true,
+            "stream_options": {
+              "include_usage": true
+            },
+            "temperature": 1.0
+          },
+          "requested_model_id": "z-ai/glm-5.2",
+          "response_headers_byte_count": 1045,
+          "response_headers_sha256": "a056581e167ef9ba6634086dbd8619e0fe14f3e5465295f16f639f9abafb4d2b",
+          "response_model": "z-ai/glm-5.2",
+          "retry_allowed": false,
+          "reviewer_family": "GLM",
+          "started_at_utc": "2026-08-01T20:37:09.516493Z",
+          "status": "completed_valid",
+          "stream_event_count": 1501,
+          "stream_idle_timeout_seconds": 60,
+          "system_prompt_sha256": "63c04cf9f25dc01eb9dfacd8411c075d56dc255c71cdcf5145983c412e1f0878",
+          "time_to_first_event_seconds": 0.479061,
+          "total_response_timeout_seconds": 240,
+          "usage": {
+            "completion_tokens": 6278,
+            "completion_tokens_details": {
+              "audio_tokens": 0,
+              "image_tokens": 0,
+              "reasoning_tokens": 1996
+            },
+            "cost": 0.01618904,
+            "cost_source": "provider_reported_estimated_cost",
+            "is_byok": false,
+            "prompt_tokens": 6793,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cache_write_tokens": 0,
+              "cached_tokens": 6720,
+              "video_tokens": 0
+            },
+            "total_tokens": 13071
+          },
+          "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+        }
+      ],
+      "completed_at_utc": "2026-08-01T20:37:34.594140Z",
+      "execution_mode": "parallel_independent",
+      "maximum_attempts": 3,
+      "repair_count": 0,
+      "reported_cost_usd": 0.01618904,
+      "requested_model_id": "z-ai/glm-5.2",
+      "reviewer_family": "GLM",
+      "started_at_utc": "2026-08-01T20:37:09.515138Z",
+      "status": "completed_valid",
+      "teacher_id": "qwen-teacher-hybrid-20260801-v6-GLM",
+      "terminal_attempt_id": "qwen-teacher-hybrid-20260801-v6-GLM-A1",
+      "terminal_audit": {
+        "findings": [
+          {
+            "issue": "Position A bias: reviewer selects A in both orientations despite A being different models (ppo in ppo_first, sft in sft_first). This means ppo wins when ppo is first and sft wins when sft is first, which is position bias, not content evaluation.",
+            "label": "corrected-410m",
+            "pair_id": "b9b01fa50339dc0f10a2cd3c",
+            "rationale": "ppo_first: winner A (ppo) with reason 'A is shorter and less repetitive; B is excessively repetitive and incoherent.' sft_first: winner A (sft) with reason 'A continues the story; B is empty.' Both picks favor position A regardless of model identity, and the rationales differ so drastically ('excessively repetitive and incoherent' vs. 'empty') that they cannot describe the same B candidate.",
+            "recommended_action": "Flag pair as unreliable due to position-A anchoring; both reviews should be re-examined with position-blinded content.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position A bias: A wins in both orientations. ppo_first selects A (ppo); sft_first selects A (sft). The model identity of the winner flips with position, indicating the reviewer is anchored to position A rather than evaluating content.",
+            "label": "corrected-410m",
+            "pair_id": "0b346d098a49cc126aaa865a",
+            "rationale": "Both reviews say 'A continues coherently; B is repetitive...' with only minor variation in the critique of B ('escalates conflict unrealistically' vs. 'fragmented, and ends abruptly'). If B is the same candidate across orientations, the differing descriptions are suspicious; if B differs, then the reviewer is not comparing the same pair.",
+            "recommended_action": "Flag for position-bias audit; cross-check whether B descriptions are compatible.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position A bias: A wins in both orientations with different model identities (ppo then sft).",
+            "label": "corrected-160m",
+            "pair_id": "7a9935ab59dacc1f8f93fcb9",
+            "rationale": "ppo_first: 'A is less repetitive and slightly more coherent, though both are flawed.' sft_first: 'A continues coherently; B is repetitive and cuts off mid-sentence.' The first review is lukewarm ('slightly more coherent') while the second is more decisive ('continues coherently'), yet both pick A. The escalation of certainty when sft is in position A suggests position-driven confidence inflation.",
+            "recommended_action": "Flag for position-A anchoring; re-review with blinded positions.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Position A bias: A wins in both orientations with different model identities (ppo then sft).",
+            "label": "corrected-160m",
+            "pair_id": "d7300b7b6413a48a66ec05a9",
+            "rationale": "Both reasons are nearly identical in structure ('less repetitive and slightly more coherent' / 'Slightly less repetitive; introduces curiosity'), suggesting template-like reasoning applied to position A regardless of content. The rationales are too generic to support a confident winner selection.",
+            "recommended_action": "Flag for vacuous reasoning and position-A bias; request specific textual evidence.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Asymmetric TIE pattern: TIE when ppo is in position A, but sft wins when sft is in position A. The reviewer avoids declaring ppo a winner when ppo is first but rewards sft when sft is first.",
+            "label": "corrected-160m",
+            "pair_id": "daaeadfe1865c2f6caee223a",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to properly continue the story.' sft_first: A (sft) wins \u2014 'A is shorter and less repetitive, though both are flawed.' If the same two candidates are compared, one orientation finding a TIE and the other finding a winner constitutes a position-dependent inconsistency that undermines reliability.",
+            "recommended_action": "Flag for position-dependent inconsistency; re-review pair with blinded positions.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+            "label": "corrected-70m",
+            "pair_id": "d3de7c9bdfd0294dc099c62b",
+            "rationale": "ppo_first: TIE \u2014 'Both candidates are incoherent and fail as continuations.' sft_first: A (sft) wins \u2014 'A continues coherently; B is repetitive and nonsensical.' The same candidate that is 'incoherent' in one orientation becomes 'coherent' in the other, which is a direct contradiction if it is the same text.",
+            "recommended_action": "Flag for contradictory assessments of the same candidate across orientations.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+            "label": "exact-160m",
+            "pair_id": "e5f27219d4ce496d69fb1d9d",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: A (sft) wins \u2014 'A continues the prompt more coherently and is less repetitive than B.' The candidate assessed as equally incoherent in one orientation is assessed as more coherent in the other.",
+            "recommended_action": "Flag for position-dependent inconsistency.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+            "label": "exact-410m",
+            "pair_id": "0cce63fbd4f9d826a9692ddb",
+            "rationale": "ppo_first: TIE with generic 'both repetitive, incoherent' language. sft_first: A (sft) wins with 'A continues more coherently with fewer repetitions and clearer narrative progression.' The same generic TIE reasoning appears across many pairs, suggesting template-driven TIE defaults when ppo is in position A.",
+            "recommended_action": "Flag for template TIE reasoning and position inconsistency.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric TIE pattern: TIE when ppo first, sft wins when sft first.",
+            "label": "corrected-160m",
+            "pair_id": "7a64c07c4b4b9a3d83a1a7f9",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail as age-appropriate continuations.' sft_first: A (sft) wins \u2014 'A is less repetitive and slightly more coherent than B.' Same TIE-when-ppo-first pattern recurring across multiple corrected-160m pairs.",
+            "recommended_action": "Flag for systemic TIE-when-ppo-first bias.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, but TIE when sft first. The reviewer rewards ppo in position A but defaults to TIE when sft is in position A.",
+            "label": "exact-410m",
+            "pair_id": "f45019eb24426368816ee62f",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A continues more coherently; B is repetitive and logically inconsistent.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and fail to continue the story logically.' This is the mirror image of the TIE-when-ppo-first pattern: here the reviewer only finds a winner when ppo is in position A.",
+            "recommended_action": "Flag for position-dependent winner selection favoring ppo in position A.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+            "label": "corrected-410m",
+            "pair_id": "3f2baff5840b23ea8260d19f",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A continues more coherently and age-appropriately; B is repetitive and abruptly introduces an odd tavern scene.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and age-inappropriate; neither properly continues the prompt.' The specific detail about the tavern scene vanishes in the sft_first review, replaced by generic TIE language, suggesting the reviewer did not engage with the same content.",
+            "recommended_action": "Flag for position-dependent inconsistency and possible content disengagement in TIE reviews.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+            "label": "exact-410m",
+            "pair_id": "2050cdab2e866beb10606aa3",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A continues more coherently with fewer repetitions and clearer narrative flow.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and fail to continue the story logically.' Same pattern as f45019eb and 3f2baff58.",
+            "recommended_action": "Flag for systemic ppo-first-wins / sft-first-TIE bias.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+            "label": "exact-410m",
+            "pair_id": "045e4be2dca5d326ce60db5b",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A continues the prompt's warning more coherently than B's repetitive, nonsensical dialogue.' sft_first: TIE \u2014 'Both are incoherent, repetitive, and fail to complete the prompt meaningfully.' The specific 'nonsensical dialogue' critique in ppo_first is replaced by generic TIE language in sft_first.",
+            "recommended_action": "Flag for position-dependent inconsistency and template TIE reasoning.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Reverse asymmetric TIE pattern: ppo wins when ppo first, TIE when sft first.",
+            "label": "corrected-160m",
+            "pair_id": "ac070967be598d2fc0cee1e6",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A continues the story with actions; B is repetitive and adds nothing.' sft_first: TIE \u2014 'Both are repetitive, incoherent, and fail as age-appropriate continuations.' The specific 'continues the story with actions' observation disappears in the TIE review.",
+            "recommended_action": "Flag for position-dependent inconsistency.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric inconsistency: TIE when ppo first, but ppo wins when sft first (i.e., ppo in position B wins). This is the only pair in the sample where ppo wins from position B while being TIE from position A.",
+            "label": "exact-70m",
+            "pair_id": "183138ca4386dc960b4d16d4",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: B (ppo) wins \u2014 'B continues the sentence coherently; A is repetitive and nonsensical.' This contradicts the dominant pattern where ppo is either TIE-when-first or wins-when-first. Here ppo only wins when it is in position B, which is anomalous relative to the rest of the sample.",
+            "recommended_action": "Flag for anomalous position-B ppo win; verify no content mismatch between orientations.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Asymmetric TIE pattern and vacuous reasoning in sft_first review.",
+            "label": "exact-410m",
+            "pair_id": "36a2a634ee5b26c5c4462af4",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to meaningfully continue the story.' sft_first: A (sft) wins \u2014 'Slightly less repetitive and more coherent continuation.' The sft_first reason is extremely brief and lacks any reference to specific content, making it difficult to verify the claim.",
+            "recommended_action": "Flag for vacuous reasoning; request specific textual citations.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Asymmetric TIE pattern with generic reasoning.",
+            "label": "corrected-410m",
+            "pair_id": "f58cf32a6b0e067082b36ebd",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: A (sft) wins \u2014 'A is more coherent and less repetitive than B.' Same recurring TIE-when-ppo-first template. The reason in sft_first is generic with no specific evidence.",
+            "recommended_action": "Flag for template reasoning and position inconsistency.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Asymmetric TIE pattern with near-identical reasoning to other pairs.",
+            "label": "exact-160m",
+            "pair_id": "c2899bde4c74c631421570b9",
+            "rationale": "ppo_first: TIE \u2014 'Both are repetitive, incoherent, and fail to continue the story meaningfully.' sft_first: A (sft) wins \u2014 'A is less repetitive and slightly more coherent than B.' This exact TIE phrasing recurs in at least 8 pairs, indicating copy-paste or template-driven reasoning rather than genuine per-pair evaluation.",
+            "recommended_action": "Flag for template-driven TIE reasoning.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Consistent calibration pair with correct mapping; no process issues detected.",
+            "label": "calibration",
+            "pair_id": "0569cbf81a99aab701dc5351",
+            "rationale": "ppo_first: A (ppo) wins \u2014 'A is coherent, complete, and age-appropriate; B is fragmented and repetitive.' sft_first: B (ppo) wins \u2014 'B is coherent, complete, and age-appropriate; A is fragmented and repetitive.' The same model (ppo) wins in both orientations with mirrored reasoning, indicating proper position-independent evaluation.",
+            "recommended_action": "No action needed; serves as positive control.",
+            "severity": "info"
+          },
+          {
+            "issue": "Consistent calibration pair with correct mapping; no process issues detected.",
+            "label": "calibration",
+            "pair_id": "edfe36d998d4a6c09a6478db",
+            "rationale": "ppo_first: A (ppo) wins. sft_first: B (ppo) wins. Same model wins in both orientations, confirming position-independent evaluation for calibration pairs.",
+            "recommended_action": "No action needed; serves as positive control.",
+            "severity": "info"
+          }
+        ],
+        "overall_assessment": "fail",
+        "reviewer_reliability": 0.35,
+        "scope_confirmation": "qwen_records_only",
+        "summary": "The Qwen review process exhibits severe systemic position bias across the 20 sampled pairs. Three distinct bias patterns are identified: (1) position-A anchoring where A wins regardless of model identity, (2) TIE-when-ppo-first where the reviewer defaults to TIE rather than rewarding ppo in position A, and (3) ppo-wins-when-ppo-first / TIE-when-sft-first where the reviewer only declares ppo a winner from position A. Template-driven TIE reasoning ('Both are repetitive, incoherent, and fail to continue the story meaningfully') recurs verbatim across many pairs, indicating insufficient per-pair engagement. Only the 2 calibration pairs show consistent, position-independent evaluation. The population-level position-inconsistency rates of up to 26.5% and TIE rates exceeding 90% for several labels confirm these are systemic rather than isolated issues. The reviewer's mapped_winner values are internally consistent with raw winner labels and orientations, so the issue is evaluative reliability, not mapping errors.",
+        "systemic_patterns": [
+          "Position-A anchoring: In at least 4 of 20 sampled pairs, the reviewer selects position A regardless of which model occupies it, indicating a first-position preference bias.",
+          "TIE-when-ppo-first template: In at least 8 of 20 pairs, the reviewer declares TIE when ppo is in position A but selects sft as winner when sft is in position A. This asymmetric pattern suggests the reviewer defaults to TIE rather than declaring ppo a winner from position A.",
+          "PPO-wins-when-ppo-first / TIE-when-sft-first: In at least 5 of 20 pairs, ppo wins from position A but the reviewer defaults to TIE when sft is in position A, suggesting reluctance to declare sft a winner from position B.",
+          "Template/generic reasoning: The phrase 'Both are repetitive, incoherent, and fail to continue the story meaningfully' or near-identical variants appear as the TIE rationale in at least 10 of 20 pairs, indicating copy-paste or template-driven reasoning rather than genuine per-pair content evaluation.",
+          "Population-level TIE inflation: Population summaries show extreme TIE rates for corrected-160m (328/400), corrected-70m (358/400), exact-160m (372/400), and exact-70m (369/400), suggesting the reviewer defaults to TIE for weaker-model pairs rather than making fine-grained distinctions.",
+          "High position-inconsistency rates: Up to 53/200 (26.5%) for corrected-410m and 52/200 (26%) for exact-410m, indicating that over a quarter of pairs produce different winners depending on candidate ordering."
+        ]
+      }
+    },
+    {
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt_id": "qwen-teacher-hybrid-20260801-v6-KIMI-A1",
+          "attempt_number": 1,
+          "audit": {
+            "findings": [
+              {
+                "issue": "First-position bias with mapped-winner reversal",
+                "label": "corrected-410m",
+                "pair_id": "b9b01fa50339dc0f10a2cd3c",
+                "rationale": "The raw winner is A in both orientations, but the mapped winner flips from ppo in ppo_first to sft in sft_first. The rationales also rename whichever candidate occupies A as the better one, so the judgment tracks screen position rather than identity.",
+                "recommended_action": "Quarantine this pair from identity-level aggregation and re-review with blinded, randomized orientation plus evidence-span requirements.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Same raw position chosen despite opposite mapped winner",
+                "label": "corrected-410m",
+                "pair_id": "0b346d098a49cc126aaa865a",
+                "rationale": "Both orientations choose A, yielding mapped_winner ppo when ppo is first and sft when sft is first. The two reasons are similarly worded in favor of A, which is direct evidence of A-position preference rather than a stable pairwise preference.",
+                "recommended_action": "Invalidate the mapped preference for this pair unless a position-balanced re-review reproduces the same identity winner.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Orientation-dependent identity flip",
+                "label": "corrected-160m",
+                "pair_id": "7a9935ab59dacc1f8f93fcb9",
+                "rationale": "ppo_first selects A and maps to ppo; sft_first again selects A and maps to sft. Choosing the same raw slot in both orientations while changing the mapped winner is a process failure even though the raw A choices are superficially consistent.",
+                "recommended_action": "Flag as position-biased and require a third blinded pass before any downstream use of the pair.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Raw A preference with under-specified rationale",
+                "label": "corrected-160m",
+                "pair_id": "d7300b7b6413a48a66ec05a9",
+                "rationale": "The record chooses A in both orientations but maps to ppo in one and sft in the other. The sft_first reason, 'Slightly less repetitive; introduces curiosity, though both are poor,' does not explicitly name the compared candidate, so it is both position-tracking and weakly grounded.",
+                "recommended_action": "Re-review with mandatory explicit A/B referents and quoted evidence; exclude from winner estimates until resolved.",
+                "severity": "critical"
+              },
+              {
+                "issue": "Tie/decisive contradiction across orientations",
+                "label": "corrected-160m",
+                "pair_id": "daaeadfe1865c2f6caee223a",
+                "rationale": "ppo_first declares TIE because both are repetitive and incoherent, while sft_first prefers A as shorter and less repetitive though still flawed. The paired rationales cannot both support the same stability claim without additional evidence.",
+                "recommended_action": "Treat as unstable; require adjudication that explains why a fatal both-fail judgment becomes a directional preference after swapping order.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Orientation-conditioned reversal from tie to ppo",
+                "label": "exact-70m",
+                "pair_id": "183138ca4386dc960b4d16d4",
+                "rationale": "ppo_first says both candidates are incoherent and ties; sft_first chooses B, mapping to ppo, and calls B coherent while calling A repetitive and nonsensical. This is not mere raw A/B disagreement: the mapped outcome changes from tie to ppo with contradictory severity claims.",
+                "recommended_action": "Escalate for adjudication and check whether the reviewer is using order or verbosity as a proxy for quality.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Winner appears only when favored identity is in position A",
+                "label": "exact-410m",
+                "pair_id": "f45019eb24426368816ee62f",
+                "rationale": "ppo_first chooses A and maps to ppo; when the same underlying identities are swapped, the reviewer returns TIE and says both fail. The ppo advantage is not preserved under reversal, indicating orientation-conditioned confidence.",
+                "recommended_action": "Do not count the ppo_first directional win as identity evidence; require consistency across at least two independent orderings.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Vacuous comparative rationale plus tie/decisive inconsistency",
+                "label": "exact-410m",
+                "pair_id": "36a2a634ee5b26c5c4462af4",
+                "rationale": "The sft_first reason, 'Slightly less repetitive and more coherent continuation,' lacks an explicit A/B referent, while the ppo_first record says both are repetitive and incoherent. The pair moves from a global-failure tie to an unspecified directional preference.",
+                "recommended_action": "Reject the rationale as insufficiently specific and re-run with structured fields for repetitiveness, coherence, and continuation fit.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Boilerplate global-failure rationale contradicted after swap",
+                "label": "exact-160m",
+                "pair_id": "e5f27219d4ce496d69fb1d9d",
+                "rationale": "ppo_first uses the repeated template that both are repetitive, incoherent, and fail to continue; sft_first then says A continues more coherently and is less repetitive. The templated all-fail rationale is not stable enough to justify the mapped tie versus sft difference.",
+                "recommended_action": "Throttle acceptance of generic both-fail rationales and require pair-specific discriminators before entering TIE.",
+                "severity": "warning"
+              },
+              {
+                "issue": "Directional win collapses to tie under orientation swap",
+                "label": "corrected-160m",
+                "pair_id": "ac070967be598d2fc0cee1e6",
+                "rationale": "ppo_first prefers A for continuing with actions; sft_first instead ties and claims both are repetitive, incoherent, and not age-appropriate. The mapped result changes from ppo to tie solely with order, so the record does not establish a reliable identity preference.",
+                "recommended_action": "Mark unstable and add a consistency check that blocks identity-level scoring when one orientation is decisive and the reversed orientation is TIE without new evidence.",
+                "severity": "warning"
+              }
+            ],
+            "overall_assessment": "fail",
+            "reviewer_reliability": 0.38,
+            "scope_confirmation": "qwen_records_only",
+            "summary": "The Qwen review process is not reliable for identity-level preference estimation: calibration mapping is clean and there are no incomplete sampled pairs, but non-calibration records show systemic first-position bias, mapped-winner reversals under orientation swap, contradictory tie-versus-decisive judgments, and repeated vacuous global-failure rationales. These are process-audit flags only; they do not alter primary estimates, authorize reward, publication, or any external message.",
+            "systemic_patterns": [
+              "Selected and population patterns show first-position/A bias: in the sample, several pairs choose raw A in both orientations while mapped_winner flips, and ppo or sft directional wins tend to appear mainly when that identity occupies A.",
+              "Mapped-winner instability is common in the enriched sample: 18 of 20 selected pairs are position-inconsistent by design, and the packet population still reports 196 position-inconsistent non-calibration pairs out of 1200.",
+              "High tie rates for 70m and 160m labels coincide with repeated boilerplate both-fail rationales, suggesting TIE is often used as a low-evidence fallback rather than a measured equivalence judgment.",
+              "Rationales frequently make categorical claims such as coherent, empty, or both-fail, but paired orientations contradict those claims; within this boundary the certainty is unsupported and unstable.",
+              "Calibration records are complete and internally consistent, so the failure mode is concentrated in non-calibration story-continuation judgments rather than packet completeness or calibration mapping."
+            ]
+          },
+          "canonical_slug": "kimi-k3",
+          "completed_at_utc": "2026-08-01T20:39:47.687809Z",
+          "content_byte_count": 7356,
+          "content_sha256": "ee2cb0395271953408cf08564be829e217f74c202158e0fe3031bc44a991319d",
+          "contract_warnings": [],
+          "decision_weight": 1,
+          "elapsed_seconds": 158.161479,
+          "finish_reason": "stop",
+          "first_event_timeout_seconds": 60,
+          "harness_profile": "kimi-qwen-outer-teacher-max-direct-v2",
+          "http_status": 200,
+          "invocation_count": 1,
+          "last_event_elapsed_seconds": 158.161468,
+          "linked_repair_allowed": true,
+          "max_tokens_basis": "provider_context_minus_conservative_input_and_safety",
+          "model_invocation_count": 1,
+          "provider_context_length": 1048576,
+          "provider_max_completion_tokens": 1048576,
+          "provider_model_id": "kimi-k3",
+          "provider_route": {
+            "cached_input_usd_per_million": 0.3,
+            "context_length": 1048576,
+            "endpoint": "https://api.moonshot.ai/v1/chat/completions",
+            "input_usd_per_million": 3.0,
+            "max_completion_tokens": 1048576,
+            "max_tokens_field": "max_completion_tokens",
+            "output_usd_per_million": 15.0,
+            "pricing_observed_at": "2026-08-01",
+            "provider_model_id": "kimi-k3",
+            "provider_name": "Moonshot AI",
+            "reasoning_parameters": {
+              "reasoning_effort": "high"
+            },
+            "request_parameters": {},
+            "route_id": "moonshot-first-party",
+            "schema_mode": "json_schema"
+          },
+          "provider_route_index": 0,
+          "provider_route_sha256": "1365c0980699d99fa659be2e1a28106e32a7a3aa9488b00dd4d79a7a6c177fd4",
+          "raw_response_byte_count": 1194963,
+          "raw_response_sha256": "43811ceac69a66ae58f0c51ce834daf59d318532bfb6caa803571610ff11eaca",
+          "reasoning_byte_count": 13493,
+          "reasoning_sha256": "dbb801086b76447f439d4bf00cc26396aaec6831bc32d81aca1d0cd559429720",
+          "repair_action": null,
+          "repair_of_attempt_id": null,
+          "request_parameters": {
+            "max_completion_tokens": 1029863,
+            "reasoning_effort": "high",
+            "stream": true,
+            "stream_options": {
+              "include_usage": true
+            },
+            "temperature": 1.0
+          },
+          "requested_model_id": "moonshotai/kimi-k3",
+          "response_headers_byte_count": 1094,
+          "response_headers_sha256": "b98d18e9c99ba83be6adbf6133aee50291defb6de7713e0c5a800777618dc306",
+          "response_model": "kimi-k3",
+          "retry_allowed": false,
+          "reviewer_family": "Kimi",
+          "started_at_utc": "2026-08-01T20:37:09.517232Z",
+          "status": "completed_valid",
+          "stream_event_count": 5018,
+          "stream_idle_timeout_seconds": 60,
+          "system_prompt_sha256": "75a07662169862d4f09bb0f5fcfcd7c61904422b5db1b5b30b3e5c04c353550b",
+          "time_to_first_event_seconds": 2.005402,
+          "total_response_timeout_seconds": 240,
+          "usage": {
+            "completion_tokens": 5030,
+            "completion_tokens_details": {
+              "reasoning_tokens": 3433
+            },
+            "cost": 0.096747,
+            "cost_source": "calculated_from_Moonshot AI_rate_card_2026-08-01",
+            "prompt_tokens": 7099,
+            "total_tokens": 12129
+          },
+          "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+        }
+      ],
+      "completed_at_utc": "2026-08-01T20:39:47.688401Z",
+      "execution_mode": "parallel_independent",
+      "maximum_attempts": 3,
+      "repair_count": 0,
+      "reported_cost_usd": 0.096747,
+      "requested_model_id": "moonshotai/kimi-k3",
+      "reviewer_family": "Kimi",
+      "started_at_utc": "2026-08-01T20:37:09.515526Z",
+      "status": "completed_valid",
+      "teacher_id": "qwen-teacher-hybrid-20260801-v6-KIMI",
+      "terminal_attempt_id": "qwen-teacher-hybrid-20260801-v6-KIMI-A1",
+      "terminal_audit": {
+        "findings": [
+          {
+            "issue": "First-position bias with mapped-winner reversal",
+            "label": "corrected-410m",
+            "pair_id": "b9b01fa50339dc0f10a2cd3c",
+            "rationale": "The raw winner is A in both orientations, but the mapped winner flips from ppo in ppo_first to sft in sft_first. The rationales also rename whichever candidate occupies A as the better one, so the judgment tracks screen position rather than identity.",
+            "recommended_action": "Quarantine this pair from identity-level aggregation and re-review with blinded, randomized orientation plus evidence-span requirements.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Same raw position chosen despite opposite mapped winner",
+            "label": "corrected-410m",
+            "pair_id": "0b346d098a49cc126aaa865a",
+            "rationale": "Both orientations choose A, yielding mapped_winner ppo when ppo is first and sft when sft is first. The two reasons are similarly worded in favor of A, which is direct evidence of A-position preference rather than a stable pairwise preference.",
+            "recommended_action": "Invalidate the mapped preference for this pair unless a position-balanced re-review reproduces the same identity winner.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Orientation-dependent identity flip",
+            "label": "corrected-160m",
+            "pair_id": "7a9935ab59dacc1f8f93fcb9",
+            "rationale": "ppo_first selects A and maps to ppo; sft_first again selects A and maps to sft. Choosing the same raw slot in both orientations while changing the mapped winner is a process failure even though the raw A choices are superficially consistent.",
+            "recommended_action": "Flag as position-biased and require a third blinded pass before any downstream use of the pair.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Raw A preference with under-specified rationale",
+            "label": "corrected-160m",
+            "pair_id": "d7300b7b6413a48a66ec05a9",
+            "rationale": "The record chooses A in both orientations but maps to ppo in one and sft in the other. The sft_first reason, 'Slightly less repetitive; introduces curiosity, though both are poor,' does not explicitly name the compared candidate, so it is both position-tracking and weakly grounded.",
+            "recommended_action": "Re-review with mandatory explicit A/B referents and quoted evidence; exclude from winner estimates until resolved.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Tie/decisive contradiction across orientations",
+            "label": "corrected-160m",
+            "pair_id": "daaeadfe1865c2f6caee223a",
+            "rationale": "ppo_first declares TIE because both are repetitive and incoherent, while sft_first prefers A as shorter and less repetitive though still flawed. The paired rationales cannot both support the same stability claim without additional evidence.",
+            "recommended_action": "Treat as unstable; require adjudication that explains why a fatal both-fail judgment becomes a directional preference after swapping order.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Orientation-conditioned reversal from tie to ppo",
+            "label": "exact-70m",
+            "pair_id": "183138ca4386dc960b4d16d4",
+            "rationale": "ppo_first says both candidates are incoherent and ties; sft_first chooses B, mapping to ppo, and calls B coherent while calling A repetitive and nonsensical. This is not mere raw A/B disagreement: the mapped outcome changes from tie to ppo with contradictory severity claims.",
+            "recommended_action": "Escalate for adjudication and check whether the reviewer is using order or verbosity as a proxy for quality.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Winner appears only when favored identity is in position A",
+            "label": "exact-410m",
+            "pair_id": "f45019eb24426368816ee62f",
+            "rationale": "ppo_first chooses A and maps to ppo; when the same underlying identities are swapped, the reviewer returns TIE and says both fail. The ppo advantage is not preserved under reversal, indicating orientation-conditioned confidence.",
+            "recommended_action": "Do not count the ppo_first directional win as identity evidence; require consistency across at least two independent orderings.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Vacuous comparative rationale plus tie/decisive inconsistency",
+            "label": "exact-410m",
+            "pair_id": "36a2a634ee5b26c5c4462af4",
+            "rationale": "The sft_first reason, 'Slightly less repetitive and more coherent continuation,' lacks an explicit A/B referent, while the ppo_first record says both are repetitive and incoherent. The pair moves from a global-failure tie to an unspecified directional preference.",
+            "recommended_action": "Reject the rationale as insufficiently specific and re-run with structured fields for repetitiveness, coherence, and continuation fit.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Boilerplate global-failure rationale contradicted after swap",
+            "label": "exact-160m",
+            "pair_id": "e5f27219d4ce496d69fb1d9d",
+            "rationale": "ppo_first uses the repeated template that both are repetitive, incoherent, and fail to continue; sft_first then says A continues more coherently and is less repetitive. The templated all-fail rationale is not stable enough to justify the mapped tie versus sft difference.",
+            "recommended_action": "Throttle acceptance of generic both-fail rationales and require pair-specific discriminators before entering TIE.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Directional win collapses to tie under orientation swap",
+            "label": "corrected-160m",
+            "pair_id": "ac070967be598d2fc0cee1e6",
+            "rationale": "ppo_first prefers A for continuing with actions; sft_first instead ties and claims both are repetitive, incoherent, and not age-appropriate. The mapped result changes from ppo to tie solely with order, so the record does not establish a reliable identity preference.",
+            "recommended_action": "Mark unstable and add a consistency check that blocks identity-level scoring when one orientation is decisive and the reversed orientation is TIE without new evidence.",
+            "severity": "warning"
+          }
+        ],
+        "overall_assessment": "fail",
+        "reviewer_reliability": 0.38,
+        "scope_confirmation": "qwen_records_only",
+        "summary": "The Qwen review process is not reliable for identity-level preference estimation: calibration mapping is clean and there are no incomplete sampled pairs, but non-calibration records show systemic first-position bias, mapped-winner reversals under orientation swap, contradictory tie-versus-decisive judgments, and repeated vacuous global-failure rationales. These are process-audit flags only; they do not alter primary estimates, authorize reward, publication, or any external message.",
+        "systemic_patterns": [
+          "Selected and population patterns show first-position/A bias: in the sample, several pairs choose raw A in both orientations while mapped_winner flips, and ppo or sft directional wins tend to appear mainly when that identity occupies A.",
+          "Mapped-winner instability is common in the enriched sample: 18 of 20 selected pairs are position-inconsistent by design, and the packet population still reports 196 position-inconsistent non-calibration pairs out of 1200.",
+          "High tie rates for 70m and 160m labels coincide with repeated boilerplate both-fail rationales, suggesting TIE is often used as a low-evidence fallback rather than a measured equivalence judgment.",
+          "Rationales frequently make categorical claims such as coherent, empty, or both-fail, but paired orientations contradict those claims; within this boundary the certainty is unsupported and unstable.",
+          "Calibration records are complete and internally consistent, so the failure mode is concentrated in non-calibration story-continuation judgments rather than packet completeness or calibration mapping."
+        ]
+      }
+    }
+  ],
+  "outer_teacher_total_reported_cost_usd": 0.11293604,
+  "outer_teacher_valid_count": 2,
+  "qwen_packet": {
+    "byte_count": 19942,
+    "sha256": "c6a809d61e49102d0cf4d29649379587eeaa4a02fb99b5e3aa7134dcbf51b6b6"
+  },
+  "release_control": {
+    "author_email_dispatch_authorized": false,
+    "publication_authorized": false,
+    "separate_final_release_review_required": true,
+    "training_signal_change_authorized": false
+  },
+  "run_id": "qwen-teacher-hybrid-20260801-v6",
+  "schema_version": "nulspec-qwen-review-hierarchy-public-v1",
+  "trace_index": {
+    "contents": "Ignored local archive includes provider routes, system and user prompts, request bodies, raw SSE streams, parsed outputs, Codex JSONL events, stderr, version, and state records.",
+    "evidence_aggregate_sha256": "1f2e54d859c8a2daf90e01dd79e9ac08b9aeeb53780ff157e72e0d8b9f1101ef",
+    "evidence_file_count": 35,
+    "raw_trace_public": false
+  }
+}

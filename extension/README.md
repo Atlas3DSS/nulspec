@@ -23,7 +23,17 @@ remaining seed replicates are intentionally left as confirmatory work.
   outcomes, ratio warnings, and negative-KL warnings from raw PPO logs.
 - `outer_teacher.py`: creates a Qwen-record-only audit packet and invokes Codex
   through the existing ChatGPT-authenticated CLI in an ephemeral, read-only
-  session. It cannot see or modify the small models or their outputs.
+  session. This is the completed historical v1 audit and remains unchanged.
+- `review_hierarchy.py`: prospective v2 review hierarchy. It sends the same
+  Qwen-only packet independently to GLM and Kimi, then asks Codex to adjudicate
+  their traces. GLM currently streams through latency-routed OpenRouter while
+  Kimi streams directly from Moonshot AI. Fable is excluded from this recurring
+  teacher loop. The runner preserves complete ignored traces and cannot see or
+  modify the small models or their outputs.
+- `fable_pipeline_critique.py`: prospective cost-bounded process audit. It
+  requires ten distinct validated paper pipelines, records a random seed,
+  samples three reproducibly, and sends those three in one zero-weight Fable
+  critique packet. Its append-only ignored registry prevents paper reuse.
 - `matrixctl.py` and `run_matrix_arm.sh`: the executable three-model ×
   three-seed × two-protocol matrix without overwriting the original runs.
 
@@ -70,6 +80,20 @@ python3 extension/analyze_judgments.py \
 # Review the reviewer with one bounded Codex subscription call.
 bash extension/run_outer_teacher.sh
 
+# Prospective hierarchy: Qwen -> parallel GLM/Kimi -> Codex.
+# Invalid teacher invocations create logged linked repairs before the join.
+# Raw traces are local and ignored; the selected summary path is publishable.
+OPENROUTER_API_KEY=... MOONSHOT_API_KEY=... \
+  python3 extension/review_hierarchy.py \
+  --run-id example-study-date \
+  --trace-root .artifacts/review-hierarchy/example-study-date \
+  --public-summary extension/artifacts/review_hierarchy_example-study-date.json
+
+python3 extension/validate_review_hierarchy.py \
+  --trace-root .artifacts/review-hierarchy/example-study-date \
+  --summary extension/artifacts/review_hierarchy_example-study-date.json \
+  --output extension/artifacts/review_hierarchy_validation_example-study-date.json
+
 # Compare reward-model direction with the independent judge.
 bash extension/run_reward_alignment.sh
 ```
@@ -77,6 +101,27 @@ bash extension/run_reward_alignment.sh
 Fable is intentionally not configured or called in the initial experiment.
 Outer-teacher findings are a separate process audit; they never become reward
 and do not rewrite Qwen's primary preference estimate.
+
+The direct Codex audit in `RESULTS.md` is historical evidence and is not
+reinterpreted as though GLM or Kimi participated. New teacher runs follow
+[`docs/REVIEW_HIERARCHY.md`](../docs/REVIEW_HIERARCHY.md): GLM and Kimi audit
+Qwen concurrently and Codex adjudicates only after both logical teacher chains
+end with valid audits. Invalid invocations remain immutable and are repaired
+through linked attempts. Fable is reserved for the separate final-release gate,
+where its guardrail refusal is a logged, zero-weight non-response and not a
+scientific `HARD_FAIL`.
+
+The validated protocol-v2 reference is
+`extension/artifacts/review_hierarchy_20260801_v9.json`, bound to
+`extension/artifacts/review_hierarchy_validation_20260801_v9.json`. Earlier
+hybrid traces remain available for comparison but are explicitly ineligible in
+`extension/artifacts/review_hierarchy_architecture_corrections_20260801.json`.
+The separately authorized advisory Fable critique is preserved in
+`extension/artifacts/fable_pipeline_critique_20260801_v2.json`; it assessed the
+pipeline as `sound_with_changes` and has zero teacher, scientific, release, and
+email decision weight. That historical single-pipeline call predates the
+prospective ten-paper cadence. New calls use one request per ten completed
+pipelines and sample three of those ten in one immutable packet.
 
 ## Matrix
 

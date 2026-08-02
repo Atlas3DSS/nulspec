@@ -1,0 +1,495 @@
+{
+  "correction_reference": "extension/artifacts/review_hierarchy_architecture_corrections_20260801.json",
+  "record_class": "historical_ineligible_architecture_probe",
+  "teacher_loop_eligible": false,
+  "architecture": {
+    "author_email_requires_separate_human_approval": true,
+    "independent_outer_teachers": [
+      "Fable",
+      "GLM",
+      "Kimi"
+    ],
+    "model_agreement_can_authorize_publication": true,
+    "outer_outer_adjudicator": "Codex",
+    "primary_reviewer": "local Qwen",
+    "release_rule": "nulspec-three-reviewer-release-gate-v1"
+  },
+  "completed_at_utc": "2026-08-01T19:05:43.653460Z",
+  "deterministic_model_gate": {
+    "assessments": {
+      "Fable": null,
+      "GLM": null,
+      "Kimi": "warn"
+    },
+    "fable_decision_weight": 0,
+    "fable_guardrail_refusal_is_hard_fail": false,
+    "fable_response_class": "local_invocation_non_response",
+    "policy_version": "nulspec-three-reviewer-release-gate-v1",
+    "publication_model_gate_passed": false,
+    "required_agreement": "glm_kimi_unanimous_pass_fable_weight_zero",
+    "rules": {
+      "all_three_requested": true,
+      "author_email_requires_separate_human_approval": true,
+      "fable_guardrail_or_technical_nonresponse_weight": 0,
+      "glm_kimi_unanimous_pass_can_replace_fable_nonresponse": true,
+      "malformed_or_disagreeing_reviews_block": true,
+      "only_substantive_fable_fail_creates_scientific_hard_fail": true,
+      "substantive_fable_review_requires_all_three_unanimous_pass": true
+    },
+    "scientific_hard_fail": false,
+    "status": "blocked_without_glm_kimi_unanimous_pass"
+  },
+  "outer_outer": {
+    "codex_cli_version": "codex-cli 0.146.0",
+    "completed_at_utc": "2026-08-01T19:05:43.652328Z",
+    "decision": {
+      "cross_teacher_agreement": "insufficient_valid_audits",
+      "findings": [
+        {
+          "adjudication": "The failed gate cannot be relaxed. Fable has zero decision weight, GLM has no valid assessment, and Kimi returned warn rather than pass; therefore the required unanimous valid GLM and Kimi passes are absent. This is not a scientific hard fail.",
+          "evidence_references": [
+            "deterministic_model_gate.publication_model_gate_passed",
+            "deterministic_model_gate.status",
+            "deterministic_model_gate.required_agreement",
+            "deterministic_model_gate.assessments",
+            "deterministic_model_gate.scientific_hard_fail"
+          ],
+          "issue": "The deterministic publication model gate did not pass.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Keep publication blocked and obtain a new, independently traced teacher run under the versioned protocol; do not overwrite these attempts.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "The invalid output has no decision weight. The supplied invocation trace remains documented, but it cannot serve as a substantive GLM assessment.",
+          "evidence_references": [
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T2].status",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T2].failure",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T2].trace_integrity"
+          ],
+          "issue": "The GLM teacher output crossed the packet boundary and was invalidated.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "If review continues, create a separately identified GLM recovery attempt constrained to packet pair IDs; preserve the failed attempt unchanged.",
+          "severity": "warning"
+        },
+        {
+          "adjudication": "The empty response and decode failure are a zero-weight technical non-response. They do not create scientific_hard_fail and should only be retained as trace and token-waste evidence.",
+          "evidence_references": [
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T1].status",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T1].failure",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T1].trace_integrity.raw_response_sha256",
+            "deterministic_model_gate.fable_response_class",
+            "deterministic_model_gate.fable_decision_weight"
+          ],
+          "issue": "Fable returned no parseable substantive assessment.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Log the terminated attempt without treating it as a verdict; any recovery must be a new linked run.",
+          "severity": "info"
+        },
+        {
+          "adjudication": "The supplied records directly support Kimi's position-bias warning; neither mapped winner is orientation-stable.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[b9b01fa50339dc0f10a2cd3c].qwen_reviews",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T3].audit.findings[b9b01fa50339dc0f10a2cd3c]"
+          ],
+          "issue": "Both swapped orientations select raw A, causing the mapped winner to flip from ppo to sft.",
+          "label": "corrected-410m",
+          "pair_id": "b9b01fa50339dc0f10a2cd3c",
+          "recommended_action": "Exclude the pair from winner aggregation until independently re-adjudicated with orientation-blind candidate references.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "The rationales consistently favor screen position A even though A denotes a different candidate after the swap, making the pair-level preference unreliable.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[0b346d098a49cc126aaa865a].qwen_reviews",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T3].audit.findings[0b346d098a49cc126aaa865a]"
+          ],
+          "issue": "Repeated raw-A selection across swapped orientations produces incompatible mapped winners.",
+          "label": "corrected-410m",
+          "pair_id": "0b346d098a49cc126aaa865a",
+          "recommended_action": "Invalidate or re-review this pair using candidate-stable identifiers.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "This is direct evidence of orientation sensitivity, not stable agreement about an underlying candidate.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[7a9935ab59dacc1f8f93fcb9].qwen_reviews",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T3].audit.findings[7a9935ab59dacc1f8f93fcb9]"
+          ],
+          "issue": "Raw A wins in both orientations while the mapped result flips between ppo and sft.",
+          "label": "corrected-160m",
+          "pair_id": "7a9935ab59dacc1f8f93fcb9",
+          "recommended_action": "Exclude the pair from aggregate winner estimates pending independent re-adjudication.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "The mapped preference is unstable and the under-specified rationale weakens process auditability.",
+          "evidence_references": [
+            "qwen_primary_packet.pairs[d7300b7b6413a48a66ec05a9].qwen_reviews",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T3].audit.findings[d7300b7b6413a48a66ec05a9]"
+          ],
+          "issue": "Repeated raw-A choice flips the mapped winner, and one comparative rationale lacks an explicit candidate referent.",
+          "label": "corrected-160m",
+          "pair_id": "d7300b7b6413a48a66ec05a9",
+          "recommended_action": "Re-review with candidate-stable identifiers and explicit rationale subjects.",
+          "severity": "critical"
+        },
+        {
+          "adjudication": "The selected sample is intentionally enriched for inconsistencies and cannot estimate the population failure rate. Nevertheless, the full population summaries independently report 53/200 inconsistent corrected-410m pairs and 52/200 inconsistent exact-410m pairs, alongside more raw-A than raw-B decisive choices.",
+          "evidence_references": [
+            "qwen_primary_packet.protocol.selection",
+            "qwen_primary_packet.protocol.population_summary.corrected-410m",
+            "qwen_primary_packet.protocol.population_summary.exact-410m",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T3].audit.systemic_patterns"
+          ],
+          "issue": "Population summaries show concentrated position inconsistency and raw-A skew, especially in the 410m strata.",
+          "label": null,
+          "pair_id": null,
+          "recommended_action": "Quantify orientation sensitivity by stratum, use fixed tie criteria, and re-adjudicate affected records before downstream use.",
+          "severity": "warning"
+        }
+      ],
+      "preserved_disagreements": [
+        {
+          "adjudication": "No substantive GLM\u2013Kimi comparison is possible. Kimi's warning remains valid evidence, but it is not corroborated by an independent valid GLM audit.",
+          "evidence_references": [
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T2].failure",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T2].audit",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T3].audit.overall_assessment",
+            "outer_teacher_attempts[qwen-three-teacher-20260801-v1-T3].audit.summary"
+          ],
+          "glm_position": "Unavailable: the GLM output was invalidated for citing a pair outside the packet.",
+          "kimi_position": "Warn: the Qwen records show material orientation sensitivity and rationale-quality concerns.",
+          "subject": "Scientific assessment of the Qwen review process"
+        }
+      ],
+      "qwen_process_assessment": "warn",
+      "qwen_reviewer_reliability": 0.66,
+      "release_control": {
+        "author_email_dispatch_authorized": false,
+        "automatic_training_signal_authorized": false,
+        "codex_unilateral_publication_authorized": false
+      },
+      "release_recommendation": "require_additional_human_review",
+      "required_human_actions": [
+        "Do not release under the current model gate.",
+        "Preserve all three terminated attempts and their hashes without repair or overwrite.",
+        "If continuation is desired, run new linked independent teacher attempts sufficient to obtain valid gate inputs, especially a packet-scoped GLM assessment and a valid Kimi pass where scientifically warranted.",
+        "Human reviewers should resolve the documented Qwen orientation sensitivity before using affected pair outcomes downstream.",
+        "Keep any author email behind separate human approval of the exact draft."
+      ],
+      "scope_confirmation": "qwen_records_and_outer_teacher_audits_only",
+      "summary": "The hierarchy is documented but incomplete for release. Fable was a zero-weight technical non-response, GLM was invalid for crossing packet scope, and Kimi supplied the only valid substantive audit, assessing the Qwen process as warn with reliability 0.66. The Qwen records show material orientation sensitivity, including four critical repeated-raw-A mapped-winner flips and broader instability concentrated in 410m strata. The deterministic model gate correctly remains blocked; there is no scientific hard fail, no publication authorization, and no authorization for training signals or author email.",
+      "teacher_assessments": [
+        {
+          "assessment": "unavailable",
+          "attempt_id": "qwen-three-teacher-20260801-v1-T1",
+          "model_id": "anthropic/fable",
+          "notes": "The attempt is documented with one invocation, prompt hashes, and an empty-response SHA-256 matching the reported JSON decode failure. It is a technical non-response with zero decision weight, not a substantive verdict or scientific hard fail.",
+          "reliability": null,
+          "trace_valid": true
+        },
+        {
+          "assessment": "unavailable",
+          "attempt_id": "qwen-three-teacher-20260801-v1-T2",
+          "model_id": "z-ai/glm-5.2",
+          "notes": "The invocation metadata and hashes are present, but the returned review was invalid because it cited a pair outside the supplied packet. With no valid audit retained, GLM supplies no scientific assessment or decision weight.",
+          "reliability": null,
+          "trace_valid": true
+        },
+        {
+          "assessment": "warn",
+          "attempt_id": "qwen-three-teacher-20260801-v1-T3",
+          "model_id": "moonshotai/kimi-k3",
+          "notes": "Kimi completed a scoped, substantive audit. Its warning is supported by orientation-sensitive mapped-winner changes, repeated raw-A choices across swapped orientations, moving tie thresholds, and under-specified rationales. The reported reliability is Kimi's stated reviewer_reliability.",
+          "reliability": 0.66,
+          "trace_valid": true
+        }
+      ]
+    },
+    "elapsed_seconds": 63.890042,
+    "invocation_count": 1,
+    "last_message_byte_count": 9339,
+    "last_message_sha256": "fb1389f012b20e9efeba1be7828e4af36c6b0702a8697e27cbb47366647e206a",
+    "prompt_sha256": "3a3e0dc55052e7f22ef96cc1d3b0aa93fc57cd852bf57c107f6789bea1f9b45e",
+    "requested_model": null,
+    "retry_allowed": false,
+    "return_code": 0,
+    "started_at_utc": "2026-08-01T19:04:39.760883Z",
+    "status": "completed_valid",
+    "stderr_byte_count": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_byte_count": 16219,
+    "stdout_sha256": "fb798dbef6d05ebe391c02e41cf52ffc3d378e95626867048775dd8c51c7f8f8"
+  },
+  "outer_teacher_attempts": [
+    {
+      "attempt_id": "qwen-three-teacher-20260801-v1-T1",
+      "completed_at_utc": "2026-08-01T19:02:13.663595Z",
+      "decision_weight": 0,
+      "elapsed_seconds": 1.033494,
+      "failure": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+      "harness_profile": "fable-qwen-outer-teacher-max-v1",
+      "invocation_count": 1,
+      "model_alias": "fable",
+      "process_exit_code": 1,
+      "raw_response_byte_count": 0,
+      "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "requested_model_id": "anthropic/fable",
+      "response_class": "local_invocation_non_response",
+      "retry_allowed": false,
+      "reviewer_family": "Fable",
+      "scientific_hard_fail": false,
+      "started_at_utc": "2026-08-01T19:02:12.629605Z",
+      "status": "technical_non_response",
+      "stderr_byte_count": 122,
+      "stderr_sha256": "d8a1e758a0885d376f7a2457d829c53f27040ef929246fb4e28105670fb743de",
+      "substantive_review_returned": false,
+      "system_prompt_sha256": "5d732178e1c4cb052b8143c4ea41b231c4d201791e435217531886da34d28c2e",
+      "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+    },
+    {
+      "attempt_id": "qwen-three-teacher-20260801-v1-T2",
+      "canonical_slug": "z-ai/glm-5.2-20260616",
+      "catalog_context_length": 1048576,
+      "catalog_entry_sha256": "3cc2711d55995750ac3cf8d6b94929992db3197342221012eb4df9de5308e0a4",
+      "catalog_max_completion_tokens": 131072,
+      "completed_at_utc": "2026-08-01T19:04:13.109634Z",
+      "decision_weight": 0,
+      "elapsed_seconds": 119.398473,
+      "failure": "ReviewHierarchyError: outer teacher cited a pair outside the packet",
+      "harness_profile": "glm-qwen-outer-teacher-high-v1",
+      "http_status": 200,
+      "invocation_count": 1,
+      "max_tokens_basis": "catalog_top_provider_max_completion_tokens",
+      "provider_route": "DeepInfra",
+      "raw_response_byte_count": 36497,
+      "raw_response_sha256": "40ef631dd87a2004d50c49023d6c4785a552757c36bba56f2ecdcfa4b8713c24",
+      "request_parameters": {
+        "max_tokens": 131072,
+        "provider": {
+          "allow_fallbacks": true,
+          "order": [
+            "deepinfra",
+            "streamlake",
+            "decart",
+            "alibaba"
+          ],
+          "require_parameters": true
+        },
+        "reasoning": {
+          "effort": "high"
+        },
+        "temperature": 1.0
+      },
+      "requested_model_id": "z-ai/glm-5.2",
+      "retry_allowed": false,
+      "reviewer_family": "GLM",
+      "started_at_utc": "2026-08-01T19:02:13.664437Z",
+      "status": "invoked_invalid",
+      "system_prompt_sha256": "c1a16e36611dd78dc8c2d6a18b014404508794b672f566fcb689e3321a812980",
+      "usage": {
+        "completion_tokens": 6566,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 2317
+        },
+        "cost": 0.02047586,
+        "is_byok": false,
+        "prompt_tokens": 6342,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 64,
+          "video_tokens": 0
+        },
+        "total_tokens": 12908
+      },
+      "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+    },
+    {
+      "attempt_id": "qwen-three-teacher-20260801-v1-T3",
+      "audit": {
+        "findings": [
+          {
+            "issue": "Raw position preference with mapped-winner flip",
+            "label": "corrected-410m",
+            "pair_id": "b9b01fa50339dc0f10a2cd3c",
+            "rationale": "Both orientations choose raw A, but the mapped winner changes from ppo in ppo_first to sft in sft_first. The rationales both praise A and criticize B even though A and B refer to different underlying candidates across orientations.",
+            "recommended_action": "Recheck this pair with orientation-blind adjudication; do not treat either mapped winner as reliable until the A-position bias is resolved.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Same raw winner, incompatible mapped winners",
+            "label": "corrected-410m",
+            "pair_id": "0b346d098a49cc126aaa865a",
+            "rationale": "The reviewer selects A in both orientations while mapped_winner flips from ppo to sft. Both reasons say A continues coherently and B is defective, indicating the rationale tracks screen position rather than candidate identity.",
+            "recommended_action": "Invalidate or re-review the pair; require the rationale to name candidate attributes independent of A/B placement.",
+            "severity": "critical"
+          },
+          {
+            "issue": "A-side selection across swapped orientations",
+            "label": "corrected-160m",
+            "pair_id": "7a9935ab59dacc1f8f93fcb9",
+            "rationale": "Raw winner is A in both records, producing mapped_winner ppo in ppo_first but sft in sft_first. The justifications are both A-favoring, so the apparent agreement in raw choice masks a mapped disagreement.",
+            "recommended_action": "Flag for orientation sensitivity and exclude from any aggregate winner estimate unless independently re-adjudicated.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Mapped inconsistency driven by repeated raw A choice",
+            "label": "corrected-160m",
+            "pair_id": "d7300b7b6413a48a66ec05a9",
+            "rationale": "ppo_first maps A to ppo, while sft_first maps A to sft; mapped_winner therefore changes even though the raw choice remains A. The sft_first rationale is also weak because it lacks an explicit grammatical subject for the comparative claims.",
+            "recommended_action": "Re-review with explicit candidate referents and require the second orientation to justify the same underlying candidate if consistency is claimed.",
+            "severity": "critical"
+          },
+          {
+            "issue": "Tie in one orientation becomes decisive in the other",
+            "label": "exact-70m",
+            "pair_id": "183138ca4386dc960b4d16d4",
+            "rationale": "ppo_first records TIE/tie with both candidates condemned, while sft_first chooses B and maps to ppo with a confident coherence contrast. This is an order-dependent change from no preference to a mapped winner.",
+            "recommended_action": "Treat the pair as unstable; require a third orientation-controlled review before using the mapped outcome.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Orientation-dependent collapse from decisive to tie",
+            "label": "exact-410m",
+            "pair_id": "f45019eb24426368816ee62f",
+            "rationale": "The ppo_first record chooses A/ppo as more coherent, but after swapping positions the reviewer records TIE/tie and says both fail. The mapped winner changes from ppo to tie solely across orientations.",
+            "recommended_action": "Down-weight the pair and audit the rationale threshold for when perceived differences are sufficient to break a tie.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Mapped-winner instability between tie and sft",
+            "label": "corrected-160m",
+            "pair_id": "daaeadfe1865c2f6caee223a",
+            "rationale": "One orientation says both are repetitive and incoherent and returns TIE/tie; the swapped orientation chooses raw A, which maps to sft, on a relative 'less repetitive' claim. The pair-level mapped outcome is not stable.",
+            "recommended_action": "Require consistent tie-breaking criteria across orientations; if both are flawed, state why one is nevertheless materially better.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Vacuous comparative rationale plus order inconsistency",
+            "label": "exact-410m",
+            "pair_id": "36a2a634ee5b26c5c4462af4",
+            "rationale": "ppo_first is TIE/tie, while sft_first chooses A/sft. The sft_first reason, 'Slightly less repetitive and more coherent continuation,' does not explicitly attach the comparison to A or B and offers minimal process support for changing from tie to decisive.",
+            "recommended_action": "Reject the rationale as under-specified and request a rewritten review that names the preferred candidate and the decisive difference.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Decisive ppo preference disappears after swap",
+            "label": "exact-410m",
+            "pair_id": "2050cdab2e866beb10606aa3",
+            "rationale": "ppo_first chooses A/ppo with a clear coherence rationale, whereas sft_first returns TIE/tie and describes both as incoherent and repetitive. The mapped result changes from ppo to tie without an orientation-stable explanation.",
+            "recommended_action": "Mark as orientation-sensitive; verify whether the first-position presentation is creating an unwarranted decisive preference.",
+            "severity": "warning"
+          },
+          {
+            "issue": "Mapped outcome flips from ppo to tie",
+            "label": "corrected-160m",
+            "pair_id": "ac070967be598d2fc0cee1e6",
+            "rationale": "In ppo_first the reviewer says A continues with actions and B adds nothing, mapping to ppo. In sft_first the same pair is scored TIE/tie with both candidates called repetitive and incoherent. The standards applied are inconsistent across orientations.",
+            "recommended_action": "Re-score using a fixed rubric for repetition, coherence, and continuation so the tie boundary does not move with order.",
+            "severity": "warning"
+          }
+        ],
+        "overall_assessment": "warn",
+        "reviewer_reliability": 0.66,
+        "scope_confirmation": "qwen_records_only",
+        "summary": "Audited the Qwen records only, including the population summaries and all 20 selected pairs in both orientations. The two calibration pairs are mapped-winner consistent despite opposite raw winners, which is expected under swapped orientation. The main risk is among non-calibration pairs: 18 selected pairs are position-inconsistent, including several critical cases where raw A is chosen in both orientations while mapped_winner flips, and multiple tie-to-decisive changes after swapping. Because the sample was selected to over-represent inconsistencies, the failure rate should not be read as the population rate; however, the population still shows concentrated instability in 410m strata and a raw A skew among decisive reviews. Overall: warn, with re-adjudication recommended for critical orientation-sensitive pairs before any downstream use.",
+        "systemic_patterns": [
+          "Calibration pairs are consistent: opposite raw A/B winners co-occur with the same mapped_winner, so the label-mapped logic can be correct when orientation is handled properly.",
+          "The selected sample is intentionally enriched for position-inconsistent records, but population summaries still show non-trivial inconsistency: corrected-410m 53/200 pairs, exact-410m 52/200, corrected-160m 39/200, corrected-70m 19/200, exact-70m 19/200, exact-160m 14/200.",
+          "Across non-calibration records, raw A choices exceed raw B choices among decisive reviews, most visibly corrected-410m A=203/B=150 and exact-410m A=185/B=128; this suggests a residual first-position/A preference in some strata.",
+          "Small-model 70m and 160m strata are tie-dominated in population summaries, and many selected inconsistencies are tie-to-decisive changes after orientation swaps rather than stable candidate preferences.",
+          "Several rationales are formulaic or under-specified, especially comparative statements without an explicit A/B subject, which weakens auditability even when the mapped winner is technically consistent.",
+          "No story prompts, candidate outputs, checkpoints, rewards, or training states were present in scope; findings are limited to Qwen reviewer-record process quality."
+        ]
+      },
+      "canonical_slug": "moonshotai/kimi-k3-20260715",
+      "catalog_context_length": 1048576,
+      "catalog_entry_sha256": "76e5f2549c3c848056871c2cb9db88b758cf606ee29acfa464f376a00c22704e",
+      "catalog_max_completion_tokens": null,
+      "completed_at_utc": "2026-08-01T19:04:39.705570Z",
+      "decision_weight": 1,
+      "elapsed_seconds": 26.564406,
+      "harness_profile": "kimi-qwen-outer-teacher-high-v1",
+      "http_status": 200,
+      "invocation_count": 1,
+      "max_tokens_basis": "context_minus_conservative_input_estimate_and_safety",
+      "provider_route": "Modal",
+      "raw_response_byte_count": 31193,
+      "raw_response_sha256": "4315c96f8f6591749a963b2330ef95f080283ba8d1aa9c36b566c38f8093e30b",
+      "request_parameters": {
+        "max_tokens": 1029863,
+        "provider": {
+          "allow_fallbacks": true,
+          "ignore": [
+            "fireworks"
+          ],
+          "order": [
+            "modal",
+            "together",
+            "morph",
+            "moonshotai"
+          ],
+          "require_parameters": true
+        },
+        "reasoning": {
+          "effort": "high"
+        },
+        "temperature": 1.0
+      },
+      "requested_model_id": "moonshotai/kimi-k3",
+      "retry_allowed": false,
+      "reviewer_family": "Kimi",
+      "scientific_hard_fail": false,
+      "started_at_utc": "2026-08-01T19:04:13.110748Z",
+      "status": "completed_valid",
+      "substantive_fail": false,
+      "system_prompt_sha256": "16d39987ed79789930f0501f80110618a86af76b9ea612fd02781ddd00b5e140",
+      "usage": {
+        "completion_tokens": 4459,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 2630
+        },
+        "cost": 0.086829,
+        "is_byok": false,
+        "prompt_tokens": 6648,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 11107
+      },
+      "user_prompt_sha256": "de9be9843c392446d2b10840bd0a76f6e9c0879ce248966e91c0ede7db1856b2"
+    }
+  ],
+  "outer_teacher_total_reported_cost_usd": 0.10730486,
+  "outer_teacher_valid_count": 1,
+  "qwen_packet": {
+    "byte_count": 19942,
+    "sha256": "c6a809d61e49102d0cf4d29649379587eeaa4a02fb99b5e3aa7134dcbf51b6b6"
+  },
+  "release_control": {
+    "author_email_dispatch_authorized": false,
+    "author_email_human_approval_required": true,
+    "publication_authorized": false,
+    "publication_human_disposition_required": true,
+    "training_signal_change_authorized": false
+  },
+  "run_id": "qwen-three-teacher-20260801-v1",
+  "schema_version": "nulspec-qwen-review-hierarchy-public-v1",
+  "trace_index": {
+    "aggregate_sha256": "8b34ee5bf310e61ecbf549b730f051f625ba22bff6b3201ab2663d19bb4da944",
+    "contents": "Ignored local archive includes model catalogs, system and user prompts, request bodies, raw response wrappers, parsed outputs, Codex JSONL events, stderr, version, and state records.",
+    "file_count": 36,
+    "raw_trace_public": false
+  }
+}

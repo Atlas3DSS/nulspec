@@ -227,6 +227,34 @@ const scenarios = [
     expectedCandidateRows: 25,
     voteResponse: "success",
   },
+  {
+    name: "fable-refusals-desktop",
+    path: "/fable-refusals",
+    width: 1440,
+    height: 900,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+    expectedRefusalRecords: 1,
+  },
+  {
+    name: "fable-refusals-mobile",
+    path: "/fable-refusals",
+    width: 390,
+    height: 844,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+    expectedRefusalRecords: 1,
+  },
 ];
 
 const report = [];
@@ -420,6 +448,24 @@ for (const scenario of scenarios) {
           pressed: element.getAttribute("aria-pressed"),
         }),
       ),
+      refusalRecords: document.querySelectorAll(".refusal-record").length,
+      refusalProviderMessage: document
+        .querySelector(".refusal-record blockquote")
+        ?.textContent?.trim(),
+      refusalSummary: document.querySelector(".refusal-summary")?.textContent?.trim(),
+      refusalImpact: document.querySelector(".refusal-impact")?.textContent?.trim(),
+      refusalPolicy: document.querySelector(".refusal-fallback")?.textContent?.trim(),
+      refusalComparisonSets: document.querySelectorAll(
+        ".review-depth-comparison",
+      ).length,
+      closedRefusalHistories: document.querySelectorAll(
+        ".supplemental-review__history:not([open])",
+      ).length,
+      refusalNavLinks: document.querySelectorAll(".site-nav__refusals").length,
+      refusalNavVisible: document.querySelector(".site-nav__refusals")
+        ? getComputedStyle(document.querySelector(".site-nav__refusals")).display !==
+          "none"
+        : false,
       horizontalRegions: [
         ...document.querySelectorAll(".horizontal-scroll-region"),
       ].map((region) => {
@@ -458,7 +504,7 @@ for (const scenario of scenarios) {
       primaryHeadingFontSize: Number.parseFloat(
         getComputedStyle(
           document.querySelector(
-            ".hero h1, .study-hero h1, .arm-hero h1, .paper-queue-hero h1",
+            ".hero h1, .study-hero h1, .arm-hero h1, .paper-queue-hero h1, .refusal-hero h1",
           ) ??
             document.body,
         ).fontSize,
@@ -628,6 +674,23 @@ for (const scenario of scenarios) {
       diagnostics.extensionButton !== "Vote to extend this paper") ||
     diagnostics.signalVerdicts !== scenario.expectedSignalVerdicts ||
     diagnostics.candidateRows !== (scenario.expectedCandidateRows ?? 0) ||
+    diagnostics.refusalRecords !== (scenario.expectedRefusalRecords ?? 0) ||
+    diagnostics.refusalNavLinks !== 1 ||
+    !diagnostics.refusalNavVisible ||
+    (scenario.expectedRefusalRecords > 0 &&
+      (!diagnostics.refusalProviderMessage?.includes(
+        "They may flag safe, normal content as well",
+      ) ||
+        !diagnostics.refusalSummary?.includes("$3.224742") ||
+        !diagnostics.refusalImpact?.includes(
+          "Anthropic wasted reviewer time and research money",
+        ) ||
+        !diagnostics.refusalPolicy?.includes(
+          "Fable, GLM, and Kimi receive the same immutable packet",
+        ) ||
+        !diagnostics.refusalPolicy?.includes("zero decision weight") ||
+        diagnostics.refusalComparisonSets !== 1 ||
+        diagnostics.closedRefusalHistories !== 2)) ||
     (scenario.expectedCandidateRows > 0 &&
       (!diagnostics.candidateSummary?.includes("100 papers") ||
         diagnostics.candidateFirstId !== "test-paper-001" ||
@@ -678,6 +741,8 @@ for (const scenario of scenarios) {
       diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 37 : 54)) ||
     (scenario.path === "/papers" &&
       diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 42 : 62)) ||
+    (scenario.path === "/fable-refusals" &&
+      diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 42 : 71)) ||
     diagnostics.visibleArmPanels !== (scenario.expectedArmTabs ? 1 : 0) ||
     diagnostics.activeArmTab !== scenario.expectedActiveTab ||
     diagnostics.stickyTabPosition !==

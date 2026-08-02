@@ -64,8 +64,34 @@ review records—not the small policies, their checkpoints, prompts,
 continuations, rewards, or training state. It checks order consistency,
 winner/rationale contradictions, vacuous reasoning, and visible position bias.
 Its flags cannot become training reward or silently change the primary result.
-The initial teacher is Codex using the already authenticated ChatGPT
-subscription; a paid-per-token Fable adapter is deliberately left disabled.
+The completed initial audit used Codex through the already authenticated
+ChatGPT subscription; Fable was deliberately left disabled. That historical
+result is not rewritten. Prospective runs use two independent outer teachers:
+pinned GLM and pinned Kimi receive the same Qwen-only packet concurrently.
+Invalid invocations enter immutable linked repair chains; Codex starts only
+after both chains contain valid audits. Fable is excluded because this is a
+recurring process audit, not the final-release review.
+
+Process-level Fable auditing is sampled for cost control. Once ten distinct
+paper pipelines are complete and validated, one immutable batch records a
+fresh random seed and sends three reproducibly selected pipeline traces in one
+Fable request. That critique has zero decision weight and cannot alter any
+paper result, teacher decision, publication state, or email authorization.
+
+The current transport is explicit: GLM-5.2 is streamed through OpenRouter with
+latency-based provider selection, while Kimi K3 is streamed from Moonshot AI's
+first-party API. Each attempt has 60-second first-event and idle deadlines and
+a four-minute total ceiling. Partial streams remain evidence; a deadline miss
+has zero decision weight and enters a linked repair rather than the join.
+
+All prompts, parameters, raw wrappers, usage, costs, timing, parsed records,
+failures, and Codex events are retained. Complete credential-free attempt
+records and hashes are supplied to Codex, and the final evidence index is
+independently recomputed before a run is treated as validated. Fable remains
+part of the separate final-release gate, where a guardrail refusal is a
+zero-weight non-response, not a scientific `HARD_FAIL`. See
+[`docs/REVIEW_HIERARCHY.md`](../docs/REVIEW_HIERARCHY.md).
+
 This strict view cannot determine whether an unseen story preference was
 semantically correct, but it can detect whether Qwen behaved like a reliable
 review process. That is the intended “review the reviewer” role.

@@ -366,6 +366,17 @@ limitations. Entries are never removed after correction.
   bounded checks for rates, and rerun the entire new test pair. No experimental
   trace or primary artifact was supplied to the draft analyzer.
 
+### LRS-LOCAL-037 — live-metric probe used guessed key names
+
+- **State:** corrected; no scientific effect
+- **Observation:** a read-only `jq` summary of the active factorization log
+  queried plausible but nonexistent generation and optimization key names. The
+  command succeeded with `null` diagnostics while correctly reading the loss
+  fields.
+- **Disposition:** inspect the row's exact key inventory and repeat the summary
+  with `sampled_val/*` and `optimization/window/*` names. No run file, process,
+  checkpoint, or metric was changed.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

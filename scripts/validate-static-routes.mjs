@@ -16,7 +16,15 @@ for (const file of (await readdir(publicationsDirectory)).sort()) {
   if (typeof studyId !== "string" || !/^[0-9]{3,}$/.test(studyId)) {
     throw new Error("publication has an unsafe study route component: " + file);
   }
-  for (const arm of bundle.arms ?? []) {
+  const accuracyPublication =
+    bundle.schema_version === "nulspec-classification-accuracy-site-v1";
+  const arms = accuracyPublication
+    ? (bundle.primary?.runs ?? []).map((run) => ({ arm_id: run.run_id }))
+    : (bundle.arms ?? []);
+  const evidenceMarker = accuracyPublication
+    ? "No per-seed replication verdict is assigned."
+    : "Detailed attempt records are not yet public";
+  for (const arm of arms) {
     if (
       typeof arm.arm_id !== "string" ||
       !routeComponent.test(arm.arm_id)
@@ -35,7 +43,7 @@ for (const file of (await readdir(publicationsDirectory)).sort()) {
     const html = await readFile(page, "utf8");
     if (
       !html.includes(arm.arm_id) ||
-      !html.includes("Detailed attempt records are not yet public")
+      !html.includes(evidenceMarker)
     ) {
       throw new Error("arm page does not identify its bound evidence: " + route);
     }

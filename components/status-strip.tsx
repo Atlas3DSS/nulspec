@@ -1,15 +1,15 @@
 import Link from "next/link";
 import {
-  classificationLabel,
   stateMeta,
+  studyClassificationLabel,
   studyCounts,
   type ArmState,
-  type StudyDocument,
+  type AnyStudyDocument,
 } from "@/lib/study";
 
 const statusOrder: ArmState[] = ["DONE", "RUNNING", "QUEUED", "FAILED", "ABORTED"];
 
-export function StatusStrip({ study }: { study: StudyDocument }) {
+export function StatusStrip({ study }: { study: AnyStudyDocument }) {
   const counts = studyCounts(study.arms);
 
   return (
@@ -28,7 +28,7 @@ export function StatusStrip({ study }: { study: StudyDocument }) {
             {" · "}
           </span>
           <span className="status-strip__warning">
-            {classificationLabel(study.verdict.classification)}
+            {studyClassificationLabel(study)}
           </span>
         </p>
         <Link href={`/studies/${study.study_id}`}>View study →</Link>

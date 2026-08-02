@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { AccuracyStudyRecord } from "@/components/accuracy-study-record";
 import { RunLedger } from "@/components/run-ledger";
 import { ExtensionVoteForm } from "@/components/extension-vote-form";
 import { HorizontalScrollRegion } from "@/components/horizontal-scroll-region";
@@ -16,7 +17,10 @@ import {
   formatAsOf,
   getStudies,
   getStudy,
+  isAccuracyStudy,
   protocolUrl,
+  studyClassificationLabel,
+  studySummary,
   type PublicationArtifact,
   type StudyDocument,
 } from "@/lib/study";
@@ -45,8 +49,8 @@ export async function generateMetadata({ params }: StudyPageProps): Promise<Meta
   const study = getStudy(id);
   if (!study) return {};
   return {
-    title: `Study ${study.study_id}: ${classificationLabel(study.verdict.classification)}`,
-    description: study.verdict.summary,
+    title: `Study ${study.study_id}: ${studyClassificationLabel(study)}`,
+    description: studySummary(study),
     alternates: { canonical: `/studies/${study.study_id}` },
   };
 }
@@ -78,6 +82,9 @@ export default async function StudyPage({ params }: StudyPageProps) {
   const { id } = await params;
   const study = getStudy(id);
   if (!study) notFound();
+  if (isAccuracyStudy(study)) {
+    return <AccuracyStudyRecord study={study} />;
+  }
   const rows = hardwareRows(study);
   const classification = classificationLabel(study.verdict.classification);
 

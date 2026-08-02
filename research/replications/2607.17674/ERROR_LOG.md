@@ -143,6 +143,54 @@ limitations. Entries are never removed after correction.
 - **Disposition:** queried the remaining URL separately with retries and JSON
   validation. No source or acquisition record was overwritten.
 
+### LRS-LOCAL-016 — citation schemas were omitted from the first protocol tag
+
+- **State:** corrected prospectively before model review; no scientific effect
+- **Observation:** citation-audit protocol v1.0.0 required Qwen to return a
+  "registered JSON schema," but the tagged protocol did not contain the schema
+  files, packet-construction rules, or fixed structural-retry budget.
+- **Disposition:** no Qwen citation prompt had been issued and no review result
+  existed. Preserve the v1.0.0 tag, add the missing machine-readable contracts
+  and deterministic packet builder in amendment v1.0.1, and tag that amendment
+  before calibration. Do not backdate the added files into v1.0.0.
+
+### LRS-LOCAL-017 — packet chunker admitted a newline past its byte ceiling
+
+- **State:** corrected before model review; no scientific effect
+- **Observation:** the first v1.0.1 packet-build attempt used an inclusive
+  newline-search bound after finding the largest Unicode prefix under 48,000
+  bytes. When the next character was a newline, the line-boundary preference
+  included that extra byte and the builder's independent size assertion failed.
+- **Disposition:** preserve the partial failed packet directory, change the
+  search stop to the already validated exclusive boundary, add a regression
+  test for the exact case, and build into a new append-only directory. No Qwen
+  prompt was issued from the failed attempt.
+
+### LRS-LOCAL-018 — local shell interpreted documentation-search backticks
+
+- **State:** corrected; no scientific effect
+- **Observation:** one read-only SSH documentation search placed Markdown
+  backticks inside a double-quoted shell argument. The local shell attempted to
+  execute the two enclosed endpoint names, printed command-not-found messages,
+  and then completed the harmless remote search.
+- **Disposition:** no files or services changed. Reran the exact documentation
+  inspection using a single-quoted remote command and avoid executable quoting
+  syntax in subsequent shell arguments.
+
+### LRS-LOCAL-019 — stream test exposed an HTTP socket ownership assumption
+
+- **State:** corrected before model review; no scientific effect
+- **Observation:** the first mocked SSE transport test used an HTTP/1.0 test
+  peer. Python transferred the active socket from `HTTPConnection` to the
+  response object, so the runner's timeout setter incorrectly reported that
+  the connection had lost its socket before reading the first event.
+- **Disposition:** resolve the active socket from either connection ownership
+  location. If an HTTP/1.0 close has already detached it, retain the timeout
+  installed when the connection was opened (the frozen first-event and idle
+  limits are equal) while continuing to enforce total elapsed time between
+  reads. Retain the failing test output and rerun the streamed trace test. No
+  Qwen service was started or called.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

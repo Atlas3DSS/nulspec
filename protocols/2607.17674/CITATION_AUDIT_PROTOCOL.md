@@ -1,8 +1,14 @@
 # Frozen citation-audit protocol: arXiv:2607.17674
 
-**Protocol version:** 1.0.0
+**Protocol version:** 1.0.1
 
-**Protocol tag:** `2607.17674-citation-audit-v1.0.0`
+**Protocol tag:** `2607.17674-citation-audit-v1.0.1`
+
+Version 1.0.1 is a prospective structural amendment made before any Qwen
+citation-review invocation. It adds the machine-readable schemas, deterministic
+source-coverage packets, prompts, generation parameters, and retry limits that
+v1.0.0 referred to but did not include. The original v1.0.0 tag remains
+immutable, and the omission is recorded as `LRS-LOCAL-016`.
 
 **Target:** *Uncovering Latent Reasoning Strategies in Language Models*
 
@@ -84,6 +90,23 @@ registered JSON schema. The raw prompt, request, streamed response, normalized
 events, parsed record, timing, token counts, and failures are append-only. A
 malformed response has zero evidentiary weight and receives a linked fresh
 attempt within the recorded attempt budget; it is never edited into validity.
+
+The registered contracts are `citation_evidence_chunk.schema.json` and
+`citation_review.schema.json`. Exact sampling, context, timeout, chunking, and
+attempt limits are in `citation_audit_config.v1.0.1.json`; exact prompt text is
+under `prompts/`. Evidence packets partition each extracted source into
+contiguous UTF-8 substrings with no gaps or overlap. Every chunk is reviewed
+against every occurrence for that source before the per-source synthesis call.
+The synthesizer receives the immutable chunk findings, source identity, and
+all manuscript occurrences, but not an unreviewed retrieval shortcut. Packet
+manifests bind the source and each chunk by SHA-256 and byte/character ranges.
+
+Schema-constrained generation does not by itself establish validity. Local
+validation also checks citation and chunk identity, exact occurrence coverage,
+locator membership, score ranges, evidence-excerpt grounding in the reviewed
+chunk, and source-wide chunk completeness. An invalid object has no scientific
+weight. At most one linked structural retry is allowed per evidence or
+synthesis call; a valid substantive answer is never retried.
 
 The first six stratified calibration keys are fixed prospectively:
 

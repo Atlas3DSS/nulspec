@@ -1,0 +1,127 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "review_type",
+    "citation_key",
+    "chunk_id",
+    "chunk_summary",
+    "source_identity_observations",
+    "occurrence_findings",
+    "coverage_confirmation",
+    "unreviewable_text_reason"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "enum": [1]
+    },
+    "review_type": {
+      "type": "string",
+      "enum": ["citation_evidence_chunk"]
+    },
+    "citation_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "chunk_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 220
+    },
+    "chunk_summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "source_identity_observations": {
+      "type": "string",
+      "maxLength": 1600
+    },
+    "occurrence_findings": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "occurrence_id",
+          "claim_focus",
+          "evidence_candidates",
+          "no_relevant_evidence_explanation"
+        ],
+        "properties": {
+          "occurrence_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 220
+          },
+          "claim_focus": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1600
+          },
+          "evidence_candidates": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 8,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "page_number",
+                "section_or_heading",
+                "excerpt",
+                "relevance",
+                "stance"
+              ],
+              "properties": {
+                "page_number": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "section_or_heading": {
+                  "type": "string",
+                  "maxLength": 300
+                },
+                "excerpt": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 800
+                },
+                "relevance": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1200
+                },
+                "stance": {
+                  "type": "string",
+                  "enum": [
+                    "supports_claim",
+                    "qualifies_claim",
+                    "contradicts_claim",
+                    "background_only"
+                  ]
+                }
+              }
+            }
+          },
+          "no_relevant_evidence_explanation": {
+            "type": "string",
+            "maxLength": 800
+          }
+        }
+      }
+    },
+    "coverage_confirmation": {
+      "type": "boolean"
+    },
+    "unreviewable_text_reason": {
+      "type": "string",
+      "maxLength": 800
+    }
+  }
+}

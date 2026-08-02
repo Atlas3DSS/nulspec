@@ -294,6 +294,47 @@ limitations. Entries are never removed after correction.
 - **Disposition:** inspect top-level value types before selecting nested data,
   then build the expectation test from the actual schema. No file changed.
 
+### LRS-LOCAL-030 — implementation audit included a nonexistent `src/` path
+
+- **State:** corrected; no scientific effect
+- **Observation:** a read-only file inventory assumed a conventional upstream
+  `src/` directory alongside `experiments/`. The repository has no `src/`, so
+  `find` reported that path while still listing the actual experiment modules.
+- **Disposition:** constrain subsequent audits to the discovered upstream tree.
+  No upstream file, environment, trace, or result changed.
+
+### LRS-LOCAL-031 — follow-up inventory omitted the ignored work prefix
+
+- **State:** corrected; no scientific effect
+- **Observation:** a read-only follow-up inventory queried
+  `research/replications/2607.17674/upstream`, omitting the repository's ignored
+  `work/` directory component. `rg` stopped with a missing-path diagnostic.
+- **Disposition:** use the already discovered
+  `research/replications/2607.17674/work/upstream` path and include ignored
+  files explicitly when inventorying immutable working copies. No upstream
+  file, environment, trace, process, or result changed.
+
+### LRS-LOCAL-032 — module inventory guessed a separate evaluation directory
+
+- **State:** corrected; no scientific effect
+- **Observation:** a read-only module inventory included
+  `experiments/evaluation`, but the released implementation keeps its
+  evaluation modules inside `experiments/factorization`. `rg` diagnosed only
+  the nonexistent extra path and still returned the two valid trees.
+- **Disposition:** inventory only paths first identified from the complete
+  upstream file list. No upstream file, environment, trace, process, or result
+  changed.
+
+### LRS-LOCAL-033 — test search assumed an upstream `tests/` directory
+
+- **State:** corrected; no scientific effect
+- **Observation:** a read-only search for coverage of a suspected sequence-mask
+  edge case targeted `tests/` before verifying that the pinned upstream tree
+  contains such a directory. `rg` stopped with a missing-path diagnostic.
+- **Disposition:** inventory the tree before any narrower test search and use a
+  self-contained read-only probe if upstream coverage is absent. No upstream
+  file, environment, trace, process, or result changed.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404
@@ -423,3 +464,37 @@ limitations. Entries are never removed after correction.
   runs. Report the registered interval as unavailable, not zero-width; any
   record-preserving rerun requires a separately labeled instrumentation
   extension and cannot replace the primary observation.
+
+### LRS-UPSTREAM-009 — reconstruction includes the latent closing delimiter
+
+- **State:** open; interpretation-relevant implementation/method difference
+- **Observation:** the manuscript reconstruction sum is over response tokens,
+  but the released conditioned-record builder starts supervision at `</z>`, one
+  token before its declared response span. The frozen-base directed weight is
+  zero at that extra position, while the uniform component still trains it;
+  ELBO and global-scale variants weight it uniformly in full.
+- **Disposition:** preserve this behavior in every released-code primary arm.
+  Run a response-span-only mask as a separately labeled paired extension and
+  report whether it changes the conclusion.
+
+### LRS-UPSTREAM-010 — fidelity batches restart one sampling stream
+
+- **State:** open; affects Monte Carlo dependence and uncertainty
+- **Observation:** standalone Distributional Fidelity evaluation passes the
+  same seed to every generation batch, and the generation helper manually
+  reseeds at the start of each call. Corresponding rows and token positions in
+  successive batches therefore reuse random draws instead of advancing one
+  stream through all 10,000 prompts.
+- **Disposition:** preserve the released evaluator for the primary scalar and
+  do not apply an independent-example interval to it. Compare against an
+  advancing-RNG, record-preserving evaluation as a labeled sensitivity.
+
+### LRS-UPSTREAM-011 — ambiguous analogical matches use set intersection
+
+- **State:** open; potentially affects a subset of pair outcomes
+- **Observation:** the manuscript expresses Analogical Consistency as equality
+  of inferred strategies. The released evaluator represents compatible
+  strategies as sets and counts a success whenever the two sets overlap.
+- **Disposition:** retain the released rule for the primary. In a
+  record-preserving extension, report ambiguous-pair prevalence and recompute
+  under literal set equality and unique-only conventions.

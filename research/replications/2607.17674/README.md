@@ -8,8 +8,12 @@ The frozen protocol and source manifest live in
 snapshots, checkpoints, and private machine manifests live beneath ignored
 `work/`, `outputs/`, and `private/` directories.
 
-Current state: artifact verification and protocol registration. No primary GPU
-arm had begun when protocol v1.0.0 was written.
+Current state: primary execution is active. The first released-config arm began
+from the frozen v1.0.0 protocol; its Qwen2.5-0.5B base-model stage completed all
+100,000 training records and the unchanged released factorization stage is in
+progress. These are execution milestones, not result claims. Terminal status,
+metrics, and artifact hashes come only from the immutable run manifest and
+post-run analyzer.
 
 Source ordering is fixed: artifact verification, released-code reproduction,
 manuscript-method reproduction, diagnosis, then extension.
@@ -47,3 +51,7 @@ Operational mistakes and upstream limitations are kept in `ERROR_LOG.md` as
 separate append-only sections. The executable-artifact check is summarized in
 `SMOKE_TEST.md`; the complete citation-source acquisition and its four
 immutable attempts are summarized in `CITATION_SOURCE_ACQUISITION.md`.
+Citation-review packetization is recorded in
+`CITATION_REVIEW_PACKETIZATION.md`. Its prospective v1.0.1 amendment was tagged
+before any Qwen citation invocation and covers 41 sources, 74 occurrences, and
+all 4,230,676 extracted-text bytes without retrieval shortcuts.

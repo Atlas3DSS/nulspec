@@ -107,21 +107,22 @@ reinterpreted as though GLM or Kimi participated. New teacher runs follow
 [`docs/REVIEW_HIERARCHY.md`](../docs/REVIEW_HIERARCHY.md): GLM and Kimi audit
 Qwen concurrently and Codex adjudicates only after both logical teacher chains
 end with valid audits. Invalid invocations remain immutable and are repaired
-through linked attempts. Fable is reserved for the separate final-release gate,
-where its guardrail refusal is a logged, zero-weight non-response and not a
-scientific `HARD_FAIL`.
+through linked attempts. Per-paper final review also uses GLM and Kimi only;
+Fable is prohibited from teacher, release, repair, fallback, and escalation
+paths.
 
 The validated protocol-v2 reference is
 `extension/artifacts/review_hierarchy_20260801_v9.json`, bound to
 `extension/artifacts/review_hierarchy_validation_20260801_v9.json`. Earlier
 hybrid traces remain available for comparison but are explicitly ineligible in
 `extension/artifacts/review_hierarchy_architecture_corrections_20260801.json`.
-The separately authorized advisory Fable critique is preserved in
+The separately authorized historical advisory Fable critique is preserved in
 `extension/artifacts/fable_pipeline_critique_20260801_v2.json`; it assessed the
 pipeline as `sound_with_changes` and has zero teacher, scientific, release, and
 email decision weight. That historical single-pipeline call predates the
-prospective ten-paper cadence. New calls use one request per ten completed
-pipelines and sample three of those ten in one immutable packet.
+prospective ten-paper cadence and cannot be reproduced through the active CLI.
+New calls use one request per ten completed pipelines and sample three of those
+ten in one immutable packet.
 
 ## Matrix
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+from argparse import Namespace
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -17,15 +18,18 @@ sys.path.insert(0, str(ROOT / "infra" / "multibot"))
 from nulspec_review import (  # noqa: E402
     ACCOUNTS_SCHEMA,
     DisabledReviewService,
+    RELEASE_REVIEW_SCHEMA,
     ReviewConfigurationError,
     ReviewService,
     accounts_from_environment,
+    build_study_task,
     decode_accounts,
     encode_accounts,
     register_nulspec_review_routes,
 )
 from nulspec_review_store import (  # noqa: E402
     EMAIL_APPROVAL_SCHEMA,
+    LEGACY_TASK_SCHEMA,
     PUBLICATION_DISPOSITION_SCHEMA,
     TASK_SCHEMA,
     ReviewPacketError,
@@ -79,8 +83,8 @@ def task_packet(
         "supersedes_task_id": None,
         "priority": "high",
         "queued_reason": (
-            "Fable refused before findings and the two supplemental responses "
-            "did not produce two schema-valid PASS decisions."
+            "The independent GLM and Kimi release reviews require a human "
+            "publication disposition."
         ),
         "submitted_at_utc": "2026-08-01T18:16:18Z",
         "study": {
@@ -96,9 +100,7 @@ def task_packet(
             "repository_url": "https://github.com/example/research",
             "pull_request_url": "https://github.com/example/research/pull/18",
             "review_packet_sha256": "b" * 64,
-            "final_peer_review_sha256": "c" * 64,
-            "supplemental_review_consensus_sha256": "d" * 64,
-            "fable_action_closure_sha256": None,
+            "release_review_consensus_sha256": "c" * 64,
         },
         "brief": (
             "The frozen final-result recipe did not reproduce the reported "
@@ -118,20 +120,20 @@ def task_packet(
         ],
         "review_events": [
             {
-                "event_id": "FABLE-REFUSAL-20260801-001",
-                "reviewer": "Fable",
-                "provider": "Anthropic",
-                "model": "claude-fable-5",
-                "outcome": "reviewer_safeguard_refusal",
-                "validation": "technical_hard_fail",
-                "summary": "The one-shot request was refused before findings.",
-                "cost_usd": 3.224742,
+                "event_id": "RELEASE-GLM-20260802-001",
+                "reviewer": "GLM",
+                "provider": "OpenRouter",
+                "model": "z-ai/glm-versioned",
+                "outcome": "PASS",
+                "validation": "completed_valid",
+                "summary": "The release review completed with a valid PASS.",
+                "cost_usd": 0.157606,
                 "trace_sha256": "f" * 64,
                 "consensus_eligible": False,
             }
         ],
         "publication_gate": {
-            "reason": "The fail-closed review policy requires a human disposition.",
+            "reason": "The model gate passed and human publication review remains required.",
             "question": "Should this exact release proceed or remain blocked?",
         },
         "author_email_gate": {
@@ -145,6 +147,92 @@ def task_packet(
             ),
         },
     }
+
+
+def write_generic_release_study(root: Path, *, ledger_reviewer: str = "GLM") -> None:
+    (root / "results").mkdir(parents=True)
+    handoff = {
+        "study": {
+            "id": "260723346",
+            "title": "A computational research paper",
+            "arxiv_url": "https://arxiv.org/abs/2607.23346v1",
+            "arxiv_id": "2607.23346v1",
+        },
+        "classification": {
+            "replication_outcome": "not_replicated",
+            "underlying_method_claim": "inconclusive",
+        },
+    }
+    (root / "WEBSITE_HANDOFF.json").write_text(json.dumps(handoff))
+    for name in ("ONE_PAGE.md", "REPORT.md", "PROTOCOL.md", "TESTS.md"):
+        (root / name).write_text(f"# {name}\n\nBound release evidence.\n")
+    (root / "FINAL_REVIEW.md").write_text(
+        "# GLM/Kimi release review\n\nBoth independent reviews passed.\n"
+    )
+    (root / "AUTHOR_EMAIL.md").write_text(
+        "# Draft author email — not sent\n\n"
+        "**Subject:** Independent replication attempt\n\n"
+        "Hello authors,\n\nThis exact draft requires human approval.\n"
+    )
+    (root / "EXTERNAL_REVIEW_LEDGER.md").write_text(
+        "# External review ledger\n\nImmutable GLM/Kimi attempts.\n"
+    )
+    release_review = {
+        "schema_version": RELEASE_REVIEW_SCHEMA,
+        "fable_invoked": False,
+        "publication_authorized": False,
+        "human_publication_approval_required": True,
+        "author_email_human_approval_required": True,
+        "review_packet": {"sha256": "a" * 64},
+        "decision_reason": "GLM and Kimi returned valid PASS reviews.",
+        "completed_at_utc": "2026-08-02T20:00:00Z",
+        "model_review_gate": "passed",
+        "reviewers": [
+            {
+                "reviewer_family": "GLM",
+                "status": "completed_valid",
+                "verdict": "PASS",
+            },
+            {
+                "reviewer_family": "Kimi",
+                "status": "completed_valid",
+                "verdict": "PASS",
+            },
+        ],
+    }
+    (root / "results" / "release_review_consensus.json").write_text(
+        json.dumps(release_review)
+    )
+    ledger = {
+        "events": [
+            {
+                "event_id": "RELEASE-REVIEW-001",
+                "reviewer_family": ledger_reviewer,
+                "provider": "OpenRouter",
+                "canonical_model": "versioned-review-model",
+                "declared_verdict": "PASS",
+                "validation_status": "completed_valid",
+                "charged_cost_usd": 0.1,
+                "consensus_eligible": True,
+                "trace": {"artifacts": {"raw_response": {"sha256": "b" * 64}}},
+            }
+        ]
+    }
+    (root / "results" / "external_review_ledger.json").write_text(json.dumps(ledger))
+
+
+def build_task_args(study_root: Path) -> Namespace:
+    return Namespace(
+        study_root=study_root,
+        task_id="260723346-release-r3",
+        supersedes_task_id=None,
+        priority="high",
+        source_revision="c" * 40,
+        repository_url="https://github.com/example/research",
+        pull_request_url="https://github.com/example/research/pull/30",
+        study_repo_path="research/replications/2607.23346",
+        recipients=None,
+    )
 
 
 def make_service(
@@ -312,6 +400,45 @@ def test_packet_validation_binds_exact_email_and_rejects_unsafe_links() -> None:
     unsafe["evidence"][0]["url"] = "javascript:alert(1)"
     with pytest.raises(ReviewPacketError, match="HTTPS"):
         validate_task_packet(unsafe)
+
+
+def test_legacy_fable_task_remains_readable_but_new_schema_has_no_fable_binding() -> (
+    None
+):
+    current = task_packet()
+    assert "fable_action_closure_sha256" not in current["source"]
+
+    legacy = task_packet(task_id="study-260723346-legacy")
+    legacy["schema_version"] = LEGACY_TASK_SCHEMA
+    legacy["source"] = {
+        "source_revision": "a" * 40,
+        "repository_url": "https://github.com/example/research",
+        "pull_request_url": "https://github.com/example/research/pull/18",
+        "review_packet_sha256": "b" * 64,
+        "final_peer_review_sha256": "c" * 64,
+        "supplemental_review_consensus_sha256": "d" * 64,
+        "fable_action_closure_sha256": None,
+    }
+    assert validate_task_packet(legacy)["schema_version"] == LEGACY_TASK_SCHEMA
+
+
+def test_study_adapter_builds_generic_glm_kimi_task(tmp_path: Path) -> None:
+    write_generic_release_study(tmp_path)
+
+    packet = build_study_task(build_task_args(tmp_path))
+
+    assert packet["schema_version"] == TASK_SCHEMA
+    assert packet["source"]["release_review_consensus_sha256"]
+    assert "fable_action_closure_sha256" not in packet["source"]
+    assert {event["reviewer"] for event in packet["review_events"]} == {"GLM"}
+    assert any(item["id"] == "release-review" for item in packet["evidence"])
+
+
+def test_study_adapter_rejects_per_paper_fable_event(tmp_path: Path) -> None:
+    write_generic_release_study(tmp_path, ledger_reviewer="Fable")
+
+    with pytest.raises(ReviewPacketError, match="prohibited Fable event"):
+        build_study_task(build_task_args(tmp_path))
 
 
 def test_task_import_is_idempotent_but_never_rebinds_an_id(tmp_path: Path) -> None:
@@ -545,7 +672,7 @@ def test_inbox_is_private_and_explains_both_gates(tmp_path: Path) -> None:
     assert task["publication_gate"]["status"] == "awaiting_human"
     assert task["author_email_gate"]["status"] == "blocked_by_publication"
     assert task["author_email_gate"]["body"] == packet["author_email_gate"]["body"]
-    assert task["review_cost_total_usd"] == 3.224742
+    assert task["review_cost_total_usd"] == 0.157606
     store.close()
 
 
@@ -576,7 +703,7 @@ def test_publication_then_email_decisions_are_separate_and_hash_bound(
         json={
             "gate": "publication",
             "decision": "APPROVE_RELEASE",
-            "notes": "The technical refusal returned no scientific finding; the evidence is release-ready.",
+            "notes": "Both release reviews passed and the bound evidence is ready for human disposition.",
             "binding_sha256": binding,
             "confirmed": True,
         },
@@ -626,6 +753,11 @@ def test_publication_then_email_decisions_are_separate_and_hash_bound(
         == packet["author_email_gate"]["draft_sha256"]
     )
     assert email_record["operator_dispatch_still_required"] is True
+    assert (
+        email_record["release_review_consensus_sha256"]
+        == packet["source"]["release_review_consensus_sha256"]
+    )
+    assert "fable_action_closure_sha256" not in email_record
     assert "recipients" not in email_record
 
     final_inbox = client.get("/api/review/tasks").get_json()

@@ -19,10 +19,10 @@ independent GLM audit   independent Kimi audit
          Codex outer adjudication
 ```
 
-Fable is deliberately excluded from this recurring teacher loop because its
-cost profile is inappropriate for repeated process audits. Its separate roles
-are final-release review and one sampled advisory process critique per ten
-completed, validated paper pipelines.
+Fable is excluded from every per-paper teacher, final-review, release, repair,
+and fallback path because its cost profile is inappropriate for recurring use.
+Its only prospective role is one sampled advisory process critique after each
+ten completed, validated paper pipelines.
 
 ## Evidence boundary
 
@@ -128,26 +128,33 @@ written to prompts, requests, command arguments, logs, or public output.
 Provider request IDs, private paths, and internal host data stay out of the
 public projection.
 
-## Separate final-release review
+## Per-paper final-release review
 
-The final release gate requests Fable, GLM, and Kimi independently on the full,
-immutable publication packet. This is separate from the Qwen teacher loop.
+Effective 2026-08-02, the per-paper final-review gate requests only GLM and
+Kimi on the same full, immutable publication packet. It does not invoke Fable.
 
-- A Fable safeguard or technical non-response is logged with its tokens, cost,
-  provider message, and hashes. Its decision weight is zero, and it is not a
-  scientific `HARD_FAIL`.
-- After that zero-weight non-response, valid GLM and Kimi `PASS` decisions
-  authorize publication of the bound release.
-- If Fable returns a substantive review, all three final reviewers must return
-  `PASS`.
-- Only a valid substantive Fable `fail` creates scientific `HARD_FAIL`.
-- Malformed, missing, or disagreeing final reviews block for human adjudication.
-- Email dispatch always requires separate human approval of the exact draft.
+- GLM and Kimi run independently and concurrently. Neither receives the
+  other's response.
+- Invalid invocations are retained and repaired through bounded, linked fresh
+  attempts. Valid substantive verdicts are never retried.
+- Two valid `PASS` decisions satisfy the model-review gate. A missing review,
+  exhausted repair chain, non-`PASS` verdict, or disagreement blocks for human
+  adjudication.
+- Codex may summarize the two traces for the human reviewer but cannot replace
+  either review or relax a failed model gate.
+- Passing the model-review gate does not publish the study. Publication still
+  requires an explicit human dashboard decision on the exact bound packet.
+- Email dispatch always requires a separate human approval of the exact draft
+  and recipient list.
+
+Fable must not be invoked as a per-paper reviewer, tie-breaker, repair,
+fallback, or escalation. Historical Fable review and refusal records remain
+immutable evidence under the policy that applied when they ran.
 
 ## Batched Fable pipeline critique
 
 GLM and Kimi audit every eligible Qwen paper pipeline, and Codex adjudicates
-every valid pair. Fable is not called for each paper. After ten distinct paper
+every valid pair. Fable has no other active invocation path. After ten distinct paper
 pipelines pass their end-to-end trace checks, the batch runner sorts their
 study IDs, records a fresh 256-bit random seed, and ranks each ID by SHA-256 of
 the seed and ID to reproducibly sample three of the ten. One sanitized packet
@@ -157,7 +164,8 @@ recorded integration failures, and costs. The other seven study IDs remain in
 the cadence record so no paper can be reused to assemble another batch.
 
 The batch uses exactly one Fable invocation at maximum effort, with no tools or
-session persistence. Its seed, selected IDs, prompt, wrapper, parsed response,
+session persistence and a hard USD ceiling of $5. Its seed, selected IDs,
+prompt, wrapper, parsed response,
 usage, exact model, cost, timing, stderr, and hashes are retained. The ignored,
 append-only registry refuses a repeated batch ID or any paper used in an
 earlier batch. All ten inputs must validate and the complete packet must remain
@@ -196,8 +204,9 @@ python3 extension/fable_pipeline_critique.py \
   --public-result extension/artifacts/fable_pipeline_critique_papers-001.json
 ```
 
-`--historical-single-run` exists only to reproduce the explicitly authorized
-2026-08-01 single-pipeline traces. It is not the prospective cadence.
+The historical single-pipeline runner and its reissue flags have been removed.
+The retained 2026-08-01 traces remain readable evidence, but the CLI cannot
+reproduce or extend that invocation path.
 
 ## Running the teacher hierarchy
 

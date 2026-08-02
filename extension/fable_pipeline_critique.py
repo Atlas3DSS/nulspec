@@ -107,6 +107,11 @@ def validate_pipeline_summary(summary: dict[str, Any]) -> None:
         )
     ):
         raise CritiqueError("pipeline summary grants prohibited authority")
+    if controls.get("fable_batch_only") is False:
+        raise CritiqueError("pipeline summary permits active per-paper Fable review")
+    active_reviewers = controls.get("active_release_reviewers")
+    if active_reviewers is not None and active_reviewers != ["GLM", "Kimi"]:
+        raise CritiqueError("pipeline summary has invalid active release reviewers")
 
 
 def validate_validation_record(
@@ -138,49 +143,6 @@ def source_record(path: Path) -> dict[str, Any]:
         "byte_count": len(raw),
         "sha256": sha256_bytes(raw),
         "content": raw.decode(),
-    }
-
-
-def build_packet(
-    summary: dict[str, Any],
-    validation: dict[str, Any],
-    corrections: dict[str, Any],
-    *,
-    explicit_reissue_of: str | None = None,
-) -> dict[str, Any]:
-    reissue = {
-        "explicit_user_reissue_authorized": explicit_reissue_of is not None,
-        "reissue_of_run_id": explicit_reissue_of,
-        "reissue_reason": (
-            "prior_attempt_failed_local_cli_schema_validation_before_model_invocation"
-            if explicit_reissue_of
-            else None
-        ),
-    }
-    return {
-        "protocol": {
-            "name": "nulspec-one-shot-fable-pipeline-critique-v1",
-            "scope": SCOPE,
-            "role": (
-                "Advisory critique of the completed review pipeline. Fable is "
-                "not a teacher, release reviewer, scientific vote, or authority."
-            ),
-            "evidence_boundary": (
-                "Only repository-native pipeline code, schemas, documentation, "
-                "a sanitized completed-run summary, a validation record, and "
-                "sanitized architecture corrections are included."
-            ),
-            "invocation_limit": 1,
-            "automatic_retry": False,
-            **reissue,
-            "automatic_changes_authorized": False,
-        },
-        "sources": {
-            path.as_posix(): source_record(path) for path in DEFAULT_SOURCE_PATHS
-        },
-        "completed_pipeline_summary": summary,
-        "validation_record": validation,
-        "architecture_corrections": corrections,
     }
 
 
@@ -407,68 +369,11 @@ def claim_batch(
     return claim
 
 
-def validate_explicit_reissue(
-    run_id: str,
-    explicit_reissue_of: str | None,
-    prior_record_path: Path | None,
-    prior_stderr_path: Path | None,
-) -> dict[str, Any]:
-    """Permit only a user-authorized reissue of a pre-model local CLI failure."""
-
-    if explicit_reissue_of is None:
-        if prior_record_path is not None or prior_stderr_path is not None:
-            raise CritiqueError("reissue evidence requires --explicit-reissue-of")
-        return {
-            "explicit_user_reissue_authorized": False,
-            "reissue_of_run_id": None,
-            "reissue_reason": None,
-        }
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,95}", explicit_reissue_of):
-        raise CritiqueError("explicit reissue has an invalid prior run ID")
-    if explicit_reissue_of == run_id:
-        raise CritiqueError("explicit reissue must use a new run ID")
-    if prior_record_path is None or prior_stderr_path is None:
-        raise CritiqueError("explicit reissue requires the prior record and stderr")
-
-    prior = load_object(prior_record_path)
-    stderr = prior_stderr_path.read_text()
-    if prior.get("run_id") != explicit_reissue_of:
-        raise CritiqueError("explicit reissue record has a different run ID")
-    if prior.get("status") != "completed_invalid":
-        raise CritiqueError("explicit reissue is limited to an invalid prior attempt")
-    if prior.get("raw_stdout_byte_count") != 0:
-        raise CritiqueError("explicit reissue prior attempt reached stdout")
-    if prior.get("reported_total_cost_usd") not in (None, 0, 0.0):
-        raise CritiqueError("explicit reissue prior attempt recorded model cost")
-    if prior.get("reported_model_usage") not in (None, {}):
-        raise CritiqueError("explicit reissue prior attempt recorded model usage")
-    if "--json-schema is not a valid JSON Schema" not in stderr:
-        raise CritiqueError(
-            "explicit reissue prior stderr is not a schema preflight failure"
-        )
-
-    return {
-        "explicit_user_reissue_authorized": True,
-        "reissue_of_run_id": explicit_reissue_of,
-        "reissue_reason": (
-            "prior_attempt_failed_local_cli_schema_validation_before_model_invocation"
-        ),
-        "prior_record_byte_count": prior_record_path.stat().st_size,
-        "prior_record_sha256": sha256_bytes(prior_record_path.read_bytes()),
-        "prior_stderr_byte_count": prior_stderr_path.stat().st_size,
-        "prior_stderr_sha256": sha256_bytes(prior_stderr_path.read_bytes()),
-    }
-
-
 def critique_prompt(packet: dict[str, Any]) -> str:
-    subject = (
-        "Critique the sampled completed NULSPEC Qwen/GLM/Kimi/Codex review "
-        "pipelines as one batch. Compare the three samples where useful. "
-        if "pipeline_samples" in packet
-        else "Critique the completed NULSPEC Qwen/GLM/Kimi/Codex review pipeline. "
-    )
     return (
-        subject + "Assess architecture, independence, evidence boundaries, concurrent "
+        "Critique the sampled completed NULSPEC Qwen/GLM/Kimi/Codex review "
+        "pipelines as one batch. Compare the three samples where useful. Assess "
+        "architecture, independence, evidence boundaries, concurrent "
         "fan-out and join behavior, invalid-invocation repair policy, failure "
         "taxonomy, trace integrity, cost controls, release-authority controls, "
         "documentation, and validation coverage. Be factual and charitable. "
@@ -565,12 +470,13 @@ def public_model_usage(event: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--batch-manifest",
         type=Path,
-        help="ten-paper batch manifest; required for routine operation",
+        required=True,
+        help="required manifest containing exactly ten validated paper pipelines",
     )
     parser.add_argument(
         "--batch-registry",
@@ -583,135 +489,56 @@ def parse_args() -> argparse.Namespace:
         default=Path("."),
     )
     parser.add_argument(
-        "--historical-single-run",
-        action="store_true",
-        help="retain the 2026-08-01 single-run reproduction path only",
-    )
-    parser.add_argument(
-        "--pipeline-summary",
-        type=Path,
-        default=Path("extension/artifacts/review_hierarchy_20260801_v9.json"),
-    )
-    parser.add_argument(
-        "--validation",
-        type=Path,
-        default=Path(
-            "extension/artifacts/review_hierarchy_validation_20260801_v9.json"
-        ),
-    )
-    parser.add_argument(
-        "--corrections",
-        type=Path,
-        default=Path(
-            "extension/artifacts/"
-            "review_hierarchy_architecture_corrections_20260801.json"
-        ),
-    )
-    parser.add_argument(
         "--schema",
         type=Path,
         default=Path("extension/fable_pipeline_critique_schema.json"),
     )
     parser.add_argument(
         "--run-id",
-        default="fable-pipeline-critique-20260801-v1",
+        required=True,
     )
     parser.add_argument(
         "--trace-root",
         type=Path,
-        default=Path(
-            ".artifacts/fable-pipeline-critique/fable-pipeline-critique-20260801-v1"
-        ),
-    )
-    parser.add_argument(
-        "--one-shot-marker",
-        type=Path,
-        default=Path(".artifacts/fable-pipeline-critique/ONE_SHOT_USED.json"),
+        required=True,
     )
     parser.add_argument(
         "--public-result",
         type=Path,
-        default=Path("extension/artifacts/fable_pipeline_critique_20260801.json"),
+        required=True,
     )
-    parser.add_argument("--explicit-reissue-of")
-    parser.add_argument("--explicit-reissue-record", type=Path)
-    parser.add_argument("--explicit-reissue-stderr", type=Path)
     parser.add_argument("--max-budget-usd", type=float, default=5.0)
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 def main() -> int:
     args = parse_args()
-    if (args.batch_manifest is None) == (not args.historical_single_run):
-        raise SystemExit(
-            "FABLE_PIPELINE_CRITIQUE_FAILED: provide --batch-manifest for routine "
-            "operation, or --historical-single-run alone for reproduction"
-        )
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,95}", args.run_id):
         raise SystemExit("FABLE_PIPELINE_CRITIQUE_FAILED: invalid run ID")
     if args.trace_root.exists():
         raise SystemExit("FABLE_PIPELINE_CRITIQUE_FAILED: trace root exists")
-    if args.historical_single_run and args.one_shot_marker.exists():
-        raise SystemExit(
-            "FABLE_PIPELINE_CRITIQUE_FAILED: one-shot invocation already used"
-        )
     if args.public_result.exists():
         raise SystemExit("FABLE_PIPELINE_CRITIQUE_FAILED: public result exists")
-    if not 0 < args.max_budget_usd <= 10:
-        raise SystemExit("FABLE_PIPELINE_CRITIQUE_FAILED: invalid budget")
+    if not 0 < args.max_budget_usd <= 5:
+        raise SystemExit("FABLE_PIPELINE_CRITIQUE_FAILED: budget must not exceed $5")
 
     try:
         schema = load_object(args.schema)
         validate_claude_cli_schema(schema)
-        if args.historical_single_run:
-            reissue = validate_explicit_reissue(
-                args.run_id,
-                args.explicit_reissue_of,
-                args.explicit_reissue_record,
-                args.explicit_reissue_stderr,
-            )
-            summary = load_object(args.pipeline_summary)
-            validation = load_object(args.validation)
-            corrections = load_object(args.corrections)
-            validate_pipeline_summary(summary)
-            validate_validation_record(validation, summary)
-            packet = build_packet(
-                summary,
-                validation,
-                corrections,
-                explicit_reissue_of=args.explicit_reissue_of,
-            )
-            batch_metadata: dict[str, Any] = {}
-            role = "historical_one_time_advisory_pipeline_critique"
-        else:
-            if any(
-                value is not None
-                for value in (
-                    args.explicit_reissue_of,
-                    args.explicit_reissue_record,
-                    args.explicit_reissue_stderr,
-                )
-            ):
-                raise CritiqueError("batch operation does not accept reissue flags")
-            repository_root = args.repository_root.resolve()
-            batch_id, papers = load_batch_manifest(args.batch_manifest, repository_root)
-            selection_seed = secrets.token_hex(32)
-            selected = select_batch_samples(papers, selection_seed)
-            packet = build_batch_packet(batch_id, papers, selected, selection_seed)
-            batch_metadata = {
-                "batch_id": batch_id,
-                "eligible_completed_paper_count": FABLE_BATCH_SIZE,
-                "sampled_paper_count": FABLE_SAMPLE_SIZE,
-                "all_study_ids": sorted(paper["study_id"] for paper in papers),
-                "selected_study_ids": sorted(paper["study_id"] for paper in selected),
-                "selection_seed_hex": selection_seed,
-            }
-            reissue = {
-                "explicit_user_reissue_authorized": False,
-                "reissue_of_run_id": None,
-                "reissue_reason": None,
-            }
-            role = "batched_advisory_pipeline_critique"
+        repository_root = args.repository_root.resolve()
+        batch_id, papers = load_batch_manifest(args.batch_manifest, repository_root)
+        selection_seed = secrets.token_hex(32)
+        selected = select_batch_samples(papers, selection_seed)
+        packet = build_batch_packet(batch_id, papers, selected, selection_seed)
+        batch_metadata = {
+            "batch_id": batch_id,
+            "eligible_completed_paper_count": FABLE_BATCH_SIZE,
+            "sampled_paper_count": FABLE_SAMPLE_SIZE,
+            "all_study_ids": sorted(paper["study_id"] for paper in papers),
+            "selected_study_ids": sorted(paper["study_id"] for paper in selected),
+            "selection_seed_hex": selection_seed,
+        }
+        role = "batched_advisory_pipeline_critique"
         packet_bytes = encoded_json(packet)
         if len(packet_bytes) > MAX_BATCH_PACKET_BYTES:
             raise CritiqueError(
@@ -732,27 +559,15 @@ def main() -> int:
     )
     write_new_bytes(args.trace_root / "claude-version.txt", version.stdout.encode())
     try:
-        if args.historical_single_run:
-            write_new_json(
-                args.one_shot_marker,
-                {
-                    "schema_version": TRACE_SCHEMA,
-                    "run_id": args.run_id,
-                    "claimed_at_utc": now(),
-                    "automatic_retry_allowed": False,
-                    **reissue,
-                },
-            )
-        else:
-            claim_batch(
-                args.batch_registry,
-                batch_id=batch_metadata["batch_id"],
-                run_id=args.run_id,
-                all_study_ids=batch_metadata["all_study_ids"],
-                selected_study_ids=batch_metadata["selected_study_ids"],
-                selection_seed=batch_metadata["selection_seed_hex"],
-                packet_sha256=sha256_bytes(packet_bytes),
-            )
+        claim_batch(
+            args.batch_registry,
+            batch_id=batch_metadata["batch_id"],
+            run_id=args.run_id,
+            all_study_ids=batch_metadata["all_study_ids"],
+            selected_study_ids=batch_metadata["selected_study_ids"],
+            selection_seed=batch_metadata["selection_seed_hex"],
+            packet_sha256=sha256_bytes(packet_bytes),
+        )
     except (CritiqueError, OSError) as error:
         write_new_bytes(
             args.trace_root / "pre-model-failure.txt",
@@ -773,7 +588,6 @@ def main() -> int:
             "session_persistence": False,
             "invocation_count": 1,
             "retry_allowed": False,
-            **reissue,
             **batch_metadata,
             "max_budget_usd": args.max_budget_usd,
             "packet_byte_count": len(packet_bytes),
@@ -844,7 +658,6 @@ def main() -> int:
         "effort": "max",
         "invocation_count": 1,
         "retry_allowed": False,
-        **reissue,
         **batch_metadata,
         "decision_weight": 0,
         "is_teacher_vote": False,

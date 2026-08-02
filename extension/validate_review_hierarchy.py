@@ -87,6 +87,16 @@ def validate_completed_trace(
     checks.append("required_global_trace_files_present")
 
     summary = load_object(summary_path)
+    schema_version = summary.get("schema_version")
+    require(
+        schema_version
+        in {
+            "nulspec-qwen-review-hierarchy-public-v2",
+            "nulspec-qwen-review-hierarchy-public-v3",
+        },
+        "summary uses an unsupported schema version",
+    )
+    current_policy = schema_version == "nulspec-qwen-review-hierarchy-public-v3"
     local_summary_path = trace_root / "public-summary.json"
     require(
         local_summary_path.read_bytes() == summary_path.read_bytes(),
@@ -108,6 +118,15 @@ def validate_completed_trace(
         run_complete.get("fable_in_teacher_loop") is False,
         "run-complete claims Fable entered teacher loop",
     )
+    if current_policy:
+        require(
+            run_start.get("fable_active_review_allowed") is False,
+            "run-start permits active per-paper Fable review",
+        )
+        require(
+            run_complete.get("fable_active_review_allowed") is False,
+            "run-complete permits active per-paper Fable review",
+        )
     checks.append("run_identity_and_fable_boundary_valid")
 
     packet_bytes = (trace_root / "qwen-packet.json").read_bytes()
@@ -130,6 +149,20 @@ def validate_completed_trace(
     require(
         architecture.get("fable_in_teacher_loop") is False, "summary includes Fable"
     )
+    if current_policy:
+        require(
+            architecture.get("fable_active_review_allowed") is False,
+            "summary permits active per-paper Fable review",
+        )
+        require(
+            architecture.get("fable_batch_cadence")
+            == {
+                "eligible_completed_papers": 10,
+                "random_sample_size": 3,
+                "invocations_per_batch": 1,
+            },
+            "summary has an invalid Fable batch cadence",
+        )
     require(
         architecture.get("automatic_release_authority") is False,
         "summary grants automatic release authority",
@@ -142,6 +175,15 @@ def validate_completed_trace(
     ):
         require(
             release.get(key) is False, f"summary grants prohibited authority: {key}"
+        )
+    if current_policy:
+        require(
+            release.get("active_release_reviewers") == ["GLM", "Kimi"],
+            "summary has invalid active release reviewers",
+        )
+        require(
+            release.get("fable_batch_only") is True,
+            "summary does not enforce batch-only Fable use",
         )
     checks.append("architecture_and_release_controls_valid")
 

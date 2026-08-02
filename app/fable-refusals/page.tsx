@@ -427,16 +427,22 @@ export default function FableRefusalsPage() {
           <div className="shell refusal-fallback__grid">
             <div>
               <p className="section-kicker">Current review policy</p>
-              <h2>Every release requests three independent reviews.</h2>
+              <h2>Per-paper review uses GLM and Kimi.</h2>
             </div>
             <div>
               <p>
-                Fable, GLM, and Kimi receive the same immutable packet. A Fable
-                guardrail or technical non-response is logged with zero decision
-                weight. In that case matching valid GLM and Kimi PASS reviews
-                authorize publication. If Fable returns a substantive review,
-                all three must return PASS. Only a substantive Fable fail is a
-                scientific HARD_FAIL. Email dispatch remains a separate human gate.
+                GLM and Kimi receive the same immutable release packet and
+                review it independently. Both must return a valid PASS to satisfy
+                the model gate; missing, malformed, non-PASS, or disagreeing
+                reviews remain blocked. Publication and email each require a
+                separate human decision.
+              </p>
+              <p>
+                Fable is not used for per-paper review, release, repair, fallback,
+                or escalation. After ten completed pipelines validate, one Fable
+                call reviews a reproducible random sample of three as a single
+                zero-weight process audit. It cannot change a paper result or
+                authorize publication or email.
               </p>
               <ul>
                 {ledger.review_policy.reviewers.map((reviewer) => (

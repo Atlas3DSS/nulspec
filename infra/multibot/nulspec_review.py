@@ -27,6 +27,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from nulspec_review_store import (
     EMAIL_APPROVAL_SCHEMA,
     EMAIL_DISPOSITION_SCHEMA,
+    LEGACY_TASK_SCHEMA,
     MAX_NOTES_CHARS,
     PUBLICATION_DISPOSITION_SCHEMA,
     SHA256_RE,
@@ -60,6 +61,7 @@ MIN_PASSWORD_CHARS = 14
 LOGIN_WINDOW_SECONDS = 15 * 60
 LOGIN_IP_LIMIT = 8
 LOGIN_SUBJECT_LIMIT = 20
+RELEASE_REVIEW_SCHEMA = "nulspec-glm-kimi-release-review-v1"
 
 
 class ReviewConfigurationError(RuntimeError):
@@ -78,6 +80,31 @@ class ReviewRateLimited(RuntimeError):
 
 class ReviewActionError(ValueError):
     """A requested gate transition is invalid."""
+
+
+def _review_source_binding(packet: Mapping[str, Any]) -> dict[str, Any]:
+    """Bind current generic review evidence while retaining legacy task support."""
+
+    source = packet["source"]
+    binding = {
+        "source_revision": source["source_revision"],
+        "review_packet_sha256": source["review_packet_sha256"],
+    }
+    if packet["schema_version"] == LEGACY_TASK_SCHEMA:
+        binding.update(
+            {
+                "final_peer_review_sha256": source["final_peer_review_sha256"],
+                "supplemental_review_consensus_sha256": source[
+                    "supplemental_review_consensus_sha256"
+                ],
+                "fable_action_closure_sha256": source["fable_action_closure_sha256"],
+            }
+        )
+    else:
+        binding["release_review_consensus_sha256"] = source[
+            "release_review_consensus_sha256"
+        ]
+    return binding
 
 
 def _b64encode(data: bytes) -> str:
@@ -632,12 +659,7 @@ class ReviewService:
         reviewer = self._reviewer_projection(account)
         binding = {
             "task_packet_sha256": task["packet_sha256"],
-            "source_revision": packet["source"]["source_revision"],
-            "review_packet_sha256": packet["source"]["review_packet_sha256"],
-            "final_peer_review_sha256": packet["source"]["final_peer_review_sha256"],
-            "supplemental_review_consensus_sha256": packet["source"][
-                "supplemental_review_consensus_sha256"
-            ],
+            **_review_source_binding(packet),
         }
         if gate == "publication":
             record: dict[str, Any] = {
@@ -672,15 +694,7 @@ class ReviewService:
                     "exact_draft_only": True,
                     "approved_at_utc": decided_at,
                     "author_email_sha256": packet["author_email_gate"]["draft_sha256"],
-                    "final_peer_review_sha256": packet["source"][
-                        "final_peer_review_sha256"
-                    ],
-                    "fable_action_closure_sha256": packet["source"][
-                        "fable_action_closure_sha256"
-                    ],
-                    "supplemental_review_consensus_sha256": packet["source"][
-                        "supplemental_review_consensus_sha256"
-                    ],
+                    **_review_source_binding(packet),
                     "publication_disposition_sha256": publication["record_sha256"],
                     "recipient_list_sha256": recipient_sha,
                     "decision_id": decision_id,
@@ -984,6 +998,74 @@ def _load_recipients(path: Path | None) -> list[dict[str, str]]:
     return value
 
 
+def _validate_release_review(value: object) -> dict[str, Any]:
+    """Validate the prospective GLM/Kimi-only per-paper release record."""
+
+    if not isinstance(value, dict):
+        raise ReviewPacketError("release review must be a JSON object")
+    if value.get("schema_version") != RELEASE_REVIEW_SCHEMA:
+        raise ReviewPacketError("release review uses an unsupported schema")
+    if value.get("fable_invoked") is not False:
+        raise ReviewPacketError("per-paper release review must not invoke Fable")
+    if value.get("publication_authorized") is not False:
+        raise ReviewPacketError("model release review cannot authorize publication")
+    if value.get("human_publication_approval_required") is not True:
+        raise ReviewPacketError(
+            "release review must require human publication approval"
+        )
+    if value.get("author_email_human_approval_required") is not True:
+        raise ReviewPacketError("release review must require human email approval")
+    packet = value.get("review_packet")
+    if not isinstance(packet, dict) or not SHA256_RE.fullmatch(
+        str(packet.get("sha256", ""))
+    ):
+        raise ReviewPacketError("release review lacks its packet digest")
+    decision_reason = value.get("decision_reason")
+    if not isinstance(decision_reason, str) or not decision_reason.strip():
+        raise ReviewPacketError("release review lacks a decision reason")
+    completed_at = value.get("completed_at_utc")
+    if not isinstance(completed_at, str):
+        raise ReviewPacketError("release review lacks a completion timestamp")
+    try:
+        parsed_at = datetime.fromisoformat(completed_at.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise ReviewPacketError("release review timestamp is invalid") from error
+    if parsed_at.tzinfo is None:
+        raise ReviewPacketError("release review timestamp lacks a timezone")
+
+    reviewers = value.get("reviewers")
+    if not isinstance(reviewers, list) or len(reviewers) != 2:
+        raise ReviewPacketError("release review must contain GLM and Kimi")
+    families: set[str] = set()
+    passed = True
+    for index, reviewer in enumerate(reviewers):
+        if not isinstance(reviewer, dict):
+            raise ReviewPacketError(f"release reviewer {index} is malformed")
+        family = reviewer.get("reviewer_family")
+        if family not in {"GLM", "Kimi"} or family in families:
+            raise ReviewPacketError("release reviewers must be exactly GLM and Kimi")
+        families.add(family)
+        status = reviewer.get("status")
+        verdict = reviewer.get("verdict")
+        if status == "completed_valid":
+            if verdict not in {"PASS", "WARN", "FAIL"}:
+                raise ReviewPacketError(f"{family} has an invalid release verdict")
+        elif status == "blocked":
+            if verdict is not None:
+                raise ReviewPacketError(
+                    f"blocked {family} review must not have a verdict"
+                )
+        else:
+            raise ReviewPacketError(f"{family} has an invalid release status")
+        passed = passed and status == "completed_valid" and verdict == "PASS"
+    if families != {"GLM", "Kimi"}:
+        raise ReviewPacketError("release reviewers must be exactly GLM and Kimi")
+    expected_gate = "passed" if passed else "blocked"
+    if value.get("model_review_gate") != expected_gate:
+        raise ReviewPacketError("release model gate disagrees with reviewer records")
+    return value
+
+
 def build_study_task(args: argparse.Namespace) -> dict[str, Any]:
     """Project a standard NULSPEC study folder into the private inbox schema."""
     study_root = args.study_root.resolve()
@@ -993,8 +1075,8 @@ def build_study_task(args: argparse.Namespace) -> dict[str, Any]:
         "report": study_root / "REPORT.md",
         "protocol": study_root / "PROTOCOL.md",
         "tests": study_root / "TESTS.md",
-        "final_review_md": study_root / "FABLE_FINAL_REVIEW.md",
-        "final_review": study_root / "results/fable_final_peer_review.json",
+        "release_review_md": study_root / "FINAL_REVIEW.md",
+        "release_review": study_root / "results/release_review_consensus.json",
         "email": study_root / "AUTHOR_EMAIL.md",
         "ledger_md": study_root / "EXTERNAL_REVIEW_LEDGER.md",
         "ledger": study_root / "results/external_review_ledger.json",
@@ -1003,15 +1085,10 @@ def build_study_task(args: argparse.Namespace) -> dict[str, Any]:
     if missing:
         raise ReviewPacketError(f"study is missing required review files: {missing}")
     handoff = json.loads(required["handoff"].read_text())
-    final_review = json.loads(required["final_review"].read_text())
-    ledger = json.loads(required["ledger"].read_text())
-    supplemental_path = study_root / "results/supplemental_review_consensus.json"
-    supplemental = (
-        json.loads(supplemental_path.read_text())
-        if supplemental_path.is_file()
-        else None
+    release_review = _validate_release_review(
+        json.loads(required["release_review"].read_text())
     )
-    closure_path = study_root / "results/fable_action_closure.json"
+    ledger = json.loads(required["ledger"].read_text())
     source_revision = args.source_revision
     repository_url = args.repository_url.rstrip("/")
     repo_path = args.study_repo_path.strip("/")
@@ -1046,11 +1123,11 @@ def build_study_task(args: argparse.Namespace) -> dict[str, Any]:
             "Commands, checks, and known test outcomes.",
         ),
         (
-            "fable-review",
-            "One-shot Fable review",
+            "release-review",
+            "GLM/Kimi release review",
             "review",
-            required["final_review_md"],
-            "Final-review outcome and technical refusal context.",
+            required["release_review_md"],
+            "Independent release reviews and fail-closed model-gate outcome.",
         ),
         (
             "review-ledger",
@@ -1060,16 +1137,6 @@ def build_study_task(args: argparse.Namespace) -> dict[str, Any]:
             "Reviewer attempts, validity, costs, and trace retention.",
         ),
     ]
-    if supplemental_path.is_file():
-        evidence_specs.append(
-            (
-                "supplemental-consensus",
-                "GLM/Kimi supplemental consensus",
-                "review",
-                supplemental_path,
-                "Fail-closed two-reviewer fallback disposition.",
-            )
-        )
     evidence = []
     for item_id, label, kind, path, summary in evidence_specs:
         relative = f"{repo_path}/{path.relative_to(study_root).as_posix()}"
@@ -1109,12 +1176,17 @@ def build_study_task(args: argparse.Namespace) -> dict[str, Any]:
                 or raw.get("human_label")
                 or "Review event completed."
             )
+        reviewer_family = str(
+            raw.get("reviewer") or raw.get("reviewer_family") or "Unknown"
+        )
+        if reviewer_family.casefold() == "fable":
+            raise ReviewPacketError(
+                "per-paper release ledger contains a prohibited Fable event"
+            )
         events.append(
             {
                 "event_id": str(raw["event_id"]),
-                "reviewer": str(
-                    raw.get("reviewer") or raw.get("reviewer_family") or "Unknown"
-                ),
+                "reviewer": reviewer_family,
                 "provider": str(raw.get("provider") or "Unknown"),
                 "model": str(
                     raw.get("canonical_model")
@@ -1135,20 +1207,12 @@ def build_study_task(args: argparse.Namespace) -> dict[str, Any]:
 
     study = handoff["study"]
     classification = handoff["classification"]
-    consensus_reason = (
-        supplemental.get("decision_reason")
-        if isinstance(supplemental, dict)
-        else final_review["decision"].get("hard_fail_reason")
-    )
+    consensus_reason = str(release_review["decision_reason"])
     email_body = required["email"].read_text()
     subject_match = re.search(r"^\*\*Subject:\*\*\s*(.+)$", email_body, re.MULTILINE)
     if subject_match is None:
         raise ReviewPacketError("AUTHOR_EMAIL.md does not contain a subject line")
-    submitted_at = (
-        supplemental.get("decided_at_utc")
-        if isinstance(supplemental, dict)
-        else final_review["completed_at_utc"]
-    )
+    submitted_at = str(release_review["completed_at_utc"])
     packet = {
         "schema_version": TASK_SCHEMA,
         "task_id": args.task_id,
@@ -1172,16 +1236,10 @@ def build_study_task(args: argparse.Namespace) -> dict[str, Any]:
             "source_revision": source_revision,
             "repository_url": repository_url,
             "pull_request_url": args.pull_request_url,
-            "review_packet_sha256": str(final_review["packet"]["sha256"]),
-            "final_peer_review_sha256": _canonical_json_file_sha(
-                required["final_review"]
+            "review_packet_sha256": str(release_review["review_packet"]["sha256"]),
+            "release_review_consensus_sha256": _canonical_json_file_sha(
+                required["release_review"]
             ),
-            "supplemental_review_consensus_sha256": _sha256_file(supplemental_path)
-            if supplemental_path.is_file()
-            else None,
-            "fable_action_closure_sha256": _canonical_json_file_sha(closure_path)
-            if closure_path.is_file()
-            else None,
         },
         "brief": required["brief"].read_text(),
         "evidence": evidence,

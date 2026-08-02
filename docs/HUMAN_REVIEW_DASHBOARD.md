@@ -21,8 +21,9 @@ root-owned environment file.
 
 The dashboard implements two deliberately separate transitions.
 
-1. A `HARD_FAIL` or another configured release block requires a human to record
-   either `APPROVE_RELEASE` or `KEEP_BLOCKED` against the immutable task packet.
+1. A completed GLM/Kimi model-review gate, whether passed or blocked, requires a
+   human to record either `APPROVE_RELEASE` or `KEEP_BLOCKED` against the
+   immutable task packet.
    Approval is release governance only; it cannot change scientific evidence,
    a protocol, number, classification, or claim.
 2. Only an approved publication can expose the email action. The exact draft
@@ -137,9 +138,37 @@ any setting is invalid.
 ## Queue a study
 
 The standard adapter reads the frozen research handoff, one-page explainer,
-report, protocol, verification log, final review, supplemental consensus,
-external-review ledger, and author-email draft. It verifies the task schema and
-reproduces the external-review cost total from the append-only events.
+report, protocol, verification log, `FINAL_REVIEW.md`, the machine-readable
+`results/release_review_consensus.json`, external-review ledger, and author-email
+draft. It verifies the task schema and reproduces the external-review cost total
+from the append-only events. New packets use
+`nulspec-human-review-task-v2`; existing v1 Fable-bound packets remain readable
+as immutable history but cannot be created by the active adapter.
+
+The release consensus uses
+`nulspec-glm-kimi-release-review-v1`. It must identify exactly GLM and Kimi,
+record whether each logical chain ended `completed_valid` or `blocked`, derive
+the model gate from those records, set `fable_invoked` and
+`publication_authorized` to false, and require separate human publication and
+email decisions. Fable batch critiques do not enter per-paper review packets.
+
+```json
+{
+  "schema_version": "nulspec-glm-kimi-release-review-v1",
+  "fable_invoked": false,
+  "publication_authorized": false,
+  "human_publication_approval_required": true,
+  "author_email_human_approval_required": true,
+  "review_packet": {"sha256": "64-lowercase-hex-characters"},
+  "decision_reason": "Bounded factual explanation of the model gate.",
+  "completed_at_utc": "2026-08-02T20:00:00Z",
+  "model_review_gate": "passed",
+  "reviewers": [
+    {"reviewer_family": "GLM", "status": "completed_valid", "verdict": "PASS"},
+    {"reviewer_family": "Kimi", "status": "completed_valid", "verdict": "PASS"}
+  ]
+}
+```
 
 Keep the recipient file private:
 

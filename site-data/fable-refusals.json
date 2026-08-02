@@ -1,6 +1,6 @@
 {
-  "schema_version": "nulspec-fable-refusal-ledger-v2",
-  "as_of_utc": "2026-08-01T18:30:47Z",
+  "schema_version": "nulspec-fable-refusal-ledger-v3",
+  "as_of_utc": "2026-08-02T19:59:29Z",
   "summary": {
     "fallback_attempt_count": 6,
     "fallback_distinct_valid_model_count": 2,
@@ -15,8 +15,55 @@
     "zero_weight_fable_nonresponse_count": 1
   },
   "review_policy": {
+    "policy_version": "nulspec-glm-kimi-human-release-gate-v2",
+    "effective_at_utc": "2026-08-02T19:59:29Z",
+    "active_reviewers_only": true,
+    "reviewers": [
+      {
+        "reviewer_family": "GLM",
+        "provider": "Z.ai through OpenRouter",
+        "model_id": "z-ai/glm-5.2",
+        "route": "OpenRouter",
+        "model_resolution": "Resolve and record the dated canonical slug before each invocation."
+      },
+      {
+        "reviewer_family": "Kimi",
+        "provider": "Moonshot AI",
+        "model_id": "moonshotai/kimi-k3",
+        "route": "Moonshot AI first-party API",
+        "model_resolution": "Record the requested alias, returned model identifier, and route hash."
+      }
+    ],
+    "decision_rule": {
+      "glm_kimi_unanimous_pass_satisfies_model_gate": true,
+      "malformed_missing_nonpass_or_disagreeing_reviews_block": true,
+      "codex_may_relax_failed_model_gate": false,
+      "human_publication_approval_required": true,
+      "author_email_human_approval_required": true,
+      "fable_active_decision_weight": 0
+    },
+    "fable_batch_policy": {
+      "active_per_paper_invocation_allowed": false,
+      "eligible_completed_papers": 10,
+      "random_sample_size": 3,
+      "invocations_per_batch": 1,
+      "automatic_retry_allowed": false,
+      "decision_weight": 0,
+      "publication_authority": false,
+      "email_authority": false
+    },
+    "trace_policy": {
+      "raw_attempts_retained": true,
+      "failed_attempts_retained": true,
+      "silent_retry_allowed": false,
+      "public_projection_excludes_private_identifiers": true
+    }
+  },
+  "historical_review_policy": {
     "policy_version": "nulspec-three-reviewer-release-gate-v1",
     "effective_at_utc": "2026-08-01T20:00:00Z",
+    "superseded_at_utc": "2026-08-02T19:59:29Z",
+    "superseded_by": "nulspec-glm-kimi-human-release-gate-v2",
     "all_reviewers_requested": true,
     "reviewers": [
       {
@@ -59,6 +106,9 @@
     }
   },
   "fallback_policy": {
+    "historical_only": true,
+    "superseded_at_utc": "2026-08-02T19:59:29Z",
+    "superseded_by": "nulspec-glm-kimi-human-release-gate-v2",
     "trigger": "Fable safeguard or technical refusal before substantive review",
     "effect": "Preserve the Fable refusal, then obtain independent supplemental reviews without retrying Fable.",
     "minimum_successful_reviews": 1,

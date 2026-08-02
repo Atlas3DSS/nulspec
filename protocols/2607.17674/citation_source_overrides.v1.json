@@ -1,4 +1,9 @@
 {
+  "allman2009latentStructure": {
+    "url": "https://web.archive.org/web/20260716190511id_/https://projecteuclid.org/journals/annals-of-statistics/volume-37/issue-6A/Identifiability-of-parameters-in-latent-structure-models-with-many-observed/10.1214/09-AOS689.pdf",
+    "identity_note": "Internet Archive capture of the Project Euclid PDF for the cited DOI, title, authors, journal, volume, and pages, captured before the target paper was submitted.",
+    "route_reason": "The live Project Euclid PDF intermittently returns a verification page instead of the source PDF."
+  },
   "chen2016infogan": {
     "url": "https://proceedings.neurips.cc/paper/2016/file/7c9d0b1f96aebd7b5eca8c3edaa19ebb-Paper.pdf",
     "identity_note": "Official NeurIPS proceedings PDF matching the cited title, authors, and year.",
@@ -18,6 +23,11 @@
     "url": "https://web.archive.org/web/20260402034544id_/https://openreview.net/pdf?id=nZeVKeeFYf9",
     "identity_note": "Internet Archive capture of the exact cited OpenReview PDF URL, captured before the target paper was submitted.",
     "route_reason": "OpenReview's live PDF route returned browser-verification HTTP 403."
+  },
+  "jiang1999hme": {
+    "url": "https://web.archive.org/web/20240901114838id_/https://projecteuclid.org/journals/annals-of-statistics/volume-27/issue-3/Hierarchical-mixtures-of-experts-for-exponential-family-regression-models/10.1214/aos/1018031265.pdf",
+    "identity_note": "Internet Archive capture of the Project Euclid PDF for the cited DOI, title, authors, journal, volume, and pages, captured before the target paper was submitted.",
+    "route_reason": "The live Project Euclid PDF intermittently returns a verification page instead of the source PDF."
   },
   "sohn2015cvae": {
     "url": "https://proceedings.neurips.cc/paper/2015/file/8d55a249e6baa5c06772297520da2051-Paper.pdf",

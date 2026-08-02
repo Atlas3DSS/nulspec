@@ -189,6 +189,17 @@ limitations. Entries are never removed after correction.
   Yakowitz archive capture postdates the target submission, which is disclosed;
   it contains the immutable 1968 source article rather than a later substitute.
 
+### LRS-EXTERNAL-006 — Project Euclid verification behavior was intermittent
+
+- **State:** bypassed with identity-matched archive copies
+- **Observation:** the first two acquisition attempts retrieved the Allman and
+  Jiang PDFs from Project Euclid, but the third clean attempt received HTML
+  verification pages from the same canonical PDF URLs. This made an otherwise
+  identical full-source acquisition nondeterministic.
+- **Disposition:** preserve all attempts and pin pre-submission Internet Archive
+  captures of the exact Project Euclid PDF URLs for a self-contained fresh
+  acquisition. Do not combine files opportunistically across attempts.
+
 ## Upstream/release limitations
 
 ### LRS-UPSTREAM-001 — paper and released response source differ

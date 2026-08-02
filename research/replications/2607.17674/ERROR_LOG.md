@@ -674,6 +674,61 @@ limitations. Entries are never removed after correction.
   new invocation identifier with the immutable packet-attempt parent as
   `--packet-root`; do not assign this pre-request failure evidentiary weight.
 
+### LRS-LOCAL-064 — dev-box fan daemon retained the pre-upgrade GPU mapping
+
+- **State:** mitigated; durable script corrected, privileged service restart pending
+- **Observation:** the root fan daemon still assumed that `nvidia-smi` index 0
+  was the same device as X fan targets 0 and 1. After the hardware change those
+  orders diverged: the idle RTX 3090 temperature controlled the PRO 6000 fans,
+  while the loaded PRO 6000 temperature controlled the 3090 fan. During the
+  released-arm final evaluator, the 500 W PRO 6000 reached 93 C and briefly
+  entered NVIDIA software thermal slowdown. There was no Xid, CUDA failure,
+  process interruption, memory pressure, or unrelated-service restart.
+- **Disposition:** a passwordless power-limit change was unavailable and made no
+  change. Back up the original 2,438-byte script (SHA-256
+  `7fe5f63af711bd5236e7b8f872e03998d87b88554d1e773c3343592296e4ba2a`),
+  replace index inference with immutable GPU UUIDs, validate the shell syntax,
+  and retain the corrected 3,245-byte script with SHA-256
+  `1a2da6244f044639c0e48da23f6e4eb3524e6ba7b0c98dc5820d996e3eaf2ec1`.
+  A user-level reconciliation guard applies the corrected curve until an
+  administrator restarts the root service or the host reboots. At full load the
+  card returned below 80 C without changing experimental code or data.
+
+### LRS-LOCAL-065 — eligible Qwen calibration altered PDF evidence locators
+
+- **State:** terminal zero-weight attempt; prospective presentation amendment frozen
+- **Observation:** runtime v1.0.2 passed an uncontended exact-schema preflight,
+  but both permitted Qwen generations failed on the first Allman et al. chunk.
+  The reviewer removed line-wrap hyphens from verbatim excerpts and/or inferred
+  page numbers from document position rather than the packet's exact page spans.
+  The registered validator rejected three candidates in attempt 1 and five in
+  attempt 2. No evidence record, synthesis, final review, or teacher input was
+  accepted.
+- **Disposition:** preserve the 23-file trace and assign it no citation weight.
+  Do not relax exact grounding. Runtime v1.0.3 instead supplies a model-facing
+  page-labeled view derived losslessly from the same immutable packet and a
+  hash-bound instruction to preserve line-wrap hyphens. All 112 frozen packets
+  pass the presentation coverage check; a new calibration requires a fresh
+  trace and lock-held preflight.
+
+### LRS-LOCAL-066 — first focused-test invocations used unsuitable local defaults
+
+- **State:** contained before commit or runtime use
+- **Observation:** the first workstation test command selected system Python,
+  which did not have `pytest`. The isolated environment was then populated
+  piecemeal and its first repository-wide collection lacked the pinned `scipy`
+  dependency. After installing `requirements-test.txt` exactly, the suite
+  reached 161 passes and only the unrelated missing fixture already recorded in
+  LRS-LOCAL-059. An unrestricted latest-Ruff invocation also enabled rules that
+  flag retained pre-existing exception-handling and line-length choices outside
+  this change. None of these failed commands produced a test pass or changed a
+  research artifact.
+- **Disposition:** retain these as our verification-command errors. Use the
+  isolated environment populated from the frozen test requirements, apply only
+  deterministic import/format fixes, run the repository's scoped `E`, `F`, and
+  `I` checks with the existing line-length exception, and report the actual
+  focused-test result separately.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

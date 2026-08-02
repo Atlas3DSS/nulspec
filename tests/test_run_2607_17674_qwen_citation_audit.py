@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import importlib.util
 import json
-from pathlib import Path
 import sys
 import threading
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 
 import pytest
-
 
 WORKSPACE = Path(__file__).resolve().parents[1]
 SCRIPTS = WORKSPACE / "scripts"
@@ -229,6 +228,96 @@ def test_runtime_amendment_preserves_thinking_and_expands_budgets() -> None:
         reviewer["synthesis_generation"]["response_format_mode"]
         == "structure_only_json_schema"
     )
+
+
+def test_v103_page_labeled_presentation_preserves_exact_page_text() -> None:
+    text = "first identi-\nfiability\fsecond page\n"
+    packet = {
+        "source_chunk": {
+            "sha256": RUNNER.sha256_bytes(text.encode("utf-8")),
+            "text": text,
+            "page_spans": [
+                {
+                    "page_number": 7,
+                    "chunk_character_start": 0,
+                    "chunk_character_end": text.index("\f"),
+                },
+                {
+                    "page_number": 8,
+                    "chunk_character_start": text.index("\f") + 1,
+                    "chunk_character_end": len(text),
+                },
+            ],
+        }
+    }
+    original = json.loads(json.dumps(packet))
+    presented = RUNNER.model_facing_evidence_packet(
+        packet, {"mode": "page_labeled_exact_text_v1"}
+    )
+    assert packet == original
+    assert "text" not in presented["source_chunk"]
+    assert presented["source_chunk"]["extracted_pages"] == [
+        {
+            "page_number": 7,
+            "text": "first identi-\nfiability",
+            "text_sha256": RUNNER.sha256_bytes(b"first identi-\nfiability"),
+        },
+        {
+            "page_number": 8,
+            "text": "second page\n",
+            "text_sha256": RUNNER.sha256_bytes(b"second page\n"),
+        },
+    ]
+    presentation = presented["source_chunk"]["model_facing_presentation"]
+    assert presentation["covered_characters"] == len(text) - 1
+    assert presentation["omitted_form_feed_delimiters"] == 1
+
+
+def test_v103_page_labeled_presentation_rejects_text_gaps() -> None:
+    text = "page one\fpage two"
+    packet = {
+        "source_chunk": {
+            "sha256": RUNNER.sha256_bytes(text.encode("utf-8")),
+            "text": text,
+            "page_spans": [
+                {
+                    "page_number": 1,
+                    "chunk_character_start": 0,
+                    "chunk_character_end": 4,
+                }
+            ],
+        }
+    }
+    with pytest.raises(RUNNER.AuditError, match="omits non-delimiter text"):
+        RUNNER.model_facing_evidence_packet(
+            packet, {"mode": "page_labeled_exact_text_v1"}
+        )
+
+
+def test_v103_binds_prompt_and_preserves_generation_contract() -> None:
+    config = json.loads(
+        (
+            WORKSPACE / "protocols/2607.17674/citation_audit_config.v1.0.3.json"
+        ).read_text()
+    )
+    prompt, binding = RUNNER.effective_evidence_prompt(config)
+    reviewer = config["primary_reviewer"]
+    assert config["protocol_version"] == "1.0.3"
+    assert binding["mode"] == "page_labeled_exact_text_v1"
+    assert (
+        binding["supplemental"]["sha256"]
+        == reviewer["evidence_packet_presentation"]["supplemental_prompt_sha256"]
+    )
+    assert "never infer a page" in prompt
+    assert "Do not silently dehyphenate" in prompt
+    assert reviewer["evidence_generation"] == {
+        "temperature": 0,
+        "top_p": 1,
+        "top_k": 0,
+        "maximum_output_tokens": 8192,
+        "response_format_mode": "structure_only_json_schema",
+    }
+    assert reviewer["synthesis_generation"]["maximum_output_tokens"] == 12288
 
 
 @pytest.mark.parametrize(

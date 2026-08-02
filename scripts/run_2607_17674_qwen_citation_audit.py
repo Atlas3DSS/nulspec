@@ -4,20 +4,21 @@
 from __future__ import annotations
 
 import argparse
-from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
+import copy
 import fcntl
 import hashlib
 import http.client
 import json
 import os
-from pathlib import Path
 import platform
 import socket
 import subprocess
 import sys
 import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, TextIO
 from urllib.parse import urlsplit
 
@@ -27,7 +28,6 @@ from citation_review_contract import (
 )
 from validate_2607_17674_citation_packets import validate_packet_tree
 
-
 WORKSPACE = Path(__file__).resolve().parents[1]
 PROTOCOL_ROOT = WORKSPACE / "protocols" / "2607.17674"
 STUDY_WORK_ROOT = WORKSPACE / "research" / "replications" / "2607.17674" / "work"
@@ -36,7 +36,10 @@ DEFAULT_EVIDENCE_SCHEMA = PROTOCOL_ROOT / "citation_evidence_chunk.schema.json"
 DEFAULT_REVIEW_SCHEMA = PROTOCOL_ROOT / "citation_review.schema.json"
 DEFAULT_EVIDENCE_PROMPT = PROTOCOL_ROOT / "prompts" / "citation_evidence_system.txt"
 DEFAULT_SYNTHESIS_PROMPT = PROTOCOL_ROOT / "prompts" / "citation_synthesis_system.txt"
-RUNTIME_AMENDMENT = PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.2.md"
+RUNTIME_AMENDMENTS = {
+    "1.0.2": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.2.md",
+    "1.0.3": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.3.md",
+}
 EVENT_LOCK = threading.Lock()
 GRAMMAR_ONLY_OMITTED_SCHEMA_KEYS = frozenset(
     {
@@ -130,6 +133,121 @@ def load_object(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise AuditError(f"expected JSON object: {path}")
     return value
+
+
+def effective_evidence_prompt(config: dict[str, Any]) -> tuple[str, dict[str, Any]]:
+    """Bind the frozen prompt plus any prospective runtime supplement."""
+
+    canonical = DEFAULT_EVIDENCE_PROMPT.read_text(encoding="utf-8")
+    presentation = config["primary_reviewer"].get(
+        "evidence_packet_presentation", {"mode": "immutable_packet"}
+    )
+    mode = presentation.get("mode")
+    if mode == "immutable_packet":
+        return canonical, {
+            "mode": mode,
+            "canonical_sha256": sha256_file(DEFAULT_EVIDENCE_PROMPT),
+            "supplemental": None,
+            "effective_sha256": sha256_bytes(canonical.encode("utf-8")),
+        }
+    if mode != "page_labeled_exact_text_v1":
+        raise AuditError(f"unsupported evidence packet presentation: {mode}")
+
+    relative = presentation.get("supplemental_prompt_relative_path")
+    expected_sha256 = presentation.get("supplemental_prompt_sha256")
+    if not isinstance(relative, str) or not isinstance(expected_sha256, str):
+        raise AuditError("page-labeled presentation lacks its prompt binding")
+    relative_path = Path(relative)
+    if relative_path.is_absolute() or ".." in relative_path.parts:
+        raise AuditError("runtime evidence prompt path is unsafe")
+    supplemental_path = (WORKSPACE / relative_path).resolve()
+    try:
+        supplemental_path.relative_to(PROTOCOL_ROOT.resolve())
+    except ValueError as error:
+        raise AuditError("runtime evidence prompt escaped the protocol root") from error
+    if not supplemental_path.is_file():
+        raise AuditError("runtime evidence prompt is missing")
+    actual_sha256 = sha256_file(supplemental_path)
+    if actual_sha256 != expected_sha256:
+        raise AuditError("runtime evidence prompt hash differs from config")
+    supplemental = supplemental_path.read_text(encoding="utf-8")
+    effective = canonical.rstrip() + "\n\n" + supplemental.strip() + "\n"
+    return effective, {
+        "mode": mode,
+        "canonical_sha256": sha256_file(DEFAULT_EVIDENCE_PROMPT),
+        "supplemental": {
+            "relative_path": relative,
+            "sha256": actual_sha256,
+        },
+        "effective_sha256": sha256_bytes(effective.encode("utf-8")),
+    }
+
+
+def model_facing_evidence_packet(
+    packet: dict[str, Any], presentation: dict[str, Any] | None
+) -> dict[str, Any]:
+    """Create a page-labeled view without changing the immutable packet."""
+
+    mode = (presentation or {}).get("mode", "immutable_packet")
+    if mode == "immutable_packet":
+        return packet
+    if mode != "page_labeled_exact_text_v1":
+        raise AuditError(f"unsupported evidence packet presentation: {mode}")
+
+    model_packet = copy.deepcopy(packet)
+    source_chunk = model_packet.get("source_chunk")
+    if not isinstance(source_chunk, dict) or not isinstance(
+        source_chunk.get("text"), str
+    ):
+        raise AuditError("evidence packet lacks exact source text")
+    text = source_chunk["text"]
+    if sha256_bytes(text.encode("utf-8")) != source_chunk.get("sha256"):
+        raise AuditError("evidence packet source text hash differs")
+    spans = source_chunk.get("page_spans")
+    if not isinstance(spans, list) or not spans:
+        raise AuditError("evidence packet lacks page spans")
+
+    covered = bytearray(len(text))
+    pages: list[dict[str, Any]] = []
+    page_numbers: set[int] = set()
+    for index, span in enumerate(spans):
+        if not isinstance(span, dict):
+            raise AuditError(f"page span {index} is not an object")
+        try:
+            page_number = int(span["page_number"])
+            start = int(span["chunk_character_start"])
+            end = int(span["chunk_character_end"])
+        except (KeyError, TypeError, ValueError) as error:
+            raise AuditError(f"page span {index} is malformed") from error
+        if page_number < 1 or page_number in page_numbers:
+            raise AuditError("page spans contain an invalid or repeated page number")
+        if start < 0 or end <= start or end > len(text):
+            raise AuditError(f"page span {index} is outside the chunk")
+        if any(covered[start:end]):
+            raise AuditError("page spans overlap")
+        covered[start:end] = b"\x01" * (end - start)
+        value = text[start:end]
+        pages.append(
+            {
+                "page_number": page_number,
+                "text": value,
+                "text_sha256": sha256_bytes(value.encode("utf-8")),
+            }
+        )
+        page_numbers.add(page_number)
+
+    omitted = [text[index] for index, marker in enumerate(covered) if not marker]
+    if any(character != "\f" for character in omitted):
+        raise AuditError("page-labeled presentation omits non-delimiter text")
+    source_chunk.pop("text")
+    source_chunk["extracted_pages"] = pages
+    source_chunk["model_facing_presentation"] = {
+        "mode": mode,
+        "original_text_sha256": packet["source_chunk"]["sha256"],
+        "covered_characters": sum(len(page["text"]) for page in pages),
+        "omitted_form_feed_delimiters": len(omitted),
+    }
+    return model_packet
 
 
 def append_event(path: Path, event: str, **fields: Any) -> None:
@@ -699,11 +817,15 @@ def review_source(
         if sha256_file(packet_path) != chunk["packet_sha256"]:
             raise AuditError(f"evidence packet hash differs for {chunk['chunk_id']}")
         packet = load_object(packet_path)
+        model_packet = model_facing_evidence_packet(
+            packet,
+            config["primary_reviewer"].get("evidence_packet_presentation"),
+        )
         chunk_name = str(chunk["chunk_id"]).rsplit(":", maxsplit=1)[-1]
         stage_root = source_root / "evidence" / chunk_name
         record = run_validated_call(
             route=route,
-            packet=packet,
+            packet=model_packet,
             schema=evidence_schema,
             system_prompt=evidence_prompt,
             generation=config["primary_reviewer"]["evidence_generation"],
@@ -955,6 +1077,7 @@ def main() -> None:
     if config.get("paper_id") != "2607.17674" or config.get("protocol_version") not in {
         "1.0.1",
         "1.0.2",
+        "1.0.3",
     }:
         raise SystemExit("citation runtime config identity or version differs")
     for label, binding in review_plan["bindings"].items():
@@ -980,7 +1103,7 @@ def main() -> None:
             raise SystemExit(f"route is not visibly Qwen-family: {route['label']}")
     evidence_schema = load_object(DEFAULT_EVIDENCE_SCHEMA)
     review_schema = load_object(DEFAULT_REVIEW_SCHEMA)
-    evidence_prompt = DEFAULT_EVIDENCE_PROMPT.read_text(encoding="utf-8")
+    evidence_prompt, evidence_prompt_binding = effective_evidence_prompt(config)
     synthesis_prompt = DEFAULT_SYNTHESIS_PROMPT.read_text(encoding="utf-8")
 
     trace_root.mkdir(parents=True, exist_ok=True)
@@ -993,10 +1116,11 @@ def main() -> None:
         "packet_protocol_version": review_plan["protocol_version"],
         "runtime_protocol_version": config["protocol_version"],
         "runtime_amendment_sha256": (
-            sha256_file(RUNTIME_AMENDMENT)
-            if config["protocol_version"] == "1.0.2"
+            sha256_file(RUNTIME_AMENDMENTS[config["protocol_version"]])
+            if config["protocol_version"] in RUNTIME_AMENDMENTS
             else None
         ),
+        "evidence_prompt": evidence_prompt_binding,
         "review_plan_sha256": sha256_file(review_plan_path),
         "packet_validation": packet_validation,
         "config_sha256": sha256_file(config_path),

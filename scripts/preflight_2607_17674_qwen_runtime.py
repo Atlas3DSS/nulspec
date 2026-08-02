@@ -5,15 +5,15 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 import time
+from pathlib import Path
 
 from run_2607_17674_qwen_citation_audit import (
-    AuditError,
     DEFAULT_EVIDENCE_SCHEMA,
     DEFAULT_REVIEW_SCHEMA,
     PROTOCOL_ROOT,
     STUDY_WORK_ROOT,
+    AuditError,
     acquire_experiment_lock,
     build_request,
     experiment_lock_path,
@@ -26,8 +26,7 @@ from run_2607_17674_qwen_citation_audit import (
     write_new_text,
 )
 
-
-DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.2.json"
+DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.3.json"
 GRAMMAR_FAILURE_MARKERS = (
     "error parsing grammar",
     "failed to parse grammar",
@@ -55,8 +54,8 @@ def main() -> None:
     if not server_log.is_file():
         raise SystemExit("server log is missing")
     config = load_object(config_path)
-    if config.get("protocol_version") != "1.0.2":
-        raise SystemExit("runtime preflight requires config v1.0.2")
+    if config.get("protocol_version") not in {"1.0.2", "1.0.3"}:
+        raise SystemExit("runtime preflight requires config v1.0.2 or v1.0.3")
 
     try:
         experiment_lock = acquire_experiment_lock()

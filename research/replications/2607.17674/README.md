@@ -93,6 +93,15 @@ transport schemas passed an exact pinned-runtime diagnostic, but that check ran
 concurrently with the primary arm and is not an eligible reference execution.
 Preflight amendment `2607.17674-citation-runtime-preflight-v1.0.1` now applies
 the shared host lock; a fresh uncontended pass is required before calibration.
+That eligible preflight passed on the idle workstation, but the following
+v1.0.2 calibration still produced no accepted record: both allowed responses
+altered extracted-PDF line-wrap hyphens and/or supplied page locators that did
+not contain the quoted substring. The exact validator rejected them and the
+trace has zero weight. Prospective runtime amendment
+`2607.17674-citation-audit-runtime-v1.0.3` replaces only the model-facing raw
+chunk display with exact page-labeled substrings and adds a hash-bound warning
+against dehyphenation. Immutable packets, validation, model, decoding settings,
+and the six-source gate are unchanged.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the

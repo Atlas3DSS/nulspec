@@ -141,3 +141,44 @@ invocation using the immutable packet-attempt parent acquired the lock, bound
 run-input SHA-256
 `236ec7344f944a4fdc92d7882e2c2e019b87821f9f282f8a00df3fffcf9a1449`,
 and began the six-source calibration at `2026-08-02T09:00:57.893713Z`.
+
+### Terminal workstation calibration outcome
+
+The eligible v1.0.2 calibration terminated at
+`2026-08-02T09:04:55.282749Z` without completing the first evidence chunk. Both
+allowed generations returned structurally valid JSON, but the unchanged exact
+grounding validator rejected their excerpt/page pairs. Attempt 1 had three
+invalid candidates; attempt 2 received those errors as repair context and
+returned five invalid candidates. Their attempt-record SHA-256 values are
+`66e28450f7ce488e421c24bfb45048c92703c72eaef0d6cc5fe892397cea04cb`
+and
+`c21e9b299925bb72ea100ecf665316f35cb4b2554f8d46aa95f221766b0d1f0d`.
+No `accepted.json`, source synthesis, calibration completion, final review, or
+teacher input exists. This attempt has zero citation evidentiary weight.
+
+Manual outer-loop inspection found that the validator behaved as registered.
+The reviewer silently removed line-wrap hyphens from several extracted-PDF
+quotes and inferred page numbers from section position or printed headers
+instead of locating the quote within the supplied character spans. One attempt-1
+candidate that preserved both the exact substring and correct page passed, while
+the altered or mislocated candidates failed. This supports a reviewer-input
+usability diagnosis rather than weakening the grounding rule.
+
+The complete 23-file, 4,348,519-byte attempt inventory has SHA-256
+`3b917c90f8659dc911cb595f8037e0a431e1d86e034e078735184049787b6831`;
+the event log has SHA-256
+`366d4fac5f312d8a0c23c98cecce9a8d9346ccc500ddfa08ad79f228d0b7efd5`.
+Runtime v1.0.3 is a prospective presentation-only amendment: it gives Qwen an
+exact page-labeled view derived from the same immutable packet and explicitly
+forbids silent dehyphenation. The raw packet, schemas, validator, model,
+generation settings, retry count, and calibration gate remain unchanged.
+
+### Prospective v1.0.3 verification
+
+Before freezing v1.0.3, all 112 frozen evidence packets passed the new
+lossless-presentation coverage check. The two runtime-focused test files passed
+16/16 tests; scoped Ruff `E`, `F`, and `I` lint, Ruff formatting, JSON parsing,
+repository hygiene, whitespace checks, and the frozen protocol check all
+passed. The repository-wide suite passed 161 tests and reached only the known
+cross-study missing-fixture failure recorded in LRS-LOCAL-059. No Qwen request
+or research artifact used the amendment before these checks.

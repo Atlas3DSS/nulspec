@@ -23,6 +23,54 @@ side records those in `RESEARCH_FIX_ME.md`.
 
 ## Open items
 
+### WF-20260802-02 — Present citation and textual-integrity audits safely
+
+- Status: OPEN
+- Blocking: neither
+- Observed in: [NULSPEC PR #26](https://github.com/Atlas3DSS/nulspec/pull/26),
+  integrity-policy commit `cc66a135cba2b8701860e06fe0fab2e866698563`
+- Affected study: future cross-study integrity audits
+- Reported by: research
+- Reported at: 2026-08-02T06:28:48Z
+
+#### Observed
+
+Research now has a bounded ambient-compute lane for citation verification and
+textual-overlap screening. Citation judgments and overlap candidates have very
+different meanings from scientific replication outcomes. Similarity alone is
+not a plagiarism verdict, and an absence of retained candidates is bounded by
+the searched corpus rather than proof of originality.
+
+#### Expected
+
+The public site should eventually make validated integrity work discoverable
+without sensationalizing it. Readers need the claim or passage, source
+identity, chronology, attribution context, review state, corpus coverage, and
+benign alternatives—not an author-level accusation or a context-free
+similarity percentage.
+
+#### Requested website change
+
+1. Reserve typed study-level sections for citation-audit coverage and
+   textual-overlap screening, each with `not_run`, `in_progress`, `complete`,
+   `inconclusive`, and `human_review_required` states.
+2. Render retained findings through keyboard-accessible evidence pages linked
+   from the study narrative, with source/version identity and coverage limits.
+3. Never display a plagiarism badge, author leaderboard, or automatic guilt
+   label. Use the research-provided calibrated wording and require the explicit
+   sensitive-finding human gate before public release.
+4. Keep raw restricted papers and full model traces private while allowing
+   public hashes, methods, bounded excerpts, adjudication state, aggregate
+   costs, and sanitized trace metadata.
+
+#### Website response
+
+Pending.
+
+#### Resolution evidence
+
+Pending research-side verification after implementation and deployment.
+
 ### WF-20260802-01 — Expose the field-diverse candidate policy
 
 - Status: OPEN

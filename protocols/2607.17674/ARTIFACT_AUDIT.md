@@ -75,6 +75,9 @@ not recovered author data.
 The bibliography contains 45 entries and the manuscript cites 41 unique keys.
 The machine-readable inventory records 74 in-text citation occurrences and the
 surrounding TeX context for every cited key; all 41 cited entries provide a URL
-or DOI-derived source target. A claim-level citation audit is registered but
-has not begun. Its source PDFs, local-review traces, teacher scores, and outer
-adjudication will remain separate from the primary experimental observations.
+or DOI-derived source target. Source acquisition is complete: one fresh,
+self-contained attempt produced 41 unique PDFs and 41 nonempty extracted texts,
+bound by an ignored manifest and a tracked manifest digest. A claim-level Qwen
+review is registered but has not begun. Its local-review traces, teacher scores,
+and outer adjudication will remain separate from the primary experimental
+observations.

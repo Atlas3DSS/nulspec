@@ -45,4 +45,5 @@ unavailable and never manufactures an interval from missing observations.
 
 Operational mistakes and upstream limitations are kept in `ERROR_LOG.md` as
 separate append-only sections. The executable-artifact check is summarized in
-`SMOKE_TEST.md`.
+`SMOKE_TEST.md`; the complete citation-source acquisition and its four
+immutable attempts are summarized in `CITATION_SOURCE_ACQUISITION.md`.

@@ -562,6 +562,17 @@ limitations. Entries are never removed after correction.
   The corrected read confirmed the draft PR was clean at the expected branch
   commit. No repository or pull-request state changed.
 
+### LRS-LOCAL-055 — service-health probe assumed a nonexistent log path
+
+- **State:** corrected immediately; no scientific or service effect
+- **Observation:** a read-only service-health probe inferred a live log path
+  from a crash-handler attachment argument, but no file existed at that path.
+  The command stopped at `stat` and did not inspect or change the service.
+- **Disposition:** use process and service state plus the actual rolling world-
+  save and backup artifacts for the non-experimental service health check. The
+  corrected probe confirmed current saves and backups without issuing a server
+  command.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

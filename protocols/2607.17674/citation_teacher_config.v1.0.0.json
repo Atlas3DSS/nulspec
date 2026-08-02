@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "paper_id": "2607.17674",
+  "protocol_version": "1.0.0",
+  "parent_citation_audit_tag": "2607.17674-citation-audit-v1.0.1",
+  "protocol_tag": "2607.17674-citation-teachers-v1.0.0",
+  "packet_scope": "qwen_citation_records_only",
+  "teachers": [
+    {
+      "logical_id": "glm",
+      "requested_model": "z-ai/glm-5.2",
+      "primary_provider": "OpenRouter",
+      "reasoning_effort": "high"
+    },
+    {
+      "logical_id": "kimi",
+      "requested_model": "moonshotai/kimi-k3",
+      "primary_provider": "Moonshot AI",
+      "reasoning_effort": "high"
+    }
+  ],
+  "teacher_execution": {
+    "fan_out": "concurrent_independent",
+    "first_event_timeout_seconds": 60,
+    "stream_idle_timeout_seconds": 60,
+    "total_response_timeout_seconds": 240,
+    "maximum_attempts_per_logical_teacher": 3,
+    "retry_scope": "transport or structural invalidity only",
+    "valid_substantive_decision_retried": false
+  },
+  "codex_execution": {
+    "authentication": "subscription_only_api_keys_removed",
+    "sandbox": "read_only_ephemeral",
+    "tools": "disabled",
+    "session_persistence": false,
+    "maximum_structural_attempts": 3,
+    "valid_substantive_decision_retried": false
+  },
+  "reviewer_quality_score": {
+    "minimum": 1,
+    "maximum": 10,
+    "conditional_on": "qwen_packet_and_automated_excerpt_grounding"
+  },
+  "release_controls": {
+    "may_change_primary_results": false,
+    "may_authorize_training": false,
+    "may_authorize_publication": false,
+    "may_authorize_email": false,
+    "email_requires_exact_hashed_human_approval": true
+  }
+}

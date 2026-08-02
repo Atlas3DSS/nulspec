@@ -1,0 +1,57 @@
+{
+  "allman2009latentStructure": {
+    "url": "https://web.archive.org/web/20260716190511id_/https://projecteuclid.org/journals/annals-of-statistics/volume-37/issue-6A/Identifiability-of-parameters-in-latent-structure-models-with-many-observed/10.1214/09-AOS689.pdf",
+    "identity_note": "Internet Archive capture of the Project Euclid PDF for the cited DOI, title, authors, journal, volume, and pages, captured before the target paper was submitted.",
+    "route_reason": "The live Project Euclid PDF intermittently returns a verification page instead of the source PDF."
+  },
+  "chen2016infogan": {
+    "url": "https://proceedings.neurips.cc/paper/2016/file/7c9d0b1f96aebd7b5eca8c3edaa19ebb-Paper.pdf",
+    "identity_note": "Official NeurIPS proceedings PDF matching the cited title, authors, and year.",
+    "route_reason": "The bibliography's legacy short NeurIPS URL returns HTTP 404."
+  },
+  "cunningham2023sparseAutoencoders": {
+    "url": "https://web.archive.org/web/20260524140122id_/https://openreview.net/pdf?id=F76bwRSLeK",
+    "identity_note": "Internet Archive capture of the exact cited OpenReview PDF URL, captured before the target paper was submitted.",
+    "route_reason": "OpenReview's live PDF route returned browser-verification HTTP 403."
+  },
+  "higgins2017betavae": {
+    "url": "https://web.archive.org/web/20260430152217id_/https://openreview.net/pdf?id=Sy2fzU9gl",
+    "identity_note": "Internet Archive capture of the exact cited OpenReview PDF URL, captured before the target paper was submitted.",
+    "route_reason": "OpenReview's live PDF route returned browser-verification HTTP 403."
+  },
+  "hu2022lora": {
+    "url": "https://web.archive.org/web/20260402034544id_/https://openreview.net/pdf?id=nZeVKeeFYf9",
+    "identity_note": "Internet Archive capture of the exact cited OpenReview PDF URL, captured before the target paper was submitted.",
+    "route_reason": "OpenReview's live PDF route returned browser-verification HTTP 403."
+  },
+  "jiang1999hme": {
+    "url": "https://web.archive.org/web/20240901114838id_/https://projecteuclid.org/journals/annals-of-statistics/volume-27/issue-3/Hierarchical-mixtures-of-experts-for-exponential-family-regression-models/10.1214/aos/1018031265.pdf",
+    "identity_note": "Internet Archive capture of the Project Euclid PDF for the cited DOI, title, authors, journal, volume, and pages, captured before the target paper was submitted.",
+    "route_reason": "The live Project Euclid PDF intermittently returns a verification page instead of the source PDF."
+  },
+  "sohn2015cvae": {
+    "url": "https://proceedings.neurips.cc/paper/2015/file/8d55a249e6baa5c06772297520da2051-Paper.pdf",
+    "identity_note": "Official NeurIPS proceedings PDF matching the cited title, authors, and year.",
+    "route_reason": "The bibliography's legacy short NeurIPS URL returns HTTP 404."
+  },
+  "tan2024conceptBottlenecks": {
+    "url": "https://arxiv.org/abs/2311.05014",
+    "identity_note": "Author preprint matching the cited chapter title and author list.",
+    "route_reason": "The publisher DOI landing page exposed no retrievable PDF."
+  },
+  "teicher1963mixtures": {
+    "url": "https://web.archive.org/web/20171103092258id_/https://projecteuclid.org/download/pdf_1/euclid.aoms/1177703862",
+    "identity_note": "Internet Archive capture of the Project Euclid PDF for the cited DOI, title, author, journal, volume, and pages.",
+    "route_reason": "The DOI currently redirects from HTTPS to HTTP and the live HTTPS Project Euclid route returns a verification page."
+  },
+  "wang2023selfConsistency": {
+    "url": "https://web.archive.org/web/20260616093645id_/https://openreview.net/pdf?id=1PL1NIMMrw",
+    "identity_note": "Internet Archive capture of the exact cited OpenReview PDF URL, captured before the target paper was submitted.",
+    "route_reason": "OpenReview's live PDF route returned browser-verification HTTP 403."
+  },
+  "yakowitz1968mixtures": {
+    "url": "https://web.archive.org/web/20260722000549id_/https://projecteuclid.org/journals/annals-of-mathematical-statistics/volume-39/issue-1/On-the-Identifiability-of-Finite-Mixtures/10.1214/aoms/1177698520.pdf",
+    "identity_note": "Internet Archive capture of the Project Euclid PDF for the cited DOI, title, authors, journal, volume, and pages; the archived retrieval postdates the target submission, but the source is the immutable 1968 article.",
+    "route_reason": "The DOI currently redirects from HTTPS to HTTP and the live HTTPS Project Euclid route returns a verification page."
+  }
+}

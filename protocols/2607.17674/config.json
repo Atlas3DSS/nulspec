@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "paper_id": "2607.17674",
+  "protocol_version": "1.0.0",
+  "paper": {
+    "title": "Uncovering Latent Reasoning Strategies in Language Models",
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2607.17674v1",
+    "pdf_sha256": "bdaa0e78cea7ab77940ddee3389d28306198ab23b8d9c2457e74de79e22d1254",
+    "source_sha256": "81adff026f260d33aba27796a31c3464ad49aa29438f6a925141d03f6b835a7c"
+  },
+  "upstream": {
+    "repository": "https://github.com/Awni00/latent-strategies-in-lms.git",
+    "revision": "0c0f221d7dc37cd4eb7fb1af3332520bccf4d9fe",
+    "archive_sha256": "fea5a7f598b5bbeb810dca9228c8ed1e41b87d8ff48cd2d404bcd53752268c79",
+    "uv_lock_sha256": "5a09b31fa39407dec48c2fe5482803ddebd21167b0ef6705d0b8238022a4b181"
+  },
+  "models": {
+    "qwen2.5-0.5b": {
+      "hf_id": "Qwen/Qwen2.5-0.5B",
+      "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+      "license": "apache-2.0"
+    },
+    "qwen2.5-1.5b": {
+      "hf_id": "Qwen/Qwen2.5-1.5B",
+      "revision": "8faed761d45a263340a0528343f099c05c9a4323",
+      "license": "apache-2.0"
+    }
+  },
+  "tracks": {
+    "R": {
+      "label": "released-config",
+      "response_source": "benchmark"
+    },
+    "M": {
+      "label": "manuscript-method",
+      "response_source": "base-model"
+    }
+  },
+  "benchmark": {
+    "seed": 314159,
+    "train_records_per_task": 100000,
+    "validation_records_per_task": 10000,
+    "test_records_per_task": 10000,
+    "tasks": [
+      "list_summation",
+      "sorting_algorithms",
+      "grid_pathfinding",
+      "linear_equation_solving",
+      "base_conversion",
+      "multidigit_addition"
+    ]
+  },
+  "base_training": {
+    "epochs": 1,
+    "batch_size": 128,
+    "micro_batch_size": 8,
+    "learning_rate": 0.0002,
+    "weight_decay": 0.0,
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.0,
+    "seed": 314159
+  },
+  "factorization": {
+    "objective": "global+token",
+    "reconstruction_family": "model_directed",
+    "alpha": 0.05,
+    "gamma": 0.25,
+    "beta": 0.01,
+    "beta_warmup_steps": "100%",
+    "continuous_latent_dim": 64,
+    "epochs": 1,
+    "batch_size": 128,
+    "micro_batch_size": 8,
+    "learning_rate": 0.0002,
+    "weight_decay": 0.01,
+    "use_bfloat16": true,
+    "seed": 314159
+  },
+  "evaluation": {
+    "num_pairs": 1024,
+    "batch_size": 128,
+    "seed": 314159,
+    "bootstrap_samples": 10000,
+    "bootstrap_seed": 260717674
+  },
+  "digitized_figure_3": {
+    "source": "assets/pretrained_faceted_method_metric_bars_task_scatter.pdf",
+    "digitization_uncertainty": 0.01,
+    "close_reproduction_absolute_tolerance": 0.03,
+    "qwen2.5-0.5b": {
+      "global+token_distributional_fidelity": 0.995,
+      "global+token_strategy_alignment": 0.91,
+      "elbo_strategy_alignment": 0.34
+    },
+    "qwen2.5-1.5b": {
+      "global+token_distributional_fidelity": 0.995,
+      "global+token_strategy_alignment": 0.91,
+      "elbo_strategy_alignment": 0.35
+    }
+  }
+}

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+from importlib.metadata import distributions
 import json
 import os
 import platform
@@ -78,9 +79,7 @@ def git_state(path: Path) -> dict[str, Any]:
         "head": head.get("stdout"),
         "dirty": bool(status.get("stdout")),
         "status": status.get("stdout", "").splitlines(),
-        "working_tree_diff_sha256": hashlib.sha256(
-            diff_text.encode()
-        ).hexdigest(),
+        "working_tree_diff_sha256": hashlib.sha256(diff_text.encode()).hexdigest(),
     }
 
 
@@ -102,12 +101,52 @@ def parse_gpu_csv(text: str) -> list[dict[str, str]]:
     return rows
 
 
+def capture_packages() -> dict[str, Any]:
+    pip_freeze = run([sys.executable, "-m", "pip", "freeze", "--all"])
+    if pip_freeze.get("exit_code") == 0:
+        return {
+            "packages": str(pip_freeze.get("stdout", "")).splitlines(),
+            "method": "pip-freeze-all",
+            "exit_code": 0,
+            "pip_freeze_exit_code": 0,
+            "pip_freeze_stderr": str(pip_freeze.get("stderr", "")),
+        }
+    try:
+        packages = sorted(
+            {
+                f"{name}=={distribution.version}"
+                for distribution in distributions()
+                if (name := distribution.metadata.get("Name"))
+            },
+            key=str.casefold,
+        )
+    except Exception as error:  # pragma: no cover - defensive trace capture
+        return {
+            "packages": [],
+            "method": "failed",
+            "exit_code": 1,
+            "pip_freeze_exit_code": pip_freeze.get("exit_code"),
+            "pip_freeze_stderr": str(
+                pip_freeze.get("stderr", pip_freeze.get("error", ""))
+            ),
+            "fallback_error": f"{type(error).__name__}: {error}",
+        }
+    return {
+        "packages": packages,
+        "method": "importlib-metadata-fallback",
+        "exit_code": 0,
+        "pip_freeze_exit_code": pip_freeze.get("exit_code"),
+        "pip_freeze_stderr": str(pip_freeze.get("stderr", pip_freeze.get("error", ""))),
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--arm-id", required=True)
     parser.add_argument("--phase", choices=("start", "end"), required=True)
     parser.add_argument("--protocol-version", required=True)
+    parser.add_argument("--paper-id", default="2607.25091")
     parser.add_argument("--invocation", default="")
     parser.add_argument("--exit-code", type=int)
     parser.add_argument(
@@ -128,7 +167,7 @@ def main() -> None:
             "--format=csv,noheader,nounits",
         ]
     )
-    package_lock = run([sys.executable, "-m", "pip", "freeze", "--all"])
+    package_capture = capture_packages()
     cpu_model = ""
     try:
         for line in Path("/proc/cpuinfo").read_text().splitlines():
@@ -172,24 +211,32 @@ def main() -> None:
         "python": {
             "executable": sys.executable,
             "version": sys.version,
-            "packages": str(package_lock.get("stdout", "")).splitlines(),
-            "package_capture_exit_code": package_lock.get("exit_code"),
+            "packages": package_capture["packages"],
+            "package_capture_method": package_capture["method"],
+            "package_capture_exit_code": package_capture["exit_code"],
+            "pip_freeze_exit_code": package_capture["pip_freeze_exit_code"],
+            "pip_freeze_stderr": package_capture["pip_freeze_stderr"],
+            **(
+                {"package_fallback_error": package_capture["fallback_error"]}
+                if "fallback_error" in package_capture
+                else {}
+            ),
         },
         "environment": selected_environment,
         "repository": git_state(WORKSPACE),
         "upstream": git_state(args.upstream),
         "protocol_files": {
             "config_sha256": sha256(
-                WORKSPACE / "protocols" / "2607.25091" / "config.json"
+                WORKSPACE / "protocols" / args.paper_id / "config.json"
             ),
             "matrix_sha256": sha256(
-                WORKSPACE / "protocols" / "2607.25091" / "matrix.csv"
+                WORKSPACE / "protocols" / args.paper_id / "matrix.csv"
             ),
             "data_manifest_sha256": sha256(
-                WORKSPACE
-                / "protocols"
-                / "2607.25091"
-                / "data_manifest.json"
+                WORKSPACE / "protocols" / args.paper_id / "data_manifest.json"
+            ),
+            "source_manifest_sha256": sha256(
+                WORKSPACE / "protocols" / args.paper_id / "SOURCE_MANIFEST.json"
             ),
         },
     }

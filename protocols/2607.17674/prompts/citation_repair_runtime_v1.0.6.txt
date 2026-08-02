@@ -1,0 +1,11 @@
+Conservative exact-line repair policy: the prior attempt has zero evidentiary
+weight. For every listed grounding error, locate the named evidence candidate
+in your new object. Either delete that candidate or replace its excerpt with a
+short relevant substring copied character-for-character from exactly one
+`source_lines` item on the same cited page. Never join adjacent lines,
+reconstruct a sentence, dehyphenate a split word, or preserve a failing
+candidate merely for completeness. An empty evidence-candidate list is valid
+for a chunk when no single exact line supplies relevant evidence. Before
+returning, verify mechanically that every excerpt in the new object occurs
+within one source-line string on its cited page. Leave already grounded
+candidates and the requested occurrence coverage intact.

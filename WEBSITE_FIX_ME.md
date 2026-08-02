@@ -23,6 +23,121 @@ side records those in `RESEARCH_FIX_ME.md`.
 
 ## Open items
 
+### WF-20260802-02 — Present citation and textual-integrity audits safely
+
+- Status: OPEN
+- Blocking: neither
+- Observed in: [NULSPEC PR #26](https://github.com/Atlas3DSS/nulspec/pull/26),
+  integrity-policy commit `cc66a135cba2b8701860e06fe0fab2e866698563`
+- Affected study: future cross-study integrity audits
+- Reported by: research
+- Reported at: 2026-08-02T06:28:48Z
+
+#### Observed
+
+Research now has a bounded ambient-compute lane for citation verification and
+textual-overlap screening. Citation judgments and overlap candidates have very
+different meanings from scientific replication outcomes. Similarity alone is
+not a plagiarism verdict, and an absence of retained candidates is bounded by
+the searched corpus rather than proof of originality.
+
+#### Expected
+
+The public site should eventually make validated integrity work discoverable
+without sensationalizing it. Readers need the claim or passage, source
+identity, chronology, attribution context, review state, corpus coverage, and
+benign alternatives—not an author-level accusation or a context-free
+similarity percentage. Charitable wording must remain precise enough that a
+material unsupported or contradictory claim cannot disappear into a vague
+"limitation" label.
+
+#### Requested website change
+
+1. Reserve typed study-level sections for citation-audit coverage and
+   textual-overlap screening, each with `not_run`, `in_progress`, `complete`,
+   `inconclusive`, and `human_review_required` states.
+2. Render retained findings through keyboard-accessible evidence pages linked
+   from the study narrative, with source/version identity and coverage limits.
+3. Provide a claim-level evidence-integrity heatmap with typed axes supplied by
+   research. Show severity and confidence separately, distinguish unchecked
+   from no issue observed, make every finding cell evidence-linked, and never
+   rely on color alone.
+4. Never display a plagiarism badge, person score, author leaderboard,
+   aggregate fraud score, or automatic guilt label. Use the research-provided
+   calibrated wording and require the explicit sensitive-finding human gate
+   before public release.
+5. Keep raw restricted papers and full model traces private while allowing
+   public hashes, methods, bounded excerpts, adjudication state, aggregate
+   costs, and sanitized trace metadata.
+6. Preserve the audited-version history and provide an author-response or
+   correction route that adds linked evidence without overwriting the original
+   record.
+7. Treat plagiarism or misconduct wording as privately embargoed unless the
+   handoff records two independent human reviews, exact-message human approval,
+   target-team outreach, source-team outreach when applicable, the response
+   window, and disposition of every response. Silence is never an admission.
+8. Support a separately documented `egregious_exception` that may shorten the
+   response wait only when two human reviewers unanimously approve the direct
+   evidence, public-interest rationale, outreach attempts, and exact release
+   language. Models cannot set this state.
+
+#### Website response
+
+Pending.
+
+#### Resolution evidence
+
+Pending research-side verification after implementation and deployment.
+
+### WF-20260802-01 — Expose the field-diverse candidate policy
+
+- Status: OPEN
+- Blocking: neither
+- Observed in: [NULSPEC PR #26](https://github.com/Atlas3DSS/nulspec/pull/26),
+  research-policy commit `d58dad489362aa7fbd81baf103d893fc20ef27fc`
+- Affected study: not applicable; candidate queue
+- Reported by: research
+- Reported at: 2026-08-02T06:26:47Z
+
+#### Observed
+
+The research charter now uses a rolling 12-month eligibility window for AI/ML
+and a 36-month window for non-AI/ML, while retaining the current arXiv-only
+source policy. It also distinguishes an artifact reproduction from an
+independent methods reimplementation and asks candidate batches to represent
+multiple computational fields. The current queue can express topics in free
+text but cannot expose or filter those distinctions reliably.
+
+#### Expected
+
+Readers should be able to see why a candidate is eligible and what kind of
+replication NULSPEC could attempt. The queue should make non-AI work plainly
+discoverable rather than placing every field into one popularity list. The
+presentation must not imply that a methods reimplementation is an exact rerun
+of released code.
+
+#### Requested website change
+
+1. Add validated candidate metadata for broad field, `ai_ml` versus `non_ai_ml`
+   window class, and evidence path (`artifact_reproduction` or
+   `methods_reimplementation`).
+2. Show those labels on each candidate and add field/window filters that work
+   with newest and most-votes sorting, pagination, the runtime API, and the
+   static fallback.
+3. Preserve the API schema's ability to evolve, but document that the current
+   research producer admits only arXiv records: 12 months for AI/ML and 36
+   months for non-AI/ML.
+4. Add validation coverage for mixed-field candidate sets and narrow mobile
+   layouts without changing existing vote semantics.
+
+#### Website response
+
+Pending.
+
+#### Resolution evidence
+
+Pending research-side verification after implementation and deployment.
+
 ### WF-20260801-01 — Import typed classification-accuracy studies
 
 - Status: OPEN

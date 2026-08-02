@@ -1,0 +1,170 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "review_type",
+    "citation_key",
+    "source_identity",
+    "source_contribution_summary",
+    "occurrence_assessments",
+    "overall_notes",
+    "self_check"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "enum": [1]
+    },
+    "review_type": {
+      "type": "string",
+      "enum": ["citation_review"]
+    },
+    "citation_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "source_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "rationale"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["match", "probable_match", "ambiguous", "mismatch"]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1800
+        }
+      }
+    },
+    "source_contribution_summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2400
+    },
+    "occurrence_assessments": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "occurrence_id",
+          "claim_summary",
+          "source_relevant_contribution",
+          "evidence",
+          "support_class",
+          "citation_appropriateness_score",
+          "confidence",
+          "limitation_or_correction"
+        ],
+        "properties": {
+          "occurrence_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 220
+          },
+          "claim_summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1600
+          },
+          "source_relevant_contribution": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1800
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 6,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "chunk_id",
+                "page_number",
+                "section_or_heading",
+                "excerpt"
+              ],
+              "properties": {
+                "chunk_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 220
+                },
+                "page_number": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "section_or_heading": {
+                  "type": "string",
+                  "maxLength": 300
+                },
+                "excerpt": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 800
+                }
+              }
+            }
+          },
+          "support_class": {
+            "type": "string",
+            "enum": [
+              "supports",
+              "partially_supports",
+              "does_not_support",
+              "contradicts",
+              "not_verifiable"
+            ]
+          },
+          "citation_appropriateness_score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "limitation_or_correction": {
+            "type": "string",
+            "maxLength": 1600
+          }
+        }
+      }
+    },
+    "overall_notes": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "self_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "all_occurrences_reviewed",
+        "all_evidence_grounded",
+        "uncertainty_notes"
+      ],
+      "properties": {
+        "all_occurrences_reviewed": {
+          "type": "boolean"
+        },
+        "all_evidence_grounded": {
+          "type": "boolean"
+        },
+        "uncertainty_notes": {
+          "type": "string",
+          "maxLength": 1600
+        }
+      }
+    }
+  }
+}

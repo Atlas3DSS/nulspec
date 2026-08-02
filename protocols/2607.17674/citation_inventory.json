@@ -1,0 +1,1140 @@
+{
+  "schema_version": 1,
+  "paper_id": "2607.17674",
+  "bibliography_entries": 45,
+  "cited_entries": 41,
+  "citation_occurrences": 74,
+  "records": [
+    {
+      "key": "allman2009latentStructure",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "article",
+      "title": "Identifiability of Parameters in Latent Structure Models with Many Observed Variables",
+      "author": "Allman, Elizabeth S. and Matias, Catherine and Rhodes, John A.",
+      "year": "2009",
+      "url": null,
+      "doi": "10.1214/09-AOS689",
+      "eprint": null,
+      "source_url": "https://doi.org/10.1214/09-AOS689",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 15,
+          "context": "While there is also a rich theory for latent variable methods, classical identifiability theory for mixture models \\citep{teicher1963mixtures,yakowitz1968mixtures,allman2009latentStructure} and nonlinear ICA \\citep{hyvarinen2019nonlinearIca,khemakhem2020ivae} achieve uniqueness by restricting the component family or adding auxiliary observations. When using an expressive pretrained generator, classical identifiability conditions generally fail, and the central question becomes how to select a useful factorization among the many that preserve the marginal distribution. An extended discussion of related work with fuller citations is given in the supplementary material."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 23,
+          "context": "Classical finite-mixture theory studies when a marginal distribution uniquely determines its mixture components, often through restrictive component families, linear-independence conditions, or multi-view structure \\citep{teicher1963mixtures,yakowitz1968mixtures,allman2009latentStructure}."
+        }
+      ]
+    },
+    {
+      "key": "bao2019disentangledSyntaxSemantics",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Generating Sentences from Disentangled Syntactic and Semantic Spaces",
+      "author": "Bao, Yu and Zhou, Hao and Huang, Shujian and Li, Lei and Mou, Lili and Vechtomova, Olga and Dai, Xin-yu and Chen, Jiajun",
+      "year": "2019",
+      "url": "https://aclanthology.org/P19-1602/",
+      "doi": "10.18653/v1/P19-1602",
+      "eprint": null,
+      "source_url": "https://aclanthology.org/P19-1602/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 10,
+          "context": "Prior work separates syntax and semantics in sentence VAEs \\citep{bao2019disentangledSyntaxSemantics}, extends syntactic-semantic separation to Transformer-based VAEs \\citep{zhang2024graphInducedVae}, uses discrete latent variables to capture natural-language generative factors \\citep{mercatali2021discreteTextVae}, and disentangles semantic attributes such as negation and uncertainty from content \\citep{vasilakes2022negationUncertainty}."
+        }
+      ]
+    },
+    {
+      "key": "bowman2016sentenceVae",
+      "cited": true,
+      "citation_count": 4,
+      "entry_type": "inproceedings",
+      "title": "Generating Sentences from a Continuous Space",
+      "author": "Bowman, Samuel R. and Vilnis, Luke and Vinyals, Oriol and Dai, Andrew M. and Jozefowicz, Rafal and Bengio, Samy",
+      "year": "2016",
+      "url": "https://aclanthology.org/K16-1002/",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://aclanthology.org/K16-1002/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 28,
+          "context": "Standard variational training, including the conditional ELBO, is therefore subject to this failure mode \\citep{bowman2016sentenceVae,he2019laggingInference,fu2019cyclicalAnnealing,hoffman2016elboSurgery}: it can preserve distributional fidelity while leaving $z$ inert, because it does not require $z$ to explain strategy-level variation."
+        },
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 7,
+          "context": "Sequence and dialogue VAEs extend this idea to autoregressive generation, where the latent is intended to capture sentence-level, discourse-level, or response-level variation beyond the input context \\citep{bowman2016sentenceVae,serban2016vhred,zhao2017dialogCvae}."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 15,
+          "context": "Autoregressive decoders can ignore latent variables, giving rise to posterior-collapse and KL-vanishing pathologies in sequence VAEs \\citep{bowman2016sentenceVae,he2019laggingInference,fu2019cyclicalAnnealing}."
+        }
+      ]
+    },
+    {
+      "key": "burgess2018betavae",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "misc",
+      "title": "Understanding disentangling in $\\beta$-VAE",
+      "author": "Christopher P. Burgess and Irina Higgins and Arka Pal and Loic Matthey and Nick Watters and Guillaume Desjardins and Alexander Lerchner",
+      "year": "2018",
+      "url": "https://arxiv.org/abs/1804.03599",
+      "doi": null,
+      "eprint": "1804.03599",
+      "source_url": "https://arxiv.org/abs/1804.03599",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 17,
+          "context": "Disentanglement-oriented objectives such as $\\beta$-VAE, capacity-controlled $\\beta$-VAE, FactorVAE, and InfoGAN also show that useful latent structure usually requires explicit inductive bias or information pressure, not merely the presence of a latent code \\citep{higgins2017betavae,burgess2018betavae,kim2018factorvae,chen2016infogan}."
+        }
+      ]
+    },
+    {
+      "key": "chen2016infogan",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "{InfoGAN}: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets",
+      "author": "Chen, Xi and Duan, Yan and Houthooft, Rein and Schulman, John and Sutskever, Ilya and Abbeel, Pieter",
+      "year": "2016",
+      "url": "https://papers.nips.cc/paper/6399",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://papers.nips.cc/paper/6399",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 17,
+          "context": "Disentanglement-oriented objectives such as $\\beta$-VAE, capacity-controlled $\\beta$-VAE, FactorVAE, and InfoGAN also show that useful latent structure usually requires explicit inductive bias or information pressure, not merely the presence of a latent code \\citep{higgins2017betavae,burgess2018betavae,kim2018factorvae,chen2016infogan}."
+        }
+      ]
+    },
+    {
+      "key": "cunningham2023sparseAutoencoders",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Sparse Autoencoders Find Highly Interpretable Features in Language Models",
+      "author": "Huben, Robert and Cunningham, Hoagy and Riggs Smith, Logan and Ewart, Aidan and Sharkey, Lee",
+      "year": "2024",
+      "url": "https://openreview.net/forum?id=F76bwRSLeK",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://openreview.net/forum?id=F76bwRSLeK",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 29,
+          "context": "% The problem is also distinct from mechanistic interpretability approaches that decompose internal representations post-hoc \\citep{cunningham2023sparseAutoencoders,galichin2025reasoningSaes},"
+        },
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 41,
+          "context": "This has applications across model interpretability \\citep{koh2020conceptBottleneck,cunningham2023sparseAutoencoders}, controllability \\citep{keskar2019ctrl,li2021prefixTuning}, and exploration \\citep{wang2023selfConsistency,yao2023treeOfThoughts}."
+        }
+      ]
+    },
+    {
+      "key": "deepseek2025r1",
+      "cited": false,
+      "citation_count": 0,
+      "entry_type": "article",
+      "title": "DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning",
+      "author": "Guo, Daya and Yang, Dejian and Zhang, Haowei and Song, Junxiao and Wang, Peiyi and Zhu, Qihao and Xu, Runxin and Zhang, Ruoyu and Ma, Shirong and Bi, Xiao and Zhang, Xiaokang and Yu, Xingkai and Wu, Yu and Wu, Z. F. and Gou, Zhibin and Shao, Zhihong and Li, Zhuoshu and Gao, Ziyi and Liu, Aixin and Xue, Bing and Wang, Bingxuan and Wu, Bochao and Feng, Bei and Lu, Chengda and Zhao, Chenggang and Deng, Chengqi and Ruan, Chong and Dai, Damai and Chen, Deli and Ji, Dongjie and Li, Erhang and Lin, Fangyun and Dai, Fucong and Luo, Fuli and Hao, Guangbo and Chen, Guanting and Li, Guowei and Zhang, H. and Xu, Hanwei and Ding, Honghui and Gao, Huazuo and Qu, Hui and Li, Hui and Guo, Jianzhong and Li, Jiashi and Chen, Jingchang and Yuan, Jingyang and Tu, Jinhao and Qiu, Junjie and Li, Junlong and Cai, J. L. and Ni, Jiaqi and Liang, Jian and Chen, Jin and Dong, Kai and Hu, Kai and You, Kaichao and Gao, Kaige and Guan, Kang and Huang, Kexin and Yu, Kuai and Wang, Lean and Zhang, Lecong and Zhao, Liang and Wang, Litong and Zhang, Liyue and Xu, Lei and Xia, Leyi and Zhang, Mingchuan and Zhang, Minghua and Tang, Minghui and Zhou, Mingxu and Li, Meng and Wang, Miaojun and Li, Mingming and Tian, Ning and Huang, Panpan and Zhang, Peng and Wang, Qiancheng and Chen, Qinyu and Du, Qiushi and Ge, Ruiqi and Zhang, Ruisong and Pan, Ruizhe and Wang, Runji and Chen, R. J. and Jin, R. L. and Chen, Ruyi and Lu, Shanghao and Zhou, Shangyan and Chen, Shanhuang and Ye, Shengfeng and Wang, Shiyu and Yu, Shuiping and Zhou, Shunfeng and Pan, Shuting and Li, S. S. and Zhou, Shuang and Wu, Shaoqing and Yun, Tao and Pei, Tian and Sun, Tianyu and Wang, T. and Zeng, Wangding and Liu, Wen and Liang, Wenfeng and Gao, Wenjun and Yu, Wenqin and Zhang, Wentao and Xiao, W. L. and An, Wei and Liu, Xiaodong and Wang, Xiaohan and Chen, Xiaokang and Nie, Xiaotao and Cheng, Xin and Liu, Xin and Xie, Xin and Liu, Xingchao and Yang, Xinyu and Li, Xinyuan and Su, Xuecheng and Lin, Xuheng and Li, X. Q. and Jin, Xiangyue and Shen, Xiaojin and Chen, Xiaosha and Sun, Xiaowen and Wang, Xiaoxiang and Song, Xinnan and Zhou, Xinyi and Wang, Xianzu and Shan, Xinxia and Li, Y. K. and Wang, Y. Q. and Wei, Y. X. and Zhang, Yang and Xu, Yanhong and Li, Yao and Zhao, Yao and Sun, Yaofeng and Wang, Yaohui and Yu, Yi and Zhang, Yichao and Shi, Yifan and Xiong, Yiliang and He, Ying and Piao, Yishi and Wang, Yisong and Tan, Yixuan and Ma, Yiyang and Liu, Yiyuan and Guo, Yongqiang and Ou, Yuan and Wang, Yuduan and Gong, Yue and Zou, Yuheng and He, Yujia and Xiong, Yunfan and Luo, Yuxiang and You, Yuxiang and Liu, Yuxuan and Zhou, Yuyang and Zhu, Y. X. and Huang, Yanping and Li, Yaohui and Zheng, Yi and Zhu, Yuchen and Ma, Yunxian and Tang, Ying and Zha, Yukun and Yan, Yuting and Ren, Z. Z. and Ren, Zehui and Sha, Zhangli and Fu, Zhe and Xu, Zhean and Xie, Zhenda and Zhang, Zhengyan and Hao, Zhewen and Ma, Zhicheng and Yan, Zhigang and Wu, Zhiyu and Gu, Zihui and Zhu, Zijia and Liu, Zijun and Li, Zilin and Xie, Ziwei and Song, Ziyang and Pan, Zizheng and Huang, Zhen and Xu, Zhipeng and Zhang, Zhongyu and Zhang, Zhen",
+      "year": "2025",
+      "url": "http://dx.doi.org/10.1038/s41586-025-09422-z",
+      "doi": "10.1038/s41586-025-09422-z",
+      "eprint": null,
+      "source_url": "http://dx.doi.org/10.1038/s41586-025-09422-z",
+      "source_acquisition": "not-required",
+      "review_state": "not-cited",
+      "occurrences": []
+    },
+    {
+      "key": "fu2019cyclicalAnnealing",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Cyclical Annealing Schedule: A Simple Approach to Mitigating {KL} Vanishing",
+      "author": "Fu, Hao and Li, Chunyuan and Liu, Xiaodong and Gao, Jianfeng and Celikyilmaz, Asli and Carin, Lawrence",
+      "year": "2019",
+      "url": "https://aclanthology.org/N19-1021/",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://aclanthology.org/N19-1021/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 28,
+          "context": "Standard variational training, including the conditional ELBO, is therefore subject to this failure mode \\citep{bowman2016sentenceVae,he2019laggingInference,fu2019cyclicalAnnealing,hoffman2016elboSurgery}: it can preserve distributional fidelity while leaving $z$ inert, because it does not require $z$ to explain strategy-level variation."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 15,
+          "context": "Autoregressive decoders can ignore latent variables, giving rise to posterior-collapse and KL-vanishing pathologies in sequence VAEs \\citep{bowman2016sentenceVae,he2019laggingInference,fu2019cyclicalAnnealing}."
+        }
+      ]
+    },
+    {
+      "key": "galichin2025reasoningSaes",
+      "cited": true,
+      "citation_count": 3,
+      "entry_type": "misc",
+      "title": "I Have Covered All the Bases Here: Interpreting Reasoning Features in Large Language Models via Sparse Autoencoders",
+      "author": "Andrey Galichin and Alexey Dontsov and Polina Druzhinina and Anton Razzhigaev and Oleg Y. Rogov and Elena Tutubalina and Ivan Oseledets",
+      "year": "2025",
+      "url": "https://arxiv.org/abs/2503.18878",
+      "doi": null,
+      "eprint": "2503.18878",
+      "source_url": "https://arxiv.org/abs/2503.18878",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 29,
+          "context": "% The problem is also distinct from mechanistic interpretability approaches that decompose internal representations post-hoc \\citep{cunningham2023sparseAutoencoders,galichin2025reasoningSaes},"
+        },
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 13,
+          "context": "Mixture-of-experts language models also learn routing over specialized generators \\citep{shazeer2017moe,jiang1999hme}, but such models are optimized for capacity or efficiency, not for correspondence to an interpretable strategy variable, and training is typically carried out from scratch. Mechanistic interpretability methods, including sparse autoencoders \\citep{galichin2025reasoningSaes} and concept-bottleneck approaches \\citep{tan2024conceptBottlenecks}, extract or steer internal representations post-hoc; our goal is instead a generative factorization that supports sampling and intervention."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 33,
+          "context": "Sparse-autoencoder analyses of reasoning models instead discover internal features associated with reasoning motifs and can steer model behavior by intervening on feature directions \\citep{galichin2025reasoningSaes}."
+        }
+      ]
+    },
+    {
+      "key": "gu2023latentDensityControl",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "inproceedings",
+      "title": "Controllable Text Generation via Probability Density Estimation in the Latent Space",
+      "author": "Gu, Yuxuan and Feng, Xiaocheng and Ma, Sicheng and Zhang, Lingyuan and Gong, Heng and Zhong, Weihong and Qin, Bing",
+      "year": "2023",
+      "url": "https://aclanthology.org/2023.acl-long.704/",
+      "doi": "10.18653/v1/2023.acl-long.704",
+      "eprint": null,
+      "source_url": "https://aclanthology.org/2023.acl-long.704/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 11,
+          "context": "Latent-space control methods further model control distributions directly in the VAE latent space \\citep{gu2023latentDensityControl}."
+        }
+      ]
+    },
+    {
+      "key": "he2019laggingInference",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Lagging Inference Networks and Posterior Collapse in Variational Autoencoders",
+      "author": "He, Junxian and Spokoyny, Daniel and Neubig, Graham and Berg-Kirkpatrick, Taylor",
+      "year": "2019",
+      "url": "https://arxiv.org/abs/1901.05534",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://arxiv.org/abs/1901.05534",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 28,
+          "context": "Standard variational training, including the conditional ELBO, is therefore subject to this failure mode \\citep{bowman2016sentenceVae,he2019laggingInference,fu2019cyclicalAnnealing,hoffman2016elboSurgery}: it can preserve distributional fidelity while leaving $z$ inert, because it does not require $z$ to explain strategy-level variation."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 15,
+          "context": "Autoregressive decoders can ignore latent variables, giving rise to posterior-collapse and KL-vanishing pathologies in sequence VAEs \\citep{bowman2016sentenceVae,he2019laggingInference,fu2019cyclicalAnnealing}."
+        }
+      ]
+    },
+    {
+      "key": "higgins2017betavae",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "beta-{VAE}: Learning Basic Visual Concepts with a Constrained Variational Framework",
+      "author": "Higgins, Irina and Matthey, Loic and Pal, Arka and Burgess, Christopher P. and Glorot, Xavier and Botvinick, Matthew and Mohamed, Shakir and Lerchner, Alexander",
+      "year": "2017",
+      "url": "https://openreview.net/forum?id=Sy2fzU9gl",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://openreview.net/forum?id=Sy2fzU9gl",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 17,
+          "context": "Disentanglement-oriented objectives such as $\\beta$-VAE, capacity-controlled $\\beta$-VAE, FactorVAE, and InfoGAN also show that useful latent structure usually requires explicit inductive bias or information pressure, not merely the presence of a latent code \\citep{higgins2017betavae,burgess2018betavae,kim2018factorvae,chen2016infogan}."
+        }
+      ]
+    },
+    {
+      "key": "hoffman2016elboSurgery",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "misc",
+      "title": "{ELBO} Surgery: Yet Another Way to Carve up the Variational Evidence Lower Bound",
+      "author": "Hoffman, Matthew D. and Johnson, Matthew J.",
+      "year": "2016",
+      "url": "https://www.cs.columbia.edu/~blei/fogm/2022F/readings/HoffmanJohnson2016.pdf",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://www.cs.columbia.edu/~blei/fogm/2022F/readings/HoffmanJohnson2016.pdf",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 28,
+          "context": "Standard variational training, including the conditional ELBO, is therefore subject to this failure mode \\citep{bowman2016sentenceVae,he2019laggingInference,fu2019cyclicalAnnealing,hoffman2016elboSurgery}: it can preserve distributional fidelity while leaving $z$ inert, because it does not require $z$ to explain strategy-level variation."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 16,
+          "context": "Several objective analyses separate the standard ELBO regularizer into latent information and aggregate-prior matching terms, motivating variants that preserve latent usage while keeping generation well regularized \\citep{hoffman2016elboSurgery,zhao2019infovae}."
+        }
+      ]
+    },
+    {
+      "key": "hu2022lora",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "inproceedings",
+      "title": "{LoRA}: Low-Rank Adaptation of Large Language Models",
+      "author": "Hu, Edward J. and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu",
+      "year": "2022",
+      "url": "https://openreview.net/forum?id=nZeVKeeFYf9",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://openreview.net/forum?id=nZeVKeeFYf9",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/03-methodology.tex",
+          "line": 59,
+          "context": "Both models are initialized from the base parameters \\(\\theta\\) and trained as light adaptations using LoRA-style low-rank updates~\\citep{hu2022lora}, together with the small Gaussian heads and latent embedding projection."
+        }
+      ]
+    },
+    {
+      "key": "hyvarinen2019nonlinearIca",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Nonlinear {ICA} Using Auxiliary Variables and Generalized Contrastive Learning",
+      "author": "Hyv{\\\"a}rinen, Aapo and Sasaki, Hiroaki and Turner, Richard E.",
+      "year": "2019",
+      "url": "https://proceedings.mlr.press/v89/hyvarinen19a.html",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://proceedings.mlr.press/v89/hyvarinen19a.html",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 15,
+          "context": "While there is also a rich theory for latent variable methods, classical identifiability theory for mixture models \\citep{teicher1963mixtures,yakowitz1968mixtures,allman2009latentStructure} and nonlinear ICA \\citep{hyvarinen2019nonlinearIca,khemakhem2020ivae} achieve uniqueness by restricting the component family or adding auxiliary observations. When using an expressive pretrained generator, classical identifiability conditions generally fail, and the central question becomes how to select a useful factorization among the many that preserve the marginal distribution. An extended discussion of related work with fuller citations is given in the supplementary material."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 25,
+          "context": "Identifiable latent-variable and nonlinear-ICA results restore stronger recovery guarantees by adding auxiliary variables or conditional-prior structure that breaks otherwise unavoidable symmetries \\citep{hyvarinen2019nonlinearIca,khemakhem2020ivae}."
+        }
+      ]
+    },
+    {
+      "key": "jiang1999hme",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "article",
+      "title": "Hierarchical Mixtures-of-Experts for Exponential Family Regression Models: Approximation and Maximum Likelihood Estimation",
+      "author": "Jiang, Wenxin and Tanner, Martin A.",
+      "year": "1999",
+      "url": null,
+      "doi": "10.1214/aos/1018031265",
+      "eprint": null,
+      "source_url": "https://doi.org/10.1214/aos/1018031265",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 13,
+          "context": "Mixture-of-experts language models also learn routing over specialized generators \\citep{shazeer2017moe,jiang1999hme}, but such models are optimized for capacity or efficiency, not for correspondence to an interpretable strategy variable, and training is typically carried out from scratch. Mechanistic interpretability methods, including sparse autoencoders \\citep{galichin2025reasoningSaes} and concept-bottleneck approaches \\citep{tan2024conceptBottlenecks}, extract or steer internal representations post-hoc; our goal is instead a generative factorization that supports sampling and intervention."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 24,
+          "context": "Conditional mixture and mixture-of-experts models introduce input-dependent routing or gating, but their classical guarantees usually concern approximation, prediction, or consistency under structured expert families rather than recovery of a semantically named latent variable \\citep{jiang1999hme}."
+        }
+      ]
+    },
+    {
+      "key": "keskar2019ctrl",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "misc",
+      "title": "CTRL: A Conditional Transformer Language Model for Controllable Generation",
+      "author": "Nitish Shirish Keskar and Bryan McCann and Lav R. Varshney and Caiming Xiong and Richard Socher",
+      "year": "2019",
+      "url": "https://arxiv.org/abs/1909.05858",
+      "doi": null,
+      "eprint": "1909.05858",
+      "source_url": "https://arxiv.org/abs/1909.05858",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 41,
+          "context": "This has applications across model interpretability \\citep{koh2020conceptBottleneck,cunningham2023sparseAutoencoders}, controllability \\citep{keskar2019ctrl,li2021prefixTuning}, and exploration \\citep{wang2023selfConsistency,yao2023treeOfThoughts}."
+        }
+      ]
+    },
+    {
+      "key": "khemakhem2020ivae",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Variational Autoencoders and Nonlinear {ICA}: A Unifying Framework",
+      "author": "Khemakhem, Ilyes and Kingma, Diederik P. and Monti, Ricardo Pio and Hyv{\\\"a}rinen, Aapo",
+      "year": "2020",
+      "url": "https://arxiv.org/abs/1907.04809",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://arxiv.org/abs/1907.04809",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 15,
+          "context": "While there is also a rich theory for latent variable methods, classical identifiability theory for mixture models \\citep{teicher1963mixtures,yakowitz1968mixtures,allman2009latentStructure} and nonlinear ICA \\citep{hyvarinen2019nonlinearIca,khemakhem2020ivae} achieve uniqueness by restricting the component family or adding auxiliary observations. When using an expressive pretrained generator, classical identifiability conditions generally fail, and the central question becomes how to select a useful factorization among the many that preserve the marginal distribution. An extended discussion of related work with fuller citations is given in the supplementary material."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 25,
+          "context": "Identifiable latent-variable and nonlinear-ICA results restore stronger recovery guarantees by adding auxiliary variables or conditional-prior structure that breaks otherwise unavoidable symmetries \\citep{hyvarinen2019nonlinearIca,khemakhem2020ivae}."
+        }
+      ]
+    },
+    {
+      "key": "kim2018factorvae",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Disentangling by Factorising",
+      "author": "Kim, Hyunjik and Mnih, Andriy",
+      "year": "2018",
+      "url": "https://arxiv.org/abs/1802.05983",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://arxiv.org/abs/1802.05983",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 17,
+          "context": "Disentanglement-oriented objectives such as $\\beta$-VAE, capacity-controlled $\\beta$-VAE, FactorVAE, and InfoGAN also show that useful latent structure usually requires explicit inductive bias or information pressure, not merely the presence of a latent code \\citep{higgins2017betavae,burgess2018betavae,kim2018factorvae,chen2016infogan}."
+        }
+      ]
+    },
+    {
+      "key": "kingma2013vae",
+      "cited": true,
+      "citation_count": 3,
+      "entry_type": "misc",
+      "title": "Auto-Encoding Variational Bayes",
+      "author": "Kingma, Diederik P. and Welling, Max",
+      "year": "2013",
+      "url": "https://arxiv.org/abs/1312.6114",
+      "doi": "10.48550/arXiv.1312.6114",
+      "eprint": "1312.6114",
+      "source_url": "https://arxiv.org/abs/1312.6114",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 24,
+          "context": "This problem is distinct from standard latent variable generative modeling \\citep{kingma2013vae,sohn2015cvae}."
+        },
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 6,
+          "context": "The VAE and conditional VAE literature learns a latent-variable model from observed data, using an encoder or recognition model and an ELBO to train a generator with latent variation \\citep{kingma2013vae,sohn2015cvae}."
+        }
+      ]
+    },
+    {
+      "key": "koh2020conceptBottleneck",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "inproceedings",
+      "title": "Concept Bottleneck Models",
+      "author": "Koh, Pang Wei and Nguyen, Thao and Tang, Yew Siang and Mussmann, Stephen and Pierson, Emma and Kim, Been and Liang, Percy",
+      "year": "2020",
+      "url": "https://proceedings.mlr.press/v119/koh20a.html",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://proceedings.mlr.press/v119/koh20a.html",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 41,
+          "context": "This has applications across model interpretability \\citep{koh2020conceptBottleneck,cunningham2023sparseAutoencoders}, controllability \\citep{keskar2019ctrl,li2021prefixTuning}, and exploration \\citep{wang2023selfConsistency,yao2023treeOfThoughts}."
+        }
+      ]
+    },
+    {
+      "key": "kong2025latentThoughts",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "inproceedings",
+      "title": "Latent Thought Models with Variational Bayes Inference-Time Computation",
+      "author": "Kong, Deqian and Zhao, Minglu and Xu, Dehong and Pang, Bo and Wang, Shu and Honig, Edouardo and Si, Zhangzhang and Li, Chuan and Xie, Jianwen and Xie, Sirui and Wu, Ying Nian",
+      "year": "2025",
+      "url": "https://proceedings.mlr.press/v267/kong25c.html",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://proceedings.mlr.press/v267/kong25c.html",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 8,
+          "context": "Pretrained language VAEs and latent-thought models scale related ideas with pretrained Transformer components, continuous sentence spaces, or inference-time latent optimization \\citep{li2020optimus,park2021transformerVae,kong2025latentThoughts}."
+        }
+      ]
+    },
+    {
+      "key": "li2020optimus",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Optimus: Organizing Sentences via Pre-trained Modeling of a Latent Space",
+      "author": "Li, Chunyuan and Gao, Xiang and Li, Yuan and Peng, Baolin and Li, Xiujun and Zhang, Yizhe and Gao, Jianfeng",
+      "year": "2020",
+      "url": "https://aclanthology.org/2020.emnlp-main.378/",
+      "doi": "10.18653/v1/2020.emnlp-main.378",
+      "eprint": null,
+      "source_url": "https://aclanthology.org/2020.emnlp-main.378/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 8,
+          "context": "Pretrained language VAEs and latent-thought models scale related ideas with pretrained Transformer components, continuous sentence spaces, or inference-time latent optimization \\citep{li2020optimus,park2021transformerVae,kong2025latentThoughts}."
+        }
+      ]
+    },
+    {
+      "key": "li2021prefixTuning",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "inproceedings",
+      "title": "Prefix-Tuning: Optimizing Continuous Prompts for Generation",
+      "author": "Li, Xiang Lisa and Liang, Percy",
+      "year": "2021",
+      "url": "https://aclanthology.org/2021.acl-long.353/",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://aclanthology.org/2021.acl-long.353/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 41,
+          "context": "This has applications across model interpretability \\citep{koh2020conceptBottleneck,cunningham2023sparseAutoencoders}, controllability \\citep{keskar2019ctrl,li2021prefixTuning}, and exploration \\citep{wang2023selfConsistency,yao2023treeOfThoughts}."
+        }
+      ]
+    },
+    {
+      "key": "mercatali2021discreteTextVae",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Disentangling Generative Factors in Natural Language with Discrete Variational Autoencoders",
+      "author": "Mercatali, Giangiacomo and Freitas, Andr{\\'e}",
+      "year": "2021",
+      "url": "https://aclanthology.org/2021.findings-emnlp.301/",
+      "doi": "10.18653/v1/2021.findings-emnlp.301",
+      "eprint": null,
+      "source_url": "https://aclanthology.org/2021.findings-emnlp.301/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 10,
+          "context": "Prior work separates syntax and semantics in sentence VAEs \\citep{bao2019disentangledSyntaxSemantics}, extends syntactic-semantic separation to Transformer-based VAEs \\citep{zhang2024graphInducedVae}, uses discrete latent variables to capture natural-language generative factors \\citep{mercatali2021discreteTextVae}, and disentangles semantic attributes such as negation and uncertainty from content \\citep{vasilakes2022negationUncertainty}."
+        }
+      ]
+    },
+    {
+      "key": "park2021transformerVae",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Finetuning Pretrained Transformers into Variational Autoencoders",
+      "author": "Park, Seongmin and Lee, Jihwa",
+      "year": "2021",
+      "url": "https://aclanthology.org/2021.insights-1.5/",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://aclanthology.org/2021.insights-1.5/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 8,
+          "context": "Pretrained language VAEs and latent-thought models scale related ideas with pretrained Transformer components, continuous sentence spaces, or inference-time latent optimization \\citep{li2020optimus,park2021transformerVae,kong2025latentThoughts}."
+        }
+      ]
+    },
+    {
+      "key": "qwen25technicalreport",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "misc",
+      "title": "{Qwen2.5} Technical Report",
+      "author": "{Qwen Team}",
+      "year": "2024",
+      "url": "https://arxiv.org/abs/2412.15115",
+      "doi": null,
+      "eprint": "2412.15115",
+      "source_url": "https://arxiv.org/abs/2412.15115",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/appendix/experiment-details.tex",
+          "line": 137,
+          "context": "The pretrained method-comparison runs factorize Qwen2.5 0.5B and 1.5B base models~\\citep{qwen25technicalreport} in the multi-task setting with continuous latent dimension 64."
+        }
+      ]
+    },
+    {
+      "key": "serban2016vhred",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "inproceedings",
+      "title": "A Hierarchical Latent Variable Encoder-Decoder Model for Generating Dialogues",
+      "author": "Serban, Iulian V. and Sordoni, Alessandro and Lowe, Ryan and Charlin, Laurent and Pineau, Joelle and Courville, Aaron C. and Bengio, Yoshua",
+      "year": "2017",
+      "url": "https://arxiv.org/abs/1605.06069",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://arxiv.org/abs/1605.06069",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 7,
+          "context": "Sequence and dialogue VAEs extend this idea to autoregressive generation, where the latent is intended to capture sentence-level, discourse-level, or response-level variation beyond the input context \\citep{bowman2016sentenceVae,serban2016vhred,zhao2017dialogCvae}."
+        }
+      ]
+    },
+    {
+      "key": "shazeer2017moe",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "inproceedings",
+      "title": "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer",
+      "author": "Shazeer, Noam and Mirhoseini, Azalia and Maziarz, Krzysztof and Davis, Andy and Le, Quoc and Hinton, Geoffrey and Dean, Jeff",
+      "year": "2017",
+      "url": "https://arxiv.org/abs/1701.06538",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://arxiv.org/abs/1701.06538",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 13,
+          "context": "Mixture-of-experts language models also learn routing over specialized generators \\citep{shazeer2017moe,jiang1999hme}, but such models are optimized for capacity or efficiency, not for correspondence to an interpretable strategy variable, and training is typically carried out from scratch. Mechanistic interpretability methods, including sparse autoencoders \\citep{galichin2025reasoningSaes} and concept-bottleneck approaches \\citep{tan2024conceptBottlenecks}, extract or steer internal representations post-hoc; our goal is instead a generative factorization that supports sampling and intervention."
+        }
+      ]
+    },
+    {
+      "key": "sohn2015cvae",
+      "cited": true,
+      "citation_count": 3,
+      "entry_type": "inproceedings",
+      "title": "Learning Structured Output Representation using Deep Conditional Generative Models",
+      "author": "Sohn, Kihyuk and Lee, Honglak and Yan, Xinchen",
+      "year": "2015",
+      "url": "https://papers.nips.cc/paper/5775",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://papers.nips.cc/paper/5775",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 24,
+          "context": "This problem is distinct from standard latent variable generative modeling \\citep{kingma2013vae,sohn2015cvae}."
+        },
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 6,
+          "context": "The VAE and conditional VAE literature learns a latent-variable model from observed data, using an encoder or recognition model and an ELBO to train a generator with latent variation \\citep{kingma2013vae,sohn2015cvae}."
+        }
+      ]
+    },
+    {
+      "key": "tan2024conceptBottlenecks",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Interpreting Pretrained Language Models via Concept Bottlenecks",
+      "author": "Tan, Zhen and Cheng, Lu and Wang, Song and Yuan, Bo and Li, Jundong and Liu, Huan",
+      "year": "2024",
+      "url": null,
+      "doi": "10.1007/978-981-97-2259-4_5",
+      "eprint": null,
+      "source_url": "https://doi.org/10.1007/978-981-97-2259-4_5",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 13,
+          "context": "Mixture-of-experts language models also learn routing over specialized generators \\citep{shazeer2017moe,jiang1999hme}, but such models are optimized for capacity or efficiency, not for correspondence to an interpretable strategy variable, and training is typically carried out from scratch. Mechanistic interpretability methods, including sparse autoencoders \\citep{galichin2025reasoningSaes} and concept-bottleneck approaches \\citep{tan2024conceptBottlenecks}, extract or steer internal representations post-hoc; our goal is instead a generative factorization that supports sampling and intervention."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 32,
+          "context": "Concept-bottleneck methods for pretrained language models insert human-defined concept variables and train the model to predict through them, providing an explicit supervised interpretability interface \\citep{tan2024conceptBottlenecks}."
+        }
+      ]
+    },
+    {
+      "key": "teicher1963mixtures",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "article",
+      "title": "Identifiability of Finite Mixtures",
+      "author": "Teicher, Henry",
+      "year": "1963",
+      "url": null,
+      "doi": "10.1214/aoms/1177703862",
+      "eprint": null,
+      "source_url": "https://doi.org/10.1214/aoms/1177703862",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 15,
+          "context": "While there is also a rich theory for latent variable methods, classical identifiability theory for mixture models \\citep{teicher1963mixtures,yakowitz1968mixtures,allman2009latentStructure} and nonlinear ICA \\citep{hyvarinen2019nonlinearIca,khemakhem2020ivae} achieve uniqueness by restricting the component family or adding auxiliary observations. When using an expressive pretrained generator, classical identifiability conditions generally fail, and the central question becomes how to select a useful factorization among the many that preserve the marginal distribution. An extended discussion of related work with fuller citations is given in the supplementary material."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 23,
+          "context": "Classical finite-mixture theory studies when a marginal distribution uniquely determines its mixture components, often through restrictive component families, linear-independence conditions, or multi-view structure \\citep{teicher1963mixtures,yakowitz1968mixtures,allman2009latentStructure}."
+        }
+      ]
+    },
+    {
+      "key": "turner2023activationEngineering",
+      "cited": false,
+      "citation_count": 0,
+      "entry_type": "misc",
+      "title": "Steering Language Models With Activation Engineering",
+      "author": "Alexander Matt Turner and Lisa Thiergart and Gavin Leech and David Udell and Juan J. Vazquez and Ulisse Mini and Monte MacDiarmid",
+      "year": "2024",
+      "url": "https://arxiv.org/abs/2308.10248",
+      "doi": null,
+      "eprint": "2308.10248",
+      "source_url": "https://arxiv.org/abs/2308.10248",
+      "source_acquisition": "not-required",
+      "review_state": "not-cited",
+      "occurrences": []
+    },
+    {
+      "key": "tuyls2025representationExploration",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "misc",
+      "title": "Representation-Based Exploration for Language Models: From Test-Time to Post-Training",
+      "author": "Jens Tuyls and Dylan J. Foster and Akshay Krishnamurthy and Jordan T. Ash",
+      "year": "2025",
+      "url": "https://arxiv.org/abs/2510.11686",
+      "doi": null,
+      "eprint": "2510.11686",
+      "source_url": "https://arxiv.org/abs/2510.11686",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 42,
+          "context": "In particular, strategy-level interventions could support directed exploration across high-level solution strategies during reinforcement-learning post-training, beyond passive on-policy sampling from the base model's response distribution~\\citep{yue2025rlvrBeyondBase,tuyls2025representationExploration}."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 39,
+          "context": "Representation-based exploration methods respond to this limitation by adding novelty or diversity pressure in model representation space \\citep{tuyls2025representationExploration}."
+        }
+      ]
+    },
+    {
+      "key": "vasilakes2022negationUncertainty",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Learning Disentangled Representations of Negation and Uncertainty",
+      "author": "Vasilakes, Jake and Zerva, Chrysoula and Miwa, Makoto and Ananiadou, Sophia",
+      "year": "2022",
+      "url": "https://aclanthology.org/2022.acl-long.574/",
+      "doi": "10.18653/v1/2022.acl-long.574",
+      "eprint": null,
+      "source_url": "https://aclanthology.org/2022.acl-long.574/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 10,
+          "context": "Prior work separates syntax and semantics in sentence VAEs \\citep{bao2019disentangledSyntaxSemantics}, extends syntactic-semantic separation to Transformer-based VAEs \\citep{zhang2024graphInducedVae}, uses discrete latent variables to capture natural-language generative factors \\citep{mercatali2021discreteTextVae}, and disentangles semantic attributes such as negation and uncertainty from content \\citep{vasilakes2022negationUncertainty}."
+        }
+      ]
+    },
+    {
+      "key": "wang2023selfConsistency",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "inproceedings",
+      "title": "Self-Consistency Improves Chain of Thought Reasoning in Language Models",
+      "author": "Wang, Xuezhi and Wei, Jason and Schuurmans, Dale and Le, Quoc V. and Chi, Ed H. and Narang, Sharan and Chowdhery, Aakanksha and Zhou, Denny",
+      "year": "2023",
+      "url": "https://openreview.net/forum?id=1PL1NIMMrw",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://openreview.net/forum?id=1PL1NIMMrw",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 41,
+          "context": "This has applications across model interpretability \\citep{koh2020conceptBottleneck,cunningham2023sparseAutoencoders}, controllability \\citep{keskar2019ctrl,li2021prefixTuning}, and exploration \\citep{wang2023selfConsistency,yao2023treeOfThoughts}."
+        }
+      ]
+    },
+    {
+      "key": "wu2025invisibleLeash",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "misc",
+      "title": "The Invisible Leash: Why RLVR May or May Not Escape Its Origin",
+      "author": "Fang Wu and Weihao Xuan and Ximing Lu and Mingjie Liu and Yi Dong and Zaid Harchaoui and Yejin Choi",
+      "year": "2026",
+      "url": "https://arxiv.org/abs/2507.14843",
+      "doi": null,
+      "eprint": "2507.14843",
+      "source_url": "https://arxiv.org/abs/2507.14843",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 38,
+          "context": "Recent analyses of reinforcement learning with verifiable rewards suggest that on-policy post-training often sharpens solutions already accessible under the base model rather than broadly expanding the set of reachable reasoning strategies \\citep{yue2025rlvrBeyondBase,wu2025invisibleLeash}."
+        }
+      ]
+    },
+    {
+      "key": "yakowitz1968mixtures",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "article",
+      "title": "On the Identifiability of Finite Mixtures",
+      "author": "Yakowitz, Sidney and Spragins, John D.",
+      "year": "1968",
+      "url": null,
+      "doi": "10.1214/aoms/1177698520",
+      "eprint": null,
+      "source_url": "https://doi.org/10.1214/aoms/1177698520",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 15,
+          "context": "While there is also a rich theory for latent variable methods, classical identifiability theory for mixture models \\citep{teicher1963mixtures,yakowitz1968mixtures,allman2009latentStructure} and nonlinear ICA \\citep{hyvarinen2019nonlinearIca,khemakhem2020ivae} achieve uniqueness by restricting the component family or adding auxiliary observations. When using an expressive pretrained generator, classical identifiability conditions generally fail, and the central question becomes how to select a useful factorization among the many that preserve the marginal distribution. An extended discussion of related work with fuller citations is given in the supplementary material."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 23,
+          "context": "Classical finite-mixture theory studies when a marginal distribution uniquely determines its mixture components, often through restrictive component families, linear-independence conditions, or multi-view structure \\citep{teicher1963mixtures,yakowitz1968mixtures,allman2009latentStructure}."
+        }
+      ]
+    },
+    {
+      "key": "yao2023treeOfThoughts",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "inproceedings",
+      "title": "Tree of Thoughts: Deliberate Problem Solving with Large Language Models",
+      "author": "Yao, Shunyu and Yu, Dian and Zhao, Jeffrey and Shafran, Izhak and Griffiths, Thomas L. and Cao, Yuan and Narasimhan, Karthik",
+      "year": "2023",
+      "url": "https://arxiv.org/abs/2305.10601",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://arxiv.org/abs/2305.10601",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 41,
+          "context": "This has applications across model interpretability \\citep{koh2020conceptBottleneck,cunningham2023sparseAutoencoders}, controllability \\citep{keskar2019ctrl,li2021prefixTuning}, and exploration \\citep{wang2023selfConsistency,yao2023treeOfThoughts}."
+        }
+      ]
+    },
+    {
+      "key": "yue2025rlvrBeyondBase",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "misc",
+      "title": "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
+      "author": "Yang Yue and Zhiqi Chen and Rui Lu and Andrew Zhao and Zhaokai Wang and Yang Yue and Shiji Song and Gao Huang",
+      "year": "2025",
+      "url": "https://arxiv.org/abs/2504.13837",
+      "doi": null,
+      "eprint": "2504.13837",
+      "source_url": "https://arxiv.org/abs/2504.13837",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/01-introduction.tex",
+          "line": 42,
+          "context": "In particular, strategy-level interventions could support directed exploration across high-level solution strategies during reinforcement-learning post-training, beyond passive on-policy sampling from the base model's response distribution~\\citep{yue2025rlvrBeyondBase,tuyls2025representationExploration}."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 38,
+          "context": "Recent analyses of reinforcement learning with verifiable rewards suggest that on-policy post-training often sharpens solutions already accessible under the base model rather than broadly expanding the set of reachable reasoning strategies \\citep{yue2025rlvrBeyondBase,wu2025invisibleLeash}."
+        }
+      ]
+    },
+    {
+      "key": "zelikman2022star",
+      "cited": false,
+      "citation_count": 0,
+      "entry_type": "inproceedings",
+      "title": "{STaR}: Bootstrapping Reasoning With Reasoning",
+      "author": "Zelikman, Eric and Wu, Yuhuai and Mu, Jesse and Goodman, Noah D.",
+      "year": "2022",
+      "url": "https://arxiv.org/abs/2203.14465",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://arxiv.org/abs/2203.14465",
+      "source_acquisition": "not-required",
+      "review_state": "not-cited",
+      "occurrences": []
+    },
+    {
+      "key": "zhang2024graphInducedVae",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Graph-Induced Syntactic-Semantic Spaces in Transformer-Based Variational {A}uto{E}ncoders",
+      "author": "Zhang, Yingji and Valentino, Marco and Carvalho, Danilo and Pratt-Hartmann, Ian and Freitas, Andre",
+      "year": "2024",
+      "url": "https://aclanthology.org/2024.findings-naacl.32/",
+      "doi": "10.18653/v1/2024.findings-naacl.32",
+      "eprint": null,
+      "source_url": "https://aclanthology.org/2024.findings-naacl.32/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 10,
+          "context": "Prior work separates syntax and semantics in sentence VAEs \\citep{bao2019disentangledSyntaxSemantics}, extends syntactic-semantic separation to Transformer-based VAEs \\citep{zhang2024graphInducedVae}, uses discrete latent variables to capture natural-language generative factors \\citep{mercatali2021discreteTextVae}, and disentangles semantic attributes such as negation and uncertainty from content \\citep{vasilakes2022negationUncertainty}."
+        }
+      ]
+    },
+    {
+      "key": "zhao2017dialogCvae",
+      "cited": true,
+      "citation_count": 2,
+      "entry_type": "inproceedings",
+      "title": "Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders",
+      "author": "Zhao, Tiancheng and Zhao, Ran and Eskenazi, Maxine",
+      "year": "2017",
+      "url": "https://aclanthology.org/P17-1061/",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://aclanthology.org/P17-1061/",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/06-discussion.tex",
+          "line": 11,
+          "context": "There is a rich and extensive literature on latent variable methods for generative models of text. This work includes VAEs~\\citep{kingma2013vae} and CVAEs~\\citep{sohn2015cvae}, text and sequence VAEs~\\citep{bowman2016sentenceVae,zhao2017dialogCvae}, and disentanglement-oriented variants such as the $\\beta$-VAE~\\citep{higgins2017betavae,burgess2018betavae}, FactorVAE~\\citep{kim2018factorvae}, and InfoGAN~\\citep{chen2016infogan}, as well as pretrained-Transformer VAEs such as OPTIMUS~\\citep{li2020optimus} and the Transformer VAE of~\\citet{park2021transformerVae}. Adjacent language-VAE work also uses structured latent spaces to separate syntax from semantics, represent discrete linguistic factors, and control semantic attributes such as negation or uncertainty \\citep{bao2019disentangledSyntaxSemantics,mercatali2021discreteTextVae,vasilakes2022negationUncertainty,zhang2024graphInducedVae}. The problem we study in this work is not directly addressed by this prior work. The key distinction is that these methods learn a latent variable model where the target distribution is not represented by the model at initialization. In our setting the base model already realizes $p_\\theta(y|x)$, and it would be inefficient, if not impossible, to retrain the model from scratch to expose the strategy."
+        },
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 7,
+          "context": "Sequence and dialogue VAEs extend this idea to autoregressive generation, where the latent is intended to capture sentence-level, discourse-level, or response-level variation beyond the input context \\citep{bowman2016sentenceVae,serban2016vhred,zhao2017dialogCvae}."
+        }
+      ]
+    },
+    {
+      "key": "zhao2019infovae",
+      "cited": true,
+      "citation_count": 1,
+      "entry_type": "inproceedings",
+      "title": "{InfoVAE}: Balancing Learning and Inference in Variational Autoencoders",
+      "author": "Zhao, Shengjia and Song, Jiaming and Ermon, Stefano",
+      "year": "2019",
+      "url": "https://arxiv.org/abs/1706.02262",
+      "doi": null,
+      "eprint": null,
+      "source_url": "https://arxiv.org/abs/1706.02262",
+      "source_acquisition": "pending",
+      "review_state": "pending",
+      "occurrences": [
+        {
+          "file": "sections/appendix-related-work.tex",
+          "line": 16,
+          "context": "Several objective analyses separate the standard ELBO regularizer into latent information and aggregate-prior matching terms, motivating variants that preserve latent usage while keeping generation well regularized \\citep{hoffman2016elboSurgery,zhao2019infovae}."
+        }
+      ]
+    },
+    {
+      "key": "zou2023representationEngineering",
+      "cited": false,
+      "citation_count": 0,
+      "entry_type": "misc",
+      "title": "Representation Engineering: A Top-Down Approach to AI Transparency",
+      "author": "Andy Zou and Long Phan and Sarah Chen and James Campbell and Phillip Guo and Richard Ren and Alexander Pan and Xuwang Yin and Mantas Mazeika and Ann-Kathrin Dombrowski and Shashwat Goel and Nathaniel Li and Michael J. Byun and Zifan Wang and Alex Mallen and Steven Basart and Sanmi Koyejo and Dawn Song and Matt Fredrikson and J. Zico Kolter and Dan Hendrycks",
+      "year": "2025",
+      "url": "https://arxiv.org/abs/2310.01405",
+      "doi": null,
+      "eprint": "2310.01405",
+      "source_url": "https://arxiv.org/abs/2310.01405",
+      "source_acquisition": "not-required",
+      "review_state": "not-cited",
+      "occurrences": []
+    }
+  ]
+}

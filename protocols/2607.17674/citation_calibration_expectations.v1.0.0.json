@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "paper_id": "2607.17674",
+  "version": "1.0.0",
+  "created_before_qwen_review": true,
+  "review_plan_sha256": "66d1987c750db0d6a066e5efd5972caf54a294569ef8b8bd524f508530eef327",
+  "acquisition_manifest_sha256": "66fe09d96f2df62138a6f0e9820bc7e94c9fb8fc934d8d8bcb766277c29113d2",
+  "interpretation": "manual outer-loop expectations are calibration ranges, not labels that replace evidence review",
+  "source_identity_expectation": "match",
+  "occurrences": [
+    {
+      "occurrence_id": "allman2009latentStructure:occurrence-001",
+      "acceptable_support_classes": ["supports", "partially_supports"],
+      "acceptable_score_min": 7,
+      "acceptable_score_max": 9,
+      "watch_for": "The source supports identifiability through multi-view latent structure; other co-citations carry parts of the broader mixture-family claim."
+    },
+    {
+      "occurrence_id": "allman2009latentStructure:occurrence-002",
+      "acceptable_support_classes": ["supports"],
+      "acceptable_score_min": 8,
+      "acceptable_score_max": 9,
+      "watch_for": "Direct support for identifiability of finite latent-structure and mixture-like models with many observed variables."
+    },
+    {
+      "occurrence_id": "hu2022lora:occurrence-001",
+      "acceptable_support_classes": ["supports"],
+      "acceptable_score_min": 8,
+      "acceptable_score_max": 10,
+      "watch_for": "Direct method citation for low-rank parameter adaptation, not evidence about this paper's additional heads."
+    },
+    {
+      "occurrence_id": "kingma2013vae:occurrence-001",
+      "acceptable_support_classes": ["supports", "partially_supports"],
+      "acceptable_score_min": 6,
+      "acceptable_score_max": 8,
+      "watch_for": "The source establishes standard latent-variable generative modeling; the claimed distinction from the target method is the target authors' comparison."
+    },
+    {
+      "occurrence_id": "kingma2013vae:occurrence-002",
+      "acceptable_support_classes": ["supports"],
+      "acceptable_score_min": 8,
+      "acceptable_score_max": 9,
+      "watch_for": "Direct support for identifying VAEs as latent-variable generative models."
+    },
+    {
+      "occurrence_id": "kingma2013vae:occurrence-003",
+      "acceptable_support_classes": ["supports"],
+      "acceptable_score_min": 8,
+      "acceptable_score_max": 10,
+      "watch_for": "Direct support for encoder/recognition-model and ELBO-based latent generative training."
+    },
+    {
+      "occurrence_id": "qwen25technicalreport:occurrence-001",
+      "acceptable_support_classes": ["supports"],
+      "acceptable_score_min": 8,
+      "acceptable_score_max": 10,
+      "watch_for": "Direct support for the Qwen2.5 base family and the 0.5B/1.5B sizes; experiment use is established by the target paper itself."
+    },
+    {
+      "occurrence_id": "tuyls2025representationExploration:occurrence-001",
+      "acceptable_support_classes": ["supports", "partially_supports"],
+      "acceptable_score_min": 7,
+      "acceptable_score_max": 9,
+      "watch_for": "Direct support for representation-guided post-training exploration, with some extrapolation from behavior diversity to explicit high-level strategy interventions."
+    },
+    {
+      "occurrence_id": "tuyls2025representationExploration:occurrence-002",
+      "acceptable_support_classes": ["supports"],
+      "acceptable_score_min": 8,
+      "acceptable_score_max": 10,
+      "watch_for": "Direct support for diversity pressure or bonuses in pretrained-model representation space."
+    },
+    {
+      "occurrence_id": "wang2023selfConsistency:occurrence-001",
+      "acceptable_support_classes": ["partially_supports"],
+      "acceptable_score_min": 5,
+      "acceptable_score_max": 7,
+      "watch_for": "Self-consistency samples diverse reasoning paths, but the broad label 'exploration' is indirect and should not be treated as a direct exploration-method citation."
+    }
+  ]
+}

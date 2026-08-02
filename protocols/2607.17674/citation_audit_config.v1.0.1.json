@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "paper_id": "2607.17674",
+  "paper_version": "v1",
+  "protocol_version": "1.0.1",
+  "prior_protocol_tag": "2607.17674-citation-audit-v1.0.0",
+  "protocol_tag": "2607.17674-citation-audit-v1.0.1",
+  "inventory_sha256": "471117efcde4eb55e8a6742dc00ffc0c291f30c821e071f56834c433cdabe43a",
+  "chunking": {
+    "algorithm": "contiguous-unicode-line-aware-v1",
+    "maximum_utf8_bytes": 48000,
+    "overlap_characters": 0,
+    "page_delimiter": "form-feed",
+    "page_number_origin": 1,
+    "coverage_requirement": "every extracted character exactly once"
+  },
+  "primary_reviewer": {
+    "logical_family": "Qwen-family 27B local GGUF",
+    "known_gguf_basename": "Qwen3.6-27B-Heretic2-Uncensored-Finetune-Thinking.Q4_K_M.gguf",
+    "official_upstream_release": false,
+    "minimum_context_tokens": 50000,
+    "minimum_gpu_offload_layers": 999,
+    "chat_template_kwargs": {
+      "enable_thinking": true
+    },
+    "seed": 314159,
+    "evidence_generation": {
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "top_k": 0,
+      "maximum_output_tokens": 2048
+    },
+    "synthesis_generation": {
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "top_k": 0,
+      "maximum_output_tokens": 4096
+    },
+    "first_event_timeout_seconds": 120,
+    "stream_idle_timeout_seconds": 120,
+    "total_response_timeout_seconds": 900,
+    "maximum_attempts_per_call": 2,
+    "retry_scope": "structural or transport invalidity only"
+  },
+  "calibration_keys": [
+    "allman2009latentStructure",
+    "hu2022lora",
+    "kingma2013vae",
+    "qwen25technicalreport",
+    "tuyls2025representationExploration",
+    "wang2023selfConsistency"
+  ],
+  "calibration_gate": "all evidence chunks and all six synthesis records must be valid before remaining sources",
+  "validation": {
+    "evidence_excerpt_match": "Unicode NFKC plus whitespace collapse, exact substring",
+    "occurrence_coverage": "exact set equality",
+    "chunk_coverage": "exact ordered partition of acquired text",
+    "invalid_attempt_weight": 0
+  }
+}

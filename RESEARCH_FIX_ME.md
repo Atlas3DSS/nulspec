@@ -30,6 +30,83 @@ queue.
 
 ## Open items
 
+### RF-20260802-01 — Enforce one experimental GPU workload per host
+
+- Status: ACKNOWLEDGED
+- Blocking: publication
+- Observed in: [NULSPEC PR #26](https://github.com/Atlas3DSS/nulspec/pull/26),
+  `research/replications/2607.17674/CITATION_REVIEW_EXECUTION.md`
+- Affected study: `2607.17674`
+- Reported by: website
+- Reported at: 2026-08-02T06:46:40Z
+
+#### Observed
+
+The recorded citation-calibration attempt started on the same GPU while the
+paper-faithful factorization arm was still training. The execution note
+correctly preserves this as a runbook departure, but concurrent experimental
+GPU workloads also violate the repository's current one-workload-per-host
+resource policy. Available VRAM and continued operation of unrelated services
+do not satisfy that gate.
+
+#### Expected
+
+The citation-review runner must refuse to start when another experimental GPU
+workload is active on the host. The existing concurrent attempt remains
+immutable but is ineligible as a reference execution. Scientific outputs from
+the primary factorization arm are not changed by this process classification.
+
+#### Requested research change
+
+Classify the concurrent citation attempt explicitly, add a fail-closed
+single-workload preflight with focused tests, and run any required replacement
+only after the active experiment exits and the normal memory, GPU, CPU, nice,
+and I/O controls pass. Do not delete, overwrite, or silently relabel the
+existing attempt.
+
+#### Research response
+
+The concurrent calibration remains immutable, is explicitly classified as
+ineligible, and has zero citation or scientific evidentiary weight. Prospective
+harness v1.0.3 makes the Qwen citation runner acquire the same exclusive,
+nonblocking host lock as every primary arm before route inspection, trace
+creation, or a model request. It retains the lock for the process lifetime and
+records the held state and mechanism in private run input. The earlier
+concurrent one-token schema check is also classified as diagnostic-only;
+preflight v1.0.1 now shares the lock. A replacement calibration will not start
+until the primary workload releases that lock, an uncontended preflight passes,
+and a fresh append-only trace is allocated.
+
+Those execution conditions have now been satisfied. The eligible replacement
+preflight and calibration both acquired the workstation lock while no other
+NULSPEC experiment was active on that host. The completed calibration contains
+six final reviews, ten occurrence decisions, a terminal completion record, a
+297-file private content index, exact local usage/timing accounting, and a
+separate Codex gate. The gate permits only the remaining Qwen first pass; it
+continues to block teacher input, training use, publication, and email. That
+remaining pass subsequently failed closed at its frozen evidence-output
+ceiling. The complete failed trace is sealed; no teacher packet exists.
+Prospective runtime v1.0.5 requires a fresh preflight and six-source calibration
+before another remaining pass.
+
+#### Resolution evidence
+
+[Commit `cad3c93`](https://github.com/Atlas3DSS/nulspec/commit/cad3c933a810c9cc700dc3cd462a96a66dabd1d2)
+and tag `2607.17674-citation-audit-harness-v1.0.3` contain the amendment,
+implementation, focused tests, runbook, and error-ledger update. All 51
+citation tests passed; Ruff lint and formatting passed; the frozen protocol
+validator passed. Read-only live probes against each host's active primary arm
+both received the registered contention rejection. [Commit
+`a5263c0`](https://github.com/Atlas3DSS/nulspec/commit/a5263c09f98e298abe7d694faf571e16bc74975a)
+and tag `2607.17674-citation-runtime-preflight-v1.0.1` extend the same guard to
+schema preflight; host-specific probes rejected contention without creating a
+trace. Final resolution remains pending an eligible fresh preflight and
+calibration trace plus website-side verification. The eligible replacement is
+now recorded in `CITATION_REVIEW_EXECUTION.md`; its private record-stream digest
+is `c0771fbc34ca8862a878fbad13458fe1da48f4d7872a7059707a3cdf18fbdee7`,
+and the tracked record deliberately exposes no private host path or raw trace.
+Website verification remains pending, so this item stays acknowledged.
+
 ### RF-20260801-02 — Add the recorded human-disposition path for Fable HARD_FAIL
 
 - Status: OPEN
@@ -171,10 +248,11 @@ separate final-release review.
   its repair, and issue a new linked attempt; do not let Codex start until both
   logical teacher chains contain valid audits. Do not invoke Fable in that
   teacher loop.
-- After the teacher pipeline is complete and validated, request one bounded
-  Fable critique of the pipeline architecture, trace policy, failure handling,
-  and cost controls. Keep it outside teacher consensus and preserve its full
-  trace and cost without automatic retry.
+- After ten distinct paper teacher pipelines are complete and validated,
+  record a fresh 256-bit seed, reproducibly sample three of the ten, and request
+  one bounded Fable critique containing those three pipelines. Keep it outside
+  teacher consensus with zero decision weight, reject batch or paper reuse,
+  and preserve its full selection, trace, and cost without automatic retry.
 
 #### Requested research change
 

@@ -26,6 +26,10 @@ The reason and checksum verification for staging the completed 0.5B base stage
 to the second host are recorded in `CROSS_HOST_STAGING.md`.
 The immutable 0.5B and 1.5B Hub snapshot file-manifest digests are recorded in
 `MODEL_STAGING.md`; both exact revisions are now present on the primary host.
+The public-facing narrative is being developed in
+`ONE_PAGE_EXPLAINER_DRAFT.md`; its results language is deliberately gated until
+terminal analysis. `AUTHOR_QUESTIONS_DRAFT.md` collects method questions but is
+explicitly barred from sending without final review and exact human approval.
 
 ## Reproducible analysis helpers
 

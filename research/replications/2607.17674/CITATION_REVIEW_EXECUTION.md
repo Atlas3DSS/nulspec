@@ -8,7 +8,9 @@ same GPU. This is an operational departure from the runbook's idle-GPU
 precondition. It does not change any citation prompt, evidence packet, schema,
 sampling parameter, model weight, or primary experiment configuration. The
 reason was an explicit operator decision to use otherwise free PRO 6000 VRAM
-while preserving enough workstation capacity for local Palworld.
+while preserving capacity for unrelated non-experimental services. This
+attempt does not relax the repository's one-experimental-GPU-workload-per-host
+policy; the concurrency departure is retained here as a process deviation.
 
 The citation runner uses a separate clean checkout at commit
 `2a0ad3c643eff53e06fdab6567cd0a3b5858eea2`; no file in the active primary-run
@@ -34,9 +36,9 @@ two-core CPU quota.
 At launch, the primary process occupied approximately 34.9 GiB and the
 reviewer projected 18.9 GiB, leaving more than 40 GiB of GPU memory free.
 System available memory remained approximately 22.6 GiB, and the unrelated
-Palworld process remained alive and unchanged. Compute contention can increase
-wall-clock time, so throughput from this attempt must not be treated as a
-standalone performance benchmark. All request streams, raw responses, parse
-failures, usage, timing, runtime properties, and final records remain in the
-append-only ignored trace directory. No remaining-source review is authorized
-until the six calibration reviews pass operator inspection.
+non-experimental service remained alive and unchanged. Compute contention can
+increase wall-clock time, so throughput from this attempt must not be treated
+as a standalone performance benchmark. All request streams, raw responses,
+parse failures, usage, timing, runtime properties, and final records remain in
+the append-only ignored trace directory. No remaining-source review is
+authorized until the six calibration reviews pass operator inspection.

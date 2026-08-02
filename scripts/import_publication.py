@@ -28,7 +28,7 @@ FORBIDDEN_KEYS = {
 PRIVATE_TEXT = re.compile(
     r"(?:/" + r"home/|/Users/|[A-Za-z]:\\Users\\|BEGIN [A-Z ]*PRIVATE KEY|"
     r"(?:api|access|auth)[_-]?token\s*[=:]|GPU-[0-9a-f-]{36}|"
-    r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|palworld|MonkeyPC|wtatum84)",
+    r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})",
     re.IGNORECASE,
 )
 

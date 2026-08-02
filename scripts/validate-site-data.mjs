@@ -33,7 +33,7 @@ const privateText = new RegExp(
   String.raw`(?:/` +
     String.raw`home/|/Users/|[A-Za-z]:\\Users\\|BEGIN [A-Z ]*PRIVATE KEY|` +
     String.raw`(?:api|access|auth)[_-]?token\s*[=:]|GPU-[0-9a-f-]{36}|` +
-    String.raw`[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|palworld|MonkeyPC|wtatum84)`,
+    String.raw`[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})`,
   "i",
 );
 

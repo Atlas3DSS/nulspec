@@ -80,3 +80,11 @@ def test_duplicate_occurrence_is_rejected() -> None:
     )
     with pytest.raises(BUILDER.ProjectionError, match="duplicate occurrence"):
         BUILDER.population_summary(sources)
+
+
+def test_local_qwen_provenance_uses_a_python_boolean() -> None:
+    record = BUILDER.qwen_model_record(
+        {"gguf": {"basename": "reviewer.gguf", "sha256": "a" * 64}}
+    )
+
+    assert record["official_upstream_release"] is False

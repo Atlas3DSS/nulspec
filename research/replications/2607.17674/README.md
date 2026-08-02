@@ -90,11 +90,14 @@ execution-environment capture, and a fail-closed analyzer that requires primary
 scalar parity before comparing the two RNG modes.
 
 The separate reviewer-of-reviewers hierarchy is now frozen prospectively at
-`2607.17674-citation-teachers-v1.0.2`. It preserves every Qwen record, runs GLM
+`2607.17674-citation-teachers-v1.0.3`. It preserves every Qwen record, runs GLM
 and Kimi as independent teachers, and uses subscription-authenticated Codex for
 outer adjudication. Exact prompts, schemas, provider routes, spend gates,
 executables, and the terminal trace validator are hash-bound. No Qwen, external
 teacher, or Codex citation decision existed when that tag was created.
+Version 1.0.3 corrects a pre-execution Python boolean in the packet builder and
+rebinds the unchanged hierarchy under a new trace-only amendment; v1.0.2
+remains immutable.
 The exact staged execution order and fail-closed boundaries are documented in
 `CITATION_REVIEW_RUNBOOK.md`.
 The six-source human calibration ranges were written blind to Qwen output and

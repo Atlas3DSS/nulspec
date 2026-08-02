@@ -417,9 +417,10 @@ limitations. Entries are never removed after correction.
   `NameError` when it constructed a citation teacher packet, although existing
   tests did not exercise the affected statement.
 - **Disposition:** replace it with Python `False`, retain the discovery in this
-  log, and run the focused packet-builder tests before treating the harness as
-  executable. No reviewer request, result, trace, or primary experiment was
-  created or changed by this correction.
+  log, and freeze citation-teacher harness amendment v1.0.3 with new bindings
+  rather than rewriting v1.0.2. The focused packet-builder, GLM/Kimi runner,
+  Codex runner, and trace-validator tests pass. No reviewer request, result,
+  trace, or primary experiment was created or changed by this correction.
 
 ## External acquisition limitations
 

@@ -8,7 +8,7 @@ the traces, or send email.
 
 - Use citation-audit evidence contract `2607.17674-citation-audit-v1.0.1` and
   trace-only harness amendment `2607.17674-citation-audit-harness-v1.0.2`.
-- Use teacher hierarchy `2607.17674-citation-teachers-v1.0.2`.
+- Use teacher hierarchy `2607.17674-citation-teachers-v1.0.3`.
 - Require the exact registered GGUF basename and record its runtime SHA-256.
 - Bind a natively built llama-server from commit
   `f53577432541bb9edc1588c4ef45c66bf07e4468`; the runner records its SHA-256,

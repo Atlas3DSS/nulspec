@@ -23,10 +23,10 @@ TEACHER_EXECUTION_AMENDMENT = (
     WORKSPACE
     / "protocols"
     / "2607.17674"
-    / "CITATION_TEACHER_AMENDMENT_v1.0.2.md"
+    / "CITATION_TEACHER_AMENDMENT_v1.0.3.md"
 )
 TEACHER_CONFIG = (
-    WORKSPACE / "protocols" / "2607.17674" / "citation_teacher_config.v1.0.2.json"
+    WORKSPACE / "protocols" / "2607.17674" / "citation_teacher_config.v1.0.3.json"
 )
 PROVIDER_IMPLEMENTATION = WORKSPACE / "extension" / "direct_teacher_providers.py"
 TEACHER_SCHEMA = (
@@ -60,6 +60,15 @@ def write_new_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("xb") as handle:
         handle.write((json.dumps(value, indent=2, sort_keys=True) + "\n").encode())
+
+
+def qwen_model_record(run_input: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "logical_family": "Qwen-family 27B local GGUF",
+        "gguf_basename": run_input["gguf"]["basename"],
+        "gguf_sha256": run_input["gguf"]["sha256"],
+        "official_upstream_release": False,
+    }
 
 
 def accepted_record(stage_root: Path) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -214,7 +223,7 @@ def build_packet(trace_root: Path) -> dict[str, Any]:
         "schema_version": 1,
         "packet_type": "qwen_citation_teacher_packet",
         "paper_id": "2607.17674",
-        "teacher_protocol_version": "1.0.2",
+        "teacher_protocol_version": "1.0.3",
         "parent_citation_audit_version": "1.0.1",
         "protocol": {
             "boundary": (
@@ -228,12 +237,7 @@ def build_packet(trace_root: Path) -> dict[str, Any]:
                 "automated excerpt grounding; teachers cannot establish that Qwen "
                 "found every relevant passage in the unseen full sources."
             ),
-            "qwen_model": {
-                "logical_family": "Qwen-family 27B local GGUF",
-                "gguf_basename": run_input["gguf"]["basename"],
-                "gguf_sha256": run_input["gguf"]["sha256"],
-                "official_upstream_release": False,
-            },
+            "qwen_model": qwen_model_record(run_input),
             "source_qwen_completion_sha256": sha256_file(completion_path),
             "teacher_protocol_sha256": sha256_file(TEACHER_PROTOCOL),
             "teacher_amendment_sha256": sha256_file(TEACHER_AMENDMENT),

@@ -31,7 +31,7 @@ from scripts.citation_teacher_contract import validate_teacher_record
 
 PROTOCOL_ROOT = WORKSPACE / "protocols" / "2607.17674"
 STUDY_WORK_ROOT = WORKSPACE / "research" / "replications" / "2607.17674" / "work"
-DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_teacher_config.v1.0.2.json"
+DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_teacher_config.v1.0.3.json"
 DEFAULT_SCHEMA = PROTOCOL_ROOT / "citation_teacher_audit.schema.json"
 DEFAULT_PROMPT = PROTOCOL_ROOT / "prompts" / "citation_teacher_system.txt"
 PROVIDER_IMPLEMENTATION = WORKSPACE / "extension" / "direct_teacher_providers.py"
@@ -503,12 +503,12 @@ def main() -> None:
     except ValueError as error:
         raise SystemExit(f"trace root must be inside {STUDY_WORK_ROOT}") from error
     config = load_object(config_path)
-    if config.get("protocol_version") != "1.0.2":
-        raise SystemExit("teacher config is not protocol v1.0.2")
+    if config.get("protocol_version") != "1.0.3":
+        raise SystemExit("teacher config is not protocol v1.0.3")
     verify_bindings(config)
     packet = load_object(packet_path)
-    if packet.get("teacher_protocol_version") != "1.0.2":
-        raise SystemExit("teacher packet is not protocol v1.0.2")
+    if packet.get("teacher_protocol_version") != "1.0.3":
+        raise SystemExit("teacher packet is not protocol v1.0.3")
     packet_sha256 = sha256_file(packet_path)
     schema = load_object(DEFAULT_SCHEMA)
     prompt = DEFAULT_PROMPT.read_text(encoding="utf-8")

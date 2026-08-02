@@ -26,7 +26,7 @@ from scripts.run_2607_17674_codex_citation_adjudication import (
 
 PROTOCOL_ROOT = WORKSPACE / "protocols" / "2607.17674"
 STUDY_WORK_ROOT = WORKSPACE / "research" / "replications" / "2607.17674" / "work"
-DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_teacher_config.v1.0.2.json"
+DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_teacher_config.v1.0.3.json"
 TEACHER_SCHEMA = PROTOCOL_ROOT / "citation_teacher_audit.schema.json"
 CODEX_SCHEMA = PROTOCOL_ROOT / "citation_codex_adjudication.schema.json"
 

@@ -105,8 +105,10 @@ against dehyphenation. Immutable packets, validation, model, decoding settings,
 and the six-source gate are unchanged. Its fresh calibration again failed
 closed on the first source: page selection improved, but Qwen still silently
 joined words across physical PDF line-wrap hyphens. That complete attempt also
-has zero weight. A further attempt is blocked until a prospective exact-line
-presentation contract is frozen and verified.
+has zero weight. Prospective runtime v1.0.4 instead presents each page as exact
+physical source lines and requires every excerpt to come from one line. A fresh
+attempt remains blocked until that contract is frozen, fully verified, and
+passes a new eligible runtime preflight.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the

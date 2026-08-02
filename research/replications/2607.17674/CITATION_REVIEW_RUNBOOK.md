@@ -8,10 +8,11 @@ the traces, or send email.
 
 - Use citation-audit evidence contract `2607.17674-citation-audit-v1.0.1` and
   trace-only harness amendment `2607.17674-citation-audit-harness-v1.0.3`.
-- After the preserved v1.0.1 and v1.0.2 zero-weight calibration failures, use
+- After the preserved v1.0.1, v1.0.2, and v1.0.3 zero-weight calibration
+  failures, use
   prospective runtime amendment
-  `2607.17674-citation-audit-runtime-v1.0.3` and pass
-  `citation_audit_config.v1.0.3.json` explicitly.
+  `2607.17674-citation-audit-runtime-v1.0.4` and pass
+  `citation_audit_config.v1.0.4.json` explicitly.
 - Use teacher hierarchy `2607.17674-citation-teachers-v1.0.3`.
 - Require the exact registered GGUF basename and record its runtime SHA-256.
 - Bind a natively built llama-server from commit
@@ -28,9 +29,10 @@ the traces, or send email.
 - Runtime schema preflight v1.0.1 must acquire that same lock and produce a
   fresh eligible pass before replacement calibration. The earlier concurrent
   parser check is retained as diagnostic-only evidence.
-- Evidence runtime v1.0.3 must present the immutable chunk as exact page-labeled
-  substrings and preserve extracted-PDF line-wrap hyphens. The unchanged client
-  validator continues to ground every excerpt against the original packet.
+- Evidence runtime v1.0.4 must present the immutable chunk as exact page-labeled
+  physical source lines. Every excerpt must come from one line without joining
+  a split PDF word. The unchanged client validator continues to ground every
+  excerpt against the original packet.
 
 ## 1. Start the local Qwen route
 
@@ -63,7 +65,7 @@ python scripts/run_2607_17674_qwen_citation_audit.py \
   --route workstation=http://127.0.0.1:8080 \
   --gguf-path /path/to/registered-reviewer.gguf \
   --llama-binary /path/to/pinned/llama-server \
-  --config protocols/2607.17674/citation_audit_config.v1.0.3.json \
+  --config protocols/2607.17674/citation_audit_config.v1.0.4.json \
   --phase calibration
 ```
 

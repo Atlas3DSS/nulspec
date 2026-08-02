@@ -320,6 +320,100 @@ def test_v103_binds_prompt_and_preserves_generation_contract() -> None:
     assert reviewer["synthesis_generation"]["maximum_output_tokens"] == 12288
 
 
+def test_v104_line_labeled_presentation_reconstructs_exact_pages() -> None:
+    text = "first identi-\nfiability\fsecond page\n"
+    packet = {
+        "source_chunk": {
+            "sha256": RUNNER.sha256_bytes(text.encode("utf-8")),
+            "text": text,
+            "page_spans": [
+                {
+                    "page_number": 7,
+                    "chunk_character_start": 0,
+                    "chunk_character_end": text.index("\f"),
+                },
+                {
+                    "page_number": 8,
+                    "chunk_character_start": text.index("\f") + 1,
+                    "chunk_character_end": len(text),
+                },
+            ],
+        }
+    }
+    original = json.loads(json.dumps(packet))
+    presented = RUNNER.model_facing_evidence_packet(
+        packet,
+        {
+            "mode": "page_labeled_exact_source_lines_v1",
+            "line_split_algorithm": "python-splitlines-keepends-true-v1",
+            "source_line_representation": "ordered-json-string-array",
+            "line_number_origin": 1,
+        },
+    )
+    assert packet == original
+    pages = presented["source_chunk"]["extracted_pages"]
+    assert "text" not in pages[0]
+    assert pages[0]["source_lines"] == ["first identi-\n", "fiability"]
+    assert pages[0]["line_count"] == 2
+    assert pages[1]["source_lines"][0] == "second page\n"
+    assert "".join(pages[0]["source_lines"]) == "first identi-\nfiability"
+    presentation = presented["source_chunk"]["model_facing_presentation"]
+    assert presentation["covered_characters"] == len(text) - 1
+    assert presentation["source_line_count"] == 3
+
+
+def test_v104_rejects_unbound_line_presentation_contract() -> None:
+    packet = {
+        "source_chunk": {
+            "sha256": RUNNER.sha256_bytes(b"one line"),
+            "text": "one line",
+            "page_spans": [
+                {
+                    "page_number": 1,
+                    "chunk_character_start": 0,
+                    "chunk_character_end": 8,
+                }
+            ],
+        }
+    }
+    with pytest.raises(RUNNER.AuditError, match="presentation contract differs"):
+        RUNNER.model_facing_evidence_packet(
+            packet,
+            {
+                "mode": "page_labeled_exact_source_lines_v1",
+                "line_split_algorithm": "unregistered",
+                "source_line_representation": "ordered-json-string-array",
+                "line_number_origin": 1,
+            },
+        )
+
+
+def test_v104_binds_single_line_prompt_and_preserves_generation_contract() -> None:
+    config = json.loads(
+        (
+            WORKSPACE / "protocols/2607.17674/citation_audit_config.v1.0.4.json"
+        ).read_text()
+    )
+    prompt, binding = RUNNER.effective_evidence_prompt(config)
+    reviewer = config["primary_reviewer"]
+    assert config["protocol_version"] == "1.0.4"
+    assert binding["mode"] == "page_labeled_exact_source_lines_v1"
+    assert (
+        binding["supplemental"]["sha256"]
+        == reviewer["evidence_packet_presentation"]["supplemental_prompt_sha256"]
+    )
+    assert "exactly one source-line string" in prompt
+    assert "never combine adjacent lines" in prompt
+    assert reviewer["evidence_generation"] == {
+        "temperature": 0,
+        "top_p": 1,
+        "top_k": 0,
+        "maximum_output_tokens": 8192,
+        "response_format_mode": "structure_only_json_schema",
+    }
+    assert reviewer["synthesis_generation"]["maximum_output_tokens"] == 12288
+
+
 @pytest.mark.parametrize(
     "schema_name",
     ["citation_evidence_chunk.schema.json", "citation_review.schema.json"],

@@ -227,3 +227,47 @@ the event log has SHA-256
 `dea07da10acadd305b3f13e786b57430ac6eb173ea93a8f67464d03d31f1b4ce`.
 A further attempt requires a new prospective contract that constrains excerpts
 to exact physical source lines; retrying v1.0.3 is not authorized.
+
+A separate ignored outer-loop label record scores the eligible v1.0.2 and
+v1.0.3 failed calibration traces at 4/10 and 5/10 respectively under the frozen
+Qwen reviewer-quality rubric. It binds every attempt-record and trace-manifest
+hash, records valid/invalid candidate counts and error classes, and supplies
+four exact page-grounded correction examples for future supervised curation.
+Its SHA-256 is
+`e5f45c0c89f9428bd64492d27da772f96e8c311785562fe6537fcdbc39bae915`.
+The label explicitly carries zero citation-decision weight and authorizes no
+automatic training, publication, teacher input, email, or release action.
+
+### Prospective v1.0.4 verification
+
+The first line-level draft represented every physical line as an object with a
+line number and SHA-256. The required pre-execution context audit rejected that
+design: across the 112 frozen evidence packets, median prompt text was 52,877
+tokens and the maximum was 99,609 before reserving any output. No review request
+used that draft. LRS-LOCAL-072 records the contained design error.
+
+The corrected v1.0.4 presentation uses an ordered array of exact line strings,
+with one-based array position as the line number and the existing page SHA-256
+as the integrity binding. All 42,693 physical line entries across all 112 packets
+reconstructed their exact pages and preserved full packet coverage. While
+holding the exclusive experiment lock, the registered `b8942-f535774` runtime
+rendered each complete chat through `/apply-template` and tokenized it through
+`/tokenize`. Exact rendered prompts ranged from 1,866 to 35,644 tokens with a
+median of 14,394. The largest packet was
+`yao2023treeOfThoughts:chunk-0001`; after reserving all 8,192 evidence-output
+tokens, its total was 43,836, below the live 50,176-token context. The largest
+rendered prompt has SHA-256
+`252edf300a3aca64c9673c366cee9476abcd8201076a866f5990beeeea3a4969`.
+
+The prospective configuration SHA-256 is
+`99f4d557a6df2523f9b8149c2017ab071cfe2afd51fa67d2c24fdf546cb5007f`.
+The supplemental and effective evidence-prompt SHA-256 values are respectively
+`08e985e57d86270ad46fe5475ef96580bc8a5257144d1768e665099cd311baab`
+and
+`ef73a07fe1c7492fe38ad21679eb5becb9b45615503e7447bcfac40b1fcc6046`.
+The two runtime-focused files passed 19/19 tests; scoped Ruff lint, Ruff
+formatting, JSON parsing, Python compilation, repository hygiene, whitespace,
+and the frozen protocol check passed. The repository-wide suite passed 164
+tests and reached only the known unrelated missing fixture recorded in
+LRS-LOCAL-059. No v1.0.4 model generation is authorized until the amendment is
+committed, tagged, synchronized, and passes a fresh lock-held preflight.

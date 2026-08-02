@@ -765,6 +765,51 @@ limitations. Entries are never removed after correction.
   packet and original invalid outputs, pass new coverage tests and an eligible
   preflight, and use a fresh trace identifier.
 
+### LRS-LOCAL-070 — 1.5B readiness check assumed a display-name directory
+
+- **State:** corrected before run launch; no experimental effect
+- **Observation:** the first read-only 1.5B readiness command looked for a
+  `snapshot-`-prefixed model directory, matching the inventory filename rather
+  than the actual revision-named snapshot directory. The fail-closed compound
+  check exited silently before acquiring the experiment lock or starting a run.
+- **Disposition:** retain this as our path-assumption error. Resolve the model
+  directory from the frozen protocol/revision, rerun every readiness check, and
+  launch only after the corrected exact path and all service/resource gates pass.
+
+### LRS-LOCAL-071 — first v1.0.4 format check found one wrapping difference
+
+- **State:** corrected before commit, tag, preflight, or model request
+- **Observation:** focused tests and scoped lint passed, while Ruff's formatting
+  check requested a mechanical single-line normalization in the preflight
+  version error. No runtime behavior or research artifact used that draft.
+- **Disposition:** apply Ruff's deterministic formatter and rerun formatting,
+  lint, focused tests, all-packet coverage, and context-size checks before
+  freezing the amendment.
+
+### LRS-LOCAL-072 — first exact-line representation exceeded model context
+
+- **State:** rejected before commit, tag, preflight, or model generation
+- **Observation:** the first v1.0.4 draft attached a line number and SHA-256 to
+  every physical source line. The mandatory all-packet tokenizer audit found a
+  52,877-token median prompt and a 99,609-token maximum before output reserve,
+  exceeding the live 50,176-token context. No citation decision used it.
+- **Disposition:** retain this as our prospective design error. Use compact
+  ordered arrays of exact line strings, preserve integrity with the existing
+  page SHA-256 plus fail-closed concatenation, and rerun all 112 packets. The
+  replacement maximum is 35,644 exact rendered-prompt tokens and 43,836 after
+  the full 8,192-token output reserve.
+
+### LRS-LOCAL-073 — first context-audit documentation patch crossed file context
+
+- **State:** atomically rejected and corrected; no research effect
+- **Observation:** the first documentation-only patch placed an error-log
+  context under the execution-record file header. `apply_patch` rejected the
+  entire patch because that context did not exist, so no file was partially
+  modified.
+- **Disposition:** retain this as our editing-command error and reapply with an
+  explicit update header for each file. Recheck whitespace and exact hashes
+  before commit.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

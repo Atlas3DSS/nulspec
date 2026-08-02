@@ -39,6 +39,7 @@ DEFAULT_SYNTHESIS_PROMPT = PROTOCOL_ROOT / "prompts" / "citation_synthesis_syste
 RUNTIME_AMENDMENTS = {
     "1.0.2": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.2.md",
     "1.0.3": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.3.md",
+    "1.0.4": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.4.md",
 }
 EVENT_LOCK = threading.Lock()
 GRAMMAR_ONLY_OMITTED_SCHEMA_KEYS = frozenset(
@@ -150,7 +151,10 @@ def effective_evidence_prompt(config: dict[str, Any]) -> tuple[str, dict[str, An
             "supplemental": None,
             "effective_sha256": sha256_bytes(canonical.encode("utf-8")),
         }
-    if mode != "page_labeled_exact_text_v1":
+    if mode not in {
+        "page_labeled_exact_text_v1",
+        "page_labeled_exact_source_lines_v1",
+    }:
         raise AuditError(f"unsupported evidence packet presentation: {mode}")
 
     relative = presentation.get("supplemental_prompt_relative_path")
@@ -191,8 +195,20 @@ def model_facing_evidence_packet(
     mode = (presentation or {}).get("mode", "immutable_packet")
     if mode == "immutable_packet":
         return packet
-    if mode != "page_labeled_exact_text_v1":
+    if mode not in {
+        "page_labeled_exact_text_v1",
+        "page_labeled_exact_source_lines_v1",
+    }:
         raise AuditError(f"unsupported evidence packet presentation: {mode}")
+    if mode == "page_labeled_exact_source_lines_v1":
+        required_contract = {
+            "line_split_algorithm": "python-splitlines-keepends-true-v1",
+            "source_line_representation": "ordered-json-string-array",
+            "line_number_origin": 1,
+        }
+        for key, expected in required_contract.items():
+            if presentation.get(key) != expected:
+                raise AuditError(f"source-line presentation contract differs: {key}")
 
     model_packet = copy.deepcopy(packet)
     source_chunk = model_packet.get("source_chunk")
@@ -227,13 +243,19 @@ def model_facing_evidence_packet(
             raise AuditError("page spans overlap")
         covered[start:end] = b"\x01" * (end - start)
         value = text[start:end]
-        pages.append(
-            {
-                "page_number": page_number,
-                "text": value,
-                "text_sha256": sha256_bytes(value.encode("utf-8")),
-            }
-        )
+        page_record: dict[str, Any] = {
+            "page_number": page_number,
+            "text_sha256": sha256_bytes(value.encode("utf-8")),
+        }
+        if mode == "page_labeled_exact_text_v1":
+            page_record["text"] = value
+        else:
+            line_values = value.splitlines(keepends=True)
+            if not line_values or "".join(line_values) != value:
+                raise AuditError("source-line presentation does not reconstruct page")
+            page_record["source_lines"] = line_values
+            page_record["line_count"] = len(line_values)
+        pages.append(page_record)
         page_numbers.add(page_number)
 
     omitted = [text[index] for index, marker in enumerate(covered) if not marker]
@@ -244,9 +266,13 @@ def model_facing_evidence_packet(
     source_chunk["model_facing_presentation"] = {
         "mode": mode,
         "original_text_sha256": packet["source_chunk"]["sha256"],
-        "covered_characters": sum(len(page["text"]) for page in pages),
+        "covered_characters": sum(covered),
         "omitted_form_feed_delimiters": len(omitted),
     }
+    if mode == "page_labeled_exact_source_lines_v1":
+        source_chunk["model_facing_presentation"]["source_line_count"] = sum(
+            int(page["line_count"]) for page in pages
+        )
     return model_packet
 
 
@@ -1078,6 +1104,7 @@ def main() -> None:
         "1.0.1",
         "1.0.2",
         "1.0.3",
+        "1.0.4",
     }:
         raise SystemExit("citation runtime config identity or version differs")
     for label, binding in review_plan["bindings"].items():

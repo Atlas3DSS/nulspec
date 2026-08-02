@@ -1,0 +1,5 @@
+arm_id,phase,track,model,objective,response_source,beta,beta_schedule,seed,initial_state
+R-qwen2.5-0.5b-global-token-b0.01-warmup-s314159,released-code,R,qwen2.5-0.5b,global+token,benchmark,0.01,linear-100pct,314159,pending
+R-qwen2.5-1.5b-global-token-b0.01-warmup-s314159,released-code,R,qwen2.5-1.5b,global+token,benchmark,0.01,linear-100pct,314159,pending
+M-qwen2.5-0.5b-global-token-b0.01-warmup-s314159,manuscript-method,M,qwen2.5-0.5b,global+token,base-model,0.01,linear-100pct,314159,pending
+M-qwen2.5-1.5b-global-token-b0.01-warmup-s314159,manuscript-method,M,qwen2.5-1.5b,global+token,base-model,0.01,linear-100pct,314159,pending

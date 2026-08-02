@@ -108,6 +108,7 @@ def main() -> None:
     parser.add_argument("--arm-id", required=True)
     parser.add_argument("--phase", choices=("start", "end"), required=True)
     parser.add_argument("--protocol-version", required=True)
+    parser.add_argument("--paper-id", default="2607.25091")
     parser.add_argument("--invocation", default="")
     parser.add_argument("--exit-code", type=int)
     parser.add_argument(
@@ -180,16 +181,22 @@ def main() -> None:
         "upstream": git_state(args.upstream),
         "protocol_files": {
             "config_sha256": sha256(
-                WORKSPACE / "protocols" / "2607.25091" / "config.json"
+                WORKSPACE / "protocols" / args.paper_id / "config.json"
             ),
             "matrix_sha256": sha256(
-                WORKSPACE / "protocols" / "2607.25091" / "matrix.csv"
+                WORKSPACE / "protocols" / args.paper_id / "matrix.csv"
             ),
             "data_manifest_sha256": sha256(
                 WORKSPACE
                 / "protocols"
-                / "2607.25091"
+                / args.paper_id
                 / "data_manifest.json"
+            ),
+            "source_manifest_sha256": sha256(
+                WORKSPACE
+                / "protocols"
+                / args.paper_id
+                / "SOURCE_MANIFEST.json"
             ),
         },
     }

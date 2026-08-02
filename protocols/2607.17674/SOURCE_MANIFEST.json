@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "paper_id": "2607.17674",
+  "retrieved_at": "2026-08-01",
+  "artifacts": [
+    {
+      "id": "arxiv-abstract-v1",
+      "source": "https://arxiv.org/abs/2607.17674v1",
+      "relative_private_path": "work/sources/arxiv-abs-v1.html",
+      "bytes": 42130,
+      "sha256": "43ca5ca3c632229466bae083a5456b8c10e8621f3dab1ccfb6de8613d25efada",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "arxiv-pdf-v1",
+      "source": "https://arxiv.org/pdf/2607.17674v1",
+      "relative_private_path": "work/sources/arxiv-v1.pdf",
+      "bytes": 2186489,
+      "sha256": "bdaa0e78cea7ab77940ddee3389d28306198ab23b8d9c2457e74de79e22d1254",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "arxiv-source-v1",
+      "source": "https://arxiv.org/src/2607.17674v1",
+      "relative_private_path": "work/sources/arxiv-v1.tar",
+      "bytes": 1743405,
+      "sha256": "81adff026f260d33aba27796a31c3464ad49aa29438f6a925141d03f6b835a7c",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "upstream-git-archive",
+      "source": "https://github.com/Awni00/latent-strategies-in-lms",
+      "revision": "0c0f221d7dc37cd4eb7fb1af3332520bccf4d9fe",
+      "sha256": "fea5a7f598b5bbeb810dca9228c8ed1e41b87d8ff48cd2d404bcd53752268c79",
+      "license": "MIT"
+    }
+  ],
+  "released_config_sha256": {
+    "benchmark.json": "02ebb6dc19cd6596f1331dd272764ef978d415b2f18cf07759147e35f762c5ad",
+    "base_model_qwen2.5-0.5b.json": "16b899cfedd70643a76d589602e7d2cd51257f0b3621c4f5b85819bd5ddaab69",
+    "base_model_qwen2.5-1.5b.json": "9fe9e2a9ebc479f0f60dad2e7802de1aa8f08a35ce7e25031975b66d945f9676",
+    "factorization.json": "c8dae70a65e75b15c205d35cc480e63cf0dcd0741b685697e752d91443bf2d80",
+    "evaluation.json": "39731599084d4c678d52edad50b301fa11716b123ce7b1041dcc64eb4f00bb0a",
+    "uv.lock": "5a09b31fa39407dec48c2fe5482803ddebd21167b0ef6705d0b8238022a4b181"
+  },
+  "citation_inventory": {
+    "bibliography_entries": 45,
+    "unique_cited_keys": 41,
+    "audit_state": "pending"
+  }
+}

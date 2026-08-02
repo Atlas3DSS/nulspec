@@ -63,6 +63,26 @@ limitations. Entries are never removed after correction.
   result fixture in this new worktree. CI reconstructs that fixture before its
   test step.
 
+### LRS-LOCAL-008 — assumed the experiment issue label existed
+
+- **State:** corrected; no scientific effect
+- **Observation:** the first attempt to register the artifact smoke run asked
+  GitHub to apply the `experiment` label named by the repository's own issue
+  template. That label is not configured in the repository, so GitHub rejected
+  the request and created no issue.
+- **Disposition:** verified that no partial issue existed, then created issue
+  #27 without a label. No run began before successful registration.
+
+### LRS-LOCAL-009 — invoked a non-executable Python helper directly
+
+- **State:** corrected; no scientific effect
+- **Observation:** the first post-smoke hashing command attempted to execute
+  `hash_artifact_tree.py` directly even though it is intentionally not marked
+  executable. All three hashing calls stopped with permission errors before
+  writing manifests.
+- **Disposition:** reran the helper through the pinned Python interpreter; all
+  artifact manifests were created and validated.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

@@ -51,6 +51,22 @@ The second path is not described as an exact code reproduction. Both paths
 must bind immutable inputs, preregister deviations, preserve failures, and
 make the resulting claim no stronger than the evidence permits.
 
+## Ambient integrity audits
+
+When isolated spare compute is insufficient or inappropriate for a faithful
+experimental arm, it may be used for the bounded integrity work defined in
+[the integrity-audit policy](INTEGRITY_AUDIT_POLICY.md). This includes source
+acquisition, citation-to-claim verification, deterministic textual-overlap
+screening, and preparation of traceable evidence packets. These jobs yield to
+primary experiments and unrelated workloads; spare capacity is never a reason
+to weaken host safety limits.
+
+Automated overlap detection produces review leads, not plagiarism verdicts.
+Any public characterization must account for quotation, attribution, shared
+methods language, common phrases, version history, and author overlap, and
+must pass the same calibrated reviewer and human escalation gates as other
+sensitive claims.
+
 ## Order of operations
 
 1. **Artifact verification:** establish exactly what the paper, repository,

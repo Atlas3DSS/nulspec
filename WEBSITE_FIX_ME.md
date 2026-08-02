@@ -23,6 +23,55 @@ side records those in `RESEARCH_FIX_ME.md`.
 
 ## Open items
 
+### WF-20260802-01 — Expose the field-diverse candidate policy
+
+- Status: OPEN
+- Blocking: neither
+- Observed in: [NULSPEC PR #26](https://github.com/Atlas3DSS/nulspec/pull/26),
+  research-policy commit `d58dad489362aa7fbd81baf103d893fc20ef27fc`
+- Affected study: not applicable; candidate queue
+- Reported by: research
+- Reported at: 2026-08-02T06:26:47Z
+
+#### Observed
+
+The research charter now uses a rolling 12-month eligibility window for AI/ML
+and a 36-month window for non-AI/ML, while retaining the current arXiv-only
+source policy. It also distinguishes an artifact reproduction from an
+independent methods reimplementation and asks candidate batches to represent
+multiple computational fields. The current queue can express topics in free
+text but cannot expose or filter those distinctions reliably.
+
+#### Expected
+
+Readers should be able to see why a candidate is eligible and what kind of
+replication NULSPEC could attempt. The queue should make non-AI work plainly
+discoverable rather than placing every field into one popularity list. The
+presentation must not imply that a methods reimplementation is an exact rerun
+of released code.
+
+#### Requested website change
+
+1. Add validated candidate metadata for broad field, `ai_ml` versus `non_ai_ml`
+   window class, and evidence path (`artifact_reproduction` or
+   `methods_reimplementation`).
+2. Show those labels on each candidate and add field/window filters that work
+   with newest and most-votes sorting, pagination, the runtime API, and the
+   static fallback.
+3. Preserve the API schema's ability to evolve, but document that the current
+   research producer admits only arXiv records: 12 months for AI/ML and 36
+   months for non-AI/ML.
+4. Add validation coverage for mixed-field candidate sets and narrow mobile
+   layouts without changing existing vote semantics.
+
+#### Website response
+
+Pending.
+
+#### Resolution evidence
+
+Pending research-side verification after implementation and deployment.
+
 ### WF-20260801-01 — Import typed classification-accuracy studies
 
 - Status: OPEN

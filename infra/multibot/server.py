@@ -10,6 +10,7 @@ from nulspec_nominations import (
     register_nulspec_extension_vote_routes,
     register_nulspec_nomination_routes,
 )
+from nulspec_review import register_nulspec_review_routes
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -84,6 +85,7 @@ def create_app():
 
     register_nulspec_nomination_routes(app)
     register_nulspec_extension_vote_routes(app)
+    register_nulspec_review_routes(app)
     return app
 
 

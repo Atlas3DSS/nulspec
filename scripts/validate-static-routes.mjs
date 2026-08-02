@@ -74,6 +74,46 @@ if (missing.length > 0 || unknown.length > 0) {
   );
 }
 
+const reviewPages = [
+  {
+    path: resolve(outputDirectory, "review", "index.html"),
+    title: "Human review inbox",
+  },
+  {
+    path: resolve(outputDirectory, "review", "login", "index.html"),
+    title: "Reviewer login",
+  },
+];
+for (const page of reviewPages) {
+  const html = await readFile(page.path, "utf8");
+  if (
+    !html.includes(page.title) ||
+    !html.includes("noindex, nofollow, noarchive")
+  ) {
+    throw new Error("private review route lacks required metadata: " + page.path);
+  }
+  for (const prohibited of [
+    "NULSPEC_REVIEW_ACCOUNTS_B64",
+    "NULSPEC_REVIEW_PEPPER_B64",
+    "data-review-task=",
+    "author@example",
+    "reviewer.one",
+  ]) {
+    if (html.includes(prohibited)) {
+      throw new Error(
+        "private material entered the static review shell: " + prohibited,
+      );
+    }
+  }
+}
+
+const robots = await readFile(resolve(outputDirectory, "robots.txt"), "utf8");
+if (!robots.includes("Disallow: /review")) {
+  throw new Error("robots.txt does not exclude the private review routes");
+}
+
 console.log(
-  "validated " + actualRoutes.size + " static arm evidence routes",
+  "validated " +
+    actualRoutes.size +
+    " static arm evidence routes and 2 data-free review shells",
 );

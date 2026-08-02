@@ -1,0 +1,132 @@
+{
+  "attempt_id": "SR-20260801-005",
+  "completed_at_utc": "2026-08-01T18:18:37.319439Z",
+  "decision": {
+    "action_items": [],
+    "checks": [
+      {
+        "area": "scientific_fidelity",
+        "evidence": "PROTOCOL.md 'Claim under test' and 'Decision language'; REPORT.md 'Bottom line'; machine_evidence.primary.models.sprkd_upstream_direct_init / sprkd_paper_random_init",
+        "finding": "The targeted claim (Table 1 five-trial 94.80% SPRKD, 94.47% Control-S, 70.10% RKD) is tested at the paper's 500-epoch/five-seed specification on the exact upstream commit, with artifact replay, exact-public, and narrow paper-intent layers separated. Classification not_replicated/inconclusive follows the frozen PROTOCOL.md decision rule rather than post-hoc preference; best-epoch proximity (94.827%) is reported without being used to soften the verdict.",
+        "status": "PASS"
+      },
+      {
+        "area": "internal_consistency",
+        "evidence": "REPORT.md 'Five-seed scratch results' table vs machine_evidence.primary.models; machine_evidence.released_artifacts.released_hessian_artifacts; WEBSITE_HANDOFF.json metrics",
+        "finding": "All prose figures agree with machine aggregates: 85.742\u00b120.012, 67.977\u00b124.634, 71.507\u00b11.361, D2 94.792/95.152 with -0.360 point gap, E1 +0.163, E2 86.099, E3 full ordering 1/5 and 2/5. Artifact mismatches (checkpoints 84/80/74, traces 94.543/95.399, Hessians 54.96/35.48/209.47 vs paper 33.39/71.33/408.27) are identical across UPSTREAM_AUDIT.md, REPORT.md, ONE_PAGE.md, and released_artifacts evidence.",
+        "status": "PASS"
+      },
+      {
+        "area": "statistics_and_uncertainty",
+        "evidence": "REPORT.md 'Evidence layers' and 'Limitations'; UPSTREAM_AUDIT.md McNemar-equivalence item SPRKD-UPSTREAM-014; machine_evidence.primary.comparisons per_seed_mcnemar_exact",
+        "finding": "t intervals are explicitly descriptive over five training seeds, unbounded intervals are flagged as poor summaries of high/chance mixtures with all seeds published, McNemar uses a stable exact binomial validated on 2,601 cases with log10 tails for underflow, tests are only within-seed on shared splits, and failure-to-reject is explicitly not called equivalence.",
+        "status": "PASS"
+      },
+      {
+        "area": "replication_extension_boundary",
+        "evidence": "EXTENSION_PROTOCOL.md freeze statements; POSTHOC_DIAGNOSTICS.md D1/D2 specification dates; REPORT.md 'Stability, extensions, and curvature'; posthoc_loss_contract.interpretation_scope",
+        "finding": "Frozen tracks A/B/C, preregistered E1/E2, E3 frozen before outcome inspection, and outcome-motivated D1/D2 are each labeled with timing and explicit statements that extensions and diagnostics cannot alter the frozen verdict. The D2 logit correction is presented as post-hoc author-intent lead, not confirmation, despite reaching 94.792%.",
+        "status": "PASS"
+      },
+      {
+        "area": "reproducibility_and_provenance",
+        "evidence": "SOURCE_MANIFEST.md hashes and rights boundary; TESTS.md lock dry-runs and analyzer checks; machine_evidence.primary.integrity_checks; REPORT.md 'Limitations and reproducibility'",
+        "finding": "Source manifest pins paper, code commit, checkpoints, dataset digest, and container base by SHA-256; dependencies are hash-locked and dry-run verified; per-seed configs, splits, checkpoints, and predictions are hash-validated fail-closed. Disclosed limits (protocol committed after compute, first-two-seed extension teacher hashes via run index, container build untested, mixed GPU hosts) are candid and do not undermine the disclosed reproducibility boundary.",
+        "status": "PASS"
+      },
+      {
+        "area": "error_transparency",
+        "evidence": "ERROR_LOG.md SPRKD-LOCAL-001..100 (esp. 053, 057, 069), SPRKD-UPSTREAM-001..016, SPRKD-EXT-001..003",
+        "finding": "The ledger separates 100 local errors, 16 upstream issues, and 3 external limitations, with each entry stating impact and resolution; failed commands are not promoted to findings. Notable self-disclosures (protocol timing, audit miss on supervised Softmax loss, seed-3/4 SIGINT resumes, schema typo) are preserved rather than sanitized, and no result changed under any entry.",
+        "status": "PASS"
+      },
+      {
+        "area": "publication_handoff",
+        "evidence": "machine_evidence.website_handoff_candidate (metrics_schema, final_peer_review, artifacts); FRONTEND_HANDOFF.md; ERROR_LOG.md LOCAL-070/072/073/076/078",
+        "finding": "The typed handoff pins all seven source schema versions, target arXiv ID, five routes, run-level projections, sprkd_trial_accuracy_v1 (explicitly not reward, not prompt bootstrap, not equivalence), artifact allowlist with hashes, and the blocked canonical import pending typed accuracy frontend; final_peer_review correctly shows pre-review blocked state with email dispatch unauthorized. Late-discovered schema/projection mismatches were fixed before build.",
+        "status": "PASS"
+      },
+      {
+        "area": "author_email_fairness",
+        "evidence": "AUTHOR_EMAIL.md; cross-checked against machine_evidence.primary.models and posthoc_loss_contract.models; AUTHOR_QUESTIONS.md",
+        "finding": "The draft is factual (85.74/20.01 one collapse; 67.98/24.63 three collapses; 71.51 RKD; best 94.83; D2 94.792 vs 95.152 control), explicitly frames the method as inconclusive not disproved, acknowledges possible misunderstanding, asks concrete provenance questions, offers to publish author responses and corrections, and states it is unsent and requires final human approval.",
+        "status": "PASS"
+      }
+    ],
+    "hard_fail_reason": "",
+    "human_email_approval_acknowledged": true,
+    "no_resubmission_acknowledged": true,
+    "reviewed_packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+    "single_review_acknowledged": true,
+    "summary": "The bundle is scientifically honest, internally consistent, and reproducible within its disclosed boundary. Prose numbers in REPORT.md, ONE_PAGE.md, and FRONTEND_HANDOFF.md match the machine aggregates (exact SPRKD 85.742, intent 67.977, intent RKD 71.507, D2 94.792/95.152, E2 86.099, E3 ordering 1/5 and 2/5). Statistical language correctly labels five-seed t intervals as descriptive, refuses to treat McNemar p=1.0 as equivalence, and explains mixture outcomes rather than hiding them. Replication, paper-intent reconstruction, preregistered extensions E1-E3, and post-hoc diagnostics D1-D2 are cleanly separated with explicit scope statements. Provenance gaps (protocol not pushed to Git before compute, extension teacher-hash embedding, container untested) are candidly disclosed rather than concealed. The origin-separated 100-entry local error ledger plus upstream and external sections is exemplary. The author email is factual, non-accusatory, matches the frozen numbers, and correctly states it is unsent and requires human approval. This single review is final with no resubmission; neither this PASS nor any closure authorizes email dispatch, which always requires separate mandatory human approval.",
+    "verdict": "PASS"
+  },
+  "elapsed_seconds": 23.945833,
+  "harness": {
+    "profile": "kimi-structured-review-v1",
+    "request_parameters": {
+      "max_tokens": 32768,
+      "provider": {
+        "allow_fallbacks": true,
+        "ignore": [
+          "fireworks"
+        ],
+        "order": [
+          "modal",
+          "together",
+          "morph",
+          "moonshotai"
+        ],
+        "require_parameters": true
+      },
+      "reasoning": {
+        "effort": "low"
+      },
+      "temperature": 1.0
+    },
+    "user_prompt_wrapped": true
+  },
+  "http_status": 200,
+  "invocation_count": 1,
+  "model": {
+    "canonical_slug": "moonshotai/kimi-k3-20260715",
+    "catalog_entry_sha256": "76e5f2549c3c848056871c2cb9db88b758cf606ee29acfa464f376a00c22704e",
+    "context_length": 1048576,
+    "requested_id": "moonshotai/kimi-k3"
+  },
+  "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+  "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+  "raw_response_byte_count": 9254,
+  "raw_response_public": false,
+  "raw_response_sha256": "c9b0b187e9695d81d3f0a0ca2b64f47a1d34091bd76e7ca0af45cf90e4203e7e",
+  "recovery_of": "SR-20260801-002",
+  "release_control": {
+    "author_email_dispatch_authorized": false,
+    "human_disposition_required": true,
+    "publication_authorized": false
+  },
+  "retry_allowed": false,
+  "schema_version": "nulspec-openrouter-supplemental-review-v3",
+  "started_at_utc": "2026-08-01T18:18:13.371569Z",
+  "status": "completed_valid",
+  "submitted_user_prompt_sha256": "7b712bd2302fc2988b19c27f063b6c61135827eb6be2d0e616a1c822b3946d09",
+  "system_prompt_sha256": "fc4a4baf4621c4930243c94c0dc31f65d0042a5a28f82506b44523a4459b0ae2",
+  "usage": {
+    "completion_tokens": 1681,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 128
+    },
+    "cost": 0.534315,
+    "is_byok": false,
+    "prompt_tokens": 169700,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 171381
+  }
+}

@@ -16,6 +16,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 0.9,
     },
+    {
+      url: "https://nulspec.com/fable-refusals",
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
     ...studies.map((study) => ({
       url: `https://nulspec.com/studies/${study.study_id}`,
       lastModified: new Date(study.as_of_utc),

@@ -1,0 +1,40 @@
+{
+  "checks": [
+    "required_global_trace_files_present",
+    "public_summary_copy_matches",
+    "public_boundary_clean",
+    "run_identity_and_fable_boundary_valid",
+    "qwen_packet_hash_valid",
+    "architecture_and_release_controls_valid",
+    "teacher_attempt_files_and_summaries_valid",
+    "teacher_chain_files_match",
+    "codex_trace_and_summary_valid",
+    "event_order_and_parallel_join_valid",
+    "aggregate_trace_hash_reproducible"
+  ],
+  "commands": [
+    {
+      "check_count": 11,
+      "command": "validate_completed_trace",
+      "exit_code": 0
+    },
+    {
+      "command": "recompute_trace_evidence_index",
+      "evidence_aggregate_sha256": "7c3924a87b4ba6c9b431b26a042e964f930f27182676b3901608c9857d11cb91",
+      "evidence_file_count": 45,
+      "exit_code": 0
+    }
+  ],
+  "pipeline_run_id": "qwen-teacher-hybrid-20260801-v9",
+  "public_summary": {
+    "byte_count": 120227,
+    "sha256": "aaf99721b26619d18bd91c9735e5b4eb9466e95e202e856152d541e692751194"
+  },
+  "schema_version": "nulspec-review-hierarchy-validation-v1",
+  "status": "passed",
+  "trace_index": {
+    "evidence_aggregate_sha256": "7c3924a87b4ba6c9b431b26a042e964f930f27182676b3901608c9857d11cb91",
+    "evidence_file_count": 45
+  },
+  "validated_at_utc": "2026-08-01T21:07:27.437292Z"
+}

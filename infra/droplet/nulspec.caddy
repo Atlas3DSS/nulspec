@@ -17,6 +17,33 @@ nulspec.com {
 	@immutable path /_next/static/*
 	header @immutable Cache-Control "public, max-age=31536000, immutable"
 
+	@review_pages path /review /review/*
+	header @review_pages {
+		Cache-Control "no-store, private, max-age=0"
+		Content-Security-Policy "default-src 'self'; base-uri 'none'; connect-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data:; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+		>Referrer-Policy "no-referrer"
+		X-Robots-Tag "noindex, nofollow, noarchive"
+	}
+
+	@review_api {
+		method GET POST
+		path /api/review/*
+	}
+	handle @review_api {
+		request_body {
+			max_size 16KB
+		}
+		reverse_proxy 127.0.0.1:8080 {
+			header_up X-Nulspec-Client-IP {remote_host}
+		}
+	}
+
+	@review_api_wrong_method path /api/review/*
+	handle @review_api_wrong_method {
+		header Allow "GET, POST"
+		respond 405
+	}
+
 	@nomination_api {
 		method POST OPTIONS
 		path /api/nominations /api/extension-votes

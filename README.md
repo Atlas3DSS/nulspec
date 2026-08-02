@@ -153,6 +153,9 @@ All paper repositories also follow the
 
 Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md).
 
+Private publication and author-email sign-off is documented in the
+[human-review dashboard operations guide](docs/HUMAN_REVIEW_DASHBOARD.md).
+
 ## Attribution and license
 
 The target paper, original code, released models, and released data belong to

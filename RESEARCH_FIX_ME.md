@@ -73,9 +73,180 @@ Pending.
 Pending a research commit, focused tests, and an eligible trace or an explicit
 decision that the affected citation result will not be used.
 
+### RF-20260801-02 — Add the recorded human-disposition path for Fable HARD_FAIL
+
+- Status: OPEN
+- Blocking: publication
+- Observed in: [NULSPEC PR #18](https://github.com/Atlas3DSS/nulspec/pull/18),
+  commit `9cc6bafba42f19b144f45d02c9c1d71ac4ea9816`
+- Affected study: `260723346`
+- Reported by: website
+- Reported at: 2026-08-01T17:01:17Z
+
+#### Observed
+
+The one permitted Fable invocation ended in `HARD_FAIL` because of a technical
+safeguard refusal. It did not produce a substantive scientific review. The
+frozen protocol states that publication may proceed after a recorded human
+disposition, but `scripts/fable_final_review.py` exposes only `build-packet`,
+`review-once`, `check-gate`, and `self-test`. Its gate evaluation always leaves
+`HARD_FAIL` at `blocked_pending_human_review`, and the website handoff contains
+no human-disposition record or authorized post-disposition state.
+
+#### Expected
+
+Research should define one machine-readable, deterministic way to record a
+human decision after `HARD_FAIL`. It must preserve the original one-shot result,
+bind the decision to the exact review packet and review result, identify whether
+publication is authorized or remains blocked, and keep author-email approval as
+a separate mandatory gate. It must not retry Fable or treat the safeguard
+refusal as scientific evidence.
+
+#### Requested research change
+
+Add and test the human-disposition schema and command, document the required
+fields and allowed decisions, regenerate `WEBSITE_HANDOFF.json`, and expose an
+auditable publication state that the typed website importer can enforce. Do not
+record an authorization unless an authorized human has explicitly made that
+decision.
+
+#### Research response
+
+Pending.
+
+#### Resolution evidence
+
+Pending a research commit, deterministic tests, regenerated handoff, and
+website verification.
+
+### RF-20260801-03 — Add GLM and Kimi review after a technical Fable refusal
+
+- Status: OPEN
+- Blocking: publication
+- Observed in: Fable refusal `FR-20260801-001` from
+  [NULSPEC PR #18](https://github.com/Atlas3DSS/nulspec/pull/18), commit
+  `9cc6bafba42f19b144f45d02c9c1d71ac4ea9816`
+- Affected study: `260723346`
+- Reported by: website
+- Reported at: 2026-08-01T17:45:52Z
+
+#### Observed
+
+Fable refused the completed review packet under its biomedical safeguard,
+charged $3.224742, and returned zero substantive findings. Its own wrapper
+recommended configuring a fallback model. The current research runner preserves
+the refusal and stops for a human, but it has no independent fallback-review
+path.
+
+#### Expected
+
+After a Fable safeguard or technical refusal, preserve the exact Fable attempt
+and submit the same immutable review packet independently to the pinned current
+GLM and Kimi model revisions through OpenRouter. Prefer two successful reviews
+and require at least one valid structured review before human disposition. Each
+attempt must record the exact canonical model slug, packet and response hashes,
+usage, cost, terminal state, and any refusal. Credentials remain only in ignored
+environment configuration.
+
+As selected from OpenRouter's catalog on 2026-08-01, the current revisions are
+`z-ai/glm-5.2-20260616` and `moonshotai/kimi-k3-20260715`. Model selection must
+be recaptured for later attempts rather than silently treating these names as
+permanent.
+
+#### Requested research change
+
+Add a deterministic supplemental-review protocol and runner, retain both raw
+attempts outside public Git, publish sanitized structured results with hashes,
+and bind them into the human-disposition record. Do not retry Fable, rewrite the
+frozen replication verdict, or allow a fallback model to authorize the author
+email.
+
+#### Research response
+
+Pending.
+
+#### Resolution evidence
+
+Pending the protocol, runner, GLM and Kimi attempt records, deterministic
+validation, regenerated handoff, and website verification.
+
+### RF-20260801-04 — Separate the three-reviewer release gate from the Qwen teacher loop
+
+- Status: OPEN
+- Blocking: publication
+- Observed in: the Fable refusal taxonomy, supplemental-review gate, and the
+  completed direct-Codex Qwen outer-teacher audit
+- Affected study: `260723346` and future studies using external release review
+- Reported by: website
+- Reported at: 2026-08-01T20:00:00Z
+
+#### Observed
+
+The existing study contract labels a Fable safeguard non-response as a
+technical `HARD_FAIL`, invokes GLM and Kimi only after that event, and retains a
+mandatory human publication disposition. The updated lab policy requests
+Fable, GLM, and Kimi independently for every eligible review and distinguishes
+a provider non-response from a substantive scientific decision.
+
+The completed extension also used Qwen as the primary reviewer and Codex as its
+single outer teacher. That historical audit remains valid as recorded. The
+future recurring teacher loop needs independent GLM and Kimi audits followed by
+Codex, with complete traces suitable for longitudinal harness analysis. Fable
+must not be used in that recurring loop because its cost is reserved for the
+separate final-release review.
+
+#### Expected
+
+- Always request Fable, GLM, and Kimi on the same immutable packet.
+- Record a Fable safeguard or technical non-response, its tokens, cost, message,
+  and hashes with decision weight zero. It is not a scientific `HARD_FAIL`.
+- After a zero-weight Fable non-response, two independently valid GLM and Kimi
+  `PASS` decisions authorize publication of the bound release.
+- When Fable returns a substantive review, require valid `PASS` decisions from
+  all three reviewers.
+- Create scientific `HARD_FAIL` only from a valid substantive Fable `fail`.
+  Malformed output, missing GLM/Kimi evidence, or disagreement blocks for human
+  adjudication instead of being converted into a verdict.
+- Keep author-email dispatch behind separate human approval of the exact draft.
+- For Qwen-primary studies, send only the GLM and Kimi teacher records to Codex
+  for outer trace/scope adjudication. Launch GLM and Kimi concurrently from the
+  same immutable packet. Preserve every invalid invocation, diagnose and log
+  its repair, and issue a new linked attempt; do not let Codex start until both
+  logical teacher chains contain valid audits. Do not invoke Fable in that
+  teacher loop.
+- After ten distinct paper teacher pipelines are complete and validated,
+  record a fresh 256-bit seed, reproducibly sample three of the ten, and request
+  one bounded Fable critique containing those three pipelines. Keep it outside
+  teacher consensus with zero decision weight, reject batch or paper reuse,
+  and preserve its full selection, trace, and cost without automatic retry.
+
+#### Requested research change
+
+Version both protocols and schemas; do not rewrite raw historical attempts.
+Adopt `extension/review_hierarchy.py` and `docs/REVIEW_HIERARCHY.md` for the
+GLM/Kimi/Codex teacher loop. Keep the Fable/GLM/Kimi decision rule confined to
+the final-release workflow. Regenerate the study handoff under the new release
+policy when applicable and bind sanitized summaries into the publication
+bundle. Preserve every raw prompt, request, response, usage/cost record, timing,
+parsed result, failure, repair link, teacher-chain event, and Codex event in the
+ignored archive. Each repair must use a new attempt ID and preserve the failed
+attempt unchanged. Exhausting the bounded repair budget blocks the run rather
+than accepting invalid evidence.
+
+#### Research response
+
+Pending.
+
+#### Resolution evidence
+
+Pending a versioned research-side contract, deterministic tests, regenerated
+handoff, and one completed end-to-end three-reviewer hierarchy run.
+
+## Resolved items
+
 ### RF-20260801-01 — Correct the invalid PR head reference in the website queue
 
-- Status: ACKNOWLEDGED
+- Status: RESOLVED
 - Blocking: neither
 - Observed in: research-authored `WEBSITE_FIX_ME.md` for
   [PR #18](https://github.com/Atlas3DSS/nulspec/pull/18)
@@ -113,12 +284,8 @@ gate. This correction has no effect on the protocol, evidence, or verdict.
 
 Research candidate commit
 [`68188afc7305e5168d33c5278968f7a26b403a40`](https://github.com/Atlas3DSS/nulspec/commit/68188afc7305e5168d33c5278968f7a26b403a40)
-resolves on PR #18. Pending website verification after the corrected reciprocal
-queue is committed.
-
-## Resolved items
-
-None.
+resolves on PR #18 and is the exact commit cited by `WF-20260801-01`. Website
+verification confirmed both the commit object and the PR head on 2026-08-01.
 
 ## Item template
 

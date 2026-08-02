@@ -232,7 +232,7 @@ def build_packet(trace_root: Path) -> dict[str, Any]:
                 "logical_family": "Qwen-family 27B local GGUF",
                 "gguf_basename": run_input["gguf"]["basename"],
                 "gguf_sha256": run_input["gguf"]["sha256"],
-                "official_upstream_release": false,
+                "official_upstream_release": False,
             },
             "source_qwen_completion_sha256": sha256_file(completion_path),
             "teacher_protocol_sha256": sha256_file(TEACHER_PROTOCOL),

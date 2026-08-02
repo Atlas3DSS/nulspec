@@ -409,6 +409,18 @@ limitations. Entries are never removed after correction.
   transfer, and compare deterministic source/destination inventories before
   use. The failed call created no packet and no reviewer request was made.
 
+### LRS-LOCAL-041 — citation teacher manifest used a JSON boolean in Python
+
+- **State:** corrected before a production teacher packet; no scientific effect
+- **Observation:** merge validation found lowercase `false` in the Python
+  manifest builder's local-model provenance object. That branch would raise
+  `NameError` when it constructed a citation teacher packet, although existing
+  tests did not exercise the affected statement.
+- **Disposition:** replace it with Python `False`, retain the discovery in this
+  log, and run the focused packet-builder tests before treating the harness as
+  executable. No reviewer request, result, trace, or primary experiment was
+  created or changed by this correction.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

@@ -1,0 +1,131 @@
+{
+  "attempt_id": "SR-20260801-006",
+  "comparison_group": "reviewer-depth-20260801",
+  "comparison_label": "glm-high-max-output",
+  "completed_at_utc": "2026-08-01T18:29:58.198897Z",
+  "decision": {
+    "action_items": [],
+    "checks": [
+      {
+        "area": "scientific_fidelity",
+        "evidence": "machine_evidence.primary.models.sprkd_upstream_direct_init.accuracy.mean=85.74165457184326; machine_evidence.primary.models.sprkd_paper_random_init.accuracy.mean=67.97677793904208; machine_evidence.posthoc_loss_contract.models.sprkd_logit_ce_random_init.accuracy.mean=94.79245283018868; machine_evidence.posthoc_loss_contract.models.control_student_logit_ce.accuracy.mean=95.15239477503629",
+        "finding": "The study faithfully separates released-artifact replay, exact public-code reproduction, and narrow paper-intent reconstruction. The 'not replicated' classification for the public final-result recipe and 'inconclusive' for the underlying method are well-supported: exact SPRKD averaged 85.742% (machine mean 85.74165457184326) with one chance-level final (seed 3: 49.971%), and paper-intent SPRKD averaged 67.977% (machine mean 67.97677793904208) with three chance-level finals. The best-epoch means (94.827% exact, 94.149% intent) are correctly reported as non-verdict-bearing context that explains why missing checkpoint-selection provenance matters. The D2 post-hoc diagnostic (94.792% SPRKD vs 95.152% Control-S) is correctly labeled as not confirming the mechanism.",
+        "status": "PASS"
+      },
+      {
+        "area": "internal_consistency",
+        "evidence": "machine_evidence.primary.models.sprkd_upstream_direct_init.accuracy.values=[95.63134978229319,94.47024673439768,93.51233671988389,49.970972423802614,95.12336719883889]; machine_evidence.released_artifacts.released_hessian_artifacts.sprkd.trace=54.96306618822869; machine_evidence.posthoc_loss_contract.comparisons.logit_sprkd_minus_logit_control.accuracy_point_difference.mean=-0.3599419448476084",
+        "finding": "Every numerical claim checked in REPORT.md, ONE_PAGE.md, AUTHOR_EMAIL.md, and FRONTEND_HANDOFF.md matches the machine evidence exactly. Per-seed values, means, SDs, t intervals, McNemar p-values, released artifact scores (84/80/74%), historical trace reconstructions (94.543%/95.399%), and released Hessian values (54.96/35.48/209.47) all match. The D2 SPRKD-minus-Control-S difference (-0.360, t95 [-0.846, 0.126]) matches machine mean -0.3599419448476084, interval [-0.8455803110798512, 0.1256964213846345]. The 'four retained a nonzero stored-loss marker' claim matches: seeds 0-3 have nonzero stored_loss, seed 4 has 0.0.",
+        "status": "PASS"
+      },
+      {
+        "area": "statistics_and_uncertainty",
+        "evidence": "REPORT.md: 'These intervals estimate run-to-run variation across these five seeds; they are not prompt bootstraps and they do not establish practical equivalence.'; machine_evidence.primary.models.sprkd_paper_random_init.accuracy.t95_interval=[37.38994513805616,98.563610740028]",
+        "finding": "Descriptive 95% t intervals over five seeds are correctly labeled as estimating fresh-training variability, not prompt bootstraps or equivalence tests. The report explicitly states 'McNemar failure to reject is not an equivalence test without a predeclared margin.' McNemar tests are run only within-seed on the same validation split; the report does not pool across incompatible splits. The wide unbounded t intervals for unstable series are correctly described as poor summaries of high/chance mixtures, and every seed value is published.",
+        "status": "PASS"
+      },
+      {
+        "area": "replication_extension_boundary",
+        "evidence": "EXTENSION_PROTOCOL.md: 'Frozen before inspecting any scratch-run result: 2026-07-31'; POSTHOC_DIAGNOSTICS.md: 'This analysis is outcome-motivated and cannot alter the frozen replication verdict.'; machine_evidence.posthoc_loss_contract.interpretation_scope='Outcome-motivated post-hoc one-change diagnostic; cannot alter the preregistered replication verdict.'",
+        "finding": "E1 (conventional-logit RKD) and E2 (lowest-loss ASR) were frozen before scratch outcomes. E3 (common-probe Hessian) was frozen after jobs began but before model outcomes were inspected. D1 (epoch-level stability) and D2 (loss-contract correction) are explicitly labeled outcome-motivated post-hoc diagnostics. All are clearly separated from the Track A/B/C primary verdict and stated as unable to alter it. The EXTENSION_PROTOCOL.md timestamps confirm the freezing sequence.",
+        "status": "PASS"
+      },
+      {
+        "area": "reproducibility_and_provenance",
+        "evidence": "SOURCE_MANIFEST.md: dataset manifest digest 4fc7205c482dd43959cf1795ccbdbc0f819c1001dca374a0ee14eb9a3d5c1381; machine_evidence.primary.integrity_checks.0.complete_sha256=1cf6a7d43ba841accfc9c81db77d3eec472b39af7f9d8a2c32ec3a178a7e0be5; ERROR_LOG SPRKD-LOCAL-057: 'protocols were timestamped and frozen in the working tree before the applicable runs, but were not committed to Git before execution began'",
+        "finding": "Source manifest provides SHA-256 digests for all binary inputs including arXiv PDF (f9ad5d...), source tar (b7f25d...), TESTSET.pth (f8f19a...), released checkpoints, Hessian artifacts, and the dataset manifest (4fc720...). Upstream Git commit 7f1655ff1295c9a6dcf8d24f6410a036cd7e3497 is pinned. Every seed's integrity_checks record contains complete_sha256, config_sha256, split_indices_sha256, predictions_sha256, and per-stage checkpoint hashes. A CUDA 12.8 container recipe with hash-pinned requirements locks is provided. The process limitation that protocols were frozen but not committed to Git before compute (SPRKD-LOCAL-057) is candidly disclosed.",
+        "status": "PASS"
+      },
+      {
+        "area": "error_transparency",
+        "evidence": "ERROR_LOG.md: 100 local entries, 16 upstream entries, 3 external entries; SPRKD-LOCAL-022: 'Batching failed closed before Qwen dispatch, so no trace or finding used the oversized packet set'; SPRKD-LOCAL-050: 'The runner's frozen SHA-256 gate rejected the pointer before loading a tensor'",
+        "finding": "The error ledger contains 100 local errors (SPRKD-LOCAL-001 through 100) and 16 upstream issues (SPRKD-LOCAL-001 through 016), with a third section for external/operational limitations (SPRKD-EXT-001 through 003). Local mistakes are separated from upstream issues. Each entry records what happened, result impact, and resolution. Multiple entries show fail-closed guards preventing invalid results from propagating (e.g., LOCAL-022 batching failure, LOCAL-031 RAM guard, LOCAL-050 Hessian checkpoint hash gate).",
+        "status": "PASS"
+      },
+      {
+        "area": "publication_handoff",
+        "evidence": "machine_evidence.website_handoff_candidate.classification.replication_outcome='not_replicated'; machine_evidence.website_handoff_candidate.metrics_schema.id='sprkd_trial_accuracy_v1'; machine_evidence.website_handoff_candidate.publication_status.canonical_site_import='blocked_pending_typed_accuracy_frontend'; machine_evidence.website_handoff_candidate.final_peer_review.author_email_dispatch_authorized=false",
+        "finding": "The website handoff correctly classifies the study as not_replicated/inconclusive with the rationale matching the report. It uses metrics_schema sprkd_trial_accuracy_v1 and explicitly prevents accuracy from being relabeled as reward. The canonical site import is correctly blocked pending a typed accuracy frontend. The author email is correctly gated: author_email_dispatch_authorized=false, author_email_human_approval_required=true. The Fable review protocol's single-invocation, no-resubmission, and mandatory human email-approval rules are correctly encoded.",
+        "status": "PASS"
+      },
+      {
+        "area": "author_email_fairness",
+        "evidence": "AUTHOR_EMAIL.md: 'We may still have misunderstood the intended historical configuration'; 'We do not use this post-hoc result to rewrite the frozen classification'; 'we would also genuinely value feedback on how our process or presentation could be more useful, fair, and efficient'; machine_evidence.posthoc_loss_contract.models.sprkd_logit_ce_random_init.accuracy.mean=94.79245283018868",
+        "finding": "The author email is constructive and non-accusatory. It accurately summarizes the frozen results (85.74% exact, 67.98% intent, 71.51% RKD, 94.792% D2 diagnostic). It acknowledges 'We may still have misunderstood the intended historical configuration.' It requests provenance clarification rather than alleging misconduct. It offers to 'correct anything we have described inaccurately' and invites feedback on process. The post-hoc D2 result is correctly framed as not rewriting the frozen classification. All numerical claims match machine evidence.",
+        "status": "PASS"
+      }
+    ],
+    "hard_fail_reason": "",
+    "human_email_approval_acknowledged": true,
+    "no_resubmission_acknowledged": true,
+    "reviewed_packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+    "single_review_acknowledged": true,
+    "summary": "The bundle is scientifically honest, internally consistent, reproducible within its disclosed boundary, fair to the authors, and ready to publish. All numerical claims in REPORT.md, ONE_PAGE.md, AUTHOR_EMAIL.md, and FRONTEND_HANDOFF.md match the machine evidence exactly. Statistical language is appropriate: descriptive t intervals are explicitly distinguished from equivalence tests and prompt bootstraps, McNemar tests are within-seed only, and all five seeds are reported. The replication/extension/post-hoc boundary is clear: Tracks A/B/C are preregistered, E1/E2 were frozen before scratch outcomes, E3 was frozen before model outcomes were inspected, and D1/D2 are explicitly labeled outcome-motivated post-hoc diagnostics that cannot alter the frozen verdict. Provenance is strong: source hashes, checkpoint SHA-256 digests, config hashes, split hashes, prediction hashes, and a container recipe are all present. The one material process limitation (protocols frozen in the working tree but not committed to Git before compute, SPRKD-LOCAL-057) is candidly disclosed. The 100-entry local error ledger and 16-entry upstream issue ledger are origin-separated. The website handoff correctly classifies the study as not_replicated/inconclusive, prevents accuracy from being relabeled as reward, and properly gates the author email. The author email is constructive, non-accusatory, offers to correct inaccuracies, and requests clarification rather than alleging misconduct. No concrete correction that materially improves truthfulness, reproducibility, or fairness was identified.",
+    "verdict": "PASS"
+  },
+  "elapsed_seconds": 200.332917,
+  "harness": {
+    "profile": "glm-high-depth-structured-review-v1",
+    "request_parameters": {
+      "max_tokens": 131072,
+      "provider": {
+        "allow_fallbacks": true,
+        "order": [
+          "deepinfra",
+          "streamlake",
+          "decart",
+          "alibaba"
+        ],
+        "require_parameters": true
+      },
+      "reasoning": {
+        "effort": "high"
+      },
+      "temperature": 1.0
+    },
+    "user_prompt_wrapped": true
+  },
+  "http_status": 200,
+  "invocation_count": 1,
+  "model": {
+    "canonical_slug": "z-ai/glm-5.2-20260616",
+    "catalog_entry_sha256": "3cc2711d55995750ac3cf8d6b94929992db3197342221012eb4df9de5308e0a4",
+    "context_length": 1048576,
+    "requested_id": "z-ai/glm-5.2"
+  },
+  "packet_sha256": "5eabac56ae0d25cecc11a308e669d4de95911e4e3f7c81f533b66eafe9ac53ea",
+  "prompt_sha256": "182d3718f8c38aef22585ad44c5fd2d44d56e54b21c3772b302322ec9ee9b95d",
+  "raw_response_byte_count": 50976,
+  "raw_response_public": false,
+  "raw_response_sha256": "74068bb123bd9fb72d9128ae566321377b634602fc39bda06028ee6b20d5bc70",
+  "recovery_of": null,
+  "release_control": {
+    "author_email_dispatch_authorized": false,
+    "human_disposition_required": true,
+    "publication_authorized": false
+  },
+  "retry_allowed": false,
+  "schema_version": "nulspec-openrouter-supplemental-review-v4",
+  "started_at_utc": "2026-08-01T18:26:37.863055Z",
+  "status": "completed_valid",
+  "submitted_user_prompt_sha256": "7b712bd2302fc2988b19c27f063b6c61135827eb6be2d0e616a1c822b3946d09",
+  "system_prompt_sha256": "4b53ad83ce0a12e3dcc888cbfdfd56fde961a385e2b014844d4b5a3c62295228",
+  "usage": {
+    "completion_tokens": 7739,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 4326
+    },
+    "cost": 0.15760631,
+    "is_byok": false,
+    "prompt_tokens": 185429,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 64,
+      "video_tokens": 0
+    },
+    "total_tokens": 193168
+  }
+}

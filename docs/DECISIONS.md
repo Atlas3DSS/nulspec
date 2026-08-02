@@ -41,3 +41,13 @@ Unrelated services are outside experimental scope. Jobs on shared lab hosts
 must use explicit GPU identity checks and CPU, RAM, process, I/O, and
 concurrency limits. A run must stop rather than relax these limits
 automatically.
+
+## D006 — Human release review is a private, two-gate workflow
+
+**Status:** accepted, 2026-08-01
+
+The public site remains a static export. Reviewer pages are data-free shells;
+credentials, task packets, email drafts, sessions, and append-only decisions
+remain behind the loopback service. Publication disposition and exact-draft
+email approval are separate hash-bound human actions. Neither action may alter
+scientific evidence, and neither automatically deploys or sends mail.

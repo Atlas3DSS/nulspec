@@ -1,0 +1,150 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scope_confirmation",
+    "overall_assessment",
+    "confidence",
+    "strengths",
+    "findings",
+    "failure_taxonomy_assessment",
+    "parallelism_assessment",
+    "repair_policy_assessment",
+    "trace_assessment",
+    "cost_control_assessment",
+    "recommended_validation_tests",
+    "authority_confirmation",
+    "summary"
+  ],
+  "properties": {
+    "scope_confirmation": {
+      "const": "pipeline_architecture_and_trace_only"
+    },
+    "overall_assessment": {
+      "enum": [
+        "sound",
+        "sound_with_changes",
+        "material_changes_required",
+        "not_auditable"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "strengths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "evidence_references"],
+        "properties": {
+          "claim": {"type": "string"},
+          "evidence_references": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "finding_id",
+          "severity",
+          "category",
+          "issue",
+          "evidence_references",
+          "impact",
+          "recommended_change"
+        ],
+        "properties": {
+          "finding_id": {"type": "string"},
+          "severity": {
+            "enum": ["info", "low", "medium", "high", "critical"]
+          },
+          "category": {
+            "enum": [
+              "architecture",
+              "independence",
+              "evidence_boundary",
+              "failure_taxonomy",
+              "repair_policy",
+              "trace_integrity",
+              "cost_control",
+              "release_authority",
+              "documentation",
+              "validation"
+            ]
+          },
+          "issue": {"type": "string"},
+          "evidence_references": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "impact": {"type": "string"},
+          "recommended_change": {"type": "string"}
+        }
+      }
+    },
+    "failure_taxonomy_assessment": {
+      "$ref": "#/$defs/controlAssessment"
+    },
+    "parallelism_assessment": {
+      "$ref": "#/$defs/controlAssessment"
+    },
+    "repair_policy_assessment": {
+      "$ref": "#/$defs/controlAssessment"
+    },
+    "trace_assessment": {
+      "$ref": "#/$defs/controlAssessment"
+    },
+    "cost_control_assessment": {
+      "$ref": "#/$defs/controlAssessment"
+    },
+    "recommended_validation_tests": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "authority_confirmation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "is_teacher_vote",
+        "can_change_qwen_results",
+        "can_change_training_signals",
+        "can_authorize_publication",
+        "can_authorize_email"
+      ],
+      "properties": {
+        "is_teacher_vote": {"const": false},
+        "can_change_qwen_results": {"const": false},
+        "can_change_training_signals": {"const": false},
+        "can_authorize_publication": {"const": false},
+        "can_authorize_email": {"const": false}
+      }
+    },
+    "summary": {"type": "string"}
+  },
+  "$defs": {
+    "controlAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assessment", "rationale", "recommended_changes"],
+      "properties": {
+        "assessment": {
+          "enum": ["adequate", "partially_adequate", "inadequate", "not_auditable"]
+        },
+        "rationale": {"type": "string"},
+        "recommended_changes": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    }
+  }
+}

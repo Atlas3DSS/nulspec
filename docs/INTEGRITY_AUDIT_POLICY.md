@@ -63,6 +63,42 @@ The two audit types remain distinct:
   full texts stay out of Git and public bundles; hashes and short,
   context-necessary evidence excerpts bind the finding.
 
+## Evidence-integrity heatmap
+
+Public summaries may use a claim-level heatmap to make a large audit legible,
+but it measures observable evidence conditions rather than author character or
+intent. Rows bind individual claims or citation occurrences; columns use a
+small typed taxonomy:
+
+- source identity and version match;
+- citation support and qualification;
+- claim strength relative to the cited evidence;
+- contradictory source evidence;
+- citation completeness and primary-source proximity;
+- textual provenance and attribution;
+- statistical or reporting consistency; and
+- code, data, and artifact consistency.
+
+Every nonempty cell links to its evidence record. **Severity** (likely effect
+on interpretation) and **confidence** (strength and coverage of the evidence)
+are separate ordinal fields; neither is a probability of misconduct. The
+display must distinguish `not_checked`, `no_issue_observed`, `uncertain`, and
+`finding` so missing coverage cannot look like a clean result. Color is never
+the only carrier of meaning.
+
+The heatmap has no person score, author ranking, aggregate "fraud" score, or
+automatic misconduct label. Terms such as fraud, fabrication, plagiarism, and
+research misconduct require competent human or institutional findings and are
+not inferred by this pipeline. Public prose instead names the reproducible
+observation—for example, "the cited experiment does not test this claim" or
+"this passage overlaps an earlier source without a nearby attribution"—then
+states plausible benign explanations and the consequence for the paper's
+claim. Charitable wording may not hide a material discrepancy.
+
+Published audits retain version history and a visible author-response or
+correction path. A later clarification never overwrites the originally audited
+version; it becomes linked follow-up evidence.
+
 ## Scheduling and corpus reuse
 
 Integrity jobs run at low priority inside explicit CPU, RAM, and GPU limits.

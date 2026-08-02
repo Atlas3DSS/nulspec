@@ -47,7 +47,9 @@ The public site should eventually make validated integrity work discoverable
 without sensationalizing it. Readers need the claim or passage, source
 identity, chronology, attribution context, review state, corpus coverage, and
 benign alternatives—not an author-level accusation or a context-free
-similarity percentage.
+similarity percentage. Charitable wording must remain precise enough that a
+material unsupported or contradictory claim cannot disappear into a vague
+"limitation" label.
 
 #### Requested website change
 
@@ -56,12 +58,20 @@ similarity percentage.
    `inconclusive`, and `human_review_required` states.
 2. Render retained findings through keyboard-accessible evidence pages linked
    from the study narrative, with source/version identity and coverage limits.
-3. Never display a plagiarism badge, author leaderboard, or automatic guilt
-   label. Use the research-provided calibrated wording and require the explicit
-   sensitive-finding human gate before public release.
-4. Keep raw restricted papers and full model traces private while allowing
+3. Provide a claim-level evidence-integrity heatmap with typed axes supplied by
+   research. Show severity and confidence separately, distinguish unchecked
+   from no issue observed, make every finding cell evidence-linked, and never
+   rely on color alone.
+4. Never display a plagiarism badge, person score, author leaderboard,
+   aggregate fraud score, or automatic guilt label. Use the research-provided
+   calibrated wording and require the explicit sensitive-finding human gate
+   before public release.
+5. Keep raw restricted papers and full model traces private while allowing
    public hashes, methods, bounded excerpts, adjudication state, aggregate
    costs, and sanitized trace metadata.
+6. Preserve the audited-version history and provide an author-response or
+   correction route that adds linked evidence without overwriting the original
+   record.
 
 #### Website response
 

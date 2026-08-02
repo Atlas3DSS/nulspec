@@ -32,7 +32,7 @@ queue.
 
 ### RF-20260802-01 — Enforce one experimental GPU workload per host
 
-- Status: OPEN
+- Status: ACKNOWLEDGED
 - Blocking: publication
 - Observed in: [NULSPEC PR #26](https://github.com/Atlas3DSS/nulspec/pull/26),
   `research/replications/2607.17674/CITATION_REVIEW_EXECUTION.md`
@@ -66,12 +66,24 @@ existing attempt.
 
 #### Research response
 
-Pending.
+The concurrent calibration remains immutable, is explicitly classified as
+ineligible, and has zero citation or scientific evidentiary weight. Prospective
+harness v1.0.3 makes the Qwen citation runner acquire the same exclusive,
+nonblocking host lock as every primary arm before route inspection, trace
+creation, or a model request. It retains the lock for the process lifetime and
+records the held state and mechanism in private run input. A replacement
+calibration will not start until the primary workload releases that lock and
+must use a fresh append-only trace.
 
 #### Resolution evidence
 
-Pending a research commit, focused tests, and an eligible trace or an explicit
-decision that the affected citation result will not be used.
+[Commit `cad3c93`](https://github.com/Atlas3DSS/nulspec/commit/cad3c933a810c9cc700dc3cd462a96a66dabd1d2)
+and tag `2607.17674-citation-audit-harness-v1.0.3` contain the amendment,
+implementation, focused tests, runbook, and error-ledger update. All 51
+citation tests passed; Ruff lint and formatting passed; the frozen protocol
+validator passed. Read-only live probes against each host's active primary arm
+both received the registered contention rejection. Final resolution remains
+pending an eligible fresh calibration trace and website-side verification.
 
 ### RF-20260801-02 — Add the recorded human-disposition path for Fable HARD_FAIL
 

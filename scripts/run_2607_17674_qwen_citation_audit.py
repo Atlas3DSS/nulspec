@@ -6,9 +6,11 @@ from __future__ import annotations
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
+import fcntl
 import hashlib
 import http.client
 import json
+import os
 from pathlib import Path
 import platform
 import socket
@@ -16,7 +18,7 @@ import subprocess
 import sys
 import threading
 import time
-from typing import Any
+from typing import Any, TextIO
 from urllib.parse import urlsplit
 
 from citation_review_contract import (
@@ -53,6 +55,40 @@ GRAMMAR_ONLY_OMITTED_SCHEMA_KEYS = frozenset(
 
 class AuditError(RuntimeError):
     """Raised when transport, trace, or output validation fails closed."""
+
+
+def experiment_lock_path() -> Path:
+    runtime_root = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp"))
+    if not runtime_root.is_absolute() or not runtime_root.is_dir():
+        raise AuditError("experiment-lock runtime directory is invalid")
+    return runtime_root / "nulspec-experiment.lock"
+
+
+def acquire_experiment_lock(lock_path: Path | None = None) -> TextIO:
+    """Hold the host-wide NULSPEC experiment lock until the handle is closed."""
+
+    path = lock_path or experiment_lock_path()
+    if not path.is_absolute() or not path.parent.is_dir():
+        raise AuditError("experiment-lock path is invalid")
+    flags = os.O_RDWR | os.O_CREAT | os.O_CLOEXEC
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    try:
+        descriptor = os.open(path, flags, 0o600)
+    except OSError as error:
+        raise AuditError("could not open the host experiment lock") from error
+    handle = os.fdopen(descriptor, "a+", encoding="utf-8")
+    try:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError as error:
+        handle.close()
+        raise AuditError(
+            "another NULSPEC experiment holds the host concurrency lock"
+        ) from error
+    except OSError as error:
+        handle.close()
+        raise AuditError("could not acquire the host experiment lock") from error
+    return handle
 
 
 def utc_now() -> str:
@@ -932,6 +968,10 @@ def main() -> None:
     if gguf_path.name != config["primary_reviewer"]["known_gguf_basename"]:
         raise SystemExit("GGUF basename differs from the frozen audit config")
 
+    try:
+        experiment_lock = acquire_experiment_lock()
+    except AuditError as error:
+        raise SystemExit(str(error)) from error
     routes = [route_metadata(label, base_url) for label, base_url in args.route]
     if len({route["label"] for route in routes}) != len(routes):
         raise SystemExit("route labels must be unique")
@@ -970,6 +1010,11 @@ def main() -> None:
         "host": {
             "python": sys.version,
             "platform": platform.platform(),
+            "experiment_lock": {
+                "basename": experiment_lock_path().name,
+                "mechanism": "flock-exclusive-nonblocking",
+                "held": not experiment_lock.closed,
+            },
             "nvidia_smi": command_output(
                 [
                     "nvidia-smi",

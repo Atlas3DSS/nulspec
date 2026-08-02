@@ -95,6 +95,27 @@ def test_nonlocal_or_nonplain_routes_fail_closed(url: str) -> None:
         RUNNER.safe_loopback_base_url(url)
 
 
+def test_experiment_lock_fails_closed_on_contention(tmp_path: Path) -> None:
+    lock_path = tmp_path / "nulspec-experiment.lock"
+    first = RUNNER.acquire_experiment_lock(lock_path)
+    try:
+        with pytest.raises(
+            RUNNER.AuditError,
+            match="another NULSPEC experiment holds the host concurrency lock",
+        ):
+            RUNNER.acquire_experiment_lock(lock_path)
+    finally:
+        first.close()
+
+
+def test_experiment_lock_is_reusable_after_release(tmp_path: Path) -> None:
+    lock_path = tmp_path / "nulspec-experiment.lock"
+    first = RUNNER.acquire_experiment_lock(lock_path)
+    first.close()
+    second = RUNNER.acquire_experiment_lock(lock_path)
+    second.close()
+
+
 def test_request_binds_schema_and_thinking_configuration() -> None:
     request, prompt = RUNNER.build_request(
         "qwen-test",

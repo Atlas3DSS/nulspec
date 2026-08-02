@@ -68,16 +68,20 @@ Citation-review packetization is recorded in
 `CITATION_REVIEW_PACKETIZATION.md`. Its prospective v1.0.1 amendment was tagged
 before any Qwen citation invocation and covers 41 sources, 74 occurrences, and
 all 4,230,676 extracted-text bytes without retrieval shortcuts.
-The Qwen execution harness has the additional trace-only tag
+The Qwen execution harness has trace-only amendments
 `2607.17674-citation-audit-harness-v1.0.2`, which adds the llama-server binary
-hash without changing the v1.0.1 evidence or generation contract.
+hash, and `2607.17674-citation-audit-harness-v1.0.3`, which fail-closes on the
+same host concurrency lock used by primary arms. Neither changes the v1.0.1
+evidence or generation contract.
 The first live calibration attempt produced no accepted record: the pinned
 runtime rejected the bounded decoding grammar and both responses exhausted the
 original thinking budget without final content. Its complete zero-weight trace
 and disposition are recorded in `CITATION_REVIEW_EXECUTION.md`. Prospective
 runtime amendment `2607.17674-citation-audit-runtime-v1.0.2` retains the full
 client-side acceptance schema and thinking mode, uses a structure-only decoding
-grammar, and raises the traced output ceilings before a fresh attempt.
+grammar, and raises the traced output ceilings before a fresh attempt. Both
+transport schemas passed the exact pinned runtime preflight; this compatibility
+check is not a citation review and does not establish output quality.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the

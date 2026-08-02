@@ -7,7 +7,7 @@ the traces, or send email.
 ## Preconditions
 
 - Use citation-audit evidence contract `2607.17674-citation-audit-v1.0.1` and
-  trace-only harness amendment `2607.17674-citation-audit-harness-v1.0.2`.
+  trace-only harness amendment `2607.17674-citation-audit-harness-v1.0.3`.
 - After the preserved zero-weight calibration failure, use prospective runtime
   amendment `2607.17674-citation-audit-runtime-v1.0.2` and pass
   `citation_audit_config.v1.0.2.json` explicitly.
@@ -20,6 +20,10 @@ the traces, or send email.
   remote Qwen endpoint.
 - Start only after the selected GPU is idle and the host retains safe RAM
   headroom. Do not stop or reconfigure unrelated services.
+- The citation runner must acquire the same exclusive, nonblocking host lock as
+  every primary arm before it inspects a route, writes a trace, or sends a
+  request. Lock contention is a terminal preflight rejection, not a review
+  attempt. Stop an already-started idle model server after such a rejection.
 
 ## 1. Start the local Qwen route
 
@@ -27,6 +31,8 @@ The exact operational flags are retained by llama-server's `/props` response in
 the Qwen trace. The first attempt uses the registered 50,000-token context,
 full GPU offload, flash attention, one slot, and f16 KV cache. A startup failure
 has no scientific weight and must be logged before any parameter adjustment.
+Starting the route does not reserve experimental authority; the citation
+runner's v1.0.3 lock check remains mandatory and fail-closed.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 llama-server \

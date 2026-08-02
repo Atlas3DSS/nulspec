@@ -520,6 +520,38 @@ limitations. Entries are never removed after correction.
   eleven focused tests, lint, and the formatting check. No request, trace, or
   primary run used the unformatted draft.
 
+### LRS-LOCAL-051 — concurrency-lock handle was not referenced after acquisition
+
+- **State:** corrected before commit or citation retry; no scientific effect
+- **Observation:** Ruff correctly rejected the first citation concurrency-lock
+  patch because its retained handle was assigned only for lifetime semantics
+  and was not referenced later in the function.
+- **Disposition:** bind the handle's open state into the private run-input
+  record, making both the retention and trace semantics explicit, then rerun
+  lint and the focused tests. No citation request used the draft.
+
+### LRS-LOCAL-052 — direct lock probe omitted the scripts import path
+
+- **State:** corrected immediately; no scientific effect
+- **Observation:** the first read-only contention probe loaded the citation
+  runner by file path without first adding its sibling scripts directory to
+  Python's import path. Import stopped at `citation_review_contract` before the
+  lock probe ran.
+- **Disposition:** repeat the probe with the same import setup used by the test
+  suite. The failure created no trace and contacted no model route.
+
+### LRS-LOCAL-053 — maintenance checkout lacked the ignored upstream environment
+
+- **State:** corrected before commit; no scientific effect
+- **Observation:** a chained validation command addressed the frozen upstream
+  virtual environment beneath the maintenance checkout, whose ignored work
+  tree intentionally contains no model or environment staging. Citation tests,
+  lint, and formatting had already passed; only the final protocol-validator
+  command did not start.
+- **Disposition:** run the tracked validator from the maintenance checkout with
+  the absolute frozen upstream tree and Python environment in the active
+  execution checkout. No generated experiment artifact was read or changed.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

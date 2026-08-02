@@ -62,3 +62,32 @@ events, assembled reasoning, usage, timing, attempt records, server log, and
 runtime input. A new attempt requires a prospective trace-only amendment and
 an exact-runtime grammar/output-budget regression test; this directory will
 not be resumed or overwritten.
+
+## Runtime-v1.0.2 schema preflight
+
+The prospective runtime amendment was exercised at
+`2026-08-02T07:56:28Z` against the same pinned llama-server executable, model,
+hardware, context size, GPU-offload, attention, KV-cache, batching, thread, and
+host-scope settings. The preflight implementation is bound to repository
+commit `7a1ffac278c694bb8443b6918e665fa5bbf84230`. It submitted the exact
+transport schema derived for each of the evidence and synthesis stages, with a
+one-token output ceiling so the test measured grammar construction rather than
+review quality.
+
+Both requests returned HTTP 200. The server-log slice contained none of the
+registered grammar-failure markers, including the bounded-repetition failure
+that terminated the original calibration. The evidence and synthesis
+transport-schema hashes are respectively
+`7386b7c08b6b83c93afcb7fd4dfa0eac170cb66426867bbecb554ee82a301870`
+and
+`090a3a6928393624cf71563654e79f0284d1294b64b47653d6263251170649b1`.
+The preflight is only a compatibility result: it does not count as a citation
+review or show that the expanded output budgets are sufficient.
+
+After server shutdown, the complete preflight trace was copied back without
+deletion. Source and destination path/size inventories both hash to
+`836ee6bee9e7be996e4aefd5e49e46d257f361211ec69bc54ac72ecc147b0507`.
+The trace includes the server log, canonical and transport schemas, requests,
+raw SSE streams, normalized events, assembled responses, route metadata, and
+the machine-readable completion record. A new scientific calibration attempt
+must use a fresh trace directory and the v1.0.2 runtime contract.

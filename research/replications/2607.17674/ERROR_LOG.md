@@ -1500,6 +1500,15 @@ limitations. Entries are never removed after correction.
   both deletions, then push the unchanged commit and tag to `nulspec`. Use the
   branch's configured upstream rather than assuming the remote named `origin`.
 
+### LRS-LOCAL-139 — first post-push PR query used unsupported metadata
+
+- **State:** corrected; read-only GitHub queries only
+- **Observation:** the installed older `gh` client rejected `headRefOid`, and a
+  follow-up exact-run API query used an incorrectly transcribed full commit SHA.
+- **Disposition:** use only fields listed by this client and obtain the head SHA
+  verbatim from `git rev-parse`. The corrected PR query showed both checks in
+  progress on draft PR 26.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

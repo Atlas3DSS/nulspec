@@ -182,3 +182,48 @@ repository hygiene, whitespace checks, and the frozen protocol check all
 passed. The repository-wide suite passed 161 tests and reached only the known
 cross-study missing-fixture failure recorded in LRS-LOCAL-059. No Qwen request
 or research artifact used the amendment before these checks.
+
+### Eligible v1.0.3 preflight
+
+At `2026-08-02T09:26:50.632134Z`, the tagged v1.0.3 runtime completed a fresh
+uncontended preflight while holding the shared workstation experiment lock.
+Both exact transport schemas returned HTTP 200, retained their registered
+hashes, and produced no grammar-failure marker in the bound server-log slice.
+The configuration SHA-256 is
+`525344271f056a719b16481f9e8d1f77ff619476d98034016c05e083e9383f24`;
+the completion-record SHA-256 is
+`985fbb01752d234b32b79386cef33cba1a6d4f380f1f0e4a85b276c63d722f25`.
+The complete 18-file, 46,413-byte preflight inventory has SHA-256
+`bcf02f458addddf65c4e8d987439a6b904b6241cbcc4179cd590b6b78257a25e`.
+This preflight authorizes one fresh v1.0.3 calibration attempt; it is not
+citation evidence.
+
+### Terminal v1.0.3 calibration outcome
+
+The fresh v1.0.3 calibration ran from `2026-08-02T09:28:06.076138Z` through
+`2026-08-02T09:31:36.644255Z` and again failed closed on the first Allman et
+al. evidence chunk. Both allowed calls returned structurally valid JSON. The
+first had two invalid excerpt/page pairs, and the repair attempt also had two.
+No `accepted.json`, synthesis, calibration completion, final review, or teacher
+input exists; the trace has zero citation evidentiary weight.
+
+Outer-loop comparison against the exact page-labeled request showed that page
+selection was now correct and several candidates grounded successfully. Every
+remaining failure instead joined words across physical PDF line-wrap hyphens:
+for example, the acquired page contains `statistical ap-` followed by
+`plications`, while Qwen returned `statistical applications`. It similarly
+rewrote `parame-`/`ters`, `argu-`/`ments`, and symbolic/spacing details in a
+Kruskal-rank excerpt. The unchanged validator therefore behaved correctly.
+The page-level amendment improved locator behavior but did not make this model
+reliably copy exact multi-line PDF text.
+
+The two attempt-record SHA-256 values are
+`b5924f57048b350540d067a07df22da852436e56271ce7aee0b9b90dbd1fc513`
+and
+`21ee19d552154ef75fd3b0cf23e78c622d3ee4692a4bf99aaff677b94dea3b82`.
+The complete 23-file, 3,877,527-byte trace inventory has SHA-256
+`2c979b4f53c31b79629d34f4b98e8f61b92a9436c84aaf6af1de597f0e4ed9d9`;
+the event log has SHA-256
+`dea07da10acadd305b3f13e786b57430ac6eb173ea93a8f67464d03d31f1b4ce`.
+A further attempt requires a new prospective contract that constrains excerpts
+to exact physical source lines; retrying v1.0.3 is not authorized.

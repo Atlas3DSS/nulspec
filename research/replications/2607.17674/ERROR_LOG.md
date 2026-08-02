@@ -729,6 +729,42 @@ limitations. Entries are never removed after correction.
   `I` checks with the existing line-length exception, and report the actual
   focused-test result separately.
 
+### LRS-LOCAL-067 — first v1.0.3 calibration wrapper combined incompatible flags
+
+- **State:** contained before scope creation, trace creation, lock acquisition,
+  or model request
+- **Observation:** the first prospective calibration wrapper combined
+  `systemd-run --scope` with `--wait`. The local systemd version rejects that
+  combination immediately, so the command exited before the citation runner
+  started.
+- **Disposition:** preserve this as our launch-command error. Remove only the
+  incompatible wrapper flag and use fresh unit and trace identifiers for the
+  otherwise identical registered calibration command.
+
+### LRS-LOCAL-068 — local GitHub CLI lacked a requested list filter
+
+- **State:** corrected in the read-only CI check; no research effect
+- **Observation:** the installed `gh run list` version does not implement its
+  newer `--branch` option, so the first CI-status query exited before returning
+  runs.
+- **Disposition:** retain this as our tooling-assumption error. Query the same
+  read-only run list using supported fields and filter the exact commit SHA
+  locally. The tagged v1.0.3 commit's CI run then returned `success`.
+
+### LRS-LOCAL-069 — page labels did not prevent Qwen from repairing PDF words
+
+- **State:** terminal zero-weight v1.0.3 attempt; further same-contract retries blocked
+- **Observation:** v1.0.3 fixed the earlier page-locator errors and several
+  evidence candidates grounded exactly, but both allowed generations still
+  silently joined words split by retained physical line-wrap hyphens. The
+  unchanged validator rejected two candidates in each attempt. No accepted
+  evidence, synthesis, final review, or teacher input was produced.
+- **Disposition:** preserve the full trace and assign it no citation weight.
+  Do not weaken grounding or rerun v1.0.3. Any next attempt must prospectively
+  constrain excerpts to exact single-line source spans, retain the immutable
+  packet and original invalid outputs, pass new coverage tests and an eligible
+  preflight, and use a fresh trace identifier.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

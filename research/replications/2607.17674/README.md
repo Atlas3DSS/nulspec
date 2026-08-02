@@ -8,12 +8,13 @@ The frozen protocol and source manifest live in
 snapshots, checkpoints, and private machine manifests live beneath ignored
 `work/`, `outputs/`, and `private/` directories.
 
-Current state: primary execution is active. The first released-config arm began
-from the frozen v1.0.0 protocol; its Qwen2.5-0.5B base-model stage completed all
-100,000 training records and the unchanged released factorization stage is in
-progress. These are execution milestones, not result claims. Terminal status,
-metrics, and artifact hashes come only from the immutable run manifest and
-post-run analyzer.
+Current state: primary execution is active. The first released-config arm
+completed from the frozen v1.0.0 protocol. Its Distributional Fidelity of
+0.9928 is close to the digitized 0.995 reference, while its Analogical
+Consistency of 0.326171875 is far below the digitized 0.91 reference. The
+second released-config arm remains required before a Track R verdict. Terminal
+status, exact comparisons, limits, and artifact hashes are recorded only from
+the immutable run manifest and post-run analyzer.
 
 The first Qwen2.5-0.5B manuscript-method attempt completed all 120,000 frozen
 base-model response generations, then reached a terminal 24 GB device-memory
@@ -101,7 +102,11 @@ trace has zero weight. Prospective runtime amendment
 `2607.17674-citation-audit-runtime-v1.0.3` replaces only the model-facing raw
 chunk display with exact page-labeled substrings and adds a hash-bound warning
 against dehyphenation. Immutable packets, validation, model, decoding settings,
-and the six-source gate are unchanged.
+and the six-source gate are unchanged. Its fresh calibration again failed
+closed on the first source: page selection improved, but Qwen still silently
+joined words across physical PDF line-wrap hyphens. That complete attempt also
+has zero weight. A further attempt is blocked until a prospective exact-line
+presentation contract is frozen and verified.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the

@@ -34,15 +34,18 @@ class StreamHandler(BaseHTTPRequestHandler):
             {
                 "model": "qwen-test",
                 "choices": [
-                    {"delta": {"content": "{\"ok\":true}"}, "finish_reason": "stop"}
+                    {"delta": {"content": '{"ok":true}'}, "finish_reason": "stop"}
                 ],
                 "usage": {"prompt_tokens": 10, "completion_tokens": 3},
             },
         ]
-        body = b"".join(
-            b"data: " + json.dumps(event).encode("utf-8") + b"\n\n"
-            for event in events
-        ) + b"data: [DONE]\n\n"
+        body = (
+            b"".join(
+                b"data: " + json.dumps(event).encode("utf-8") + b"\n\n"
+                for event in events
+            )
+            + b"data: [DONE]\n\n"
+        )
         self.send_response(200)
         self.send_header("Content-Type", "text/event-stream")
         self.send_header("Content-Length", str(len(body)))
@@ -107,8 +110,123 @@ def test_request_binds_schema_and_thinking_configuration() -> None:
         {"enable_thinking": True},
         None,
     )
-    assert request["response_format"]["json_schema"]["schema"] == {
-        "type": "object"
-    }
+    assert request["response_format"]["json_schema"]["schema"] == {"type": "object"}
     assert request["chat_template_kwargs"] == {"enable_thinking": True}
     assert '"evidence"' in prompt
+
+
+def test_structure_only_transport_retains_shape_but_removes_bounds() -> None:
+    canonical = {
+        "type": "object",
+        "required": ["items"],
+        "properties": {
+            "items": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 16,
+                "items": {
+                    "type": "object",
+                    "required": ["excerpt", "page"],
+                    "properties": {
+                        "excerpt": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 800,
+                        },
+                        "page": {"type": "integer", "minimum": 1},
+                    },
+                },
+            }
+        },
+    }
+    generation = {
+        "temperature": 0,
+        "top_p": 1,
+        "top_k": 0,
+        "maximum_output_tokens": 8192,
+        "response_format_mode": "structure_only_json_schema",
+    }
+    request, _ = RUNNER.build_request(
+        "qwen-test",
+        "system",
+        {"source": "evidence"},
+        canonical,
+        generation,
+        {"enable_thinking": True},
+        None,
+    )
+    transported = request["response_format"]["json_schema"]["schema"]
+    assert transported["type"] == "object"
+    assert transported["required"] == ["items"]
+    assert transported["properties"]["items"]["items"]["required"] == [
+        "excerpt",
+        "page",
+    ]
+    assert "maxItems" not in json.dumps(transported)
+    assert "minLength" not in json.dumps(transported)
+    assert "minimum" not in json.dumps(transported)
+    assert canonical["properties"]["items"]["maxItems"] == 16
+
+
+def test_unknown_response_format_mode_fails_closed() -> None:
+    with pytest.raises(RUNNER.AuditError, match="unsupported response-format mode"):
+        RUNNER.build_request(
+            "qwen-test",
+            "system",
+            {"source": "evidence"},
+            {"type": "object"},
+            {
+                "temperature": 0,
+                "top_p": 1,
+                "top_k": 0,
+                "maximum_output_tokens": 128,
+                "response_format_mode": "unregistered",
+            },
+            {"enable_thinking": True},
+            None,
+        )
+
+
+def test_runtime_amendment_preserves_thinking_and_expands_budgets() -> None:
+    config = json.loads(
+        (
+            WORKSPACE / "protocols/2607.17674/citation_audit_config.v1.0.2.json"
+        ).read_text()
+    )
+    reviewer = config["primary_reviewer"]
+    assert config["protocol_version"] == "1.0.2"
+    assert reviewer["chat_template_kwargs"] == {"enable_thinking": True}
+    assert reviewer["evidence_generation"] == {
+        "temperature": 0,
+        "top_p": 1,
+        "top_k": 0,
+        "maximum_output_tokens": 8192,
+        "response_format_mode": "structure_only_json_schema",
+    }
+    assert reviewer["synthesis_generation"]["maximum_output_tokens"] == 12288
+    assert (
+        reviewer["synthesis_generation"]["response_format_mode"]
+        == "structure_only_json_schema"
+    )
+
+
+@pytest.mark.parametrize(
+    "schema_name",
+    ["citation_evidence_chunk.schema.json", "citation_review.schema.json"],
+)
+def test_registered_transport_schemas_remove_only_quantitative_bounds(
+    schema_name: str,
+) -> None:
+    canonical = json.loads(
+        (WORKSPACE / "protocols/2607.17674" / schema_name).read_text()
+    )
+    transported = RUNNER.transport_schema(canonical, "structure_only_json_schema")
+    transported_text = json.dumps(transported, sort_keys=True)
+    assert transported["type"] == canonical["type"]
+    assert transported["required"] == canonical["required"]
+    for omitted in RUNNER.GRAMMAR_ONLY_OMITTED_SCHEMA_KEYS:
+        assert f'"{omitted}"' not in transported_text
+    assert any(
+        f'"{omitted}"' in json.dumps(canonical, sort_keys=True)
+        for omitted in RUNNER.GRAMMAR_ONLY_OMITTED_SCHEMA_KEYS
+    )

@@ -9,7 +9,6 @@ from datetime import datetime, timezone
 import hashlib
 import http.client
 import json
-import os
 from pathlib import Path
 import platform
 import socket
@@ -35,7 +34,21 @@ DEFAULT_EVIDENCE_SCHEMA = PROTOCOL_ROOT / "citation_evidence_chunk.schema.json"
 DEFAULT_REVIEW_SCHEMA = PROTOCOL_ROOT / "citation_review.schema.json"
 DEFAULT_EVIDENCE_PROMPT = PROTOCOL_ROOT / "prompts" / "citation_evidence_system.txt"
 DEFAULT_SYNTHESIS_PROMPT = PROTOCOL_ROOT / "prompts" / "citation_synthesis_system.txt"
+RUNTIME_AMENDMENT = PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.2.md"
 EVENT_LOCK = threading.Lock()
+GRAMMAR_ONLY_OMITTED_SCHEMA_KEYS = frozenset(
+    {
+        "exclusiveMaximum",
+        "exclusiveMinimum",
+        "maxItems",
+        "maxLength",
+        "maximum",
+        "minItems",
+        "minLength",
+        "minimum",
+        "multipleOf",
+    }
+)
 
 
 class AuditError(RuntimeError):
@@ -119,7 +132,10 @@ def request_json(
 ) -> dict[str, Any]:
     _, hostname, port, _ = safe_loopback_base_url(base_url)
     body = encoded_json(payload) if payload is not None else None
-    headers = {"Accept": "application/json", "User-Agent": "NULSPEC-citation-audit/1.0.1"}
+    headers = {
+        "Accept": "application/json",
+        "User-Agent": "NULSPEC-citation-audit/1.0.1",
+    }
     if body is not None:
         headers["Content-Type"] = "application/json"
     connection = http.client.HTTPConnection(hostname, port, timeout=timeout)
@@ -232,9 +248,7 @@ def stream_completion(
             },
         )
         response = connection.getresponse()
-        response_headers = {
-            key.lower(): value for key, value in response.getheaders()
-        }
+        response_headers = {key.lower(): value for key, value in response.getheaders()}
         if response.status != 200:
             error_body = response.read(1024 * 1024)
             with raw_path.open("ab") as raw_handle:
@@ -288,7 +302,9 @@ def stream_completion(
                 try:
                     event = json.loads(event_payload)
                 except json.JSONDecodeError as error:
-                    raise AuditError("Qwen stream emitted malformed JSON event") from error
+                    raise AuditError(
+                        "Qwen stream emitted malformed JSON event"
+                    ) from error
                 if not isinstance(event, dict):
                     raise AuditError("Qwen stream emitted a non-object event")
                 normalized = normalized_stream_event(event, content, reasoning)
@@ -346,6 +362,35 @@ def parse_exact_object(content: str) -> dict[str, Any]:
     return value
 
 
+def structure_only_transport_schema(value: Any) -> Any:
+    """Remove quantitative bounds that can explode llama.cpp's GBNF grammar.
+
+    The returned schema is only a decoding constraint. The unmodified canonical
+    schema remains the acceptance contract and is applied after generation.
+    """
+
+    if isinstance(value, dict):
+        return {
+            key: structure_only_transport_schema(item)
+            for key, item in value.items()
+            if key not in GRAMMAR_ONLY_OMITTED_SCHEMA_KEYS
+        }
+    if isinstance(value, list):
+        return [structure_only_transport_schema(item) for item in value]
+    return value
+
+
+def transport_schema(schema: dict[str, Any], mode: str) -> dict[str, Any]:
+    if mode == "canonical_json_schema":
+        return schema
+    if mode == "structure_only_json_schema":
+        transformed = structure_only_transport_schema(schema)
+        if not isinstance(transformed, dict):
+            raise AuditError("structure-only transport schema is not an object")
+        return transformed
+    raise AuditError(f"unsupported response-format mode: {mode}")
+
+
 def artifact_bindings(root: Path) -> list[dict[str, Any]]:
     bindings: list[dict[str, Any]] = []
     for path in sorted(item for item in root.iterdir() if item.is_file()):
@@ -382,6 +427,10 @@ def build_request(
             + "\n- ".join(repair_errors[:20])
             + "\nReturn a new object satisfying the same evidence task and contract."
         )
+    response_format_mode = str(
+        generation.get("response_format_mode", "canonical_json_schema")
+    )
+    decoding_schema = transport_schema(schema, response_format_mode)
     request = {
         "model": model,
         "messages": [
@@ -401,7 +450,7 @@ def build_request(
             "json_schema": {
                 "name": "nulspec_citation_review",
                 "strict": True,
-                "schema": schema,
+                "schema": decoding_schema,
             },
         },
     }
@@ -437,7 +486,9 @@ def run_validated_call(
         parsed = load_object(parsed_path)
         errors = list(validate(parsed))
         if errors:
-            raise AuditError(f"previously accepted record no longer validates: {errors}")
+            raise AuditError(
+                f"previously accepted record no longer validates: {errors}"
+            )
         return parsed
 
     prior_errors: list[str] | None = None
@@ -472,6 +523,10 @@ def run_validated_call(
         write_new_text(attempt_root / "system-prompt.txt", system_prompt)
         write_new_text(attempt_root / "user-prompt.txt", user_prompt)
         write_new_json(attempt_root / "schema.json", schema)
+        write_new_json(
+            attempt_root / "transport-schema.json",
+            request["response_format"]["json_schema"]["schema"],
+        )
         write_new_json(attempt_root / "request.json", request)
         request_hash = sha256_file(attempt_root / "request.json")
         append_event(
@@ -619,13 +674,23 @@ def review_source(
             chat_template_kwargs=config["primary_reviewer"]["chat_template_kwargs"],
             stage_root=stage_root,
             event_log=event_log,
-            validate=lambda value, packet=packet: validate_evidence_record(value, packet),
+            validate=lambda value, packet=packet: validate_evidence_record(
+                value, packet
+            ),
             timeouts={
-                "first": float(config["primary_reviewer"]["first_event_timeout_seconds"]),
-                "idle": float(config["primary_reviewer"]["stream_idle_timeout_seconds"]),
-                "total": float(config["primary_reviewer"]["total_response_timeout_seconds"]),
+                "first": float(
+                    config["primary_reviewer"]["first_event_timeout_seconds"]
+                ),
+                "idle": float(
+                    config["primary_reviewer"]["stream_idle_timeout_seconds"]
+                ),
+                "total": float(
+                    config["primary_reviewer"]["total_response_timeout_seconds"]
+                ),
             },
-            maximum_attempts=int(config["primary_reviewer"]["maximum_attempts_per_call"]),
+            maximum_attempts=int(
+                config["primary_reviewer"]["maximum_attempts_per_call"]
+            ),
         )
         evidence_records.append(record)
 
@@ -645,11 +710,15 @@ def review_source(
         chat_template_kwargs=config["primary_reviewer"]["chat_template_kwargs"],
         stage_root=source_root / "synthesis",
         event_log=event_log,
-        validate=lambda value: validate_review_record(value, source_plan, evidence_records),
+        validate=lambda value: validate_review_record(
+            value, source_plan, evidence_records
+        ),
         timeouts={
             "first": float(config["primary_reviewer"]["first_event_timeout_seconds"]),
             "idle": float(config["primary_reviewer"]["stream_idle_timeout_seconds"]),
-            "total": float(config["primary_reviewer"]["total_response_timeout_seconds"]),
+            "total": float(
+                config["primary_reviewer"]["total_response_timeout_seconds"]
+            ),
         },
         maximum_attempts=int(config["primary_reviewer"]["maximum_attempts_per_call"]),
     )
@@ -765,7 +834,9 @@ def run_phase(
             for source in route_sources[route_index]
         ]
 
-    append_event(event_log, "qwen_phase_started", phase=name, source_count=len(source_records))
+    append_event(
+        event_log, "qwen_phase_started", phase=name, source_count=len(source_records)
+    )
     results: list[dict[str, Any]] = []
     errors: list[str] = []
     with ThreadPoolExecutor(max_workers=len(routes)) as executor:
@@ -774,7 +845,9 @@ def run_phase(
             try:
                 results.extend(future.result())
             except Exception as error:
-                errors.append(f"{routes[index]['label']}: {type(error).__name__}: {error}")
+                errors.append(
+                    f"{routes[index]['label']}: {type(error).__name__}: {error}"
+                )
     if errors:
         append_event(event_log, "qwen_phase_failed", phase=name, errors=errors)
         raise AuditError(f"{name} phase failed: {errors}")
@@ -788,7 +861,9 @@ def run_phase(
             "results": results,
         },
     )
-    append_event(event_log, "qwen_phase_completed", phase=name, source_count=len(results))
+    append_event(
+        event_log, "qwen_phase_completed", phase=name, source_count=len(results)
+    )
     return results
 
 
@@ -796,7 +871,9 @@ def parse_route(value: str) -> tuple[str, str]:
     if "=" not in value:
         raise argparse.ArgumentTypeError("route must have LABEL=http://127.0.0.1:PORT")
     label, base_url = value.split("=", maxsplit=1)
-    if not label or not all(character.isalnum() or character in "-_" for character in label):
+    if not label or not all(
+        character.isalnum() or character in "-_" for character in label
+    ):
         raise argparse.ArgumentTypeError("route label contains unsafe characters")
     try:
         safe_loopback_base_url(base_url)
@@ -839,6 +916,11 @@ def main() -> None:
     packet_validation = validate_packet_tree(review_plan_path, packet_root)
     if review_plan.get("protocol_version") != "1.0.1":
         raise SystemExit("review plan is not protocol v1.0.1")
+    if config.get("paper_id") != "2607.17674" or config.get("protocol_version") not in {
+        "1.0.1",
+        "1.0.2",
+    }:
+        raise SystemExit("citation runtime config identity or version differs")
     for label, binding in review_plan["bindings"].items():
         if label == "acquisition_manifest":
             continue
@@ -868,6 +950,13 @@ def main() -> None:
         "schema_version": 1,
         "paper_id": "2607.17674",
         "protocol_version": "1.0.1",
+        "packet_protocol_version": review_plan["protocol_version"],
+        "runtime_protocol_version": config["protocol_version"],
+        "runtime_amendment_sha256": (
+            sha256_file(RUNTIME_AMENDMENT)
+            if config["protocol_version"] == "1.0.2"
+            else None
+        ),
         "review_plan_sha256": sha256_file(review_plan_path),
         "packet_validation": packet_validation,
         "config_sha256": sha256_file(config_path),
@@ -895,7 +984,11 @@ def main() -> None:
             raise SystemExit("existing trace root is bound to different run inputs")
     else:
         write_new_json(run_input_path, stable_input)
-        append_event(event_log, "qwen_audit_started", run_input_sha256=sha256_file(run_input_path))
+        append_event(
+            event_log,
+            "qwen_audit_started",
+            run_input_sha256=sha256_file(run_input_path),
+        )
 
     sources = review_plan["sources"]
     source_by_key = {str(source["citation_key"]): source for source in sources}
@@ -971,8 +1064,12 @@ def main() -> None:
             {
                 "phase": args.phase,
                 "trace_root": str(trace_root),
-                "calibration_complete": (trace_root / "calibration-completion.json").is_file(),
-                "remaining_complete": (trace_root / "remaining-completion.json").is_file(),
+                "calibration_complete": (
+                    trace_root / "calibration-completion.json"
+                ).is_file(),
+                "remaining_complete": (
+                    trace_root / "remaining-completion.json"
+                ).is_file(),
             },
             indent=2,
         )

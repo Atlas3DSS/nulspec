@@ -422,6 +422,104 @@ limitations. Entries are never removed after correction.
   Codex runner, and trace-validator tests pass. No reviewer request, result,
   trace, or primary experiment was created or changed by this correction.
 
+### LRS-LOCAL-042 — citation response schema exceeded llama.cpp grammar limits
+
+- **State:** attempt preserved and rejected; correction required before retry
+- **Observation:** the pinned llama.cpp server rejected the full evidence JSON
+  Schema because nested bounded repetitions exceeded its grammar parser's sane
+  expansion limit. It then served the request without the intended grammar.
+  The harness had tested schema validation and streaming independently but had
+  not preflighted this exact schema-to-grammar conversion against the pinned
+  runtime.
+- **Disposition:** stop the calibration gate, preserve both invalid request
+  traces, and amend the transport only after an exact-runtime regression test.
+  Client-side canonical-schema validation remains mandatory. No citation
+  review, teacher input, primary metric, or publication artifact was accepted.
+
+### LRS-LOCAL-043 — unsupported preflight switch launched an authorized arm
+
+- **State:** contained; no scientific deviation
+- **Observation:** the workstation launch prefixed the current study's guarded
+  runner with `PREFLIGHT_ONLY=1`, assuming support equivalent to the preceding
+  study's runner. This script does not interpret that variable and therefore
+  launched the exact registered Track M 0.5B arm after its normal guards.
+- **Disposition:** retain the immutable attempt because this was the next
+  explicitly authorized arm, on the intended GPU, commit, inputs, and limits.
+  Record that it was an actual launch from inception and do not describe it as
+  a preflight. Future read-only checks must use only switches implemented by
+  the selected study runner.
+
+### LRS-LOCAL-044 — forwarded interrupt did not stop the remote review scope
+
+- **State:** corrected; no scientific effect
+- **Observation:** forwarding `Ctrl-C` through the retained SSH terminal closed
+  the client connection, but the separately managed remote llama-server scope
+  remained active and idle.
+- **Disposition:** stop the exact research-owned scope through the user service
+  manager and verify its PID, host memory, and GPU allocation disappeared.
+  No unrelated process was signalled; the primary run and unrelated service
+  remained healthy.
+
+### LRS-LOCAL-045 — error-ledger patch used stale neighboring text
+
+- **State:** corrected before any file change; no scientific effect
+- **Observation:** the first patch for entries 042–044 assumed entry 040 was
+  still adjacent to the external-limitations section. Another valid entry had
+  since been added, so `apply_patch` rejected the entire multi-file patch.
+- **Disposition:** reread the exact current ledger, preserve the intervening
+  entry, and reapply against a unique current anchor. The rejected patch made
+  no source, trace, run, or artifact change.
+
+### LRS-LOCAL-046 — live run checkout was briefly dirtied by documentation
+
+- **State:** corrected before evaluation or terminal capture; no code effect
+- **Observation:** entries 042–045 and the citation execution note were first
+  drafted in the clean checkout hosting the newly active Track M arm. No
+  protocol, runner, upstream source, config, or environment file was edited,
+  but the terminal manifest would have recorded a dirty documentation tree.
+- **Disposition:** move the exact edits into a named recoverable stash, verify
+  the execution checkout returned to its launch commit with an empty status,
+  and continue all maintenance in a separate clone. The start manifest was
+  already clean; the stash remains retained until the separate-clone commit is
+  verified.
+
+### LRS-LOCAL-047 — citation packet probe guessed an extra directory
+
+- **State:** corrected immediately; no scientific effect
+- **Observation:** a read-only `jq` probe first looked for the Allman evidence
+  packet under an extra `sources/` component. The exact packet inventory uses
+  `packets/{citation_key}/evidence/`.
+- **Disposition:** inventory the frozen packet root and repeat the query at the
+  exact path. No packet, trace, schema, or review was changed.
+
+### LRS-LOCAL-048 — selected experiment environment lacked pytest
+
+- **State:** corrected before commit; no scientific effect
+- **Observation:** the first focused harness-test command selected the frozen
+  upstream experiment environment, which intentionally lacks `pytest`. The
+  command exited before running any test or later chained check.
+- **Disposition:** use the host's registered test runner for repository tests,
+  while retaining the frozen upstream Python only for the upstream protocol
+  validation command.
+
+### LRS-LOCAL-049 — citation runner retained an unused import
+
+- **State:** corrected before commit or retry; no scientific effect
+- **Observation:** focused tests passed, then Ruff found the merged citation
+  runner still imported `os` without using it.
+- **Disposition:** remove the import and rerun the complete focused tests,
+  lint, and protocol validator. No Qwen request used the amended runner.
+
+### LRS-LOCAL-050 — runtime-amendment draft needed formatter normalization
+
+- **State:** corrected before commit or retry; no scientific effect
+- **Observation:** eleven focused tests and Ruff lint passed, but Ruff's
+  formatting check identified the amended runner and test module as not yet in
+  canonical layout.
+- **Disposition:** apply the repository formatter mechanically, then rerun all
+  eleven focused tests, lint, and the formatting check. No request, trace, or
+  primary run used the unformatted draft.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

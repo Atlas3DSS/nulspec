@@ -42,3 +42,23 @@ as a standalone performance benchmark. All request streams, raw responses,
 parse failures, usage, timing, runtime properties, and final records remain in
 the append-only ignored trace directory. No remaining-source review is
 authorized until the six calibration reviews pass operator inspection.
+
+### Terminal calibration outcome
+
+This attempt did not produce a valid calibration review and has no citation
+evidentiary weight. The pinned server rejected the nested bounded JSON Schema
+grammar before both requests. Each request then used all 2,048 allowed output
+tokens as reasoning (`finish_reason = length`) and returned no final content;
+the fail-closed client rejected both with `Qwen returned no final content`.
+The second invalid response completed at `2026-08-02T06:21:16Z`, after which
+the operator stopped calibration before another source and later stopped the
+idle reviewer scope.
+
+The complete failed trace was copied back without deletion after server
+shutdown. Source and destination path/size inventories both hash to
+`e85e966503206806ff092269781e09d67f633d56d7027ad6627ae86fc5022227`.
+It includes both requests, response schemas, raw SSE streams, normalized
+events, assembled reasoning, usage, timing, attempt records, server log, and
+runtime input. A new attempt requires a prospective trace-only amendment and
+an exact-runtime grammar/output-budget regression test; this directory will
+not be resumed or overwritten.

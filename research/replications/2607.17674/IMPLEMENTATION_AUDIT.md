@@ -60,9 +60,20 @@ directed surprisal, but it still receives the uniform part of the released
 global-plus-token objective (`alpha = 0.05`). It receives full uniform weight
 under ELBO/global-scale objectives. The `c_theta` estimate excludes this token.
 
-This is a confirmed code-to-equation difference. Its numerical effect is not
-known in advance, so the faithful primary retains it. A mask-corrected paired
-rerun belongs in an extension and must not replace the released-code result.
+The consequence is not limited to one small token loss. The active-token count
+inside the uniform average and the `base_loss` used to form `kappa` is
+`T_y + 1`, while the `c_theta` reference uses `T_y`. In the frozen 100,000-row
+training split, response-region lengths range from 12 to 121 tokens (median 32,
+mean 36.86289), and the mean deterministic scale ratio `T_y / (T_y + 1)` is
+0.967978. Thus the stated base-reference normalization is about 3.2% low on
+average before accounting for the separately learned `</z>` prediction, with a
+larger effect on short traces. This quantifies the objective-scale discrepancy;
+it does not predict the eventual metric effect.
+
+This is a confirmed code-to-equation difference. Its effect on learned metrics
+is not known in advance, so the faithful primary retains it. A mask-corrected
+paired rerun belongs in an extension and must not replace the released-code
+result.
 
 ### 3. Released sampling helpers restart the same RNG stream for every batch
 

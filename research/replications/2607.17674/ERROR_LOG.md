@@ -503,7 +503,11 @@ limitations. Entries are never removed after correction.
   but the released conditioned-record builder starts supervision at `</z>`, one
   token before its declared response span. The frozen-base directed weight is
   zero at that extra position, while the uniform component still trains it;
-  ELBO and global-scale variants weight it uniformly in full.
+  ELBO and global-scale variants weight it uniformly in full. The extra active
+  position also changes the denominator inside the uniform average and
+  `kappa`'s base loss from `T_y` to `T_y + 1`, while `c_theta` remains estimated
+  over `T_y`. Across the frozen training split, the resulting mean structural
+  scale ratio is 0.967978 (response lengths 12--121, median 32).
 - **Disposition:** preserve this behavior in every released-code primary arm.
   Run a response-span-only mask as a separately labeled paired extension and
   report whether it changes the conclusion.

@@ -22,6 +22,8 @@ Primary arms after the already-running first Track R attempt use trace-only
 harness tag `2607.17674-primary-harness-v1.0.1`. It adds a byte-exact manifest
 for each factorization stage's trained base-model input; the scientific
 protocol, upstream commands, and analyzer remain version 1.0.0.
+The reason and checksum verification for staging the completed 0.5B base stage
+to the second host are recorded in `CROSS_HOST_STAGING.md`.
 
 ## Reproducible analysis helpers
 

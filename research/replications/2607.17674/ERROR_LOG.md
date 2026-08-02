@@ -347,6 +347,25 @@ limitations. Entries are never removed after correction.
   analyzer tests, and 2607.17674 protocol validator as separate scoped checks.
   No artifact, process, metric, or source file was altered by the failed read.
 
+### LRS-LOCAL-035 — trace analyzer draft retained an unused type import
+
+- **State:** corrected before commit or scientific use; no result effect
+- **Observation:** the first static check of the new instrumented-evaluation
+  analyzer rejected an unused `Iterable` import after formatting.
+- **Disposition:** remove the unused import and rerun formatting, lint, and the
+  analyzer/evaluator tests. No trace, primary process, or analysis ran through
+  the rejected draft.
+
+### LRS-LOCAL-036 — trace validator initially treated row counts as probabilities
+
+- **State:** corrected before commit or scientific use; no result effect
+- **Observation:** the first analyzer unit run reached the recomputation checks
+  but sent integer `num_examples` and `num_pairs` fields through the `[0, 1]`
+  probability validator. Two synthetic tests failed on the count value `2`.
+- **Disposition:** validate recomputed counts by exact integer equality, retain
+  bounded checks for rates, and rerun the entire new test pair. No experimental
+  trace or primary artifact was supplied to the draft analyzer.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

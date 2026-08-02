@@ -81,6 +81,9 @@ The preregistered trace-preserving evaluation extension is documented in
 implemented and frozen before any primary standalone metric existed. It can
 exactly replay the released batch-reseed policy or advance one RNG stream while
 retaining all 10,000 fidelity outcomes and 1,024 analogical pair outcomes.
+Trace-only amendment v1.0.1 adds tracked-clean source enforcement, exact
+execution-environment capture, and a fail-closed analyzer that requires primary
+scalar parity before comparing the two RNG modes.
 
 The separate reviewer-of-reviewers hierarchy is now frozen prospectively at
 `2607.17674-citation-teachers-v1.0.2`. It preserves every Qwen record, runs GLM

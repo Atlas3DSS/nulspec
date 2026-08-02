@@ -8,6 +8,7 @@ from collections import Counter
 from dataclasses import asdict, is_dataclass, replace
 import hashlib
 import json
+import platform
 from pathlib import Path
 import subprocess
 import sys
@@ -20,7 +21,7 @@ DEFAULT_UPSTREAM = (
     WORKSPACE / "research" / "replications" / "2607.17674" / "work" / "upstream"
 )
 SCHEMA_VERSION = 1
-INSTRUMENTATION_VERSION = "1.0.0"
+INSTRUMENTATION_VERSION = "1.0.1"
 RngMode = Literal["released-reseed", "advancing"]
 
 
@@ -444,6 +445,45 @@ def git_revision(path: Path) -> str | None:
     return result.stdout.strip() if result.returncode == 0 else None
 
 
+def git_tracked_clean(path: Path) -> bool:
+    result = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(path),
+            "status",
+            "--porcelain=v1",
+            "--untracked-files=no",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return result.returncode == 0 and not result.stdout.strip()
+
+
+def environment_snapshot(device: Any) -> dict[str, Any]:
+    import torch
+
+    payload: dict[str, Any] = {
+        "python": platform.python_version(),
+        "platform": platform.platform(),
+        "torch": str(torch.__version__),
+        "torch_cuda": torch.version.cuda,
+        "cudnn": torch.backends.cudnn.version(),
+        "device": str(device),
+        "cuda_available": bool(torch.cuda.is_available()),
+    }
+    if device.type == "cuda":
+        properties = torch.cuda.get_device_properties(device)
+        payload["gpu"] = {
+            "name": properties.name,
+            "total_memory_bytes": int(properties.total_memory),
+            "compute_capability": [int(properties.major), int(properties.minor)],
+        }
+    return payload
+
+
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--upstream", type=Path, default=DEFAULT_UPSTREAM)
@@ -481,6 +521,15 @@ def main(argv: list[str] | None = None) -> Path:
     if batch_size < 1:
         raise ValueError("--batch-size must be at least 1")
 
+    workspace_revision = git_revision(WORKSPACE)
+    upstream_revision = git_revision(upstream)
+    if workspace_revision is None or upstream_revision is None:
+        raise RuntimeError("instrumentation requires Git-bound source trees")
+    if not git_tracked_clean(WORKSPACE):
+        raise RuntimeError("instrumentation requires a tracked-clean workspace")
+    if not git_tracked_clean(upstream):
+        raise RuntimeError("instrumentation requires a tracked-clean upstream tree")
+
     require_new_output_dir(output_dir)
     start_payload = {
         "schema_version": SCHEMA_VERSION,
@@ -494,9 +543,12 @@ def main(argv: list[str] | None = None) -> Path:
         "checkpoint_path": str(checkpoint_path),
         "checkpoint_sha256": sha256_file(checkpoint_path),
         "factorization_config_sha256": sha256_file(run_dir / "config.json"),
-        "workspace_revision": git_revision(WORKSPACE),
-        "upstream_revision": git_revision(upstream),
+        "workspace_revision": workspace_revision,
+        "workspace_tracked_clean": True,
+        "upstream_revision": upstream_revision,
+        "upstream_tracked_clean": True,
         "device": str(device),
+        "environment": environment_snapshot(device),
     }
     write_json(output_dir / "run.start.json", start_payload)
 

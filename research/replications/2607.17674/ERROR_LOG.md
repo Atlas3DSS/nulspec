@@ -265,6 +265,35 @@ limitations. Entries are never removed after correction.
   before Track M, and separately audit the active Track R base after completion.
   No data, model parameter, training command, metric, or interpretation changes.
 
+### LRS-LOCAL-027 — calibration inventory probe assumed inline chunks
+
+- **State:** corrected; no scientific effect
+- **Observation:** a read-only ad hoc calibration inventory probe attempted to
+  read `chunks` from each top-level review-plan source entry. The plan instead
+  stores a hash-bound `source_plan_relative_path`, and the probe stopped with a
+  `KeyError` after printing the first source summary.
+- **Disposition:** load each referenced immutable source plan and inspect its
+  chunk list there. No packet, source, trace, model process, or result changed.
+
+### LRS-LOCAL-028 — jq fallback indexed the inventory object as an array
+
+- **State:** corrected; no scientific effect
+- **Observation:** a read-only schema probe combined several jq fallback
+  expressions, one of which still evaluated a numeric index against the
+  top-level citation-inventory object and exited with a type error after
+  correctly printing its keys.
+- **Disposition:** address the named `records` and `citation_occurrences` fields
+  directly. No inventory, expectation, packet, or result was modified.
+
+### LRS-LOCAL-029 — named inventory fields were also assumed to be arrays
+
+- **State:** corrected; no scientific effect
+- **Observation:** the immediate follow-up read-only jq probe addressed the
+  correct field names but again indexed them numerically without first checking
+  their types; the fields use non-array shapes and jq stopped with a type error.
+- **Disposition:** inspect top-level value types before selecting nested data,
+  then build the expectation test from the actual schema. No file changed.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

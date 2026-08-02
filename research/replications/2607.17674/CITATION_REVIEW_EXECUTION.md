@@ -271,3 +271,101 @@ and the frozen protocol check passed. The repository-wide suite passed 164
 tests and reached only the known unrelated missing fixture recorded in
 LRS-LOCAL-059. No v1.0.4 model generation is authorized until the amendment is
 committed, tagged, synchronized, and passes a fresh lock-held preflight.
+
+### Eligible v1.0.4 preflight
+
+At `2026-08-02T09:55:09.686981Z`, tagged v1.0.4 completed a fresh uncontended
+preflight while holding the shared workstation experiment lock. Both exact
+transport schemas returned HTTP 200 and the bound server-log slice contained
+no grammar-failure marker. The completion-record SHA-256 is
+`451e91761d68419a240dda402403b20a137c2804a1fd312503f9adfe6fd65e8c`.
+The complete 18-file, 46,533-byte preflight inventory has SHA-256
+`cfc247e2eccadbecabe3e3eadb6e34c846fc92cff5822eee2ff517023d816184`.
+This preflight authorizes one fresh v1.0.4 calibration and is not citation
+evidence.
+
+### Terminal v1.0.4 calibration outcome
+
+The eligible v1.0.4 calibration ran from `2026-08-02T09:55:52.064754Z`
+through `2026-08-02T10:07:43.991579Z` and failed before completing the first
+source. The first Allman evidence chunk used both registered attempts: attempt
+1 exhausted its 8,192-token output allowance and ended with incomplete JSON;
+attempt 2 was structurally valid and exactly grounded. The second chunk was
+valid on its first attempt. Neither request for the third chunk emitted a
+single response byte before its 120-second first-event deadline. No third-chunk
+record, source synthesis, calibration completion, final review, or teacher
+input exists. The partial records therefore have zero citation-decision weight.
+
+This was our execution failure, not a paper, source, or demonstrated Qwen
+scientific failure. The reviewer scope had an 8 GiB `MemoryHigh`, 12 GiB
+`MemoryMax`, and 2 GiB swap maximum. At terminal diagnosis it had crossed the
+high threshold 105,483 times, reached the swap limit, accumulated severe full
+memory pressure, and was sleeping in `mem_cgroup_handle_over_high`; it recorded
+no max-limit, OOM, or OOM-kill event. The process became responsive immediately
+after a post-terminal high-limit increase and then stopped cleanly. Its
+89,923-byte append-only server log has SHA-256
+`5237b14b5f6a6bfbd9ae78131566e60a10c519ffef429efd3fff09e74f48b486`.
+
+The immutable 50-file, 8,279,287-byte trace has content-index SHA-256
+`cb9ff04296f31591e691eb170f82f48887a91805826eddff7461870b0f2e0983`.
+That index hashes bytewise path-sorted records containing each relative path,
+byte count, and file SHA-256. The event-log SHA-256 is
+`4afe7c87943bcc74b771af02cc57db3c3e3f9d8dfafd681c30e383c3aadfbd08`.
+The separately stored machine-readable index has SHA-256
+`7929d7e3b5d3bc9632e1296662e02b142637904e8071a82b89575ab8271354dd`.
+A separate ignored Codex label scores the available Qwen output 5/10, separates
+the two no-output infrastructure failures from reviewer quality, and records
+two evidence-selection corrections. Its SHA-256 is
+`0bbb990f2a0e160513a8590a10343b472fb23fc7eda9f9a4f4178be71f05fd9c`.
+It authorizes no citation decision, teacher input, training projection,
+publication, or email.
+
+The linked private cost record has SHA-256
+`0ede82c8f247bbdbd40dcfec408d623a95a1ce55754023c496b228c33ef0f33e`.
+It records 62,278 prompt tokens, 18,814 completion tokens, three completed
+responses, two no-response attempts, and 711.926825 seconds of accelerator
+wall-clock. External-provider cost was exactly $0; electricity and hardware
+capital cost were not measured and are not estimated post hoc.
+
+### Prospective host-envelope repair and replacement preflight
+
+The replacement uses the identical v1.0.4 code, packet, prompt, schemas,
+validator, GGUF, llama.cpp executable, model flags, sampling parameters,
+attempt budget, and calibration order. Only the local server cgroup envelope
+changed. The first proposed 12/16 GiB high/max repair was rejected before any
+citation-bearing request: after model load and a one-token diagnostic schema
+preflight, `MemoryCurrent` was within 81,920 bytes of `MemoryHigh` and the new
+scope had already recorded 50,712 high-limit events. That diagnostic preflight
+remains preserved with zero evidentiary weight.
+
+Before replacement calibration, the preflight server envelope was set to 20 GiB
+`MemoryHigh`, 24 GiB `MemoryMax`, and 4 GiB swap maximum. This remains below
+half of the workstation's 94 GiB physical memory, whose available memory was
+90 GiB at the correction point. The new server writes an append-only log and
+retains the same eight-core quota, nice level, I/O priority, loopback route,
+and one-slot GPU configuration.
+
+With the final envelope active, a new exclusive-lock preflight completed at
+`2026-08-02T10:14:44.129435Z`. Both exact transport schemas returned HTTP 200,
+and the server-log slice contained no grammar-failure marker. The completion
+record and server-log-slice SHA-256 values are respectively
+`08a071f0bbea2af000e8acaeb6d7d8b7fdc901d9738f173aa5aa6317591e6300`
+and
+`594de1638bc66263d1b5bbb82bfdd6a8fc0568b14d9018bd0bb4b945e03344dd`.
+The complete 18-file, 45,812-byte preflight has content-index SHA-256
+`be94632678359010cb6f6f3672fe98c8f227bf58ef5036a1c2c2efc1e207c4af`.
+This final preflight authorizes one fresh replacement v1.0.4 calibration and is
+not citation evidence.
+
+The replacement acquired the exclusive experiment lock and began at
+`2026-08-02T10:15:07.348463Z`, with run-input SHA-256
+`d7d8f7f97a23d0b8bc080d850eca2a3f76c331207cf7e7c981e59ea5b6d5e011`.
+After its first evidence chunk and before any new high-limit event, the server
+used 16,383,631,360 bytes while the advertised 8 GiB prompt cache was still
+accumulating prompts. At `2026-08-02T10:22:16Z`, the host high/max limits were
+therefore relaxed to 32/40 GiB while retaining the 4 GiB swap and eight-core
+limits. The 40 GiB hard limit remains below half of physical workstation
+memory. No request was canceled or restarted, and no model, route, packet,
+prompt, schema, validator, generation parameter, or accepted output changed.
+The append-only resource amendment and cgroup counters are retained with the
+private server trace.

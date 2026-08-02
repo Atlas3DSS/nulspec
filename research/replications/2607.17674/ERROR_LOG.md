@@ -799,16 +799,86 @@ limitations. Entries are never removed after correction.
   replacement maximum is 35,644 exact rendered-prompt tokens and 43,836 after
   the full 8,192-token output reserve.
 
-### LRS-LOCAL-073 — first context-audit documentation patch crossed file context
+### LRS-LOCAL-073 — context-audit documentation patches used wrong context
 
 - **State:** atomically rejected and corrected; no research effect
 - **Observation:** the first documentation-only patch placed an error-log
-  context under the execution-record file header. `apply_patch` rejected the
-  entire patch because that context did not exist, so no file was partially
-  modified.
+  context under the execution-record file header. A later preflight-record
+  patch assumed a sentence began on a new line when it followed the prior
+  sentence on that line. `apply_patch` rejected both entire patches because
+  their contexts did not exist, so no file was partially modified.
 - **Disposition:** retain this as our editing-command error and reapply with an
   explicit update header for each file. Recheck whitespace and exact hashes
   before commit.
+
+### LRS-LOCAL-074 — symbolic branch refspec failed after the v1.0.4 commit
+
+- **State:** corrected before remote synchronization or runtime use
+- **Observation:** the v1.0.4 commit and annotated tag were created locally,
+  then the first push reported that the symbolic branch refspec did not match,
+  even though the checked-out branch and local head ref both existed. No branch
+  or tag reached the remote in that failed command.
+- **Disposition:** verify the exact local commit, branch, and tag, then push the
+  immutable commit using the explicit `HEAD:refs/heads/...` refspec and push the
+  exact tag ref separately. Both succeeded before checkout synchronization,
+  preflight, or calibration.
+
+### LRS-LOCAL-075 — Qwen server cgroup stalled the v1.0.4 calibration
+
+- **State:** contained; failed trace preserved with zero decision weight
+- **Observation:** the workstation reviewer scope was launched with 8 GiB
+  `MemoryHigh`, 12 GiB `MemoryMax`, and a 2 GiB swap maximum. After two accepted
+  evidence chunks grew the runtime prompt cache, neither request for Allman
+  chunk 3 emitted a response byte before the 120-second first-event deadline.
+  Terminal inspection found 105,483 high-limit events, the full swap allowance
+  consumed, severe cgroup memory pressure, and the process sleeping in
+  `mem_cgroup_handle_over_high`. There was no max-limit, OOM, or OOM-kill event.
+- **Disposition:** attribute the outcome to our local resource envelope rather
+  than Qwen or the cited source. Preserve the complete trace and server log,
+  assign every partial record zero citation-decision weight, and launch a fresh
+  replacement only after an uncontended preflight under a prospectively
+  recorded larger envelope. Do not resume or overwrite the failed trace.
+
+### LRS-LOCAL-076 — first repaired Qwen envelope still touched MemoryHigh
+
+- **State:** caught before replacement calibration; corrected prospectively
+- **Observation:** the first repair proposed 12/16 GiB high/max with 4 GiB
+  swap. Immediately after model load and a one-token schema preflight,
+  `MemoryCurrent` was within 81,920 bytes of `MemoryHigh`, and the new scope had
+  already recorded 50,712 high-limit events. The runtime advertises an 8 GiB
+  prompt-cache ceiling, so continuing could have reproduced the prior stall.
+- **Disposition:** keep that successful schema preflight as diagnostic only,
+  increase the still-pre-calibration scope to 20/24 GiB high/max, retain the
+  4 GiB swap limit, and run a new exclusive-lock preflight. The final envelope
+  remains below half of the workstation's 94 GiB physical memory. No
+  citation-bearing request, primary metric, or unrelated service was affected.
+
+### LRS-LOCAL-077 — replacement Qwen headroom was still too narrowly projected
+
+- **State:** corrected before another high-limit event; disclosed operational
+  adjustment, no scientific effect observed
+- **Observation:** the replacement calibration began after a clean preflight
+  under the 20/24 GiB high/max envelope. After its first evidence chunk, the
+  server used 16,383,631,360 bytes while its advertised 8 GiB prompt cache was
+  still accumulating source prompts. It remained below `MemoryHigh`, and the
+  inherited high-event count had not increased, but the projected full-cache
+  state left insufficient margin for a long review pass.
+- **Disposition:** before a new high event, relax the live server to 32/40 GiB
+  high/max, retain the 4 GiB swap and eight-core limits, and record the exact
+  timing and cgroup state without canceling or restarting the in-flight
+  request. The hard limit remains below half of physical workstation memory.
+  This changes no model, route, packet, prompt, schema, validator, sampling
+  parameter, response, or primary experiment.
+
+### LRS-LOCAL-078 — new private-tree index script was not initially Ruff-formatted
+
+- **State:** corrected before commit; no research effect
+- **Observation:** the focused unit tests and Ruff lint passed, but Ruff's
+  format check reported that the new deterministic private-tree index script
+  required one mechanical formatting change.
+- **Disposition:** apply Ruff formatting, rerun lint and the format check, and
+  rerun all four focused tests. The final checks pass; no trace, hash input, or
+  live process was changed.
 
 ## External acquisition limitations
 

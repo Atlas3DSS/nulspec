@@ -585,6 +585,53 @@ limitations. Entries are never removed after correction.
   and records the shared lock before route inspection, trace creation, or a
   request. Require a fresh uncontended pass before replacement calibration.
 
+### LRS-LOCAL-057 — primary run manifests could not invoke pip freeze
+
+- **State:** preserved and prospectively corrected; provenance-only
+- **Observation:** the active R and M 0.5B start manifests recorded an empty
+  package list with `package_capture_exit_code = 1`. The exact `uv`-managed
+  paper environment has no `pip` module, so `python -m pip freeze --all`
+  returned `No module named pip`. Python, CUDA, repository, upstream, config,
+  matrix, source, and lockfile identities remained available, and training was
+  unaffected.
+- **Disposition:** never rewrite either start manifest. Harness v1.0.2 records
+  the failed pip attempt and falls back to `importlib.metadata`, and it writes a
+  separate self-hashing Python-environment inventory before future arms. Add
+  the same inventory as a labeled post-run supplement to each active attempt.
+
+### LRS-LOCAL-058 — package-inventory patch needed formatter normalization
+
+- **State:** corrected before commit or use; no scientific effect
+- **Observation:** Ruff lint passed, then its formatting check identified the
+  manifest helper and two focused test modules as not yet in canonical layout.
+  The chained tests therefore did not start in that command.
+- **Disposition:** apply the repository formatter mechanically, then rerun
+  lint, formatting, and all focused tests. Neither active arm loads the
+  maintenance checkout, and no run manifest used the draft.
+
+### LRS-LOCAL-059 — cross-study full suite lacked an ignored result fixture
+
+- **State:** isolated; no effect on this study
+- **Observation:** the repository-wide test run passed 158 tests and failed one
+  test for a different study because the clean maintenance checkout does not
+  contain its ignored `all_results.json` fixture. The five package-inventory
+  and primary-input focused tests had already passed.
+- **Disposition:** retain the failure as an environment limitation, rely on the
+  focused tests and frozen protocol validator for this amendment, and require
+  the normal GitHub workflow—which provisions its own fixtures—to pass. Do not
+  copy an unrelated private result into this checkout merely to satisfy the
+  local full suite.
+
+### LRS-LOCAL-060 — terminal-trap test needed formatter normalization
+
+- **State:** corrected before commit or use; no scientific effect
+- **Observation:** Ruff lint passed, then its formatting check identified the
+  focused runner-order test changed in the terminal-trap review. The chained
+  tests did not start in that command.
+- **Disposition:** format the test mechanically and rerun lint, formatting,
+  shell syntax, and the focused tests. Active arms remain bound to their clean
+  original checkouts and did not load this draft.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

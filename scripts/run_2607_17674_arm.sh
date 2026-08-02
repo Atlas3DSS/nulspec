@@ -137,15 +137,6 @@ mkdir -p "$LOG_ROOT"
 exec > >(tee -a "$LOG_ROOT/runner.log") 2>&1
 
 invocation="$0 $ARM_ID [GPU_UUID_REDACTED] $EXPECTED_GPU $ARTIFACT_ROOT"
-"$PYTHON_BIN" "$WORKSPACE/scripts/capture_run_manifest.py" \
-  --output "$RUN_ROOT/run.start.json" \
-  --paper-id 2607.17674 \
-  --arm-id "$ARM_ID" \
-  --phase start \
-  --protocol-version "$PROTOCOL_VERSION" \
-  --invocation "$invocation" \
-  --upstream "$UPSTREAM"
-
 finish_attempt() {
   exit_code=$?
   trap - EXIT
@@ -166,6 +157,18 @@ finish_attempt() {
   exit "$exit_code"
 }
 trap finish_attempt EXIT
+
+"$PYTHON_BIN" "$WORKSPACE/scripts/capture_run_manifest.py" \
+  --output "$RUN_ROOT/run.start.json" \
+  --paper-id 2607.17674 \
+  --arm-id "$ARM_ID" \
+  --phase start \
+  --protocol-version "$PROTOCOL_VERSION" \
+  --invocation "$invocation" \
+  --upstream "$UPSTREAM"
+"$PYTHON_BIN" "$WORKSPACE/scripts/capture_python_environment.py" \
+  --output "$RUN_ROOT/python-environment.json" \
+  --lockfile "$UPSTREAM/uv.lock"
 
 echo "arm started: $ARM_ID at $(date -u +%FT%TZ)"
 echo "model: $MODEL_ID at $MODEL_REVISION"

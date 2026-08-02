@@ -113,15 +113,17 @@ limitations. Entries are never removed after correction.
   existing requested directory.
 - **Disposition:** subsequent searches use paths confirmed by `rg --files`.
 
-### LRS-LOCAL-013 — relative DOI redirects were validated before resolution
+### LRS-LOCAL-013 — DOI failure was initially misdiagnosed as a relative redirect
 
-- **State:** corrected; no scientific effect
-- **Observation:** the first citation-acquisition attempt rejected relative
-  redirect targets returned by two Project Euclid DOI routes because the safety
-  check ran before joining them to the public HTTPS origin.
-- **Disposition:** preserve the incomplete attempt, resolve redirects against
-  their requesting HTTPS URL before applying the same public-host validation,
-  and issue a fresh acquisition attempt.
+- **State:** corrected after the second acquisition attempt; no scientific effect
+- **Observation:** the first citation-acquisition attempt rejected two Project
+  Euclid DOI redirects. The initial diagnosis called them relative redirects
+  and added safe relative-URL resolution. Response-header inspection after the
+  second attempt showed that both redirects were actually absolute HTTP
+  downgrades, which the safety policy correctly continued to reject.
+- **Disposition:** preserve both incomplete attempts and the corrected
+  diagnosis. Keep relative redirect validation as a general safety fix, but use
+  identity-matched archival Project Euclid PDFs for these two sources.
 
 ### LRS-LOCAL-014 — ad hoc archive query did not isolate per-item timeouts
 
@@ -131,6 +133,15 @@ limitations. Entries are never removed after correction.
 - **Disposition:** retained the partial output and queried the two remaining
   identifiers separately with bounded retries. No acquisition record or source
   selection was overwritten.
+
+### LRS-LOCAL-015 — archive response was passed to JSON parser unchecked
+
+- **State:** corrected; no scientific effect
+- **Observation:** one exploratory Internet Archive loop passed a transient
+  non-JSON response directly to `jq`, which exited with a parse error after the
+  first of two lookups had succeeded.
+- **Disposition:** queried the remaining URL separately with retries and JSON
+  validation. No source or acquisition record was overwritten.
 
 ## External acquisition limitations
 
@@ -166,6 +177,17 @@ limitations. Entries are never removed after correction.
   accessible but exposed no PDF link to the acquisition client.
 - **Disposition:** use arXiv:2311.05014, whose title and author list match the
   cited chapter, and record the substitution rather than scraping a paywall.
+
+### LRS-EXTERNAL-005 — two DOI routes downgrade HTTPS and live PDFs are guarded
+
+- **State:** bypassed with identity-matched archive copies
+- **Observation:** the Teicher and Yakowitz DOI resolvers redirect from HTTPS
+  to legacy HTTP Project Euclid URLs. Their manually upgraded HTTPS routes
+  return verification pages rather than PDFs to the acquisition client.
+- **Disposition:** retain the failed DOI traces and use archived Project Euclid
+  PDFs whose bibliographic identities match the cited articles. The later
+  Yakowitz archive capture postdates the target submission, which is disclosed;
+  it contains the immutable 1968 source article rather than a later substitute.
 
 ## Upstream/release limitations
 

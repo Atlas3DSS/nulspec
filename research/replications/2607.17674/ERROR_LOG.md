@@ -201,6 +201,16 @@ limitations. Entries are never removed after correction.
   Subsequent workstation discovery must use indexed file lists or known model
   roots and is not allowed to delay or compete with the primary run.
 
+### LRS-LOCAL-021 — dynamic provider-test module was not registered
+
+- **State:** corrected before provider or teacher invocation; no scientific effect
+- **Observation:** the first offline provider-contract test loaded the module
+  with `importlib` but did not add it to `sys.modules` before execution. Python
+  3.12's dataclass decorator consequently failed during test collection.
+- **Disposition:** register the temporary module under its spec name before
+  execution and rerun the unchanged provider assertions. No network request,
+  model review, experimental artifact, or service was affected.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

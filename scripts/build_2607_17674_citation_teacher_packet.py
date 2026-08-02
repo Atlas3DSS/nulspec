@@ -13,9 +13,16 @@ from typing import Any
 
 WORKSPACE = Path(__file__).resolve().parents[1]
 TEACHER_PROTOCOL = WORKSPACE / "protocols" / "2607.17674" / "CITATION_TEACHER_PROTOCOL.md"
-TEACHER_CONFIG = (
-    WORKSPACE / "protocols" / "2607.17674" / "citation_teacher_config.v1.0.0.json"
+TEACHER_AMENDMENT = (
+    WORKSPACE
+    / "protocols"
+    / "2607.17674"
+    / "CITATION_TEACHER_AMENDMENT_v1.0.1.md"
 )
+TEACHER_CONFIG = (
+    WORKSPACE / "protocols" / "2607.17674" / "citation_teacher_config.v1.0.1.json"
+)
+PROVIDER_IMPLEMENTATION = WORKSPACE / "extension" / "direct_teacher_providers.py"
 TEACHER_SCHEMA = (
     WORKSPACE / "protocols" / "2607.17674" / "citation_teacher_audit.schema.json"
 )
@@ -201,7 +208,7 @@ def build_packet(trace_root: Path) -> dict[str, Any]:
         "schema_version": 1,
         "packet_type": "qwen_citation_teacher_packet",
         "paper_id": "2607.17674",
-        "teacher_protocol_version": "1.0.0",
+        "teacher_protocol_version": "1.0.1",
         "parent_citation_audit_version": "1.0.1",
         "protocol": {
             "boundary": (
@@ -223,9 +230,11 @@ def build_packet(trace_root: Path) -> dict[str, Any]:
             },
             "source_qwen_completion_sha256": sha256_file(completion_path),
             "teacher_protocol_sha256": sha256_file(TEACHER_PROTOCOL),
+            "teacher_amendment_sha256": sha256_file(TEACHER_AMENDMENT),
             "teacher_config_sha256": sha256_file(TEACHER_CONFIG),
             "teacher_schema_sha256": sha256_file(TEACHER_SCHEMA),
             "codex_schema_sha256": sha256_file(CODEX_SCHEMA),
+            "provider_implementation_sha256": sha256_file(PROVIDER_IMPLEMENTATION),
         },
         "population_summary": summary,
         "sources": sources,

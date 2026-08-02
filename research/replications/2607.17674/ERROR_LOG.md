@@ -191,6 +191,16 @@ limitations. Entries are never removed after correction.
   reads. Retain the failing test output and rerun the streamed trace test. No
   Qwen service was started or called.
 
+### LRS-LOCAL-020 — broad workstation model search was stopped
+
+- **State:** stopped; no scientific effect
+- **Observation:** a read-only search for an optional workstation llama binary
+  and GGUF traversed too broad a Windows-mounted directory and produced no
+  result within 30 seconds.
+- **Disposition:** terminated the search without changing any file or process.
+  Subsequent workstation discovery must use indexed file lists or known model
+  roots and is not allowed to delay or compete with the primary run.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

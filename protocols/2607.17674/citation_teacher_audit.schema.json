@@ -1,0 +1,100 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scope_confirmation",
+    "coverage_confirmation",
+    "overall_assessment",
+    "qwen_reviewer_quality_score",
+    "findings",
+    "systemic_patterns",
+    "boundary_limitations",
+    "summary"
+  ],
+  "properties": {
+    "scope_confirmation": {
+      "type": "string",
+      "enum": ["qwen_citation_records_only"]
+    },
+    "coverage_confirmation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_reviews",
+        "citation_occurrences",
+        "evidence_chunks",
+        "inspected_all_records"
+      ],
+      "properties": {
+        "source_reviews": {"type": "integer", "enum": [41]},
+        "citation_occurrences": {"type": "integer", "enum": [74]},
+        "evidence_chunks": {"type": "integer", "enum": [112]},
+        "inspected_all_records": {"type": "boolean"}
+      }
+    },
+    "overall_assessment": {
+      "type": "string",
+      "enum": ["pass", "warn", "fail"]
+    },
+    "qwen_reviewer_quality_score": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "findings": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "citation_key",
+          "occurrence_id",
+          "chunk_id",
+          "severity",
+          "issue_type",
+          "qwen_record_reference",
+          "rationale",
+          "recommended_action"
+        ],
+        "properties": {
+          "citation_key": {"type": "string", "minLength": 1, "maxLength": 160},
+          "occurrence_id": {"type": "string", "maxLength": 220},
+          "chunk_id": {"type": "string", "maxLength": 220},
+          "severity": {
+            "type": "string",
+            "enum": ["information", "warning", "critical"]
+          },
+          "issue_type": {
+            "type": "string",
+            "enum": [
+              "unsupported_evidence",
+              "support_classification",
+              "score_calibration",
+              "missing_qualification",
+              "source_identity",
+              "internal_inconsistency",
+              "trace_or_schema",
+              "systemic_pattern"
+            ]
+          },
+          "qwen_record_reference": {"type": "string", "minLength": 1, "maxLength": 500},
+          "rationale": {"type": "string", "minLength": 1, "maxLength": 2400},
+          "recommended_action": {"type": "string", "minLength": 1, "maxLength": 1600}
+        }
+      }
+    },
+    "systemic_patterns": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {"type": "string", "minLength": 1, "maxLength": 1600}
+    },
+    "boundary_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {"type": "string", "minLength": 1, "maxLength": 1600}
+    },
+    "summary": {"type": "string", "minLength": 1, "maxLength": 3000}
+  }
+}

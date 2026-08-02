@@ -686,9 +686,9 @@ for (const scenario of scenarios) {
           "Anthropic wasted reviewer time and research money",
         ) ||
         !diagnostics.refusalPolicy?.includes(
-          "Fable, GLM, and Kimi receive the same immutable packet",
+          "Fable is not used for per-paper review",
         ) ||
-        !diagnostics.refusalPolicy?.includes("zero decision weight") ||
+        !diagnostics.refusalPolicy?.includes("zero-weight process audit") ||
         diagnostics.refusalComparisonSets !== 1 ||
         diagnostics.closedRefusalHistories !== 2)) ||
     (scenario.expectedCandidateRows > 0 &&

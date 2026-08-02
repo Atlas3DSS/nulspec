@@ -516,7 +516,10 @@ def test_codex_packet_contains_only_glm_and_kimi_teacher_attempts() -> None:
     }
     assert packet["outer_teacher_attempts"][0]["stream_events_sha256"] == "c" * 64
     assert packet["outer_teacher_attempts"][0]["model_id"] == "glm"
-    assert "Fable is not part" in packet["protocol"]["excluded_reviewer"]
+    assert (
+        "Fable is excluded from all per-paper"
+        in packet["protocol"]["excluded_reviewer"]
+    )
     decision = {
         "scope_confirmation": "qwen_records_and_outer_teacher_audits_only",
         "teacher_assessments": [

@@ -127,43 +127,43 @@ Pending.
 Pending the protocol, runner, GLM and Kimi attempt records, deterministic
 validation, regenerated handoff, and website verification.
 
-### RF-20260801-04 — Separate the three-reviewer release gate from the Qwen teacher loop
+### RF-20260801-04 — Keep Fable outside every active per-paper review path
 
 - Status: OPEN
 - Blocking: publication
-- Observed in: the Fable refusal taxonomy, supplemental-review gate, and the
-  completed direct-Codex Qwen outer-teacher audit
+- Observed in: the Fable refusal taxonomy, supplemental-review gate, dashboard
+  adapter, and completed direct-Codex Qwen outer-teacher audit
 - Affected study: `260723346` and future studies using external release review
 - Reported by: website
 - Reported at: 2026-08-01T20:00:00Z
+- Updated at: 2026-08-02T19:59:29Z
 
 #### Observed
 
-The existing study contract labels a Fable safeguard non-response as a
+The existing SPRKD study contract labels a Fable safeguard non-response as a
 technical `HARD_FAIL`, invokes GLM and Kimi only after that event, and retains a
-mandatory human publication disposition. The updated lab policy requests
-Fable, GLM, and Kimi independently for every eligible review and distinguishes
-a provider non-response from a substantive scientific decision.
+mandatory human publication disposition. That frozen record remains historical
+evidence. It must not define the prospective release architecture.
 
 The completed extension also used Qwen as the primary reviewer and Codex as its
 single outer teacher. That historical audit remains valid as recorded. The
 future recurring teacher loop needs independent GLM and Kimi audits followed by
-Codex, with complete traces suitable for longitudinal harness analysis. Fable
-must not be used in that recurring loop because its cost is reserved for the
-separate final-release review.
+Codex, with complete traces suitable for longitudinal harness analysis.
+
+Effective 2026-08-02, Fable is removed from every active per-paper teacher,
+final-review, release, repair, fallback, and escalation path. It may run only
+once after ten distinct completed paper pipelines validate, using one immutable
+packet containing a reproducible random sample of three of those ten.
 
 #### Expected
 
-- Always request Fable, GLM, and Kimi on the same immutable packet.
-- Record a Fable safeguard or technical non-response, its tokens, cost, message,
-  and hashes with decision weight zero. It is not a scientific `HARD_FAIL`.
-- After a zero-weight Fable non-response, two independently valid GLM and Kimi
-  `PASS` decisions authorize publication of the bound release.
-- When Fable returns a substantive review, require valid `PASS` decisions from
-  all three reviewers.
-- Create scientific `HARD_FAIL` only from a valid substantive Fable `fail`.
-  Malformed output, missing GLM/Kimi evidence, or disagreement blocks for human
-  adjudication instead of being converted into a verdict.
+- Request GLM and Kimi independently and concurrently on the same immutable
+  per-paper final-review packet. Do not invoke Fable.
+- Require independently valid GLM and Kimi `PASS` decisions to satisfy the
+  model-review gate. Missing evidence, a non-`PASS` result, repair exhaustion,
+  or disagreement blocks for human adjudication.
+- Keep publication behind an explicit human dashboard decision on the exact
+  packet even after the model-review gate passes.
 - Keep author-email dispatch behind separate human approval of the exact draft.
 - For Qwen-primary studies, send only the GLM and Kimi teacher records to Codex
   for outer trace/scope adjudication. Launch GLM and Kimi concurrently from the
@@ -171,23 +171,27 @@ separate final-release review.
   its repair, and issue a new linked attempt; do not let Codex start until both
   logical teacher chains contain valid audits. Do not invoke Fable in that
   teacher loop.
-- After the teacher pipeline is complete and validated, request one bounded
-  Fable critique of the pipeline architecture, trace policy, failure handling,
-  and cost controls. Keep it outside teacher consensus and preserve its full
-  trace and cost without automatic retry.
+- Count completed, end-to-end validated paper pipelines in groups of ten. Use a
+  fresh recorded 256-bit random seed to select three reproducibly, then make
+  exactly one bounded Fable request containing those three. Keep it outside
+  teacher consensus and preserve its full trace and cost without automatic
+  retry. Reject paper reuse across batches.
+- Preserve all historical Fable attempts and refusal records without exposing
+  any callable single-paper or historical-reissue execution mode.
 
 #### Requested research change
 
-Version both protocols and schemas; do not rewrite raw historical attempts.
-Adopt `extension/review_hierarchy.py` and `docs/REVIEW_HIERARCHY.md` for the
-GLM/Kimi/Codex teacher loop. Keep the Fable/GLM/Kimi decision rule confined to
-the final-release workflow. Regenerate the study handoff under the new release
-policy when applicable and bind sanitized summaries into the publication
-bundle. Preserve every raw prompt, request, response, usage/cost record, timing,
-parsed result, failure, repair link, teacher-chain event, and Codex event in the
-ignored archive. Each repair must use a new attempt ID and preserve the failed
-attempt unchanged. Exhausting the bounded repair budget blocks the run rather
-than accepting invalid evidence.
+Version the release protocol and schemas; do not rewrite raw historical
+attempts. Adopt `extension/review_hierarchy.py` and
+`docs/REVIEW_HIERARCHY.md` for the GLM/Kimi/Codex teacher loop. Replace
+Fable-specific final-review filenames and bindings with generic GLM/Kimi
+release-review artifacts. Regenerate future study handoffs under the batch-only
+Fable policy and bind sanitized summaries into the publication bundle.
+Preserve every raw prompt, request, response, usage/cost record, timing, parsed
+result, failure, repair link, teacher-chain event, and Codex event in the
+ignored archive. Each GLM/Kimi repair must use a new attempt ID and preserve the
+failed attempt unchanged. Exhausting the bounded repair budget blocks the run
+rather than accepting invalid evidence.
 
 #### Research response
 
@@ -195,8 +199,9 @@ Pending.
 
 #### Resolution evidence
 
-Pending a versioned research-side contract, deterministic tests, regenerated
-handoff, and one completed end-to-end three-reviewer hierarchy run.
+Pending a versioned research-side contract, deterministic tests, a generic
+GLM/Kimi release-review handoff, and one completed end-to-end batch-only-Fable
+pipeline run.
 
 ## Resolved items
 

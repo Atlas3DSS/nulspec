@@ -24,38 +24,46 @@ practice only when they remain visible.
 6. Record the complete charged cost and usage reported by the provider wrapper.
 7. Record zero findings when no substantive review was returned. Do not convert
    a technical refusal into a negative scientific assessment.
-8. Request Fable, GLM, and Kimi independently on the same immutable packet for
-   every eligible review. Resolve and record the exact model revisions used.
-   Do not silently retry a failed attempt within the run.
+8. Do not request Fable for any per-paper review, release, repair, fallback, or
+   escalation. Resolve and record the exact GLM and Kimi revisions used for
+   active release review. Fable is permitted only under the ten-paper batch
+   policy below.
 9. Attribute each operational failure as precisely as the evidence permits.
    Do not label a transport, prompt, or harness error as a model failure.
 10. Record NULSPEC errors with the same specificity used for external service
     failures. Append corrections; never conceal or ridicule a failed attempt.
 
-## Review policy effective 2026-08-01
+## Review policy effective 2026-08-02
 
-The current release gate distinguishes a scientific decision from a provider
-non-response:
+Fable is not requested for per-paper review. The active release process is:
 
-1. A Fable safeguard refusal or technical failure without a substantive review
-   is logged as a non-response. Its cost, tokens, provider message, and hashes
-   remain in the ledger, but its decision weight is **zero** and it is not a
-   scientific `HARD_FAIL`.
-2. After a zero-weight Fable non-response, independently valid `PASS` decisions
-   from both GLM and Kimi satisfy the publication model gate.
-3. If Fable returns a valid substantive review, Fable, GLM, and Kimi must all
-   return `PASS` for the publication model gate to pass.
-4. Only a valid substantive Fable assessment of `fail` creates the scientific
-   `HARD_FAIL` state. Malformed output is not converted into a verdict.
-5. Missing GLM/Kimi reviews, malformed substantive output, or disagreement
-   blocks automatic publication for human adjudication.
-6. Publication authorization never authorizes email dispatch. Sending the
-   exact author-email draft still requires separate human approval.
+1. GLM and Kimi independently review the same immutable release packet.
+2. Both must return a valid `PASS` to satisfy the model-review gate. Missing,
+   malformed, non-`PASS`, or disagreeing reviews remain blocked.
+3. Codex may summarize the traces for the operator but cannot replace either
+   review or relax the model gate.
+4. Publication requires a separate human dashboard decision on the exact bound
+   packet. Email requires another human decision on the exact draft and
+   recipients.
+5. After ten distinct completed paper pipelines pass end-to-end validation,
+   one Fable invocation reviews three reproducibly selected pipelines in a
+   single immutable packet. The batch critique has zero decision weight, is not
+   retried automatically, and cannot alter a paper, publication, or email gate.
 
-This policy is prospective. It does not rewrite the raw evidence or the frozen
-one-shot gate under which earlier attempts were originally recorded. An older
-technical-`HARD_FAIL` label remains as historical protocol state; the refusal's
-current scientific classification is a zero-weight charged non-response.
+### Superseded policy effective 2026-08-01
+
+The prior release policy requested Fable, GLM, and Kimi for each eligible
+release. It treated a Fable safeguard or technical non-response as zero-weight,
+then allowed matching valid GLM and Kimi `PASS` decisions to satisfy the model
+gate. A substantive Fable review required three `PASS` decisions. That policy
+was superseded on 2026-08-02 because Fable's observed cost was inappropriate
+for recurring review.
+
+The change does not rewrite raw evidence or the frozen one-shot gate under
+which earlier attempts were recorded. An older technical-`HARD_FAIL` label
+remains as historical protocol state; the refusal's current scientific
+classification remains a zero-weight charged non-response.
+Its decision weight is **zero**, and it is not a scientific `HARD_FAIL`.
 
 ## Totals as of 2026-08-01
 

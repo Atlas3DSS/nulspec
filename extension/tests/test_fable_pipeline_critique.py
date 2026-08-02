@@ -12,14 +12,13 @@ from extension.fable_pipeline_critique import (
     FABLE_BATCH_SIZE,
     FABLE_SAMPLE_SIZE,
     build_batch_packet,
-    build_packet,
     claim_batch,
     load_batch_manifest,
+    parse_args,
     select_batch_samples,
     validate_relative_input_path,
     validate_critique,
     validate_claude_cli_schema,
-    validate_explicit_reissue,
     validate_pipeline_summary,
     validate_validation_record,
 )
@@ -111,6 +110,11 @@ def test_fable_critique_requires_completed_parallel_pipeline() -> None:
     with pytest.raises(CritiqueError, match="not a parallel"):
         validate_pipeline_summary(sequential)
 
+    active_fable = valid_summary()
+    active_fable["release_control"]["fable_batch_only"] = False
+    with pytest.raises(CritiqueError, match="active per-paper Fable"):
+        validate_pipeline_summary(active_fable)
+
 
 def test_fable_critique_requires_passing_validation_record() -> None:
     validate_validation_record({"status": "passed", "commands": [{"exit_code": 0}]})
@@ -151,42 +155,26 @@ def test_fable_schema_preflight_rejects_unsupported_draft_declaration() -> None:
         )
 
 
-def test_fable_explicit_reissue_requires_bound_pre_model_failure(tmp_path) -> None:
-    prior_record = tmp_path / "prior.json"
-    prior_record.write_text(
-        """{
-  "run_id": "fable-v1",
-  "status": "completed_invalid",
-  "raw_stdout_byte_count": 0
-}\n"""
-    )
-    prior_stderr = tmp_path / "stderr.txt"
-    prior_stderr.write_text(
-        "Error: --json-schema is not a valid JSON Schema: unsupported draft\n"
-    )
+def test_fable_cli_requires_batch_and_has_no_single_run_mode(capsys) -> None:
+    with pytest.raises(SystemExit):
+        parse_args([])
+    assert "--batch-manifest" in capsys.readouterr().err
 
-    reissue = validate_explicit_reissue(
-        "fable-v2", "fable-v1", prior_record, prior_stderr
-    )
-
-    assert reissue["explicit_user_reissue_authorized"] is True
-    assert reissue["reissue_of_run_id"] == "fable-v1"
-    assert reissue["prior_record_sha256"]
-    with pytest.raises(CritiqueError, match="new run ID"):
-        validate_explicit_reissue("fable-v1", "fable-v1", prior_record, prior_stderr)
-
-
-def test_fable_packet_labels_explicit_reissue() -> None:
-    packet = build_packet(
-        valid_summary(),
-        {"status": "passed"},
-        {},
-        explicit_reissue_of="fable-v1",
-    )
-
-    assert packet["protocol"]["automatic_retry"] is False
-    assert packet["protocol"]["explicit_user_reissue_authorized"] is True
-    assert packet["protocol"]["reissue_of_run_id"] == "fable-v1"
+    with pytest.raises(SystemExit):
+        parse_args(
+            [
+                "--batch-manifest",
+                "batch.json",
+                "--run-id",
+                "batch-001",
+                "--trace-root",
+                "trace",
+                "--public-result",
+                "result.json",
+                "--historical-single-run",
+            ]
+        )
+    assert "unrecognized arguments" in capsys.readouterr().err
 
 
 def test_fable_packet_source_boundary_includes_transport_and_validator() -> None:

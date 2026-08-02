@@ -4,9 +4,9 @@
 The one-way boundary is inherited from ``outer_teacher.py``: GLM, Kimi, and
 Codex receive Qwen reviewer records, never the underlying policy outputs,
 prompts, checkpoints, rewards, or training state. Every invocation attempt is
-immutable and trace-complete. Fable is deliberately excluded from this
-recurring teacher loop and reserved for separate final-release review and one
-bounded sampled critique after each ten completed paper pipelines.
+immutable and trace-complete. Fable is excluded from every per-paper review,
+release, repair, and fallback path. Its only prospective role is one bounded,
+zero-weight sampled critique after each ten completed paper pipelines.
 """
 
 from __future__ import annotations
@@ -58,7 +58,7 @@ except ModuleNotFoundError:  # Direct execution from the repository root.
 
 
 TRACE_SCHEMA = "nulspec-qwen-review-hierarchy-trace-v2"
-PUBLIC_SCHEMA = "nulspec-qwen-review-hierarchy-public-v2"
+PUBLIC_SCHEMA = "nulspec-qwen-review-hierarchy-public-v3"
 DEFAULT_TEACHERS = ("z-ai/glm-5.2", "moonshotai/kimi-k3")
 QWEN_SCOPE = "qwen_records_only"
 CODEX_SCOPE = "qwen_records_and_outer_teacher_audits_only"
@@ -767,8 +767,8 @@ def codex_packet(
                 "authorize external messaging."
             ),
             "excluded_reviewer": (
-                "Fable is not part of the recurring teacher loop. It is reserved "
-                "for final-release review and one sampled critique per ten "
+                "Fable is excluded from all per-paper review and release paths. "
+                "It may run only as one zero-weight sampled critique after ten "
                 "completed paper pipelines."
             ),
         },
@@ -1114,6 +1114,12 @@ def sanitized_summary(
             },
             "outer_adjudicator": "Codex",
             "fable_in_teacher_loop": False,
+            "fable_active_review_allowed": False,
+            "fable_batch_cadence": {
+                "eligible_completed_papers": 10,
+                "random_sample_size": 3,
+                "invocations_per_batch": 1,
+            },
             "automatic_release_authority": False,
         },
         "qwen_packet": {
@@ -1141,6 +1147,8 @@ def sanitized_summary(
             "training_signal_change_authorized": False,
             "author_email_dispatch_authorized": False,
             "separate_final_release_review_required": True,
+            "active_release_reviewers": ["GLM", "Kimi"],
+            "fable_batch_only": True,
         },
     }
 
@@ -1270,6 +1278,7 @@ def main() -> int:
                 "teacher_schema_sha256": sha256_bytes(args.teacher_schema.read_bytes()),
                 "outer_schema_sha256": sha256_bytes(args.outer_schema.read_bytes()),
                 "fable_in_teacher_loop": False,
+                "fable_active_review_allowed": False,
                 "raw_trace_public": False,
                 "automatic_release_authority": False,
             },
@@ -1350,6 +1359,7 @@ def main() -> int:
                 "valid_outer_teacher_count": valid_teacher_count,
                 "outer_adjudicator_status": codex_result["status"],
                 "fable_in_teacher_loop": False,
+                "fable_active_review_allowed": False,
             },
         )
         append_event(

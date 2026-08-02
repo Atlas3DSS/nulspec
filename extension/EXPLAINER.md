@@ -69,8 +69,8 @@ ChatGPT subscription; Fable was deliberately left disabled. That historical
 result is not rewritten. Prospective runs use two independent outer teachers:
 pinned GLM and pinned Kimi receive the same Qwen-only packet concurrently.
 Invalid invocations enter immutable linked repair chains; Codex starts only
-after both chains contain valid audits. Fable is excluded because this is a
-recurring process audit, not the final-release review.
+after both chains contain valid audits. Fable is excluded from every active
+per-paper review and release path.
 
 Process-level Fable auditing is sampled for cost control. Once ten distinct
 paper pipelines are complete and validated, one immutable batch records a
@@ -87,9 +87,10 @@ has zero decision weight and enters a linked repair rather than the join.
 All prompts, parameters, raw wrappers, usage, costs, timing, parsed records,
 failures, and Codex events are retained. Complete credential-free attempt
 records and hashes are supplied to Codex, and the final evidence index is
-independently recomputed before a run is treated as validated. Fable remains
-part of the separate final-release gate, where a guardrail refusal is a
-zero-weight non-response, not a scientific `HARD_FAIL`. See
+independently recomputed before a run is treated as validated. Per-paper final
+review uses only independent GLM and Kimi reviews followed by an explicit human
+publication decision. Fable is limited to the ten-paper sampled process
+critique above. See
 [`docs/REVIEW_HIERARCHY.md`](../docs/REVIEW_HIERARCHY.md).
 
 This strict view cannot determine whether an unseen story preference was

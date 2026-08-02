@@ -16,7 +16,8 @@ from typing import Any
 from urllib.parse import urlparse
 
 
-TASK_SCHEMA = "nulspec-human-review-task-v1"
+LEGACY_TASK_SCHEMA = "nulspec-human-review-task-v1"
+TASK_SCHEMA = "nulspec-human-review-task-v2"
 PUBLICATION_DISPOSITION_SCHEMA = "nulspec-human-publication-disposition-v1"
 EMAIL_APPROVAL_SCHEMA = "nulspec-author-email-human-approval-v1"
 EMAIL_DISPOSITION_SCHEMA = "nulspec-author-email-human-disposition-v1"
@@ -195,7 +196,8 @@ def validate_task_packet(packet: object) -> dict[str, Any]:
         },
         label="task packet",
     )
-    if value["schema_version"] != TASK_SCHEMA:
+    schema_version = value["schema_version"]
+    if schema_version not in {LEGACY_TASK_SCHEMA, TASK_SCHEMA}:
         raise ReviewPacketError("task packet has an unsupported schema version")
     task_id = _text(value["task_id"], "task_id", maximum=96)
     if not TASK_ID_RE.fullmatch(task_id):
@@ -242,9 +244,8 @@ def validate_task_packet(packet: object) -> dict[str, Any]:
     _text(study["method_assessment"], "study.method_assessment", maximum=160)
 
     source = _object(value["source"], "source")
-    _exact_keys(
-        source,
-        required={
+    if schema_version == LEGACY_TASK_SCHEMA:
+        source_keys = {
             "source_revision",
             "repository_url",
             "pull_request_url",
@@ -252,26 +253,39 @@ def validate_task_packet(packet: object) -> dict[str, Any]:
             "final_peer_review_sha256",
             "supplemental_review_consensus_sha256",
             "fable_action_closure_sha256",
-        },
-        label="source",
-    )
+        }
+    else:
+        source_keys = {
+            "source_revision",
+            "repository_url",
+            "pull_request_url",
+            "review_packet_sha256",
+            "release_review_consensus_sha256",
+        }
+    _exact_keys(source, required=source_keys, label="source")
     revision = _text(source["source_revision"], "source.source_revision", maximum=64)
     if not REVISION_RE.fullmatch(revision):
         raise ReviewPacketError("source.source_revision must be a Git object digest")
     _https_url(source["repository_url"], "source.repository_url")
     _https_url(source["pull_request_url"], "source.pull_request_url", optional=True)
     _sha(source["review_packet_sha256"], "source.review_packet_sha256")
-    _sha(source["final_peer_review_sha256"], "source.final_peer_review_sha256")
-    _sha(
-        source["supplemental_review_consensus_sha256"],
-        "source.supplemental_review_consensus_sha256",
-        optional=True,
-    )
-    _sha(
-        source["fable_action_closure_sha256"],
-        "source.fable_action_closure_sha256",
-        optional=True,
-    )
+    if schema_version == LEGACY_TASK_SCHEMA:
+        _sha(source["final_peer_review_sha256"], "source.final_peer_review_sha256")
+        _sha(
+            source["supplemental_review_consensus_sha256"],
+            "source.supplemental_review_consensus_sha256",
+            optional=True,
+        )
+        _sha(
+            source["fable_action_closure_sha256"],
+            "source.fable_action_closure_sha256",
+            optional=True,
+        )
+    else:
+        _sha(
+            source["release_review_consensus_sha256"],
+            "source.release_review_consensus_sha256",
+        )
 
     brief = _text(value["brief"], "brief", maximum=MAX_BRIEF_CHARS)
     if len(brief.encode("utf-8")) > MAX_BRIEF_CHARS * 2:

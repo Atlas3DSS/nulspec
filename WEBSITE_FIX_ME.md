@@ -25,7 +25,7 @@ side records those in `RESEARCH_FIX_ME.md`.
 
 ### WF-20260801-01 — Import typed classification-accuracy studies
 
-- Status: OPEN
+- Status: ACKNOWLEDGED
 - Blocking: publication
 - Observed in: [NULSPEC PR #18](https://github.com/Atlas3DSS/nulspec/pull/18),
   head commit `68188afc7305e5168d33c5278968f7a26b403a40`
@@ -64,6 +64,12 @@ review. There is no Fable resubmission. Author-email dispatch is a separate
 gate and always requires final human approval of the exact hashed draft; Fable
 can make the draft eligible but can never authorize or send it.
 
+Policy update received 2026-08-02: the preceding Fable gate remains part of the
+frozen SPRKD historical record but is superseded for every active and future
+release. Per-paper model review now uses GLM and Kimi only. Fable may run only
+once per ten completed pipelines as one zero-weight audit of three reproducibly
+selected pipelines; it cannot participate in this import or release gate.
+
 #### Requested website change
 
 1. Add a typed importer/validator for the handoff and metric schemas above.
@@ -71,15 +77,18 @@ can make the draft eligible but can never authorize or send it.
    details, provenance/integrity links, and separately labeled diagnostics from
    `WEBSITE_HANDOFF.json` without recomputing research values.
 3. Wire the extension-vote control to the handoff's stable choice identifiers.
-4. Enforce and render the one-shot final-review state and the distinct mandatory
-   human author-email approval state without treating either as scientific
-   evidence.
+4. Enforce and render the GLM/Kimi model-review state plus distinct mandatory
+   human publication and author-email decisions without treating any review as
+   scientific evidence. Keep the historical Fable record readable without
+   accepting Fable-bound inputs for new tasks.
 5. Record the implementing PR, merged commit, production route, and validation
    evidence below.
 
 #### Website response
 
-Pending.
+Acknowledged. The typed SPRKD frontend is implemented separately. The active
+dashboard adapter is being advanced to a generic GLM/Kimi release-review schema;
+legacy Fable-bound tasks remain readable only as immutable history.
 
 #### Resolution evidence
 

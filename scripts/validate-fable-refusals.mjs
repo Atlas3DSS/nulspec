@@ -7,6 +7,18 @@ const ledgerPath = resolve(root, "site-data", "fable-refusals.json");
 const markdownPath = resolve(root, "FABLE_REFUSALS.md");
 const ledger = JSON.parse(await readFile(ledgerPath, "utf8"));
 const markdown = await readFile(markdownPath, "utf8");
+const fableRunner = await readFile(
+  resolve(root, "extension", "fable_pipeline_critique.py"),
+  "utf8",
+);
+const reviewBackend = await readFile(
+  resolve(root, "infra", "multibot", "nulspec_review.py"),
+  "utf8",
+);
+const hierarchyDocs = await readFile(
+  resolve(root, "docs", "REVIEW_HIERARCHY.md"),
+  "utf8",
+);
 const errors = [];
 const hex64 = /^[0-9a-f]{64}$/;
 const fullCommit = /^[0-9a-f]{40}$/;
@@ -25,11 +37,33 @@ function sha256(value) {
 }
 
 check(
-  ledger.schema_version === "nulspec-fable-refusal-ledger-v2",
+  ledger.schema_version === "nulspec-fable-refusal-ledger-v3",
   "unexpected Fable refusal ledger schema",
 );
 check(Array.isArray(ledger.refusals), "refusals must be an array");
 check(ledger.refusals.length > 0, "refusal ledger must not be empty");
+check(
+  !fableRunner.includes("--historical-single-run") &&
+    !fableRunner.includes("--explicit-reissue-of") &&
+    !fableRunner.includes("historical_one_time_advisory_pipeline_critique"),
+  "Fable runner retains a prohibited single-pipeline invocation path",
+);
+check(
+  fableRunner.includes('required=True,\n        help="required manifest containing exactly ten') &&
+    fableRunner.includes("if not 0 < args.max_budget_usd <= 5") &&
+    fableRunner.includes('role = "batched_advisory_pipeline_critique"'),
+  "Fable runner does not enforce its ten-paper batch and $5 budget boundary",
+);
+check(
+  reviewBackend.includes('RELEASE_REVIEW_SCHEMA = "nulspec-glm-kimi-release-review-v1"') &&
+    reviewBackend.includes('raise ReviewPacketError("per-paper release review must not invoke Fable")'),
+  "review dashboard does not enforce the GLM/Kimi-only per-paper release boundary",
+);
+check(
+  hierarchyDocs.includes("The historical single-pipeline runner and its reissue flags have been removed.") &&
+    !hierarchyDocs.includes("`--historical-single-run` exists"),
+  "review hierarchy documentation still exposes a single-pipeline Fable path",
+);
 
 const fallbackIds = new Set(
   (ledger.fallback_policy?.models ?? []).map((model) => model.model_id),
@@ -420,30 +454,35 @@ check(
 
 const reviewPolicy = ledger.review_policy;
 check(
-  reviewPolicy?.policy_version === "nulspec-three-reviewer-release-gate-v1" &&
-    reviewPolicy?.all_reviewers_requested === true &&
+  reviewPolicy?.policy_version === "nulspec-glm-kimi-human-release-gate-v2" &&
+    reviewPolicy?.active_reviewers_only === true &&
     Array.isArray(reviewPolicy?.reviewers) &&
     reviewPolicy.reviewers.map((row) => row.reviewer_family).join(",") ===
-      "Fable,GLM,Kimi",
-  "three-reviewer policy is incomplete or reordered",
+      "GLM,Kimi",
+  "active two-reviewer policy is incomplete or reordered",
 );
 check(
-  reviewPolicy?.decision_rule?.fable_guardrail_or_technical_nonresponse_weight ===
-      0 &&
-    reviewPolicy?.decision_rule?.fable_nonresponse_is_scientific_hard_fail ===
-      false &&
-    reviewPolicy?.decision_rule
-      ?.glm_kimi_unanimous_pass_after_fable_nonresponse_authorizes_publication ===
+  reviewPolicy?.decision_rule?.glm_kimi_unanimous_pass_satisfies_model_gate ===
       true &&
     reviewPolicy?.decision_rule
-      ?.substantive_fable_review_requires_three_unanimous_passes === true &&
-    reviewPolicy?.decision_rule
-      ?.only_substantive_fable_fail_creates_scientific_hard_fail === true &&
-    reviewPolicy?.decision_rule?.malformed_missing_or_disagreeing_reviews_block ===
-      true &&
+      ?.malformed_missing_nonpass_or_disagreeing_reviews_block === true &&
     reviewPolicy?.decision_rule?.codex_may_relax_failed_model_gate === false &&
+    reviewPolicy?.decision_rule?.human_publication_approval_required === true &&
     reviewPolicy?.decision_rule?.author_email_human_approval_required === true,
-  "three-reviewer decision rule is incomplete",
+  "active two-reviewer decision rule is incomplete",
+);
+check(
+  reviewPolicy?.decision_rule?.fable_active_decision_weight === 0 &&
+    reviewPolicy?.fable_batch_policy?.active_per_paper_invocation_allowed ===
+      false &&
+    reviewPolicy?.fable_batch_policy?.eligible_completed_papers === 10 &&
+    reviewPolicy?.fable_batch_policy?.random_sample_size === 3 &&
+    reviewPolicy?.fable_batch_policy?.invocations_per_batch === 1 &&
+    reviewPolicy?.fable_batch_policy?.automatic_retry_allowed === false &&
+    reviewPolicy?.fable_batch_policy?.decision_weight === 0 &&
+    reviewPolicy?.fable_batch_policy?.publication_authority === false &&
+    reviewPolicy?.fable_batch_policy?.email_authority === false,
+  "batch-only Fable policy is incomplete",
 );
 check(
   reviewPolicy?.trace_policy?.raw_attempts_retained === true &&
@@ -451,11 +490,21 @@ check(
     reviewPolicy?.trace_policy?.silent_retry_allowed === false &&
     reviewPolicy?.trace_policy?.public_projection_excludes_private_identifiers ===
       true,
-  "three-reviewer trace policy is incomplete",
+  "active review trace policy is incomplete",
+);
+
+const historicalPolicy = ledger.historical_review_policy;
+check(
+  historicalPolicy?.policy_version === "nulspec-three-reviewer-release-gate-v1" &&
+    historicalPolicy?.superseded_by === reviewPolicy?.policy_version &&
+    historicalPolicy?.reviewers?.map((row) => row.reviewer_family).join(",") ===
+      "Fable,GLM,Kimi",
+  "historical three-reviewer policy was not preserved",
 );
 
 check(
   ledger.fallback_policy?.human_disposition_required === true &&
+    ledger.fallback_policy?.historical_only === true &&
     ledger.fallback_policy?.preferred_review_count === 2 &&
     ledger.fallback_policy?.minimum_successful_reviews === 1,
   "fallback review policy is incomplete",
@@ -492,7 +541,8 @@ check(
     markdown.includes("This was a harness configuration error, not a Kimi scientific failure") &&
     markdown.includes("decision weight is **zero**") &&
     markdown.includes("scientific `HARD_FAIL`") &&
-    markdown.includes("Fable, GLM, and Kimi must all") &&
+    markdown.includes("Fable is not requested for per-paper review") &&
+    markdown.includes("one Fable invocation reviews three reproducibly selected") &&
     markdown.includes("Replicate to accelerate"),
   "Markdown ledger does not state the recorded financial and reviewer impact",
 );

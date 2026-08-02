@@ -46,6 +46,23 @@ export type HumanDecision = {
   decided_at: string;
 };
 
+type ReviewSourceBase = {
+  source_revision: string;
+  repository_url: string;
+  pull_request_url: string | null;
+  review_packet_sha256: string;
+};
+
+type CurrentReviewSource = ReviewSourceBase & {
+  release_review_consensus_sha256: string;
+};
+
+type LegacyReviewSource = ReviewSourceBase & {
+  final_peer_review_sha256: string;
+  supplemental_review_consensus_sha256: string | null;
+  fable_action_closure_sha256: string | null;
+};
+
 export type ReviewTask = {
   task_id: string;
   supersedes_task_id: string | null;
@@ -63,15 +80,7 @@ export type ReviewTask = {
     replication_assessment: string;
     method_assessment: string;
   };
-  source: {
-    source_revision: string;
-    repository_url: string;
-    pull_request_url: string | null;
-    review_packet_sha256: string;
-    final_peer_review_sha256: string;
-    supplemental_review_consensus_sha256: string | null;
-    fable_action_closure_sha256: string | null;
-  };
+  source: CurrentReviewSource | LegacyReviewSource;
   brief: string;
   evidence: ReviewEvidence[];
   review_events: ExternalReviewEvent[];

@@ -219,7 +219,7 @@ must not alter Track R or Track M settings.
 The following are extensions and cannot modify primary reproduction outcomes:
 
 - Qwen-27B pairwise judging;
-- Codex or Fable outer-teacher review;
+- Qwen/GLM/Kimi/Codex reviewer-hierarchy analysis;
 - readiness gates and alternative reward diagnostics;
 - additional seeds;
 - alternative PPO budgets, objectives, models, or datasets;

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { AccuracyRunRecord } from "@/components/accuracy-run-record";
 import { ArmEvidenceTabs } from "@/components/arm-evidence-tabs";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -209,6 +210,16 @@ export async function generateMetadata({ params }: ArmPageProps): Promise<Metada
   const { id, armId } = await params;
   const record = getStudyArm(id, armId);
   if (!record) return {};
+  if (record.metric_family === "classification_accuracy") {
+    const { arm, study } = record;
+    return {
+      title: `Seed ${arm.seed} · ${study.study.title}`,
+      description:
+        `Single-seed evidence for Study ${study.study_id}. ` +
+        study.classification.rationale,
+      alternates: { canonical: armEvidenceUrl(study.study_id, arm.arm_id) },
+    };
+  }
   const { arm, study } = record;
   return {
     title:
@@ -234,6 +245,10 @@ export default async function ArmEvidencePage({ params }: ArmPageProps) {
   const { id, armId } = await params;
   const record = getStudyArm(id, armId);
   if (!record) notFound();
+
+  if (record.metric_family === "classification_accuracy") {
+    return <AccuracyRunRecord arm={record.arm} study={record.study} />;
+  }
 
   const { arm, study } = record;
   const armIndex = study.arms.findIndex((item) => item.arm_id === arm.arm_id);

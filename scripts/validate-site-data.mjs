@@ -28,6 +28,25 @@ const requiredArtifactRoles = new Set([
   "website_handoff",
   "frontend_handoff",
 ]);
+const accuracySchema = "nulspec-classification-accuracy-site-v1";
+const accuracyHandoffSchema =
+  "nulspec-classification-accuracy-study-handoff-v1";
+const requiredAccuracyArtifactRoles = new Set([
+  "result_summary",
+  "full_report",
+  "machine_analysis",
+  "primary_figure",
+  "frozen_primary_protocol",
+  "extension_roadmap",
+  "frontend_handoff",
+  "upstream_audit",
+  "posthoc_register",
+  "posthoc_loss_contract",
+  "executed_code_manifest",
+  "peer_review_protocol",
+  "peer_review_result",
+  "peer_review_summary",
+]);
 const armRouteComponent = /^[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*$/;
 const privateText = new RegExp(
   String.raw`(?:/` +
@@ -57,6 +76,304 @@ const validInterval = (value) =>
   value[0] <= value[1];
 const detailRoutes = new Set();
 
+async function validateAccuracyBundle(bundle, bundleBytes, file, studyId) {
+  if (bundle.publication_status !== "ready") fail(studyId, "bundle is not ready");
+  if (!/^[0-9]{3,}$/.test(studyId)) fail(studyId, "invalid study id");
+  if (file !== `study-${studyId}.json`) fail(studyId, "filename does not match study id");
+  if (bundle.study?.arxiv_url !== `https://arxiv.org/abs/${bundle.study?.arxiv_id}`) {
+    fail(studyId, "paper URL is not canonical arXiv");
+  }
+  if (!/^[0-9a-f]{40}$/.test(bundle.source?.evidence_revision ?? "")) {
+    fail(studyId, "evidence revision is not a full Git SHA");
+  }
+  if (
+    bundle.source?.handoff_schema_version !== accuracyHandoffSchema ||
+    bundle.source?.source_publication_status !==
+      "blocked_pending_typed_accuracy_frontend" ||
+    !/^[0-9a-f]{64}$/.test(bundle.source?.handoff_sha256 ?? "") ||
+    !safeRelative(bundle.source?.handoff_path) ||
+    !Number.isInteger(bundle.source?.declared_artifact_count) ||
+    bundle.source.declared_artifact_count < requiredAccuracyArtifactRoles.size
+  ) {
+    fail(studyId, "source handoff provenance is missing or malformed");
+  }
+  const handoffPath = resolve(root, bundle.source.handoff_path);
+  if (!handoffPath.startsWith(`${root}${sep}`)) {
+    fail(studyId, "source handoff path escaped repository root");
+  }
+  const handoffBytes = await readFile(handoffPath);
+  if (digest(handoffBytes) !== bundle.source.handoff_sha256) {
+    fail(studyId, "source handoff digest mismatch");
+  }
+
+  if (
+    bundle.classification?.replication_outcome !== "not_replicated" ||
+    bundle.classification?.underlying_method_claim !== "inconclusive" ||
+    typeof bundle.classification?.rationale !== "string" ||
+    bundle.classification.rationale.trim().length === 0
+  ) {
+    fail(studyId, "frozen study classifications are missing or malformed");
+  }
+  if (
+    bundle.metrics_schema?.id !== "sprkd_trial_accuracy_v1" ||
+    bundle.metrics_schema?.primary_unit !== "percent_accuracy" ||
+    bundle.metrics_schema?.primary_estimator !==
+      "final_sample_weighted_full_validation_accuracy" ||
+    bundle.metrics_schema?.not_prompt_bootstrap !== true ||
+    bundle.metrics_schema?.not_equivalence_test !== true ||
+    typeof bundle.metrics_schema?.uncertainty !== "string" ||
+    !bundle.metrics_schema.uncertainty.includes("five independent training seeds")
+  ) {
+    fail(studyId, "typed classification-accuracy contract is malformed");
+  }
+
+  const runs = bundle.primary?.runs;
+  const metrics = bundle.primary?.metrics;
+  const comparisons = bundle.primary?.comparisons;
+  if (!Array.isArray(runs) || runs.length !== 5) {
+    fail(studyId, "publication must contain five frozen runs");
+  }
+  if (!isObject(metrics) || !isObject(comparisons)) {
+    fail(studyId, "primary metrics or comparisons are missing");
+  }
+  const requiredMetrics = [
+    "control_student",
+    "control_teacher",
+    "exact_public_response_kd",
+    "exact_public_sprkd",
+    "paper_intent_response_kd",
+    "paper_intent_sprkd",
+    "weak_teacher",
+  ];
+  for (const key of requiredMetrics) {
+    const metric = metrics[key];
+    const observed = metric?.observed;
+    if (
+      !isObject(metric) ||
+      !isObject(observed) ||
+      observed.unit !== "percent_accuracy" ||
+      observed.estimator !== "final_sample_weighted_full_validation_accuracy" ||
+      observed.n_training_seeds !== 5 ||
+      !finiteNumber(observed.mean) ||
+      !finiteNumber(observed.sample_sd) ||
+      !validInterval(observed.descriptive_t95_interval) ||
+      !Array.isArray(observed.per_seed) ||
+      observed.per_seed.length !== 5 ||
+      !observed.per_seed.every(finiteNumber)
+    ) {
+      fail(studyId, `invalid accuracy metric ${key}`);
+    }
+  }
+
+  const completion = bundle.completion;
+  if (
+    completion?.registered_runs !== runs.length ||
+    completion?.terminal_runs !== runs.length ||
+    completion?.claim_ready_runs !== runs.length ||
+    !isObject(completion?.gates) ||
+    !Object.values(completion.gates).every((value) => value === true) ||
+    completion.gates.typed_accuracy_frontend_complete !== true
+  ) {
+    fail(studyId, "ready-state run counts or gates are not closed");
+  }
+  if (
+    bundle.frozen_primary_result?.registered_runs !== runs.length ||
+    bundle.frozen_primary_result?.claim_ready_runs !== runs.length ||
+    bundle.frozen_primary_result?.may_be_rewritten_by_extension !== false
+  ) {
+    fail(studyId, "frozen primary result does not match completed runs");
+  }
+  if (
+    bundle.routes?.study !== `/studies/${studyId}` ||
+    !Array.isArray(bundle.routes?.arms) ||
+    bundle.routes.arms.length !== runs.length
+  ) {
+    fail(studyId, "canonical route contract is malformed");
+  }
+
+  const runIds = new Set();
+  const seeds = new Set();
+  for (const run of runs) {
+    const detailRoute = `/studies/${studyId}/arms/${run?.run_id}`;
+    if (
+      !isObject(run) ||
+      !armRouteComponent.test(run.run_id ?? "") ||
+      runIds.has(run.run_id) ||
+      !Number.isInteger(run.seed) ||
+      seeds.has(run.seed) ||
+      run.run_id !== `seed-${run.seed}` ||
+      run.route !== detailRoute ||
+      !bundle.routes.arms.includes(detailRoute) ||
+      detailRoutes.has(detailRoute)
+    ) {
+      fail(studyId, `invalid or duplicate frozen run ${run?.run_id ?? "unknown"}`);
+    }
+    runIds.add(run.run_id);
+    seeds.add(run.seed);
+    detailRoutes.add(detailRoute);
+    if (
+      run.integrity?.status !== "passed" ||
+      !Number.isInteger(run.integrity?.n_validation_targets) ||
+      run.integrity.n_validation_targets < 1 ||
+      !isObject(run.models) ||
+      !isObject(run.metrics) ||
+      !isObject(run.comparisons)
+    ) {
+      fail(studyId, `nonterminal or incomplete run ${run.run_id}`);
+    }
+    for (const key of [
+      "complete_sha256",
+      "config_sha256",
+      "predictions_sha256",
+      "split_indices_sha256",
+      "validation_indices_sha256",
+    ]) {
+      if (!/^[0-9a-f]{64}$/.test(run.integrity[key] ?? "")) {
+        fail(studyId, `invalid ${key} at ${run.run_id}`);
+      }
+    }
+    if ("verdict" in run || "classification" in run) {
+      fail(studyId, `single-seed run has an impermissible verdict at ${run.run_id}`);
+    }
+  }
+  if ([0, 1, 2, 3, 4].some((seed) => !seeds.has(seed))) {
+    fail(studyId, "frozen seed set is not exactly 0 through 4");
+  }
+
+  const extension = bundle.extension_vote;
+  if (
+    extension?.button_label !== "Vote to extend this paper" ||
+    typeof extension?.question !== "string" ||
+    !Array.isArray(extension?.choices) ||
+    extension.choices.length !== 6 ||
+    new Set(extension.choices.map((choice) => choice?.id)).size !== 6 ||
+    extension.effect !==
+      "Schedules new evidence and never rewrites the frozen result."
+  ) {
+    fail(studyId, "extension vote contract is missing or malformed");
+  }
+  const review = bundle.final_peer_review;
+  const authorizedReviewStatuses = new Set([
+    "approved",
+    "approved_after_three_action_closure",
+  ]);
+  if (
+    !isObject(review) ||
+    review.protocol !== "nulspec-fable-one-shot-final-gate-v1" ||
+    review.protocol_document !== "FABLE_REVIEW_PROTOCOL.md" ||
+    review.reviewer !== "Fable" ||
+    review.single_invocation !== true ||
+    review.resubmission_allowed !== false ||
+    !authorizedReviewStatuses.has(review.status) ||
+    review.publication_authorized !== true ||
+    review.author_email_eligible_for_human_approval !== true ||
+    review.author_email_human_approval_required !== true ||
+    review.human_review_required !== false ||
+    review.action_closure_required !== false
+  ) {
+    fail(studyId, "one-shot final peer-review gate is not publication-authorized");
+  }
+  const authorEmail = bundle.author_email;
+  if (
+    !isObject(authorEmail) ||
+    !/^[0-9a-f]{64}$/.test(authorEmail.draft_sha256 ?? "") ||
+    authorEmail.public_draft !== false ||
+    authorEmail.eligible_for_human_approval !== true ||
+    authorEmail.human_approval_required !== true ||
+    authorEmail.dispatch_authorized !== review.author_email_dispatch_authorized ||
+    authorEmail.approval_status !== review.author_email_approval_status ||
+    (authorEmail.dispatch_authorized === true &&
+      authorEmail.approval_status !== "approved_for_exact_draft_once") ||
+    (authorEmail.dispatch_authorized === false &&
+      authorEmail.approval_status !== "pending_final_human_approval")
+  ) {
+    fail(studyId, "author-email human approval state is malformed or conflated");
+  }
+  if (
+    !isObject(bundle.diagnostics?.posthoc_loss_contract) ||
+    !bundle.diagnostics.posthoc_loss_contract.scope
+      ?.toLowerCase()
+      .includes("post-hoc") ||
+    !isObject(bundle.diagnostics.posthoc_loss_contract.models)
+  ) {
+    fail(studyId, "post-hoc loss-contract diagnostic is not separately labeled");
+  }
+
+  if (!Array.isArray(bundle.artifacts)) fail(studyId, "artifacts are missing");
+  const roles = new Set();
+  const publicPaths = new Set();
+  const artifactBytesByRole = new Map();
+  for (const artifact of bundle.artifacts) {
+    if (!isObject(artifact) || roles.has(artifact.role)) {
+      fail(studyId, `missing or duplicate artifact role ${artifact?.role}`);
+    }
+    roles.add(artifact.role);
+    if (
+      !safeRelative(artifact.path) ||
+      !safeRelative(artifact.public_path) ||
+      !artifact.public_path.startsWith(`studies/${studyId}/artifacts/`) ||
+      publicPaths.has(artifact.public_path) ||
+      !/^[0-9a-f]{64}$/.test(artifact.sha256 ?? "") ||
+      !Number.isInteger(artifact.byte_count) ||
+      artifact.byte_count < 1
+    ) {
+      fail(studyId, `unsafe or malformed artifact ${artifact?.role ?? "unknown"}`);
+    }
+    publicPaths.add(artifact.public_path);
+    const artifactPath = resolve(publicDirectory, artifact.public_path);
+    if (!artifactPath.startsWith(`${publicDirectory}${sep}`)) {
+      fail(studyId, `artifact escaped public directory: ${artifact.public_path}`);
+    }
+    const artifactBytes = await readFile(artifactPath);
+    if (
+      artifactBytes.length !== artifact.byte_count ||
+      digest(artifactBytes) !== artifact.sha256
+    ) {
+      fail(studyId, `artifact bytes or digest mismatch: ${artifact.public_path}`);
+    }
+    artifactBytesByRole.set(artifact.role, artifactBytes);
+    if (
+      (artifact.media_type?.startsWith("text/") ||
+        ["application/json", "application/yaml"].includes(artifact.media_type)) &&
+      privateText.test(artifactBytes.toString("utf8"))
+    ) {
+      fail(studyId, `artifact contains private or unrelated text: ${artifact.public_path}`);
+    }
+  }
+  for (const role of requiredAccuracyArtifactRoles) {
+    if (!roles.has(role)) fail(studyId, `missing required artifact role ${role}`);
+  }
+  if (
+    review.status === "approved_after_three_action_closure" &&
+    !roles.has("peer_review_action_closure")
+  ) {
+    fail(studyId, "closed FAIL is missing its exact three-action closure artifact");
+  }
+  const peerReviewResult = JSON.parse(
+    artifactBytesByRole.get("peer_review_result").toString("utf8"),
+  );
+  if (
+    peerReviewResult.single_invocation !== true ||
+    peerReviewResult.resubmission_allowed !== false ||
+    !isObject(peerReviewResult.decision) ||
+    !isObject(peerReviewResult.packet) ||
+    peerReviewResult.decision.reviewed_packet_sha256 !==
+      peerReviewResult.packet.sha256 ||
+    (review.status === "approved" &&
+      peerReviewResult.decision.verdict !== "PASS") ||
+    (review.status === "approved_after_three_action_closure" &&
+      peerReviewResult.decision.verdict !== "FAIL")
+  ) {
+    fail(studyId, "public peer-review result does not bind the authorized gate");
+  }
+
+  console.log(
+    `validated study ${studyId}: ${runs.length} terminal accuracy runs, ` +
+      `${bundle.classification.replication_outcome}, ` +
+      `bundle ${digest(bundleBytes).slice(0, 12)}`,
+  );
+}
+
 const files = (await readdir(publicationsDirectory))
   .filter((name) => /^study-[0-9]{3,}\.json$/.test(name))
   .sort();
@@ -70,6 +387,10 @@ for (const file of files) {
   const studyId = bundle?.study?.id ?? basename(file, ".json");
 
   if (privateText.test(bundleText)) fail(studyId, "bundle contains private or unrelated text");
+  if (bundle.schema_version === accuracySchema) {
+    await validateAccuracyBundle(bundle, bundleBytes, file, studyId);
+    continue;
+  }
   if (bundle.schema_version !== 1) fail(studyId, "schema_version must be 1");
   if (bundle.publication_status !== "ready") fail(studyId, "bundle is not ready");
   if (!/^[0-9]{3,}$/.test(studyId)) fail(studyId, "invalid study id");

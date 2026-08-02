@@ -12,9 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "docs" / "REPOSITORY_SCOPE_POLICY.md"
 
 PROHIBITED = {
-    "POSIX user-home path": re.compile(
-        r"(?<![A-Za-z0-9_])/" + r"home/[^/\s]+/"
-    ),
+    "POSIX user-home path": re.compile(r"(?<![A-Za-z0-9_])/" + r"home/[^/\s]+/"),
     "Windows user-home path": re.compile(
         r"(?i)(?<![A-Za-z0-9_])[A-Z]:\\Users\\[^\\\r\n]+\\"
     ),
@@ -27,7 +25,7 @@ PROHIBITED = {
 
 PINNED_DEPENDENCY = re.compile(
     r"^[A-Za-z0-9_.-]+(?:\[[^\]]+\])?==(?P<version>[A-Za-z0-9_.+-]+)"
-    r"(?:\s*(?:;|#).*)?$"
+    r"(?:\s*\\)?(?:\s*(?:;|#).*)?$"
 )
 
 
@@ -36,11 +34,7 @@ def tracked_paths() -> list[Path]:
         ["git", "ls-files", "-z"],
         cwd=ROOT,
     )
-    return [
-        ROOT / value.decode()
-        for value in raw.split(b"\0")
-        if value
-    ]
+    return [ROOT / value.decode() for value in raw.split(b"\0") if value]
 
 
 def is_pinned_dependency_version(text: str, start: int, end: int) -> bool:
@@ -71,17 +65,12 @@ def main() -> int:
         text = data.decode("utf-8", errors="replace")
         for label, pattern in PROHIBITED.items():
             for match in pattern.finditer(text):
-                if (
-                    label == "RFC1918 IPv4 address"
-                    and is_pinned_dependency_version(
-                        text, match.start(), match.end()
-                    )
+                if label == "RFC1918 IPv4 address" and is_pinned_dependency_version(
+                    text, match.start(), match.end()
                 ):
                     continue
                 line = text.count("\n", 0, match.start()) + 1
-                violations.append(
-                    f"{path.relative_to(ROOT)}:{line}: {label}"
-                )
+                violations.append(f"{path.relative_to(ROOT)}:{line}: {label}")
 
     if violations:
         print("repository hygiene check failed:")

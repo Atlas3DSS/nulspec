@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint app components lib --max-warnings=0",
     "validate:copy": "node scripts/validate-site-copy.mjs",
-    "validate:data": "node scripts/validate-site-data.mjs && node scripts/validate-paper-queue-data.mjs",
+    "sync:publications": "python3 scripts/sync_publications.py",
+    "validate:data": "npm run sync:publications && node scripts/validate-site-data.mjs && node scripts/validate-paper-queue-data.mjs",
     "validate:routes": "node scripts/validate-static-routes.mjs",
     "test:browser": "node scripts/capture-site.mjs && node scripts/test-review-dashboard.mjs",
     "test:review-browser": "node scripts/test-review-dashboard.mjs"

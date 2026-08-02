@@ -1,0 +1,4 @@
+-r requirements-replication.txt
+
+# Needed only to unpickle the authors' historical fastai Learner objects.
+fastai==2.8.8

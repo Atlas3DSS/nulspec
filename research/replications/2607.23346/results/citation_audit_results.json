@@ -1,0 +1,1147 @@
+{
+  "schema_version": "nulspec-sprkd-citation-audit-summary-v2",
+  "target_arxiv_id": "2607.23346v1",
+  "input_sha256": {
+    "resolved_manifest": "60611aa43accf5fbd6cd61c0067b7be30c1510dd547fc5a7bf9a76a66e2abd4e",
+    "qwen_run_manifest": "c621411cc55163cd3205df04cc6e8ed6f1fbe742f7bf43b0fe2b6d34ad267609",
+    "teacher_run_manifest": "435e443a10c25698fbaf2194b8b7feecd939160b455b06bfba2e31e38a3411b9",
+    "cross_gpu": "ba05df1b18cad89df26bd1c1c9e1f3025e319256e3843f4ef683260e536f67ad"
+  },
+  "coverage": {
+    "unique_references": 47,
+    "citation_context_blocks": 146,
+    "resolution_status": {
+      "exact": 45,
+      "probable": 0,
+      "ambiguous": 0,
+      "mismatch": 0,
+      "unresolved": 2
+    },
+    "evidence_levels": {
+      "full_text": 34,
+      "official_web": 5,
+      "abstract_only": 3,
+      "metadata_only": 3,
+      "access_failed": 2
+    },
+    "primary_reviews": 47,
+    "cross_gpu_duplicates": 4,
+    "qwen_structurally_valid_primary": 47,
+    "qwen_evidence_clean_primary": 8,
+    "outer_teacher_primary_grades": 47
+  },
+  "qwen_primary_verdicts": {
+    "misattributed": 1,
+    "overstated": 1,
+    "partially_supports": 8,
+    "supports": 30,
+    "unverifiable": 7
+  },
+  "teacher_primary_verdicts": {
+    "misattributed": 1,
+    "overstated": 5,
+    "partially_supports": 25,
+    "supports": 6,
+    "unverifiable": 10
+  },
+  "failure_attribution": {
+    "model_review": 41,
+    "none": 4,
+    "source_retrieval": 2
+  },
+  "model_quality": {
+    "score_summary": {
+      "n": 45,
+      "mean": 7.022222,
+      "sample_sd": 1.588151,
+      "median": 7.0,
+      "minimum": 4.0,
+      "maximum": 10.0
+    },
+    "bootstrap_mean_95_interval": [
+      6.577778,
+      7.488889
+    ],
+    "bootstrap_seed": 697747242,
+    "bootstrap_resamples": 10000,
+    "critical_error_count": 27,
+    "critical_error_types": {
+      "fabricated_evidence": 11,
+      "unsupported_confident_verdict": 22
+    },
+    "critical_error_rate": 0.6,
+    "usable_for_training": 46,
+    "training_actions": {
+      "accept": 5,
+      "accept_with_edit": 30,
+      "exclude_infrastructure_failure": 1,
+      "replace": 11
+    },
+    "supervision_reduction_gate_passed": false
+  },
+  "trace_provenance": {
+    "qwen_protocol": "nulspec-citation-batch-review-v1",
+    "outer_teacher_protocol": "nulspec-citation-batch-outer-teacher-v1",
+    "outer_teacher_identity": {
+      "codex_cli_version": "0.146.0",
+      "model": "gpt-5.6-sol",
+      "provider": "openai",
+      "reasoning_effort": "none",
+      "sandbox": "read-only"
+    },
+    "model_aliases": {
+      "pro6000": "nulspec-qwen3.6-27b-q4_k_xl-pro6000-p4",
+      "3090": "nulspec-qwen3.6-27b-q4_k_xl-3090-p1"
+    },
+    "model_sha256s": {
+      "pro6000": "ff6941ded525b34eb159496762c29dd0ec6e71dc31b74d57e75d871a03eec259",
+      "3090": "ff6941ded525b34eb159496762c29dd0ec6e71dc31b74d57e75d871a03eec259"
+    },
+    "outer_teacher_rubric_sha256": "a57f2501012e6b90de0184bcce6a616d859880b9ac49d93fbad0ed815d302344",
+    "raw_traces_retained_locally": true,
+    "raw_traces_published": false,
+    "publication_note": "The public package discloses immutable trace hashes without republishing retrieved source text.",
+    "inventory": [
+      {
+        "batch_id": "2607.23346v1-b0001-d89d8deabde2",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-0f818c8c6d70051541bf9451"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "036f889dc12dd14f3391034941e37801ebe2288c0dc3b2e861d89adb725285ff",
+        "teacher_trace_sha256": "6434c6985e50e3afb85793d7da66fe04150b7622d26967c3e30af04f4ff642d5",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": true,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0002-1c3252ed12fe",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-10133ae11d69198f85846b49"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "262d11c5ae13ed234756664bd99046ba820ef45b60ce7d85b2829dd07d3d3b35",
+        "teacher_trace_sha256": "829757ee8581d212fa0937e78194f149be860a460eb51cdae70c8b42eb278009",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0003-45dcc0a51227",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-127fe2f3bfb9e5a51e5fd6f9",
+          "ca-12b5c37fcbde3955d90b2d91"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "847259ccace5ec5231f8b61a6961487d933000903fc7e0112e5a4b1f88aefbc0",
+        "teacher_trace_sha256": "0fbff5684bbcd636e761b78849e386e049aee5a962e7b63131c6b9746e3ab6ec",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0004-fb965b3ca5dc",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-1638a84da6e5e6c7cc20824d"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "8bd5101b06a5294433ccd34834d6d6cafe432f35dca82c89df8b16b89ba75fbb",
+        "teacher_trace_sha256": "fd7b1d48c3f61d356d1a49dbb8b964326c8804940b80729be1620fcb3eee3605",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": true,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0005-4dd746c0fd5a",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-2ecbf4b3916885e791a0ea10"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "b05d6fb830553bd95dc0ccf3ccf7d35e5e963acfbc3ba69c1f55bf0a07a323ff",
+        "teacher_trace_sha256": "aee89ab30e9ef6fa3b994d4fb324b3032e0ded8b866286c9e0af82b5b6d029bc",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0006-9046f8918b43",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-2fd52e5e0f2a62f31e8faf7b"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "be43a2c5d7d2fa7ff9d61875b99ba1e724cf1f8b4c2546936826e9278b31f992",
+        "teacher_trace_sha256": "a4cbe97a8b4687d6a02aa250c3cb9e25bf6ee22912582d58c84346ba0d33f4a7",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0007-7325d5c8cd3b",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-300d94c53b82c2ff62345647"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "3f7133ab28cae95d3a8f8d94b8e428a52cf820b377cda5e347cc33a3d8560c5c",
+        "teacher_trace_sha256": "8bc33a776a84aa8b56cb6515e5f7553ceedb994d0d25db8d90faeb09c7dddfeb",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0008-a665aff68cd6",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-35df77c34ecbdf149129e2aa"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "ce932be327a33d1fd87374b0599e34fc0f73b9b75ccd2b63413b8266d759fa4a",
+        "teacher_trace_sha256": "91c856ba84930bf787e46f008af32479349f515fe30b132d38cede6c869805fc",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": true,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0009-a72c7375851f",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-42ff802ab4943de08a2f3aef",
+          "ca-525c030808067cf661306abb",
+          "ca-6170bc46a80a125d3a1f32e3"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "64b8a447aba6bd644c335703f0d8b9c696ec979fb31985d09888896e6a520326",
+        "teacher_trace_sha256": "9d6925b672161d41327baf966ccb4701c1ee9936225c74401859776f52a7eb74",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0010-6768c047eb28",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-7142003c028bfdebf76d7084"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "f59fee111167e11dd047716c6bcda4745be126249dfd223737c5934f3646b936",
+        "teacher_trace_sha256": "ec9a495f85ded680adbcd7c356f8cc2df69f33f19451f9d801d7526df58d7ce6",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0011-53d89cef975f",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-79e1c05f69be5b4df841e6f9",
+          "ca-814526c1b493d4197814637e"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "bbc288992b72e2f48b75f64f4693b8d8e416966489274ec21e957861aee98dc2",
+        "teacher_trace_sha256": "85c7c1790a3b4aadcb4ed81863d1ba2b19e10ed9b65ce8821564b525cb49a341",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0012-81a76c8c0895",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-856c52d8fc527636c86bd045",
+          "ca-96f268069c32aab3324ab73f"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "5579845129e971f45e5dd05fabb0b2232644e0e48678bf1b4cdfc99fbe52d7cc",
+        "teacher_trace_sha256": "74e844a40703226470d1785ffb881ebc19ecbb81f80e8197e090e5d111503194",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0013-ab47da0a0ea5",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-99e62fbf7a4b0ad3c3de0433"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "f6607599ea395f06ec965e7c22fe2e7ae6af4d67964a9017d54250a7f1874853",
+        "teacher_trace_sha256": "f2f67b64d148fafc5a7b2f70208da202577a0de9b0749586bf10a831fcfab53b",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0014-c6caa391e1c6",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-a18a97b67221040b8541128a"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "9ef324cd68dbe946fa64fb8348624a1ead34112be64e1f0e804924aaa22fe239",
+        "teacher_trace_sha256": "6f3ecc0bcea50072a47e12f1a4da5651b2bd2d9d026e204ddc1ddde6b73fc579",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": true,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0015-d18d845221fb",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-a7f5e3d831e1de9efa8140a5"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "75cb615ca0aaf76941d5d612219800e43bb11683439a8803c6a667e19156a620",
+        "teacher_trace_sha256": "477eb5ea915ab80e1a3a1ca1a69555c8806263af3aeaaf16875670b28c267d73",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0016-d988c6c6d4f5",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-bcf61c1ee2bb34b82f1edab6"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "40de19dcf90627f7c944085adc09c25e3d0d2369fc801c32feb511bd141686ad",
+        "teacher_trace_sha256": "0d47b6a2da7ace3733af7b951321937e0b8dd25654ff9361d78c8c54b1bed2f1",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": true,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0017-53caf17a480a",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-caca665a4e19e5139967394f"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "57ff31e49547ba11d57e5e4d6fba471ce09620d0d65f8eac2d44e2a2379f763b",
+        "teacher_trace_sha256": "6bbb23db892f22aae0e3a6cb925e6e7e3d632b726ded4b4addc80cd8ea2d1089",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": true,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0018-792bf68e97cd",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-d86fce76a2c7bd2c3534d09c"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "69be2672e964670cf3c153cd7a1f6a33d67292692f93870a985d8de2124e2f5e",
+        "teacher_trace_sha256": "d17608276541afdbbbe2f08140f1e651ef7b2f6600bf96b773ec26dd71f42a62",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0019-d3c543fdb27c",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-eee0112f217eeb76c2e6eb22"
+        ],
+        "physical_route": "3090",
+        "qwen_trace_sha256": "75859f21fbc02f9d22857f48ca929c1441c9b2bda00637c3bbfaf000c9fff7f6",
+        "teacher_trace_sha256": "1b140d39bdca6e6668e160c915ad771fd58a82c2723a05c2dac2b5035f47f516",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0020-61079c17927e",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-016a620cd1e4788e374150e1"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "022e2871969db2b29234c2941b5b3485cd0835652c247102d9bc0ac4f6d056e6",
+        "teacher_trace_sha256": "4d3e98168f2016a2accb0203cb950bcd14cd5b7a4cc48fa8d20d86d91021bd7b",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0021-82c8b9a6002a",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-0d88a1248fd72f55094dafe7"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "1bcbfff22fab2fe1a10865c78f1cf3719083ae80d846aeca941269735dd0a8b6",
+        "teacher_trace_sha256": "9509362d8f8bff0fc39cf06573a8467f87f142aad267b0137628693e504f3876",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": true,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0022-4d77d342fa03",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-317c1ebd4cf7e19c0a216fc7"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "499b04362b1f86aeca14c7ff721ec4cfa7eb8fee0b9d6048dc17ded21d72739e",
+        "teacher_trace_sha256": "019b742678aef1d3c14e66c7fecd3aec5cd6fdb70dcca32726b7558b5df5f18d",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0023-bfaa3d312edc",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-406037ac6bdfb085709be67f"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "7e81e7e136f8e9338ad2cf6c597b34a44cad5dcd9d7f7bcb3dd992698b8284db",
+        "teacher_trace_sha256": "0ca786a6b72f6e51226867ddb1e060e62478f54ec8dada9a48b62640f43893dd",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0024-cfb793a48c61",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-40da03e9db38aeee0f6620cf",
+          "ca-410ab83f48b5893881057512"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "949535496b814e884536ac1c30a25e96bafc7efbcaac1d9a8ffdbe5f6e9a4f23",
+        "teacher_trace_sha256": "dcb52d79159aad23ff89dc81056bd0f46c9f5626e3a91a07edccd3b3e3e5677f",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0025-e165b4d44413",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-418bd832093be0c02920c48c"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "912bc6b4bb362aa1e0a1d3adc3c017f52656c860c344b8611da453372fb53185",
+        "teacher_trace_sha256": "ec555bdcf842c3cd991fab2e00d5085469d66f0ebd8a33f4bb72305f53ae16ed",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": true,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0026-c94f1ad6c6de",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-4b2364de9047c426af6afb8f"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "fb8be500b7e990aafff8325694bdb8b88697f4a49dce4f7a5f533af2d01d113b",
+        "teacher_trace_sha256": "74c6ced7c8b9cb59feb077e062cc4ca92aa8fbba0e27de5943a9083e10cf7128",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0027-2f00caf3dc88",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-508e2a74752e4112ad7dd66b"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "777fbda22486ac090a25bc041cbf2b5c617dfb1f79ec2a7a16db1934561b0e4b",
+        "teacher_trace_sha256": "324faec0916f613533a3f0ea9a355995acb8ddb6945ad7de653b5dbe2e7b0f17",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0028-9057a6ad8189",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-6e131ecddde5e4561367e15c",
+          "ca-71ffcd2e091ea1ef101e3601",
+          "ca-88e5aff2341d0ff3e6ba8e2f",
+          "ca-90a78a6673cc60b93c60c3d4"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "3f4c050cfa949729a471fb6b180e4715e3942b41b16ed40efb6844ce67db75cd",
+        "teacher_trace_sha256": "6544095211121c50805e60b07943dbe4377e21ff5cbcd6f6d2125251b0cb9ac3",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0029-dda0390fa8e9",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-971015e9b5fef33cd5a5f950",
+          "ca-9a6272a130b9e21c017fcad9"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "043974b644456b43a95166c8ce7cca87369561118cb8071247e5c54f16d7e474",
+        "teacher_trace_sha256": "6076d81e8da73f0aecd519adf9d92dccafc8e4c97e074cacf6c7f1f67b05c518",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0030-89218517ebd7",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-9d156b4a4f4bcfa33ceb998b"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "d8ed18d5a02a8b0fd73b3b7dc0921a3619041a89382763127bdf194cf2d50a69",
+        "teacher_trace_sha256": "2edb7364a192843792c00cfc2082402f903e77d86bb2bbf9375ff3cd09558eac",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0031-d269e9e070db",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-c152384ea107f75a83e84a97"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "548e83d8e2590dd7b5ee3210034708a573bf50080bde51429206c785aad2162f",
+        "teacher_trace_sha256": "4dcb0c9747f349efc79efd53f6c9ce0096d63a5d5715ff4d208d02eb83a0fbb8",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0032-249e76bf4ecf",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-ca0b8e5f64eb25b6c41d3503",
+          "ca-cbde776aa97e37665a3b92d8"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "b14c8cf8fe2b058647d4e201c03e822994481a2156e29a149610651fe467bb6d",
+        "teacher_trace_sha256": "463c4611dcb883c8399befdb0ddfdb86e999d2865ecc69eeab0a5e275795039e",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0033-52694b884810",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-cc06c78c115242c3884aed0a",
+          "ca-e105a1ff371a56ddbaee5022"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "97d562048aec7ebe92fc0f0923781b1ad4f015b5a27bbdc4cdeafee6bb7ea131",
+        "teacher_trace_sha256": "d63187e1acefe7953dce6be76b466f114f2cdfc4d9bafec260af4a0dd7deb1ff",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0034-95ecddbd55d7",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-f3389a9f040ecb3032cba164"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "33f6f262cce3609220cabfc0892980a3fbb69699d241fb9880567a93ccb6dd0e",
+        "teacher_trace_sha256": "085d3b4b5df2c6bfd2bf3f1f05c071e2e5e2626a864fdd5043f7d58a68ac61b8",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0035-9ca394984703",
+        "review_kind": "primary",
+        "audit_ids": [
+          "ca-f8bac0d82b31a256f70603e9"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "b75e83445f954d64cad5dbe9a0888ae301963944807ace57f42b3bfbef7de28f",
+        "teacher_trace_sha256": "f10bd9a28e0ac4ac13e77bcabaf6e9e13aba43a82e78116322cc56b624b6832e",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0036-335e09df86b9",
+        "review_kind": "cross_gpu_duplicate",
+        "audit_ids": [
+          "ca-42ff802ab4943de08a2f3aef",
+          "ca-525c030808067cf661306abb"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "abb03b98bb274c2a540e2b57e6272e9645651f98cbd8be17f894cf37444a5b44",
+        "teacher_trace_sha256": "aa672926a1d20dd720758c6056c724fbc7eb8d219771913668c7a023b448ed13",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": true,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0037-d6a80a20534e",
+        "review_kind": "cross_gpu_duplicate",
+        "audit_ids": [
+          "ca-99e62fbf7a4b0ad3c3de0433"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "516e72c834dff7c520889cbfa0e587159d1b1a6c0ba9f7a18bcb11902d39dbde",
+        "teacher_trace_sha256": "dadd4e89be5c78a7b19264f02b4d122831754a09bb8cf47c1fc3c29dc20e7d66",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      },
+      {
+        "batch_id": "2607.23346v1-b0038-65a3b0faf38d",
+        "review_kind": "cross_gpu_duplicate",
+        "audit_ids": [
+          "ca-eee0112f217eeb76c2e6eb22"
+        ],
+        "physical_route": "pro6000",
+        "qwen_trace_sha256": "275846ae4a9366f391484b5141adf2b73bcbcdf81f4cdcfadd48269fb1fab80f",
+        "teacher_trace_sha256": "8c19e599fb0bbac48506b8c314b5cb36456a7d65e7c6e14480e5cf7363fed9a8",
+        "qwen_valid": true,
+        "qwen_evidence_validation_pass": false,
+        "teacher_valid": true
+      }
+    ]
+  },
+  "cross_gpu": {
+    "schema_version": 1,
+    "protocol": "nulspec-citation-cross-gpu-comparison-v1",
+    "generated_at_utc": "2026-08-01T11:07:55.163822Z",
+    "target_arxiv_id": "2607.23346v1",
+    "physical_endpoints": [
+      "3090",
+      "pro6000"
+    ],
+    "reported_models": {
+      "3090": [
+        "nulspec-qwen3.6-27b-q4_k_xl-3090-p1"
+      ],
+      "pro6000": [
+        "nulspec-qwen3.6-27b-q4_k_xl-pro6000-p4"
+      ]
+    },
+    "primary_review_count": 47,
+    "duplicate_review_count": 4,
+    "paired_review_count": 4,
+    "missing_primary_audit_ids": [],
+    "invalid_endpoint_pair_audit_ids": [],
+    "complete": true,
+    "metrics": {
+      "verdict_exact_agreement": 0.5,
+      "verdict_cohen_kappa": 0.0,
+      "identity_exact_agreement": 1.0,
+      "role_exact_agreement": 1.0,
+      "mean_confidence_absolute_difference": 0.23750000000000002,
+      "mean_evidence_locator_jaccard": 0.625
+    },
+    "comparisons": [
+      {
+        "audit_id": "ca-42ff802ab4943de08a2f3aef",
+        "primary_endpoint": "3090",
+        "duplicate_endpoint": "pro6000",
+        "primary_batch_id": "2607.23346v1-b0009-a72c7375851f",
+        "duplicate_batch_id": "2607.23346v1-b0036-335e09df86b9",
+        "primary_verdict": "supports",
+        "duplicate_verdict": "partially_supports",
+        "verdict_agreement": false,
+        "identity_agreement": true,
+        "role_agreement": true,
+        "confidence_absolute_difference": 0.1,
+        "evidence_locator_jaccard": 1.0
+      },
+      {
+        "audit_id": "ca-525c030808067cf661306abb",
+        "primary_endpoint": "3090",
+        "duplicate_endpoint": "pro6000",
+        "primary_batch_id": "2607.23346v1-b0009-a72c7375851f",
+        "duplicate_batch_id": "2607.23346v1-b0036-335e09df86b9",
+        "primary_verdict": "supports",
+        "duplicate_verdict": "unverifiable",
+        "verdict_agreement": false,
+        "identity_agreement": true,
+        "role_agreement": true,
+        "confidence_absolute_difference": 0.8,
+        "evidence_locator_jaccard": 0.0
+      },
+      {
+        "audit_id": "ca-99e62fbf7a4b0ad3c3de0433",
+        "primary_endpoint": "3090",
+        "duplicate_endpoint": "pro6000",
+        "primary_batch_id": "2607.23346v1-b0013-ab47da0a0ea5",
+        "duplicate_batch_id": "2607.23346v1-b0037-d6a80a20534e",
+        "primary_verdict": "supports",
+        "duplicate_verdict": "supports",
+        "verdict_agreement": true,
+        "identity_agreement": true,
+        "role_agreement": true,
+        "confidence_absolute_difference": 0.0,
+        "evidence_locator_jaccard": 0.5
+      },
+      {
+        "audit_id": "ca-eee0112f217eeb76c2e6eb22",
+        "primary_endpoint": "3090",
+        "duplicate_endpoint": "pro6000",
+        "primary_batch_id": "2607.23346v1-b0019-d3c543fdb27c",
+        "duplicate_batch_id": "2607.23346v1-b0038-65a3b0faf38d",
+        "primary_verdict": "supports",
+        "duplicate_verdict": "supports",
+        "verdict_agreement": true,
+        "identity_agreement": true,
+        "role_agreement": true,
+        "confidence_absolute_difference": 0.05,
+        "evidence_locator_jaccard": 1.0
+      }
+    ]
+  },
+  "non_supporting_or_unverifiable_findings": [
+    {
+      "audit_id": "ca-016a620cd1e4788e374150e1",
+      "title": "Energy and Policy Considerations for Deep Learning in NLP.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "partially_supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 8,
+      "failure_attribution": "model_review",
+      "correction": "Keep the partially-supports verdict: the source directly supports substantial training energy and carbon costs, but not the narrower claim about hundreds of billions of parameters requiring thousands of cloud servers. Replace evidence excerpts 0 and 2 with exact verbatim text from their cited passages; the current excerpts are faithful paraphrastic compressions but are not verbatim."
+    },
+    {
+      "audit_id": "ca-0d88a1248fd72f55094dafe7",
+      "title": "An Investigation into Neural Net Optimization via Hessian Eigenvalue Density.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The exact source and quoted passages support scalable Hessian-spectrum/ESD estimation, Hessian-vector products, and curvature-based optimization analysis. However, the review collapses several distinct citation uses into a single method role and overstates full support: the supplied passages do not establish that this paper uses the Hutchinson trace estimator, that teachers accumulate transferable second-order information, or that such knowledge boosts students regardless of teacher performance. Mark the citation partially supported, distinguish the methodological uses from the KD-specific extrapolations, and list those narrower claims as missing evidence."
+    },
+    {
+      "audit_id": "ca-0f818c8c6d70051541bf9451",
+      "title": "Identifying and Attacking the Saddle Point Problem in High-Dimensional Non-Convex Optimization.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports exponential proliferation of saddle points relative to minima and slow first-order optimization on surrounding plateaus. The supplied passages do not establish the citing paper's exact saddle-point definition, exponential SGD escape time, universality across all DNNs, or every sharper property attributed across the contexts. Use a partially_supports verdict, identify the citation role primarily as theoretical/background support, lower confidence, and list these unsupported narrower claims as missing evidence."
+    },
+    {
+      "audit_id": "ca-10133ae11d69198f85846b49",
+      "title": "Knowledge Distillation in Deep Learning and Its Applications.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The exact-title/author source supports the general background claim that large deep-learning models are difficult to deploy on resource-limited or end devices. It does not establish the citing paper's narrower claims about inference latency, ICUs, energy infrastructure, privacy, operational-cost reductions, or data-transfer reductions. Use a partially_supports verdict with lower confidence, note the 2020 arXiv versus 2021 bibliography metadata discrepancy, and provide only verbatim excerpts from the supplied passage."
+    },
+    {
+      "audit_id": "ca-127fe2f3bfb9e5a51e5fd6f9",
+      "title": "Ericsson Mobility Report.",
+      "evidence_level": "official_web",
+      "qwen_verdict": "unverifiable",
+      "teacher_verdict": "unverifiable",
+      "teacher_score_1_10": 9,
+      "failure_attribution": "model_review",
+      "correction": "Keep the unverifiable verdict and rationale, but shorten the evidence excerpt to no more than 20 verbatim words; describe the citation role as background support for a device-count projection rather than simply \"dataset.\""
+    },
+    {
+      "audit_id": "ca-1638a84da6e5e6c7cc20824d",
+      "title": "Visualizing the Loss Landscape of Neural Nets.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports filter-wise normalization and an empirical association between flatter normalized landscapes and lower test error. The supplied passages do not establish top-Hessian-eigenvector projection, noise robustness, clustering below saddle points, or a general causal claim that wider minima imply stronger generalization; those aspects require other citations or qualification. Use `partially_supports` and lower confidence."
+    },
+    {
+      "audit_id": "ca-2ecbf4b3916885e791a0ea10",
+      "title": "On the Efficacy of Knowledge Distillation.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports poor standard-KD performance on ImageNet, late-training accuracy degradation, and limitations caused by student–teacher capacity mismatch. It does not establish that KD merely acts as regularization or a universal teacher-level accuracy cap; those narrower claims are assigned to other works in the grouped citations. Use a partially-supports verdict, lower confidence, and verbatim excerpts within the required word limit."
+    },
+    {
+      "audit_id": "ca-300d94c53b82c2ff62345647",
+      "title": "How to Escape Saddle Points Efficiently.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "partially_supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 9,
+      "failure_attribution": "model_review",
+      "correction": "Retain the partially-supports verdict: Jin et al. supports efficient saddle escape using a uniform random perturbation followed by ordinary gradient descent, but does not establish the citing paper's Gaussian perturbation or explicit Negative Hessian Eigenstep implementation. Shorten every evidence excerpt to the required 20-word maximum and note that the citation serves both method and optimization-background roles across contexts."
+    },
+    {
+      "audit_id": "ca-317c1ebd4cf7e19c0a216fc7",
+      "title": "The Loss Surfaces of Multilayer Networks.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports the narrower claim that bad or high-loss minima become rare as network size grows and that high-error critical points are likely saddles, under stated modeling assumptions. It does not establish that local minima generally vanish—many good minima remain—or that all DNNs exhibit this structure. Review both citation contexts, label the role as theoretical support, lower confidence, and use verbatim excerpts within the required word limit."
+    },
+    {
+      "audit_id": "ca-406037ac6bdfb085709be67f",
+      "title": "On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports the general association between large Hessian eigenvalues, sharp minima, and poorer generalization, and between small eigenvalues, flat minima, and better generalization. It does not directly establish that Hessian trace or spectral radius alone validate the citing paper's specific SPRKD conclusions, nor its claims about smooth convergence, noise robustness, near-perfect convergence, or superiority over controls. Classify the citation as conceptual background and use only verbatim supplied excerpts; confidence should be moderate rather than 1.0."
+    },
+    {
+      "audit_id": "ca-40da03e9db38aeee0f6620cf",
+      "title": "Born Again Neural Networks.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The source supports identifying Born Again Networks as a future comparison and establishes that identical-architecture students can outperform teachers. However, the review omits the earlier citation use: that passage broadly claims replication-style KD imposes a ceiling preventing students from exceeding teachers, while this source documents the expressly noted self-distillation exception. Review both contexts and use strictly verbatim excerpts from the packet."
+    },
+    {
+      "audit_id": "ca-410ab83f48b5893881057512",
+      "title": "Structure and Efficient Hessian Calculation.",
+      "evidence_level": "official_web",
+      "qwen_verdict": "partially_supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 10,
+      "failure_attribution": "none",
+      "correction": "The review is correctly calibrated: the abstract supports efficient Hessian calculation using automatic differentiation and problem structure, but the supplied evidence does not verify the narrower Hessian-vector-product, eigenvalue-estimation, or power-iteration claims."
+    },
+    {
+      "audit_id": "ca-42ff802ab4943de08a2f3aef",
+      "title": "On the Relation Between the Sharpest Directions of DNN Loss and the SGD Step Length.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "The source supports increasingly sharp regions and steps too large to minimize loss along the sharpest directions. The packet does not establish drift/diffusion phases, characterize these regions as saddles, or show that they benefit distilled students; mark those narrower uses unverified and lower confidence."
+    },
+    {
+      "audit_id": "ca-4b2364de9047c426af6afb8f",
+      "title": "Does Knowledge Distillation Really Work?",
+      "evidence_level": "full_text",
+      "qwen_verdict": "partially_supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 8,
+      "failure_attribution": "model_review",
+      "correction": "Retain the partial-support verdict. Stanton et al. directly supports optimization-driven failure to reach high fidelity, but does not establish a universal teacher-accuracy ceiling, equivalence to label smoothing, or the claimed doubled computational cost. Note that its self-distillation evidence explicitly permits students to exceed teachers. Replace the two non-verbatim/overlength excerpts with short exact quotations from the supplied passages and cover the accuracy-ceiling contexts explicitly."
+    },
+    {
+      "audit_id": "ca-508e2a74752e4112ad7dd66b",
+      "title": "PyHessian: Neural Networks Through the Lens of the Hessian.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports PyHessian's computation of top eigenvalues, Hessian trace, and ESD using matrix-free methods, including Hutchinson and SLQ procedures. However, the review should distinguish those supported software/method citations from broader uses claiming smoother or more generalizable SPRKD minima, loss-landscape projection practice, or teacher knowledge effective regardless of teacher performance, which the supplied source passages do not establish. Use short, strictly verbatim packet excerpts and lower confidence accordingly."
+    },
+    {
+      "audit_id": "ca-525c030808067cf661306abb",
+      "title": "Fast Estimation of tr(f(A)) via Stochastic Lanczos Quadrature.",
+      "evidence_level": "metadata_only",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "unverifiable",
+      "teacher_score_1_10": 4,
+      "failure_attribution": "model_review",
+      "correction": "Exact metadata and the title establish topical relevance to Stochastic Lanczos Quadrature, but no retrieved passage verifies Hessian eigenvalue or ESD estimation. Use only a supplied metadata locator, do not present the title as substantive support, and return unverifiable with low confidence."
+    },
+    {
+      "audit_id": "ca-6170bc46a80a125d3a1f32e3",
+      "title": "Learning Multiple Layers of Features from Tiny Images.",
+      "evidence_level": "access_failed",
+      "qwen_verdict": "unverifiable",
+      "teacher_verdict": "unverifiable",
+      "teacher_score_1_10": 9,
+      "failure_attribution": "model_review",
+      "correction": "Retain the unverifiable verdict and abstention, but remove speculation based on outside knowledge about who typically receives attribution or which CIFAR dataset the report introduced; the packet supplies no source text for that comparison."
+    },
+    {
+      "audit_id": "ca-6e131ecddde5e4561367e15c",
+      "title": "Entropy-SGD: Biasing Gradient Descent into Wide Valleys.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "The source supports an association between wide or flat minima, generalization, and robustness, but does not establish SPRKD's convergence or the cited claim about clustering below saddle points. Mark the use partially supported and note the bibliography/source year and venue discrepancy. Shorten the first excerpt to the protocol limit."
+    },
+    {
+      "audit_id": "ca-71ffcd2e091ea1ef101e3601",
+      "title": "Deep Learning Based Automatic Malaria Parasite Detection from Blood Smear and Its Smartphone Based Application.",
+      "evidence_level": "abstract_only",
+      "qwen_verdict": "unverifiable",
+      "teacher_verdict": "unverifiable",
+      "teacher_score_1_10": 8,
+      "failure_attribution": "model_review",
+      "correction": "The abstract does not supply the claimed image size, batch size, split, or experiment-specific augmentation setting. Its mention of data augmentation among several techniques does not by itself contradict a no-augmentation configuration. Full text is needed; classify the citation role as preprocessing or method rather than dataset."
+    },
+    {
+      "audit_id": "ca-79e1c05f69be5b4df841e6f9",
+      "title": "Distilling the Knowledge in a Neural Network.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "overstated",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "The source supports soft-target distillation and establishes logit matching as a high-temperature special case. It does not establish that KD is the dominant compression method, and the citing description simplifies the general method; use an overstated or partially-supports verdict with lower confidence. Keep every evidence excerpt within the 20-word limit."
+    },
+    {
+      "audit_id": "ca-814526c1b493d4197814637e",
+      "title": "Adam: A Method for Stochastic Optimization.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "unverifiable",
+      "teacher_verdict": "unverifiable",
+      "teacher_score_1_10": 10,
+      "failure_attribution": "source_retrieval",
+      "correction": "No substantive correction: the review correctly identifies the retrieved passage as UI text and abstains because the packet supplies no Adam source content about moment estimates."
+    },
+    {
+      "audit_id": "ca-856c52d8fc527636c86bd045",
+      "title": "Revisiting Knowledge Distillation via Label Smoothing Regularization.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "overstated",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The source supports characterizing KD as learned label-smoothing regularization with a similar regularizing function, but not the stronger claim that their effects are identical. It also does not establish the citing paper's broader teacher-ceiling and failed-transfer claims. Use an overstated verdict and lower confidence."
+    },
+    {
+      "audit_id": "ca-88e5aff2341d0ff3e6ba8e2f",
+      "title": "Tiny ImageNet Visual Recognition Challenge.",
+      "evidence_level": "access_failed",
+      "qwen_verdict": "unverifiable",
+      "teacher_verdict": "unverifiable",
+      "teacher_score_1_10": 10,
+      "failure_attribution": "source_retrieval",
+      "correction": "No correction needed: the review correctly abstains because the cited work was unresolved and no source passage was supplied."
+    },
+    {
+      "audit_id": "ca-90a78a6673cc60b93c60c3d4",
+      "title": "Fast Exact Multiplication by the Hessian.",
+      "evidence_level": "abstract_only",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "Pearlmutter directly supports efficient exact Hessian-vector products and their use within iterative techniques for Hessian properties. The supplied abstract does not specifically establish power iteration, Stochastic Lanczos Quadrature, or negative-eigenvalue extraction, which are narrower methods covered by the grouped citations. Use partially_supports and lower confidence."
+    },
+    {
+      "audit_id": "ca-96f268069c32aab3324ab73f",
+      "title": "A Stochastic Estimator of the Trace of the Influence Matrix for Laplacian Smoothing Splines.",
+      "evidence_level": "metadata_only",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "unverifiable",
+      "teacher_score_1_10": 4,
+      "failure_attribution": "model_review",
+      "correction": "The exact source identity is established, but only metadata and its title were retrieved. A title about estimating the trace of an influence matrix does not verify the narrower Hessian-trace application, and the 403 retrieval failure requires an unverifiable verdict rather than confident support. Cite the supplied metadata directly and identify full text as missing."
+    },
+    {
+      "audit_id": "ca-971015e9b5fef33cd5a5f950",
+      "title": "A Few Useful Things to Know About Machine Learning.",
+      "evidence_level": "abstract_only",
+      "qwen_verdict": "unverifiable",
+      "teacher_verdict": "unverifiable",
+      "teacher_score_1_10": 10,
+      "failure_attribution": "none",
+      "correction": "No correction needed. The review identifies the exact source, uses the sole supplied passage verbatim, and correctly abstains because the abstract does not establish the cited SGD or parameter-space claims."
+    },
+    {
+      "audit_id": "ca-99e62fbf7a4b0ad3c3de0433",
+      "title": "Theory II: Landscape of the Empirical Risk in Deep Learning.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "overstated",
+      "teacher_score_1_10": 5,
+      "failure_attribution": "model_review",
+      "correction": "The source supports within-basin averaging and speculatively proposes fractal raised-error “walls” at all scales, while emphasizing that few walls were observed and that simple basins are the better first-order model. The supplied evidence does not identify those walls as saddle points or establish that saddles are key decision or convergence-routing points. Use an exact excerpt of at most 20 words and rate the citation as overstated or only partially supported."
+    },
+    {
+      "audit_id": "ca-9a6272a130b9e21c017fcad9",
+      "title": "Deep Residual Learning for Image Recognition.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 4,
+      "failure_attribution": "model_review",
+      "correction": "The supplied source establishes the ResNet framework and explicitly supports ResNet-101, but the retrieved passages do not mention ResNet-18 or substantiate the cited 43M and 11M parameter counts. Do not infer ResNet-18 from ResNet-20 or outside knowledge. Use only verbatim excerpts and return partially_supports, noting that explicit evidence for ResNet-18 and both parameter counts is missing. The citation role is architecture/background, not dataset."
+    },
+    {
+      "audit_id": "ca-9d156b4a4f4bcfa33ceb998b",
+      "title": "Embedding Principle of Loss Landscape of Deep Neural Networks.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports embedding critical points from a same-depth narrower network into a wider network and says a non-degenerate narrow-network minimum becomes degenerate generally and may become a saddle. It does not establish the citing paper's claimed strong/low likelihoods or the converse inference that a saddle encountered by a wide teacher probably corresponds to a narrower student's convergence site. The theory is also stated under architectural assumptions, principally fully connected networks, with extensions discussed separately. Use a partially-supports verdict and shorten evidence excerpts to the protocol's 20-word limit."
+    },
+    {
+      "audit_id": "ca-a18a97b67221040b8541128a",
+      "title": "Negative Eigenvalues of the Hessian in Deep Neural Networks.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports the narrower motivation: negative-curvature directions can contain persistent potential training-loss improvement, contemporary optimizers exploit them poorly, and they require treatment different from positive curvature. It does not establish the citing paper's broader claims that excessive SGD learning rates cause the behavior, that its NHE procedure yields smoother or faster descent and flatter minima, that teachers accumulate transferable second-order information, or that Hessian trace and largest eigenvalue generally decrease with convergence. Those claims require other evidence or qualification; verdict: partially supports."
+    },
+    {
+      "audit_id": "ca-a7f5e3d831e1de9efa8140a5",
+      "title": "Towards Understanding Ensemble, Knowledge Distillation and Self-Distillation in Deep Learning.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "overstated",
+      "teacher_verdict": "misattributed",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "The exact source is identified and the substantive comparison is sound: it presents KD and self-distillation as effective performance-transfer mechanisms and does not establish the cited artificial-ceiling or teacher-strength claims. Classify the citation as misattributed rather than merely overstated. Replace the two nonverbatim excerpts with exact supplied text and shorten the page-8 excerpt to at most 20 words."
+    },
+    {
+      "audit_id": "ca-bcf61c1ee2bb34b82f1edab6",
+      "title": "Qualitatively Characterizing Neural Network Optimization Problems.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "partially_supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "The exact source is correctly identified and supports the general Hessian/negative-curvature connection, but the first context's high-loss saddle-saturation claim is not established by the supplied passages. The review also overextends the second citation marker: Goodfellow is attached to the basic statement that the Hessian encodes curvature, while the subsequent eigenvalue, spectral-radius, trace, and sharpness statements cite other works. The source's finding that saddles did not slow SGD does not contradict their prevalence or saturation. Retain a partially-supports verdict, but correct the citation scope and remove the claimed contradiction."
+    },
+    {
+      "audit_id": "ca-c152384ea107f75a83e84a97",
+      "title": "Essentially No Barriers in Neural Network Energy Landscape.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "overstated",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "The source supports low-loss paths between minima and empirically lower barriers for deeper and wider architectures. It does not establish a general dimensionality law or the citing paper's further inference that teacher saddle points are apex waypoints connecting strong student minima. Use an overstated or partial-support verdict, lower confidence, and provide verbatim excerpts of at most 20 words."
+    },
+    {
+      "audit_id": "ca-ca0b8e5f64eb25b6c41d3503",
+      "title": "Transfer Learning Between Different Architectures via Weights Injection.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports execution-graph clustering with the listed PyTorch operations, layer/path matching, center-crop-and-resize injection, and faster convergence than Xavier/Kaiming in limited experiments. The supplied passages do not establish iterative modification of the student graph until structural similarity or fully justify the ASR-specific reparameterization wording. Use a partially_supports verdict, note those gaps, lower confidence, and quote PDF page 2 chunk 2 verbatim."
+    },
+    {
+      "audit_id": "ca-caca665a4e19e5139967394f",
+      "title": "Train Faster, Generalize Better: Stability of Stochastic Gradient Descent.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "partially_supports",
+      "teacher_verdict": "overstated",
+      "teacher_score_1_10": 8,
+      "failure_attribution": "model_review",
+      "correction": "The exact source is correctly identified and the review is well grounded in verbatim supplied passages. However, the core citation use is better labeled overstated: the retrieved source establishes algorithmic stability of SGM under smoothness and Lipschitz assumptions, but does not establish the cited Hessian-eigenvalue inference or equate a model's observed maximum Hessian eigenvalue with a global gradient-Lipschitz constant. It also does not directly support treating that spectral quantity as a measure of landscape or model stability. The source supports only the broader smoothness/stability context, not enough of the central claim for a partially-supports verdict."
+    },
+    {
+      "audit_id": "ca-cbde776aa97e37665a3b92d8",
+      "title": "National Library of Medicine: Malaria Datasets.",
+      "evidence_level": "official_web",
+      "qwen_verdict": "unverifiable",
+      "teacher_verdict": "unverifiable",
+      "teacher_score_1_10": 10,
+      "failure_attribution": "none",
+      "correction": "No material correction needed. The review correctly treats the missing dataset description and statistics as a retrieval gap and abstains rather than inferring them from the page identity or contact block."
+    },
+    {
+      "audit_id": "ca-cc06c78c115242c3884aed0a",
+      "title": "ImageNet Large Scale Visual Recognition Challenge.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "partially_supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports that ILSVRC is an ImageNet-based challenge and separately documents 200 detection classes and 100,000 test images for classification/localization. It does not identify TinyImageNet or establish that TinyImageNet has 200 classes and 100k samples. Retain a partially-supports verdict, avoid treating the unrelated ILSVRC figures as verification of TinyImageNet, and quote page 9 verbatim rather than using the absent excerpt “Test images (per class) 100,000 (100).”"
+    },
+    {
+      "audit_id": "ca-e105a1ff371a56ddbaee5022",
+      "title": "Gradient-Based Learning Applied to Document Recognition.",
+      "evidence_level": "metadata_only",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "unverifiable",
+      "teacher_score_1_10": 4,
+      "failure_attribution": "model_review",
+      "correction": "The supplied metadata establishes the exact LeCun et al. paper but contains no passage identifying or describing MNIST. Therefore this dataset-citation use is unverifiable from the packet; do not infer support from the paper's remembered status as a standard MNIST reference. Request source text mentioning MNIST before assigning supports."
+    },
+    {
+      "audit_id": "ca-eee0112f217eeb76c2e6eb22",
+      "title": "Ensemble Knowledge Distillation for Learning Improved and Efficient Networks.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports improved performance as ensemble size increases from one to multiple teachers, including generally higher Table 1 accuracies for ES=2–7 than ES=1. However, the supplied passages do not establish weak teachers trained briefly, saddle-point aggregation, or the citing paper's own consistent experimental result. Use a partially-supports verdict, state these scope limits, and quote only verbatim packet text with valid locators."
+    },
+    {
+      "audit_id": "ca-f3389a9f040ecb3032cba164",
+      "title": "Exploring the Geometry and Topology of Neural Network Loss Landscapes.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "misattributed",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 6,
+      "failure_attribution": "model_review",
+      "correction": "The exact source supports filter-wise normalization of random directions (PDF pages 5 and 8), but the supplied passages do not establish projection onto the top two Hessian eigenvectors. Because the citation is grouped with two other works, Horoi et al. should be judged as partially supporting the stated practice, not confidently misattributed. Replace the first non-verbatim excerpt with exact supplied text and lower confidence."
+    },
+    {
+      "audit_id": "ca-f8bac0d82b31a256f70603e9",
+      "title": "Knowledge Distillation: A Survey.",
+      "evidence_level": "full_text",
+      "qwen_verdict": "partially_supports",
+      "teacher_verdict": "partially_supports",
+      "teacher_score_1_10": 7,
+      "failure_attribution": "model_review",
+      "correction": "Keep the partial-support verdict, but use strictly verbatim excerpts from the packet. The survey supports KD as a representative compression method, teacher–student mimicry, and KL divergence as a possible distillation loss. It does not establish that KD is dominant, and its cached offline-distillation description shows that live simultaneous teacher–student inference is not universal. Also distinguish online simultaneous training from simultaneous inference and address the additional cited use about teacher-driven generalization."
+    }
+  ],
+  "pre_recovery_negative_examples": [
+    {
+      "batch_id": "2607.23346v1-b0003-45dcc0a51227",
+      "audit_id": "ca-127fe2f3bfb9e5a51e5fd6f9",
+      "score_1_10": 4,
+      "failure_attribution": "model_review",
+      "training_action": "replace",
+      "usable_for_training": true,
+      "critical_errors": [
+        "unsupported_confident_verdict"
+      ]
+    },
+    {
+      "batch_id": "2607.23346v1-b0003-45dcc0a51227",
+      "audit_id": "ca-12b5c37fcbde3955d90b2d91",
+      "score_1_10": 8,
+      "failure_attribution": "model_review",
+      "training_action": "accept_with_edit",
+      "usable_for_training": true,
+      "critical_errors": []
+    },
+    {
+      "batch_id": "2607.23346v1-b0026-c94f1ad6c6de",
+      "audit_id": "ca-4b2364de9047c426af6afb8f",
+      "score_1_10": 8,
+      "failure_attribution": "orchestration",
+      "training_action": "exclude_infrastructure_failure",
+      "usable_for_training": false,
+      "critical_errors": []
+    }
+  ]
+}

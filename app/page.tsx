@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AccuracyRunLedger } from "@/components/accuracy-run-ledger";
 import { NominationForm } from "@/components/nomination-form";
 import { RunLedger } from "@/components/run-ledger";
 import { SiteFooter } from "@/components/site-footer";
@@ -8,9 +9,11 @@ import {
   GITHUB_URL,
   KOFI_URL,
   NOMINATE_URL,
-  classificationLabel,
   getLatestStudy,
+  isAccuracyStudy,
   protocolUrl,
+  studyClassificationLabel,
+  studySummary,
 } from "@/lib/study";
 
 const protocolSteps = [
@@ -43,7 +46,27 @@ const protocolSteps = [
 
 export default function Home() {
   const study = getLatestStudy();
-  const classification = classificationLabel(study.verdict.classification);
+  const accuracyStudy = isAccuracyStudy(study);
+  const classification = studyClassificationLabel(study);
+  const paperTitle = accuracyStudy ? study.study.title : study.study.paper.title;
+  const paperArxivId = accuracyStudy
+    ? study.study.arxiv_id
+    : study.study.paper.arxiv_id;
+  const paperUrl = accuracyStudy ? study.study.arxiv_url : study.study.paper.url;
+  const currentStudyLabel = accuracyStudy
+    ? study.study.scope
+    : "Small-model reinforcement learning";
+  const matrixLabel = accuracyStudy
+    ? `${study.completion.registered_runs} frozen seeds · 2 primary paths`
+    : `${study.completion.registered_arms} arms · ${study.completion.tracks.length} tracks`;
+  const computeLabel = [...new Set(study.arms.map((arm) => arm.gpu.replace("NVIDIA ", "")))]
+    .join(" · ");
+  const protocolLabel = accuracyStudy
+    ? "primary protocol frozen"
+    : `v${study.protocol.version} frozen`;
+  const conclusionLabel = accuracyStudy
+    ? `${classification} · method ${study.classification.underlying_method_claim}`
+    : classification;
 
   return (
     <>
@@ -85,24 +108,24 @@ export default function Home() {
                 <span>REPORTED</span>
               </div>
               <p className="apparatus__title">
-                Small-model reinforcement learning
+                {currentStudyLabel}
               </p>
               <dl className="apparatus__facts">
                 <div>
                   <dt>Matrix</dt>
-                  <dd>{study.completion.registered_arms} arms · {study.completion.tracks.length} tracks</dd>
+                  <dd>{matrixLabel}</dd>
                 </div>
                 <div>
                   <dt>Compute</dt>
-                  <dd>3090 · 4090 · PRO 6000</dd>
+                  <dd>{computeLabel}</dd>
                 </div>
                 <div>
                   <dt>Protocol</dt>
-                  <dd>v{study.protocol.version} frozen</dd>
+                  <dd>{protocolLabel}</dd>
                 </div>
                 <div>
                   <dt>Conclusion</dt>
-                  <dd>{classification}</dd>
+                  <dd>{conclusionLabel}</dd>
                 </div>
               </dl>
               <div className="apparatus__signal" aria-hidden="true">
@@ -183,20 +206,28 @@ export default function Home() {
             <div className="study-preview__intro">
               <div>
                 <p className="section-kicker">Reported · Study {study.study_id}</p>
-                <h2>{study.study.paper.title}</h2>
+                <h2>{paperTitle}</h2>
               </div>
               <p>
-                <strong>{study.verdict.headline}</strong>{" "}
-                {study.verdict.summary}
+                <strong>
+                  {accuracyStudy
+                    ? "Replication outcome: not replicated. Underlying method: inconclusive."
+                    : study.verdict.headline}
+                </strong>{" "}
+                {studySummary(study)}
               </p>
             </div>
-            <RunLedger study={study} compact />
+            {accuracyStudy ? (
+              <AccuracyRunLedger study={study} compact />
+            ) : (
+              <RunLedger study={study} compact />
+            )}
             <div className="plain-link-row">
               <Link href={`/studies/${study.study_id}`}>
                 Open the complete study record →
               </Link>
-              <a href={study.study.paper.url}>
-                Read arXiv:{study.study.paper.arxiv_id} ↗
+              <a href={paperUrl}>
+                Read arXiv:{paperArxivId} ↗
               </a>
             </div>
           </div>

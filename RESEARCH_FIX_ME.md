@@ -30,9 +30,57 @@ queue.
 
 ## Open items
 
+### RF-20260801-02 — Add the recorded human-disposition path for Fable HARD_FAIL
+
+- Status: OPEN
+- Blocking: publication
+- Observed in: [NULSPEC PR #18](https://github.com/Atlas3DSS/nulspec/pull/18),
+  commit `9cc6bafba42f19b144f45d02c9c1d71ac4ea9816`
+- Affected study: `260723346`
+- Reported by: website
+- Reported at: 2026-08-01T17:01:17Z
+
+#### Observed
+
+The one permitted Fable invocation ended in `HARD_FAIL` because of a technical
+safeguard refusal. It did not produce a substantive scientific review. The
+frozen protocol states that publication may proceed after a recorded human
+disposition, but `scripts/fable_final_review.py` exposes only `build-packet`,
+`review-once`, `check-gate`, and `self-test`. Its gate evaluation always leaves
+`HARD_FAIL` at `blocked_pending_human_review`, and the website handoff contains
+no human-disposition record or authorized post-disposition state.
+
+#### Expected
+
+Research should define one machine-readable, deterministic way to record a
+human decision after `HARD_FAIL`. It must preserve the original one-shot result,
+bind the decision to the exact review packet and review result, identify whether
+publication is authorized or remains blocked, and keep author-email approval as
+a separate mandatory gate. It must not retry Fable or treat the safeguard
+refusal as scientific evidence.
+
+#### Requested research change
+
+Add and test the human-disposition schema and command, document the required
+fields and allowed decisions, regenerate `WEBSITE_HANDOFF.json`, and expose an
+auditable publication state that the typed website importer can enforce. Do not
+record an authorization unless an authorized human has explicitly made that
+decision.
+
+#### Research response
+
+Pending.
+
+#### Resolution evidence
+
+Pending a research commit, deterministic tests, regenerated handoff, and
+website verification.
+
+## Resolved items
+
 ### RF-20260801-01 — Correct the invalid PR head reference in the website queue
 
-- Status: ACKNOWLEDGED
+- Status: RESOLVED
 - Blocking: neither
 - Observed in: research-authored `WEBSITE_FIX_ME.md` for
   [PR #18](https://github.com/Atlas3DSS/nulspec/pull/18)
@@ -70,12 +118,8 @@ gate. This correction has no effect on the protocol, evidence, or verdict.
 
 Research candidate commit
 [`68188afc7305e5168d33c5278968f7a26b403a40`](https://github.com/Atlas3DSS/nulspec/commit/68188afc7305e5168d33c5278968f7a26b403a40)
-resolves on PR #18. Pending website verification after the corrected reciprocal
-queue is committed.
-
-## Resolved items
-
-None.
+resolves on PR #18 and is the exact commit cited by `WF-20260801-01`. Website
+verification confirmed both the commit object and the PR head on 2026-08-01.
 
 ## Item template
 

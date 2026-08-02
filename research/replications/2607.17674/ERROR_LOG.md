@@ -1490,6 +1490,16 @@ limitations. Entries are never removed after correction.
   the GitHub workflow to reconstruct its pinned upstream fixture and pass, while
   retaining the 36 focused passes and both scoped validator passes locally.
 
+### LRS-LOCAL-138 — first v1.0.7 push targeted the upstream remote
+
+- **State:** corrected immediately; unintended refs removed
+- **Observation:** the operator pushed the new branch and tag to Git remote
+  `origin`, which is the paper-reproduction repository, instead of the existing
+  NULSPEC collaboration remote. No pull request or release was created there.
+- **Disposition:** delete only the just-created upstream branch and tag, verify
+  both deletions, then push the unchanged commit and tag to `nulspec`. Use the
+  branch's configured upstream rather than assuming the remote named `origin`.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

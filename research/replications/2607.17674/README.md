@@ -15,6 +15,12 @@ progress. These are execution milestones, not result claims. Terminal status,
 metrics, and artifact hashes come only from the immutable run manifest and
 post-run analyzer.
 
+The first Qwen2.5-0.5B manuscript-method attempt completed all 120,000 frozen
+base-model response generations, then reached a terminal 24 GB device-memory
+failure before its first factorization optimizer step. It has no paper metric
+or scientific weight and will be retried as a fresh exact arm on the 96 GB
+card. Its hashes and disposition are recorded in `PRIMARY_EXECUTION.md`.
+
 Source ordering is fixed: artifact verification, released-code reproduction,
 manuscript-method reproduction, diagnosis, then extension.
 

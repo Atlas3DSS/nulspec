@@ -632,6 +632,20 @@ limitations. Entries are never removed after correction.
   shell syntax, and the focused tests. Active arms remain bound to their clean
   original checkouts and did not load this draft.
 
+### LRS-LOCAL-061 — Track M 0.5B exceeded the workstation GPU memory
+
+- **State:** terminal attempt preserved; no scientific result
+- **Observation:** the exact registered Track M Qwen2.5-0.5B arm generated all
+  120,000 model responses, then raised a CUDA out-of-memory error during
+  `c_theta` estimation before its first factorization optimizer step. The 24 GB
+  RTX 4090 had ample host RAM behind its 22/26 GiB high/max process guards; the
+  failure was device-memory exhaustion, not a host-memory or service guard.
+- **Disposition:** retain the failed manifest, full logs, sampled-response
+  Parquet files, post-run artifact manifest, and supplemental package inventory.
+  Assign no endpoint metric or paper-level evidentiary weight. Do not change the
+  batch, precision, vocabulary, model count, or objective to make it fit; use a
+  fresh exact attempt on the 96 GB card.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404
@@ -812,3 +826,15 @@ limitations. Entries are never removed after correction.
 - **Disposition:** preserve the released behavior in primary Track M so it is
   code-reproducible. Treat monotonically advanced, record-preserving response
   sampling as a paired extension and report whether it changes results.
+
+### LRS-UPSTREAM-013 — executable arms have no reported hardware requirement
+
+- **State:** open; reproducibility-planning limitation
+- **Observation:** neither the manuscript nor the pinned repository reports the
+  accelerator model or per-arm device-memory requirement. In our unchanged
+  environment, even the Qwen2.5-0.5B manuscript-method arm exceeded an RTX
+  4090's 24 GB during pretraining `c_theta` estimation after response sampling.
+- **Disposition:** report the observed failure and successful hardware envelope
+  without implying that 24 GB was claimed to be sufficient. Ask the authors
+  which hardware and peak-memory envelope produced the reported runs, and add
+  measured peak device memory from an eligible 96 GB retry.

@@ -47,6 +47,12 @@ the intended method from one particular released implementation:
 6. If available, raw metric tables, per-example outcomes, checkpoints, or
    plotting/run-selection code would let us make a much stronger comparison
    than digitizing Figure 3.
+7. Could you share the accelerator model and approximate peak device-memory
+   requirement for the pretrained arms? Our unchanged Qwen2.5-0.5B Track M
+   attempt completed response generation but exceeded a 24 GB card while
+   estimating `c_theta`, before the first factorization optimizer step. We do
+   not infer that 24 GB was intended to be sufficient; the information would
+   help other groups plan an exact run without a failed hardware-sizing trial.
 
 We want to report these points plainly but constructively. If we have
 misunderstood an intended convention, we would be grateful for the correction

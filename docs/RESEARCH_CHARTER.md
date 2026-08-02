@@ -67,6 +67,19 @@ methods language, common phrases, version history, and author overlap, and
 must pass the same calibrated reviewer and human escalation gates as other
 sensitive claims.
 
+## Time-estimate convention
+
+Unless a requester explicitly asks for a calendar or publication ETA, a
+research time estimate means **accelerator wall-clock time**: elapsed time while
+the relevant GPU workload is running. It excludes queueing, CPU-only
+preparation, downloads, writing, provider latency, reviewer waits, publication,
+and human approval.
+
+Report observed GPU time separately from estimated remaining GPU time. If jobs
+can run concurrently, distinguish critical-path wall-clock time from aggregate
+GPU-hours rather than silently combining them. Calendar ETA is a separate
+answer and is given only when requested.
+
 ## Order of operations
 
 1. **Artifact verification:** establish exactly what the paper, repository,

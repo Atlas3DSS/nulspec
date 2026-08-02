@@ -22,6 +22,11 @@ otherwise unchanged checkout appear dirty. Our validator permits only those
 known generated paths while continuing to reject every tracked modification or
 unexpected untracked path.
 
+The pinned stack also emits a runtime warning that its memory-efficient
+scaled-dot-product attention path is nondeterministic. We retain that released
+path in the primary run rather than silently changing the method. The seed and
+full environment remain recorded, but bit-identical reruns are not guaranteed.
+
 ## Missing from the public release
 
 - raw experiment results or per-example records;
@@ -60,6 +65,8 @@ not recovered author data.
 ## Citation inventory
 
 The bibliography contains 45 entries and the manuscript cites 41 unique keys.
-A claim-level citation audit is registered but has not begun. Its source PDFs,
-local-review traces, teacher scores, and outer adjudication will remain separate
-from the primary experimental observations.
+The machine-readable inventory records 74 in-text citation occurrences and the
+surrounding TeX context for every cited key; all 41 cited entries provide a URL
+or DOI-derived source target. A claim-level citation audit is registered but
+has not begun. Its source PDFs, local-review traces, teacher scores, and outer
+adjudication will remain separate from the primary experimental observations.

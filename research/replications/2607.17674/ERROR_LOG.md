@@ -95,6 +95,15 @@ limitations. Entries are never removed after correction.
   `__pycache__`) and still rejects tracked changes or any other untracked path.
   Preparation and run environments now disable new bytecode writes.
 
+### LRS-LOCAL-011 — repository guard rejected temporary cleanup syntax
+
+- **State:** corrected; no scientific effect
+- **Observation:** a citation-inventory determinism check included an automatic
+  `rm -rf` cleanup trap scoped to a newly created temporary directory. The
+  command safety guard rejected the entire shell command before execution.
+- **Disposition:** reran the comparison without an explicit deletion command;
+  the operating system may reclaim the isolated temporary directory normally.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404
@@ -152,3 +161,15 @@ limitations. Entries are never removed after correction.
   README makes a clean checkout appear dirty.
 - **Disposition:** permit only those exact generated path classes in our source
   cleanliness check; continue hashing the tracked Git archive independently.
+
+### LRS-UPSTREAM-007 — released attention path is not bitwise deterministic
+
+- **State:** open; limits exact rerun reproducibility
+- **Observation:** the unmodified pinned training stack warns that PyTorch's
+  memory-efficient scaled-dot-product attention uses a nondeterministic
+  algorithm. The disclosed random seed therefore does not, by itself,
+  guarantee bit-identical checkpoints or metrics across reruns.
+- **Disposition:** preserve the warning and the released implementation for the
+  preregistered primary run. Treat exact-run comparisons as seed-conditional,
+  record complete environment and artifact hashes, and evaluate fresh-run
+  variability only in a separately labeled extension.

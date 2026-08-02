@@ -65,3 +65,5 @@ and Kimi as independent teachers, and uses subscription-authenticated Codex for
 outer adjudication. Exact prompts, schemas, provider routes, spend gates,
 executables, and the terminal trace validator are hash-bound. No Qwen, external
 teacher, or Codex citation decision existed when that tag was created.
+The exact staged execution order and fail-closed boundaries are documented in
+`CITATION_REVIEW_RUNBOOK.md`.

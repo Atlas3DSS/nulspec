@@ -117,6 +117,9 @@ def test_hash_mismatch_invalidates_completed_attempt(tmp_path: Path) -> None:
 def test_recovered_evaluation_is_explicit_and_validated(tmp_path: Path) -> None:
     arm_id = "R-qwen2.5-1.5b-global-token-b0.01-warmup-s314159"
     attempt = tmp_path / "runs" / arm_id / "attempt-20260802T000000Z-deadbeef"
+    recovery = (
+        attempt / "evaluation-recovery-attempts" / "recovery-20260802T010000Z-deadbeef"
+    )
     metrics_path = attempt / "evaluation" / "metrics.json"
     write_json(
         metrics_path,
@@ -158,26 +161,31 @@ def test_recovered_evaluation_is_explicit_and_validated(tmp_path: Path) -> None:
         },
     )
     write_json(
-        attempt / "evaluation-recovery.start.json",
+        recovery / "recovery.start.json",
         {
             "arm_id": arm_id,
-            "phase": "evaluation_recovery_start",
+            "phase": "start",
             "protocol_version": "1.0.0",
             "exit_code": 0,
+            "upstream": {"head": "0c0f221d7dc37cd4eb7fb1af3332520bccf4d9fe"},
         },
     )
     write_json(
-        attempt / "evaluation-recovery.complete.json",
+        recovery / "recovery.complete.json",
         {
             "arm_id": arm_id,
-            "phase": "evaluation_recovery_end",
+            "phase": "end",
             "protocol_version": "1.0.0",
             "exit_code": 0,
+            "upstream": {"head": "0c0f221d7dc37cd4eb7fb1af3332520bccf4d9fe"},
         },
     )
     write_json(
-        attempt / "evaluation-recovery.source.json",
+        recovery / "source.json",
         {
+            "schema_version": 2,
+            "runtime_amendment": "1.0.2",
+            "recovery_attempt_id": recovery.name,
             "recovery_reason": "observer_output_transport_sigpipe",
             "scientific_change": False,
             "source_attempt": attempt.name,
@@ -191,9 +199,14 @@ def test_recovered_evaluation_is_explicit_and_validated(tmp_path: Path) -> None:
             "factorization_metrics_sha256": hashlib.sha256(
                 (attempt / "factorization" / "metrics.json").read_bytes()
             ).hexdigest(),
+            "checkpoint_relative_path": "factorization/checkpoints/epoch-0001.pt",
             "checkpoint_sha256": "1" * 64,
-            "evaluation_config_sha256": "2" * 64,
-            "evaluator_source_sha256": "3" * 64,
+            "evaluation_config_sha256": (
+                "39731599084d4c678d52edad50b301fa11716b123ce7b1041dcc64eb4f00bb0a"
+            ),
+            "evaluator_source_sha256": (
+                "6a6d8326108f29f3e522258a731f8ebb343092a6b8a0019cf868a75b7b51b330"
+            ),
         },
     )
 
@@ -212,6 +225,9 @@ def test_recovered_evaluation_is_explicit_and_validated(tmp_path: Path) -> None:
 def test_recovered_evaluation_rejects_wrong_source_hash(tmp_path: Path) -> None:
     arm_id = "R-qwen2.5-1.5b-global-token-b0.01-warmup-s314159"
     attempt = tmp_path / "runs" / arm_id / "attempt-20260802T000000Z-deadbeef"
+    recovery = (
+        attempt / "evaluation-recovery-attempts" / "recovery-20260802T010000Z-deadbeef"
+    )
     write_json(
         attempt / "evaluation" / "metrics.json",
         {"analogical_consistency": 0.89, "distributional_fidelity": 0.98},
@@ -243,23 +259,26 @@ def test_recovered_evaluation_rejects_wrong_source_hash(tmp_path: Path) -> None:
         },
     )
     write_json(attempt / "factorization" / "metrics.json", {"global_step": 782})
-    for name, phase, exit_code in (
-        ("run.failed.json", "end", 141),
-        ("evaluation-recovery.start.json", "evaluation_recovery_start", 0),
-        ("evaluation-recovery.complete.json", "evaluation_recovery_end", 0),
+    for path, phase, exit_code in (
+        (attempt / "run.failed.json", "end", 141),
+        (recovery / "recovery.start.json", "start", 0),
+        (recovery / "recovery.complete.json", "end", 0),
     ):
-        write_json(
-            attempt / name,
-            {
-                "arm_id": arm_id,
-                "phase": phase,
-                "protocol_version": "1.0.0",
-                "exit_code": exit_code,
-            },
-        )
+        manifest = {
+            "arm_id": arm_id,
+            "phase": phase,
+            "protocol_version": "1.0.0",
+            "exit_code": exit_code,
+        }
+        if path.parent == recovery:
+            manifest["upstream"] = {"head": "0c0f221d7dc37cd4eb7fb1af3332520bccf4d9fe"}
+        write_json(path, manifest)
     write_json(
-        attempt / "evaluation-recovery.source.json",
+        recovery / "source.json",
         {
+            "schema_version": 2,
+            "runtime_amendment": "1.0.2",
+            "recovery_attempt_id": recovery.name,
             "recovery_reason": "observer_output_transport_sigpipe",
             "scientific_change": False,
             "source_attempt": attempt.name,
@@ -271,9 +290,14 @@ def test_recovered_evaluation_rejects_wrong_source_hash(tmp_path: Path) -> None:
             "factorization_metrics_sha256": hashlib.sha256(
                 (attempt / "factorization" / "metrics.json").read_bytes()
             ).hexdigest(),
+            "checkpoint_relative_path": "factorization/checkpoints/epoch-0001.pt",
             "checkpoint_sha256": "1" * 64,
-            "evaluation_config_sha256": "2" * 64,
-            "evaluator_source_sha256": "3" * 64,
+            "evaluation_config_sha256": (
+                "39731599084d4c678d52edad50b301fa11716b123ce7b1041dcc64eb4f00bb0a"
+            ),
+            "evaluator_source_sha256": (
+                "6a6d8326108f29f3e522258a731f8ebb343092a6b8a0019cf868a75b7b51b330"
+            ),
         },
     )
 

@@ -16,7 +16,11 @@ WORKSPACE = Path(__file__).resolve().parents[1]
 PROTOCOL_ROOT = WORKSPACE / "protocols" / "2607.17674"
 MATRIX_PATH = PROTOCOL_ROOT / "matrix.csv"
 CONFIG_PATH = PROTOCOL_ROOT / "config.json"
+SOURCE_MANIFEST_PATH = PROTOCOL_ROOT / "SOURCE_MANIFEST.json"
 PROTOCOL_VERSION = "1.0.0"
+EVALUATOR_SOURCE_SHA256 = (
+    "6a6d8326108f29f3e522258a731f8ebb343092a6b8a0019cf868a75b7b51b330"
+)
 REQUIRED_ATTEMPT_FILES = (
     "run.complete.json",
     "factorization/config.json",
@@ -25,15 +29,19 @@ REQUIRED_ATTEMPT_FILES = (
 )
 RECOVERED_ATTEMPT_FILES = (
     "run.failed.json",
-    "evaluation-recovery.start.json",
-    "evaluation-recovery.complete.json",
-    "evaluation-recovery.source.json",
     "factorization/config.json",
     "factorization/metrics.json",
     "evaluation/metrics.json",
     "evaluation.file-manifest.json",
 )
 COMPLETED_EXECUTIONS = {"completed", "completed_recovered_evaluation"}
+
+
+def completed_recoveries(attempt: Path) -> list[Path]:
+    recovery_root = attempt / "evaluation-recovery-attempts"
+    if not recovery_root.is_dir():
+        return []
+    return sorted(recovery_root.glob("recovery-*/recovery.complete.json"))
 
 
 def load_json(path: Path) -> Any:
@@ -66,8 +74,7 @@ def terminal_attempt(arm: dict[str, str], runs_root: Path) -> tuple[str, Path | 
     recovered = [
         path
         for path in attempts
-        if (path / "run.failed.json").is_file()
-        and (path / "evaluation-recovery.complete.json").is_file()
+        if (path / "run.failed.json").is_file() and completed_recoveries(path)
     ]
     if recovered:
         return "completed_recovered_evaluation", recovered[-1]
@@ -110,19 +117,27 @@ def validate_primary_artifacts(
     if violations:
         return violations, None
 
-    run_manifest_name = (
-        "evaluation-recovery.complete.json"
-        if execution == "completed_recovered_evaluation"
-        else "run.complete.json"
-    )
-    run_manifest = load_json(attempt / run_manifest_name)
+    recovery_dir: Path | None = None
+    if execution == "completed_recovered_evaluation":
+        recoveries = completed_recoveries(attempt)
+        if not recoveries:
+            return ["completed recovery manifest is missing"], None
+        run_manifest_path = recoveries[-1]
+        recovery_dir = run_manifest_path.parent
+        for relative in ("recovery.start.json", "source.json"):
+            if not (recovery_dir / relative).is_file():
+                violations.append(
+                    f"missing {recovery_dir.relative_to(attempt) / relative}"
+                )
+        if violations:
+            return violations, None
+    else:
+        run_manifest_path = attempt / "run.complete.json"
+
+    run_manifest = load_json(run_manifest_path)
     expected_manifest = {
         "arm_id": arm["arm_id"],
-        "phase": (
-            "evaluation_recovery_end"
-            if execution == "completed_recovered_evaluation"
-            else "end"
-        ),
+        "phase": "end",
         "protocol_version": PROTOCOL_VERSION,
         "exit_code": 0,
     }
@@ -134,6 +149,9 @@ def validate_primary_artifacts(
             )
 
     if execution == "completed_recovered_evaluation":
+        assert recovery_dir is not None
+        protocol = load_json(CONFIG_PATH)
+        source_manifest = load_json(SOURCE_MANIFEST_PATH)
         failed_manifest = load_json(attempt / "run.failed.json")
         expected_failure = {
             "arm_id": arm["arm_id"],
@@ -148,11 +166,34 @@ def validate_primary_artifacts(
                     f"expected {expected!r}"
                 )
 
-        recovery_start = load_json(attempt / "evaluation-recovery.start.json")
-        if recovery_start.get("phase") != "evaluation_recovery_start":
-            violations.append("recovery start manifest has the wrong phase")
-        source = load_json(attempt / "evaluation-recovery.source.json")
+        recovery_start = load_json(recovery_dir / "recovery.start.json")
+        expected_recovery_start = {
+            "arm_id": arm["arm_id"],
+            "phase": "start",
+            "protocol_version": PROTOCOL_VERSION,
+            "exit_code": 0,
+        }
+        for key, expected in expected_recovery_start.items():
+            if recovery_start.get(key) != expected:
+                violations.append(
+                    f"recovery start {key} is {recovery_start.get(key)!r}, "
+                    f"expected {expected!r}"
+                )
+        for label, manifest in (
+            ("recovery start", recovery_start),
+            ("recovery terminal", run_manifest),
+        ):
+            upstream_head = manifest.get("upstream", {}).get("head")
+            if upstream_head != protocol["upstream"]["revision"]:
+                violations.append(
+                    f"{label} upstream head is {upstream_head!r}, expected "
+                    f"{protocol['upstream']['revision']!r}"
+                )
+        source = load_json(recovery_dir / "source.json")
         expected_source = {
+            "schema_version": 2,
+            "runtime_amendment": "1.0.2",
+            "recovery_attempt_id": recovery_dir.name,
             "recovery_reason": "observer_output_transport_sigpipe",
             "scientific_change": False,
             "source_attempt": attempt.name,
@@ -164,6 +205,11 @@ def validate_primary_artifacts(
             "factorization_metrics_sha256": sha256(
                 attempt / "factorization/metrics.json"
             ),
+            "checkpoint_relative_path": "factorization/checkpoints/epoch-0001.pt",
+            "evaluation_config_sha256": source_manifest["released_config_sha256"][
+                "evaluation.json"
+            ],
+            "evaluator_source_sha256": EVALUATOR_SOURCE_SHA256,
         }
         for key, expected in expected_source.items():
             if source.get(key) != expected:
@@ -171,11 +217,7 @@ def validate_primary_artifacts(
                     f"recovery source {key} is {source.get(key)!r}, "
                     f"expected {expected!r}"
                 )
-        for key in (
-            "checkpoint_sha256",
-            "evaluation_config_sha256",
-            "evaluator_source_sha256",
-        ):
+        for key in ("checkpoint_sha256",):
             value = source.get(key)
             if (
                 not isinstance(value, str)
@@ -183,6 +225,13 @@ def validate_primary_artifacts(
                 or any(character not in "0123456789abcdef" for character in value)
             ):
                 violations.append(f"recovery source {key} is not a SHA-256 digest")
+        checkpoint_relative = source.get("checkpoint_relative_path")
+        if isinstance(checkpoint_relative, str):
+            checkpoint_path = attempt / checkpoint_relative
+            if checkpoint_path.is_file() and source.get("checkpoint_sha256") != sha256(
+                checkpoint_path
+            ):
+                violations.append("recovery source checkpoint hash does not match")
 
     factorization = load_json(attempt / "factorization/config.json")
     expected_factorization: dict[str, Any] = {
@@ -263,6 +312,11 @@ def complete_arm_result(
         key: difference <= tolerance for key, difference in absolute_differences.items()
     }
     metrics_path = attempt / "evaluation/metrics.json"
+    result_manifest_path = (
+        completed_recoveries(attempt)[-1]
+        if execution == "completed_recovered_evaluation"
+        else attempt / "run.complete.json"
+    )
     return {
         **arm,
         "execution": execution,
@@ -299,14 +353,7 @@ def complete_arm_result(
             else {"used": False}
         ),
         "artifact_sha256": {
-            "run_manifest": sha256(
-                attempt
-                / (
-                    "evaluation-recovery.complete.json"
-                    if execution == "completed_recovered_evaluation"
-                    else "run.complete.json"
-                )
-            ),
+            "run_manifest": sha256(result_manifest_path),
             "factorization_config": sha256(attempt / "factorization/config.json"),
             "evaluation_metrics": sha256(metrics_path),
             "evaluation_file_manifest": sha256(

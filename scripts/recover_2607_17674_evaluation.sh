@@ -64,7 +64,14 @@ if [[ "$(jq -er '.exit_code' "$FAILED_MANIFEST")" != "141" ]]; then
   echo "recovery is restricted to the registered observer-pipe SIGPIPE failure" >&2
   exit 2
 fi
-if [[ -e "$FAILED_ATTEMPT/evaluation-recovery.complete.json" ]]; then
+RECOVERY_ATTEMPTS_ROOT="$FAILED_ATTEMPT/evaluation-recovery-attempts"
+completed_recovery="$(
+  if [[ -d "$RECOVERY_ATTEMPTS_ROOT" ]]; then
+    find "$RECOVERY_ATTEMPTS_ROOT" -mindepth 2 -maxdepth 2 \
+      -name recovery.complete.json -type f -print -quit
+  fi
+)"
+if [[ -n "$completed_recovery" ]]; then
   echo "a completed evaluation recovery already exists" >&2
   exit 2
 fi
@@ -112,24 +119,32 @@ if ! flock -n 9; then
   exit 2
 fi
 
-LOG_ROOT="$FAILED_ATTEMPT/logs"
+git_short="$(git -C "$WORKSPACE" rev-parse --short=12 HEAD)"
+recovery_stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+RECOVERY_ID="recovery-${recovery_stamp}-${git_short}"
+RECOVERY_DIR="$RECOVERY_ATTEMPTS_ROOT/$RECOVERY_ID"
+LOG_ROOT="$RECOVERY_DIR/logs"
+if [[ -e "$RECOVERY_DIR" ]]; then
+  echo "refusing to overwrite recovery attempt: $RECOVERY_DIR" >&2
+  exit 2
+fi
 mkdir -p "$LOG_ROOT"
-exec >>"$LOG_ROOT/evaluation-recovery-runner.log" 2>&1
+exec >>"$LOG_ROOT/runner.log" 2>&1
 
 invocation="$0 $(basename "$FAILED_ATTEMPT") [GPU_UUID_REDACTED] $EXPECTED_GPU $ARTIFACT_ROOT"
 finish_recovery() {
   exit_code=$?
   trap - EXIT
   if (( exit_code == 0 )); then
-    terminal_manifest="$FAILED_ATTEMPT/evaluation-recovery.complete.json"
+    terminal_manifest="$RECOVERY_DIR/recovery.complete.json"
   else
-    terminal_manifest="$FAILED_ATTEMPT/evaluation-recovery.failed.json"
+    terminal_manifest="$RECOVERY_DIR/recovery.failed.json"
   fi
   "$PYTHON_BIN" "$WORKSPACE/scripts/capture_run_manifest.py" \
     --output "$terminal_manifest" \
     --paper-id 2607.17674 \
     --arm-id "$ARM_ID" \
-    --phase evaluation_recovery_end \
+    --phase end \
     --protocol-version "$PROTOCOL_VERSION" \
     --invocation "$invocation" \
     --exit-code "$exit_code" \
@@ -147,18 +162,15 @@ case "$CHECKPOINT_PATH" in
     ;;
 esac
 
-SOURCE_RECORD="$FAILED_ATTEMPT/evaluation-recovery.source.json"
-if [[ -e "$SOURCE_RECORD" || -e "$FAILED_ATTEMPT/evaluation-recovery.start.json" ]]; then
-  echo "refusing to overwrite existing recovery provenance" >&2
-  exit 2
-fi
+SOURCE_RECORD="$RECOVERY_DIR/source.json"
 "$PYTHON_BIN" - \
   "$SOURCE_RECORD" \
   "$FAILED_ATTEMPT" \
   "$FAILED_MANIFEST" \
   "$CHECKPOINT_PATH" \
   "$UPSTREAM/configs/paper/evaluation.json" \
-  "$UPSTREAM/experiments/factorization/evaluate.py" <<'PY'
+  "$UPSTREAM/experiments/factorization/evaluate.py" \
+  "$RECOVERY_ID" <<'PY'
 import hashlib
 import json
 import sys
@@ -174,10 +186,13 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-output, attempt, failed, checkpoint, config, evaluator = map(Path, sys.argv[1:])
+output, attempt, failed, checkpoint, config, evaluator = map(Path, sys.argv[1:7])
+recovery_id = sys.argv[7]
 payload = {
-    "schema_version": 1,
+    "schema_version": 2,
     "created_at_utc": datetime.now(timezone.utc).isoformat(),
+    "runtime_amendment": "1.0.2",
+    "recovery_attempt_id": recovery_id,
     "recovery_reason": "observer_output_transport_sigpipe",
     "scientific_change": False,
     "source_attempt": attempt.name,
@@ -204,10 +219,10 @@ output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 PY
 
 "$PYTHON_BIN" "$WORKSPACE/scripts/capture_run_manifest.py" \
-  --output "$FAILED_ATTEMPT/evaluation-recovery.start.json" \
+  --output "$RECOVERY_DIR/recovery.start.json" \
   --paper-id 2607.17674 \
   --arm-id "$ARM_ID" \
-  --phase evaluation_recovery_start \
+  --phase start \
   --protocol-version "$PROTOCOL_VERSION" \
   --invocation "$invocation" \
   --upstream "$UPSTREAM"
@@ -219,7 +234,7 @@ echo "evaluation recovery started: $ARM_ID at $(date -u +%FT%TZ)"
     --config configs/paper/evaluation.json \
     --run-dir "$FAILED_ATTEMPT/factorization" \
     --output-dir "$EVALUATION_DIR"
-) >>"$LOG_ROOT/evaluation-recovery.log" 2>&1
+) >>"$LOG_ROOT/evaluation.log" 2>&1
 
 "$PYTHON_BIN" "$WORKSPACE/scripts/hash_artifact_tree.py" \
   "$EVALUATION_DIR" \

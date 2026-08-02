@@ -16,8 +16,11 @@ def test_recovery_is_narrow_and_uses_the_unchanged_evaluator() -> None:
     assert "observer_output_transport_sigpipe" in recovery
     assert "-m experiments.factorization.evaluate" in recovery
     assert "--config configs/paper/evaluation.json" in recovery
-    assert '>>"$LOG_ROOT/evaluation-recovery.log" 2>&1' in recovery
+    assert '>>"$LOG_ROOT/evaluation.log" 2>&1' in recovery
     assert (
         "run.failed.json and the truncated first evaluation log remain immutable"
         in recovery
     )
+    assert "evaluation-recovery-attempts" in recovery
+    assert "--phase start" in recovery
+    assert "--phase end" in recovery

@@ -1812,3 +1812,66 @@ limitations. Entries are never removed after correction.
 - **Disposition:** do not weaken or skip the test in tracked code. Report the
   full-suite limitation separately from the seven passing recovery-focused
   tests and rely on CI's provisioned fixture for the repository-wide gate.
+
+### LRS-LOCAL-150 — a second parallel display used the wrong result variable
+
+- **State:** corrected read-only orchestration; no experiment effect
+- **Observation:** two awaited CI/remote-preflight calls completed, but their
+  display loop referenced `results` after assigning the array to `r`. The
+  wrapper raised `ReferenceError` and hid that first display.
+- **Disposition:** reran only the read-only displays with one consistently
+  named constant. No compute or external mutation was repeated.
+
+### LRS-LOCAL-151 — v1.0.1 recovery used unsupported manifest phase labels
+
+- **State:** failed preflight preserved; superseded prospectively by primary
+  runtime amendment v1.0.2
+- **Observation:** the first guarded evaluation-recovery invocation hashed its
+  source checkpoint, then `capture_run_manifest.py` rejected both descriptive
+  phase labels because its CLI permits only `start` and `end`. The command
+  returned 2 before importing or launching the upstream evaluator. It wrote no
+  evaluation metric, GPU work, canonical evaluation manifest, or recovery
+  completion. The root-level source record and runner log remain preserved;
+  their SHA-256 values are respectively
+  `85c6fad3bd672ddaefe1494fa4f13b3fc907ca4ad08e495b143f81d6750a87f7`
+  and
+  `ae5d467d3774f58c52ff44627a498541640b216f72cf027ef480e1c7ff7e406a`.
+- **Disposition:** do not edit or reuse those v1.0.1 artifacts. v1.0.2 uses the
+  helper's supported phase enum and isolates every recovery attempt in a unique
+  append-only directory; the analyzer accepts only a separately completed,
+  hash-consistent recovery.
+
+### LRS-LOCAL-152 — first v1.0.2 patch had stale formatted-test context
+
+- **State:** corrected before commit, tag, or retry
+- **Observation:** one multi-file `apply_patch` expected an assertion before
+  Ruff's line wrapping and failed verification without applying any hunk.
+- **Disposition:** inspected the current files and applied smaller patches
+  against exact context. No artifact or running process was affected.
+
+### LRS-LOCAL-153 — early v1.0.2 format gates found two files
+
+- **State:** corrected before commit, tag, or retry
+- **Observation:** two successive edit rounds left the analyzer and its tests
+  outside Ruff's canonical formatting. Their focused tests still passed, but
+  the composite shell's final command again obscured the format check's status.
+- **Disposition:** formatted both files, changed subsequent composite gates to
+  `set -euo pipefail`, and independently revalidated lint, formatting, shell
+  syntax, whitespace, and all seven focused tests.
+
+### LRS-LOCAL-154 — one source-manifest query guessed the wrong top-level key
+
+- **State:** corrected read-only diagnostic; no experiment effect
+- **Observation:** a `jq` probe tried to iterate `.files`, while the frozen
+  source manifest uses `.artifacts` plus `released_config_sha256`.
+- **Disposition:** inspected the schema first and bound the recovery analyzer
+  to the existing `released_config_sha256["evaluation.json"]` value.
+
+### LRS-LOCAL-155 — one analyzer-hardening patch included stale document context
+
+- **State:** corrected before commit, tag, or retry
+- **Observation:** a multi-file patch correctly targeted analyzer changes but
+  supplied a nonexact final line for the new amendment document, so patch
+  verification failed and applied nothing.
+- **Disposition:** split the analyzer and documentation edits into exact,
+  separately verified patches. No runtime artifact was affected.

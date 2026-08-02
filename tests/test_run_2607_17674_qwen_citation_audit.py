@@ -447,7 +447,82 @@ def test_v105_only_expands_evidence_output_ceiling() -> None:
         "1.0.3",
         "1.0.4",
         "1.0.5",
+        "1.0.6",
     }
+
+
+def test_v106_only_adds_conservative_evidence_repair() -> None:
+    protocol_root = WORKSPACE / "protocols/2607.17674"
+    prior = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.5.json").read_text()
+    )
+    amended = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.6.json").read_text()
+    )
+    normalized = copy.deepcopy(amended)
+    normalized["protocol_version"] = prior["protocol_version"]
+    normalized["prior_protocol_tag"] = prior["prior_protocol_tag"]
+    normalized["protocol_tag"] = prior["protocol_tag"]
+    normalized["primary_reviewer"].pop("evidence_repair")
+    normalized["primary_reviewer"].pop("maximum_evidence_attempts_per_call")
+    assert normalized == prior
+    assert amended["protocol_version"] == "1.0.6"
+    assert amended["primary_reviewer"]["maximum_evidence_attempts_per_call"] == 3
+    assert amended["primary_reviewer"]["maximum_attempts_per_call"] == 2
+    assert (
+        amended["primary_reviewer"]["evidence_generation"]
+        == prior["primary_reviewer"]["evidence_generation"]
+    )
+    assert (
+        amended["primary_reviewer"]["synthesis_generation"]
+        == prior["primary_reviewer"]["synthesis_generation"]
+    )
+    assert RUNNER.RUNTIME_AMENDMENTS["1.0.6"].is_file()
+
+
+def test_v106_binds_repair_prompt_only_after_evidence_failure() -> None:
+    protocol_root = WORKSPACE / "protocols/2607.17674"
+    config = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.6.json").read_text()
+    )
+    repair_prompt, binding = RUNNER.effective_evidence_repair_prompt(config)
+    assert repair_prompt is not None
+    assert binding is not None
+    assert binding["mode"] == "conservative_exact_line_v1"
+    assert (
+        binding["sha256"]
+        == config["primary_reviewer"]["evidence_repair"]["prompt_sha256"]
+    )
+
+    _, initial_prompt = RUNNER.build_request(
+        "qwen-test",
+        "system",
+        {"source": "evidence"},
+        {"type": "object"},
+        config["primary_reviewer"]["evidence_generation"],
+        config["primary_reviewer"]["chat_template_kwargs"],
+        None,
+        repair_prompt,
+    )
+    _, repaired_prompt = RUNNER.build_request(
+        "qwen-test",
+        "system",
+        {"source": "evidence"},
+        {"type": "object"},
+        config["primary_reviewer"]["evidence_generation"],
+        config["primary_reviewer"]["chat_template_kwargs"],
+        ["candidate excerpt is not grounded"],
+        repair_prompt,
+    )
+    assert "Conservative exact-line repair policy" not in initial_prompt
+    assert "Conservative exact-line repair policy" in repaired_prompt
+    assert "Never join adjacent lines" in repaired_prompt
+    assert "candidate excerpt is not grounded" in repaired_prompt
+
+    prior = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.5.json").read_text()
+    )
+    assert RUNNER.effective_evidence_repair_prompt(prior) == (None, None)
 
 
 @pytest.mark.parametrize(

@@ -124,9 +124,16 @@ completed successfully. The formerly truncated Allman response reached a
 normal stop at 9,422 completion tokens; five unaffected final reviews
 reproduced byte-for-byte, and the blind comparison remained 9/10 for both
 class and score. The bounded outer gate again passed with mandatory Allman and
-self-consistency qualifications, and the remaining 35-source pass began from
-the same append-only trace. No teacher input, training projection, publication,
-or email is yet authorized.
+self-consistency qualifications. The remaining pass then confirmed the ceiling
+repair when Bowman completed, including a first evidence response of 8,397
+tokens, but failed closed on Gu after both permitted attempts joined or quoted
+text that was not grounded in one physical PDF line. The sealed trace and all
+invalid attempts remain zero-weight where validation failed. Prospective
+runtime v1.0.6 adds a hash-bound conservative exact-line prompt only on evidence
+retries and permits a third evidence attempt; synthesis remains capped at two.
+Nothing from v1.0.5 will be reused, and a fresh calibration, context audit, and
+exclusive-lock preflight are required. No teacher input, training projection,
+publication, or email is yet authorized.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the

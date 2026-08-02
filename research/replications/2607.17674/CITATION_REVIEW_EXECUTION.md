@@ -574,3 +574,71 @@ memory high/max, 1 GiB swap, and two CPU cores; the model server retains its
 immutable point-in-time snapshot; a new full-trace index and accounting record
 are required after the remaining phase terminates. Teacher input, publication,
 email, and automatic training use remain blocked.
+
+### Terminal v1.0.5 remaining phase
+
+The v1.0.5 remaining phase ended fail-closed at
+`2026-08-02T13:31:25.508Z`. It completed Bao, Bowman, Burgess, InfoGAN,
+Cunningham, Fu, and Galichin before stopping on the second Gu et al. evidence
+chunk. The first Bowman chunk reached a normal stop after 8,397 completion
+tokens—205 tokens beyond the v1.0.4 ceiling—and validated on its first attempt.
+This confirms that v1.0.5 removed the prior output-budget blocker. Its second
+chunk repaired five ungrounded excerpts and then validated, so Bowman also
+completed at source level.
+
+For Gu, the first attempt contained one excerpt that was not a substring of a
+single physical source line on its cited page. The permitted generic repair
+then produced another ungrounded excerpt by joining three adjacent PDF lines.
+Both calls reached normal stops, but the unchanged validator rejected both and
+the registered two-attempt limit was exhausted. No Gu source review,
+remaining-phase completion, full-audit completion, or teacher packet was
+accepted.
+
+The sealed terminal trace contains 594 files and 110,739,555 bytes. Its record-
+stream SHA-256 is
+`95835a3acb2ab541284bc7369e6cc43a9b0fbc17f8efff0f277dd8f6885014bf`;
+the separate index SHA-256 is
+`f7432c8f4fc4e1b9971c9f41635150bfa091d019e2d88104236702ac132af3e8`.
+The accounting record has SHA-256
+`5c31970dd90fee0043a2d402785127b67bf1748adb235f1da3bed9e2c1020569`
+and reports 52 local calls: 43 valid attempts and nine retained invalid
+attempts, 599,197 prompt tokens, 256,425 completion tokens, 855,622 total
+tokens, and 6,285.541703 seconds of accelerator request wall-clock. Provider
+charge was $0; electricity and hardware cost remain unmeasured. The server was
+stopped before the final post-calibration cgroup event snapshot was copied, so
+those exact counters are unavailable. The continuously sampled resource guard
+did not record a host-memory or temperature intervention.
+
+### Prospective v1.0.6 conservative repair
+
+Runtime v1.0.6 adds a hash-bound prompt only to evidence retries. For each
+reported grounding failure, Qwen must delete the candidate or replace its
+excerpt with a character-for-character substring of exactly one physical
+source line. It must not join adjacent lines, reconstruct a sentence, or
+dehyphenate a split word; an empty chunk-level candidate list is permitted when
+no exact line is relevant. Evidence calls receive at most three attempts,
+while synthesis remains capped at two. Invalid attempts still have zero weight.
+
+Everything else is unchanged: model and llama.cpp bytes, context, GPU offload,
+KV precision, thinking mode, seed, decoding parameters, 12,288-token output
+ceilings, packets, source order, initial evidence and synthesis prompts,
+schemas, grammar, client validator, calibration set, and outer gate. No v1.0.5
+output will be reused. A fresh calibration remains blocked until this amendment,
+config, repair prompt, and code are committed and tagged, focused validation
+passes, context headroom is remeasured including the repair suffix, and a fresh
+exclusive-lock runtime preflight succeeds.
+
+The prospective config, runtime amendment, and repair-prompt SHA-256 values are
+`8c81103e5b7c0cc064758b9659edaea609bbd90143082a8b43bff1e54ad55e35`,
+`f0a603331472205a4946ee80013b44e4de982c95c2d7e47864d8928c4d9b6926`,
+and `32fb144e83ab4f0b272248e8cb54e8a10074e210e598161a353924fc6ee9cf28`.
+The amended runner and preflight SHA-256 values are
+`598791ef96de3c458e102df6d278902b4727f852b0373ae42a0f9f4812d19e38`
+and `e0668144601e02ade92e147fcf338ade6f724a67ca55bfff83fe89917611e78d`.
+Twenty-one focused tests, scoped Ruff lint and formatting, JSON parsing, Python
+compilation, repository hygiene, whitespace validation, the paper-specific
+protocol validator, and the generic validator with unavailable data and
+upstream checks explicitly skipped all pass. The local repository-wide suite
+passed 181 tests and repeated the already logged different-study failure caused
+by its intentionally absent ignored result fixture; the GitHub workflow must
+reconstruct that pinned upstream tree and pass before any live v1.0.6 request.

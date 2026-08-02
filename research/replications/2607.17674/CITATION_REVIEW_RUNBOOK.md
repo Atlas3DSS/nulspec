@@ -9,10 +9,10 @@ the traces, or send email.
 - Use citation-audit evidence contract `2607.17674-citation-audit-v1.0.1` and
   trace-only harness amendment `2607.17674-citation-audit-harness-v1.0.4`.
 - After the preserved v1.0.1, v1.0.2, and v1.0.3 zero-weight calibration
-  failures and the terminal v1.0.4 remaining-phase output-budget failure, use
-  prospective runtime amendment
-  `2607.17674-citation-audit-runtime-v1.0.5` and pass
-  `citation_audit_config.v1.0.5.json` explicitly.
+  failures, the terminal v1.0.4 output-budget failure, and the terminal v1.0.5
+  exact-line repair failure, use prospective runtime amendment
+  `2607.17674-citation-audit-runtime-v1.0.6` and pass
+  `citation_audit_config.v1.0.6.json` explicitly.
 - Use teacher hierarchy `2607.17674-citation-teachers-v1.0.3`.
 - Require the exact registered GGUF basename and record its runtime SHA-256.
 - Bind a natively built llama-server from commit
@@ -29,11 +29,13 @@ the traces, or send email.
 - Runtime schema preflight v1.0.1 must acquire that same lock and produce a
   fresh eligible pass before replacement calibration. The earlier concurrent
   parser check is retained as diagnostic-only evidence.
-- Evidence runtime v1.0.5 must present the immutable chunk as exact page-labeled
+- Evidence runtime v1.0.6 presents the immutable chunk as exact page-labeled
   physical source lines. Every excerpt must come from one line without joining
-  a split PDF word. Its only change from v1.0.4 is a 12,288-token evidence-call
-  ceiling. The unchanged client validator continues to ground every excerpt
-  against the original packet.
+  a split PDF word. After, and only after, a failed evidence attempt, the runner
+  appends the hash-bound conservative repair prompt. Evidence calls have at
+  most three attempts; synthesis calls remain at two. The unchanged client
+  validator grounds every excerpt against the original packet, and every
+  invalid attempt remains immutable with zero weight.
 
 ## 1. Start the local Qwen route
 
@@ -66,7 +68,7 @@ python scripts/run_2607_17674_qwen_citation_audit.py \
   --route workstation=http://127.0.0.1:8080 \
   --gguf-path /path/to/registered-reviewer.gguf \
   --llama-binary /path/to/pinned/llama-server \
-  --config protocols/2607.17674/citation_audit_config.v1.0.5.json \
+  --config protocols/2607.17674/citation_audit_config.v1.0.6.json \
   --phase calibration
 ```
 

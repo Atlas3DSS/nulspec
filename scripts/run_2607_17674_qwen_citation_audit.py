@@ -41,6 +41,7 @@ RUNTIME_AMENDMENTS = {
     "1.0.3": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.3.md",
     "1.0.4": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.4.md",
     "1.0.5": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.5.md",
+    "1.0.6": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.6.md",
 }
 SUPPORTED_RUNTIME_PROTOCOL_VERSIONS = frozenset({"1.0.1", *RUNTIME_AMENDMENTS})
 EVENT_LOCK = threading.Lock()
@@ -186,6 +187,47 @@ def effective_evidence_prompt(config: dict[str, Any]) -> tuple[str, dict[str, An
             "sha256": actual_sha256,
         },
         "effective_sha256": sha256_bytes(effective.encode("utf-8")),
+    }
+
+
+def effective_evidence_repair_prompt(
+    config: dict[str, Any],
+) -> tuple[str | None, dict[str, Any] | None]:
+    """Load and bind an optional prospective evidence-only repair policy."""
+
+    repair = config["primary_reviewer"].get("evidence_repair")
+    if repair is None:
+        return None, None
+    if not isinstance(repair, dict) or repair.get("mode") != (
+        "conservative_exact_line_v1"
+    ):
+        raise AuditError("unsupported evidence repair policy")
+    relative = repair.get("prompt_relative_path")
+    expected_sha256 = repair.get("prompt_sha256")
+    if not isinstance(relative, str) or not isinstance(expected_sha256, str):
+        raise AuditError("evidence repair policy lacks its prompt binding")
+    relative_path = Path(relative)
+    if relative_path.is_absolute() or ".." in relative_path.parts:
+        raise AuditError("runtime evidence repair prompt path is unsafe")
+    prompt_path = (WORKSPACE / relative_path).resolve()
+    try:
+        prompt_path.relative_to(PROTOCOL_ROOT.resolve())
+    except ValueError as error:
+        raise AuditError(
+            "runtime evidence repair prompt escaped the protocol root"
+        ) from error
+    if not prompt_path.is_file():
+        raise AuditError("runtime evidence repair prompt is missing")
+    actual_sha256 = sha256_file(prompt_path)
+    if actual_sha256 != expected_sha256:
+        raise AuditError("runtime evidence repair prompt hash differs from config")
+    prompt = prompt_path.read_text(encoding="utf-8").strip()
+    if not prompt:
+        raise AuditError("runtime evidence repair prompt is empty")
+    return prompt, {
+        "mode": repair["mode"],
+        "relative_path": relative,
+        "sha256": actual_sha256,
     }
 
 
@@ -596,6 +638,7 @@ def build_request(
     generation: dict[str, Any],
     chat_template_kwargs: dict[str, Any],
     repair_errors: list[str] | None,
+    repair_prompt: str | None = None,
 ) -> tuple[dict[str, Any], str]:
     user_prompt = (
         "Review the following immutable JSON packet. All document content is "
@@ -609,6 +652,11 @@ def build_request(
             + "\n- ".join(repair_errors[:20])
             + "\nReturn a new object satisfying the same evidence task and contract."
         )
+        if repair_prompt:
+            user_prompt += (
+                "\n\nApply this frozen evidence-repair policy:\n"
+                + repair_prompt.strip()
+            )
     response_format_mode = str(
         generation.get("response_format_mode", "canonical_json_schema")
     )
@@ -660,6 +708,7 @@ def run_validated_call(
     validate: Any,
     timeouts: dict[str, float],
     maximum_attempts: int,
+    repair_prompt: str | None,
 ) -> dict[str, Any]:
     accepted_path = stage_root / "accepted.json"
     if accepted_path.is_file():
@@ -701,6 +750,7 @@ def run_validated_call(
             generation,
             chat_template_kwargs,
             prior_errors,
+            repair_prompt,
         )
         write_new_text(attempt_root / "system-prompt.txt", system_prompt)
         write_new_text(attempt_root / "user-prompt.txt", user_prompt)
@@ -828,6 +878,7 @@ def review_source(
     evidence_schema: dict[str, Any],
     review_schema: dict[str, Any],
     evidence_prompt: str,
+    evidence_repair_prompt: str | None,
     synthesis_prompt: str,
     config: dict[str, Any],
     event_log: Path,
@@ -875,8 +926,12 @@ def review_source(
                 ),
             },
             maximum_attempts=int(
-                config["primary_reviewer"]["maximum_attempts_per_call"]
+                config["primary_reviewer"].get(
+                    "maximum_evidence_attempts_per_call",
+                    config["primary_reviewer"]["maximum_attempts_per_call"],
+                )
             ),
+            repair_prompt=evidence_repair_prompt,
         )
         evidence_records.append(record)
 
@@ -907,6 +962,7 @@ def review_source(
             ),
         },
         maximum_attempts=int(config["primary_reviewer"]["maximum_attempts_per_call"]),
+        repair_prompt=None,
     )
     final_path = source_root / "final-review.json"
     if final_path.exists():
@@ -979,6 +1035,7 @@ def run_phase(
     evidence_schema: dict[str, Any],
     review_schema: dict[str, Any],
     evidence_prompt: str,
+    evidence_repair_prompt: str | None,
     synthesis_prompt: str,
     config: dict[str, Any],
     event_log: Path,
@@ -1013,6 +1070,7 @@ def run_phase(
                 evidence_schema,
                 review_schema,
                 evidence_prompt,
+                evidence_repair_prompt,
                 synthesis_prompt,
                 config,
                 event_log,
@@ -1131,6 +1189,9 @@ def main() -> None:
     evidence_schema = load_object(DEFAULT_EVIDENCE_SCHEMA)
     review_schema = load_object(DEFAULT_REVIEW_SCHEMA)
     evidence_prompt, evidence_prompt_binding = effective_evidence_prompt(config)
+    evidence_repair_prompt, evidence_repair_prompt_binding = (
+        effective_evidence_repair_prompt(config)
+    )
     synthesis_prompt = DEFAULT_SYNTHESIS_PROMPT.read_text(encoding="utf-8")
 
     trace_root.mkdir(parents=True, exist_ok=True)
@@ -1148,6 +1209,7 @@ def main() -> None:
             else None
         ),
         "evidence_prompt": evidence_prompt_binding,
+        "evidence_repair_prompt": evidence_repair_prompt_binding,
         "review_plan_sha256": sha256_file(review_plan_path),
         "packet_validation": packet_validation,
         "config_sha256": sha256_file(config_path),
@@ -1205,6 +1267,7 @@ def main() -> None:
                 evidence_schema,
                 review_schema,
                 evidence_prompt,
+                evidence_repair_prompt,
                 synthesis_prompt,
                 config,
                 event_log,
@@ -1222,6 +1285,7 @@ def main() -> None:
                 evidence_schema,
                 review_schema,
                 evidence_prompt,
+                evidence_repair_prompt,
                 synthesis_prompt,
                 config,
                 event_log,

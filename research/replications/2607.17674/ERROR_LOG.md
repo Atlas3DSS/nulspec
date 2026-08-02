@@ -1220,6 +1220,96 @@ limitations. Entries are never removed after correction.
   and `--skip-upstream`, which passed, while retaining the independently
   successful paper-specific validator as the upstream-aware authority.
 
+### LRS-LOCAL-108 — old GitHub client again rejected a branch filter
+
+- **State:** corrected with an exact repository API query; no Git or CI effect
+- **Observation:** the first post-push CI lookup used `gh run list --branch`,
+  but the installed older GitHub client does not implement that option. It
+  printed usage and made no state-changing request.
+- **Disposition:** query the exact repository actions endpoint by the pushed
+  commit SHA. Do not infer current-branch CI state from an unfiltered run list.
+
+### LRS-LOCAL-109 — read-only packet probe assumed a nonexistent field
+
+- **State:** corrected immediately; no file or experiment effect
+- **Observation:** an exploratory `jq` query addressed `source_pages`, while
+  the frozen packet stores the content under `source_chunk`. The query failed
+  without writing output or contacting a model.
+- **Disposition:** inspect the packet schema before constructing ad hoc probes;
+  use `source_chunk.extracted_pages` only in the model-facing derived view.
+
+### LRS-LOCAL-110 — v1.0.5 generic repair did not enforce one-line grounding
+
+- **State:** terminal v1.0.5 failure; prospective v1.0.6 repair registered
+- **Observation:** the second Gu evidence chunk failed the exact grounding
+  validator once, then the generic repair instruction allowed Qwen to join
+  three adjacent physical PDF lines on its final permitted attempt. No Gu
+  record or remaining-phase completion was accepted.
+- **Disposition:** preserve and seal every v1.0.5 attempt at zero weight where
+  invalid. Runtime v1.0.6 binds a conservative evidence-only repair prompt,
+  permits deletion or a single-line verbatim replacement, and increases only
+  evidence calls to three attempts. It requires fresh validation, preflight,
+  calibration, and trace; no v1.0.5 output may be copied.
+
+### LRS-LOCAL-111 — final v1.0.5 cgroup counters were not captured
+
+- **State:** irrecoverable reporting limitation; trace content unaffected
+- **Observation:** the local model server was stopped after terminal failure
+  before its final post-calibration `memory.events` snapshot was copied. The
+  calibration-boundary counters were all zero and the continuous guard never
+  fired, but exact later counters cannot be reconstructed.
+- **Disposition:** disclose the missing counters and do not infer zeros. Future
+  terminal wrappers must copy cgroup counters before stopping the model route.
+
+### LRS-LOCAL-112 — terminal server poll requested excessive buffered output
+
+- **State:** operational only; authoritative server log unaffected
+- **Observation:** a final interactive-session poll returned enough buffered
+  llama-server stdout to exceed the tool display budget, so the display was
+  truncated. The server's append-only on-disk log and research trace remained
+  intact.
+- **Disposition:** poll bounded event tails or the on-disk log rather than a
+  long-lived server session's full buffered stream.
+
+### LRS-LOCAL-113 — first v1.0.6 format check found three unformatted files
+
+- **State:** corrected before commit, tag, preflight, or model request
+- **Observation:** focused lint and tests passed, but Ruff's check-only formatter
+  reported the runner, preflight, and focused-test files would be reformatted.
+- **Disposition:** apply the deterministic formatter, then repeat lint,
+  format-check, compilation, and focused tests before freezing v1.0.6.
+
+### LRS-LOCAL-114 — generic validator was given an unsupported paper switch
+
+- **State:** corrected before commit, tag, preflight, or model request
+- **Observation:** after the paper-specific validator passed, the first generic
+  validator invocation supplied `--paper 2607.17674`. That script has no such
+  option and exited after printing usage without performing validation.
+- **Disposition:** use the generic validator's own documented arguments and
+  retain the paper-specific validator as the study authority.
+
+### LRS-LOCAL-115 — generic validator initially included unavailable datasets
+
+- **State:** expected local-tree limitation; corrected scoped check passed
+- **Observation:** the next generic validation command omitted `--skip-data` and
+  therefore reported the intentionally absent upstream dataset release in this
+  checkout. It found no new protocol defect.
+- **Disposition:** rerun with both `--skip-data` and `--skip-upstream`, as already
+  required by LRS-LOCAL-107; do not represent that scoped check as validating
+  files that are absent locally.
+
+### LRS-LOCAL-116 — full suite repeated the known ignored-fixture limitation
+
+- **State:** isolated; no effect on this study
+- **Observation:** the v1.0.6 repository-wide test run passed 181 tests and
+  repeated LRS-LOCAL-034/LRS-LOCAL-059 on the different study's ignored
+  `paper_repro/SLM-RL-Agents/results/all_results.json`. The current CI workflow
+  reconstructs that pinned upstream tree before running the suite.
+- **Disposition:** do not copy a private or unrelated result into this checkout.
+  Retain the local 181-pass/one-environment-failure record, rely on the 21
+  focused v1.0.6 tests and scoped validators locally, and require the normal
+  GitHub workflow to pass after push.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

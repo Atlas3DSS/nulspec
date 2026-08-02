@@ -16,6 +16,7 @@ from run_2607_17674_qwen_citation_audit import (
     AuditError,
     acquire_experiment_lock,
     build_request,
+    effective_evidence_repair_prompt,
     experiment_lock_path,
     load_object,
     route_metadata,
@@ -26,7 +27,7 @@ from run_2607_17674_qwen_citation_audit import (
     write_new_text,
 )
 
-DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.5.json"
+DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.6.json"
 GRAMMAR_FAILURE_MARKERS = (
     "error parsing grammar",
     "failed to parse grammar",
@@ -59,10 +60,16 @@ def main() -> None:
         "1.0.3",
         "1.0.4",
         "1.0.5",
+        "1.0.6",
     }:
-        raise SystemExit(
-            "runtime preflight requires config v1.0.2, v1.0.3, v1.0.4, or v1.0.5"
+        raise SystemExit("runtime preflight requires config v1.0.2 through v1.0.6")
+
+    try:
+        evidence_repair_prompt, evidence_repair_prompt_binding = (
+            effective_evidence_repair_prompt(config)
         )
+    except AuditError as error:
+        raise SystemExit(str(error)) from error
 
     try:
         experiment_lock = acquire_experiment_lock()
@@ -75,6 +82,7 @@ def main() -> None:
             "schema_version": 1,
             "paper_id": "2607.17674",
             "config_sha256": sha256_file(config_path),
+            "evidence_repair_prompt": evidence_repair_prompt_binding,
             "experiment_lock": {
                 "basename": experiment_lock_path().name,
                 "mechanism": "flock-exclusive-nonblocking",
@@ -85,20 +93,40 @@ def main() -> None:
     log_start = server_log.stat().st_size
     route = route_metadata("runtime-preflight", args.route)
     write_new_json(output_root / "route.json", route)
-    cases = (
+    cases = [
         (
             "evidence",
             DEFAULT_EVIDENCE_SCHEMA,
             config["primary_reviewer"]["evidence_generation"],
+            None,
+            None,
         ),
         (
             "synthesis",
             DEFAULT_REVIEW_SCHEMA,
             config["primary_reviewer"]["synthesis_generation"],
+            None,
+            None,
         ),
-    )
+    ]
+    if evidence_repair_prompt is not None:
+        cases.insert(
+            1,
+            (
+                "evidence-repair",
+                DEFAULT_EVIDENCE_SCHEMA,
+                config["primary_reviewer"]["evidence_generation"],
+                [
+                    (
+                        "evidence_candidates[0].excerpt is not grounded in one "
+                        "physical source line on the cited page"
+                    )
+                ],
+                evidence_repair_prompt,
+            ),
+        )
     case_records: list[dict[str, object]] = []
-    for name, schema_path, registered_generation in cases:
+    for name, schema_path, registered_generation, repair_errors, repair_prompt in cases:
         case_root = output_root / name
         case_root.mkdir()
         schema = load_object(schema_path)
@@ -111,7 +139,8 @@ def main() -> None:
             schema,
             generation,
             config["primary_reviewer"]["chat_template_kwargs"],
-            None,
+            repair_errors,
+            repair_prompt,
         )
         write_new_json(case_root / "canonical-schema.json", schema)
         write_new_json(

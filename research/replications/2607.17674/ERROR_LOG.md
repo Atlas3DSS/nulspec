@@ -83,6 +83,18 @@ limitations. Entries are never removed after correction.
 - **Disposition:** reran the helper through the pinned Python interpreter; all
   artifact manifests were created and validated.
 
+### LRS-LOCAL-010 — clean-check did not account for documented generated paths
+
+- **State:** corrected before primary compute; no scientific effect
+- **Observation:** the post-preparation preflight rejected the pinned upstream
+  checkout because ordinary imports created untracked Python bytecode. The
+  local smoke example had likewise created untracked `.data/` and `.runs/`
+  directories. No tracked source changed.
+- **Disposition:** no primary GPU job began. The validator now allows only the
+  upstream's three known generated path classes (`.venv`, `.data`/`.runs`, and
+  `__pycache__`) and still rejects tracked changes or any other untracked path.
+  Preparation and run environments now disable new bytecode writes.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404
@@ -131,3 +143,12 @@ limitations. Entries are never removed after correction.
   fresh-training or fresh-decoding variability is reported.
 - **Disposition:** primary inference is conditional on the disclosed seed;
   additional seeds are a separately labeled extension.
+
+### LRS-UPSTREAM-006 — documented outputs are not ignored
+
+- **State:** open; minor reproducibility friction
+- **Observation:** the pinned repository does not ignore its documented
+  `.data/` and `.runs/` outputs or Python bytecode caches, so following the
+  README makes a clean checkout appear dirty.
+- **Disposition:** permit only those exact generated path classes in our source
+  cleanliness check; continue hashing the tracked Git archive independently.

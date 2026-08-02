@@ -16,6 +16,12 @@ The upstream repository has one public commit, no release tag, and no release
 branch that supplies an alternative recipe. Its clean Git archive digest is
 recorded in `SOURCE_MANIFEST.json`.
 
+The repository does not ignore its documented `.data/` and `.runs/` outputs or
+Python bytecode caches. Running the documented example therefore makes an
+otherwise unchanged checkout appear dirty. Our validator permits only those
+known generated paths while continuing to reject every tracked modification or
+unexpected untracked path.
+
 ## Missing from the public release
 
 - raw experiment results or per-example records;

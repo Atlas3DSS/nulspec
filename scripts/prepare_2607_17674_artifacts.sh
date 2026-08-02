@@ -8,6 +8,7 @@ WORKSPACE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 UPSTREAM="${UPSTREAM:-$WORKSPACE/research/replications/2607.17674/work/upstream}"
 PROTOCOL="$WORKSPACE/protocols/2607.17674/config.json"
 PYTHON_BIN="$UPSTREAM/.venv/bin/python"
+export PYTHONDONTWRITEBYTECODE=1
 
 USER_ROOT="$(getent passwd "$(id -u)" | cut -d: -f6)"
 if [[ -z "$USER_ROOT" || "$USER_ROOT" != /* ]]; then

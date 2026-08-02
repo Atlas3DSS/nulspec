@@ -80,8 +80,22 @@ def validate_upstream(config: dict[str, object], upstream: Path) -> list[str]:
     expected_revision = config["upstream"]["revision"]
     if git_output(upstream, "rev-parse", "HEAD") != expected_revision:
         errors.append("upstream revision mismatch")
-    if git_output(upstream, "status", "--porcelain"):
-        errors.append("upstream checkout is dirty")
+    status_lines = git_output(upstream, "status", "--porcelain").splitlines()
+    unexpected_status: list[str] = []
+    for line in status_lines:
+        relative = line[3:]
+        generated_bytecode = (
+            "/__pycache__/" in f"/{relative}"
+            and relative.endswith((".pyc", "/"))
+        )
+        generated_runtime = relative.startswith((".data/", ".runs/", ".venv/"))
+        if not generated_bytecode and not generated_runtime:
+            unexpected_status.append(line)
+    if unexpected_status:
+        errors.append(
+            "upstream checkout has unexpected changes: "
+            + "; ".join(unexpected_status)
+        )
 
     manifest = json.loads(SOURCE_MANIFEST_PATH.read_text())
     expected_hashes = manifest["released_config_sha256"]

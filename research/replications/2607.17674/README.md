@@ -55,6 +55,9 @@ Citation-review packetization is recorded in
 `CITATION_REVIEW_PACKETIZATION.md`. Its prospective v1.0.1 amendment was tagged
 before any Qwen citation invocation and covers 41 sources, 74 occurrences, and
 all 4,230,676 extracted-text bytes without retrieval shortcuts.
+The Qwen execution harness has the additional trace-only tag
+`2607.17674-citation-audit-harness-v1.0.2`, which adds the llama-server binary
+hash without changing the v1.0.1 evidence or generation contract.
 
 The separate reviewer-of-reviewers hierarchy is now frozen prospectively at
 `2607.17674-citation-teachers-v1.0.2`. It preserves every Qwen record, runs GLM

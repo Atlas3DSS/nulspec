@@ -706,6 +706,15 @@ def command_output(arguments: list[str]) -> dict[str, Any]:
     }
 
 
+def executable_record(path: Path) -> dict[str, Any]:
+    return {
+        "basename": path.name,
+        "bytes": path.stat().st_size,
+        "sha256": sha256_file(path),
+        "version": command_output([str(path), "--version"]),
+    }
+
+
 def run_phase(
     name: str,
     source_records: list[dict[str, Any]],
@@ -868,7 +877,7 @@ def main() -> None:
             "bytes": gguf_path.stat().st_size,
             "sha256": sha256_file(gguf_path),
         },
-        "llama_server": command_output([str(llama_binary), "--version"]),
+        "llama_server": executable_record(llama_binary),
         "host": {
             "python": sys.version,
             "platform": platform.platform(),

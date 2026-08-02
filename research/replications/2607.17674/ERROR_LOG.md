@@ -232,6 +232,27 @@ limitations. Entries are never removed after correction.
 - **Disposition:** use a dedicated compact, one-object-per-line event encoder
   and cover the emitted format in offline tests before any provider call.
 
+### LRS-LOCAL-024 — Qwen trace omitted the llama-server executable hash
+
+- **State:** corrected prospectively before Qwen review; no scientific effect
+- **Observation:** citation-audit runner v1.0.1 captured the llama.cpp version
+  output and live route properties but did not record the executable's byte
+  count and SHA-256. This was found while preparing a native workstation build;
+  no Qwen citation request had yet occurred.
+- **Disposition:** retain the v1.0.1 tag, add the executable identity fields in
+  trace-only amendment v1.0.2, test the record, and freeze a new harness tag.
+  Evidence packets, prompts, schemas, model, and generation settings are unchanged.
+
+### LRS-LOCAL-025 — Qwen identity test omitted the scripts import path
+
+- **State:** corrected during offline testing; no scientific effect
+- **Observation:** the first dynamic import in the new executable-identity test
+  did not add the repository's `scripts/` directory to `sys.path`, so collection
+  could not resolve the runner's sibling contract module.
+- **Disposition:** add the same scripts-directory path available during normal
+  command-line execution and rerun the unchanged identity assertion. No service,
+  model process, review artifact, or experimental result was affected.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

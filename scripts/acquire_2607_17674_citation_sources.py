@@ -42,9 +42,9 @@ class SafeRedirectHandler(HTTPRedirectHandler):
         headers: Any,
         new_url: str,
     ) -> Request | None:
-        safe_https_url(new_url)
+        resolved_url = validated_redirect_url(request.full_url, new_url)
         return super().redirect_request(
-            request, file_pointer, code, message, headers, new_url
+            request, file_pointer, code, message, headers, resolved_url
         )
 
 
@@ -105,6 +105,10 @@ def safe_https_url(url: str) -> str:
     if address is not None and not address.is_global:
         raise ValueError("non-public source IP addresses are forbidden")
     return urlunparse(parsed._replace(fragment=""))
+
+
+def validated_redirect_url(request_url: str, new_url: str) -> str:
+    return safe_https_url(urljoin(request_url, new_url))
 
 
 def direct_pdf_candidates(source_url: str) -> list[str]:

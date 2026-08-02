@@ -1,0 +1,37 @@
+{
+  "chen2016infogan": {
+    "url": "https://proceedings.neurips.cc/paper/2016/file/7c9d0b1f96aebd7b5eca8c3edaa19ebb-Paper.pdf",
+    "identity_note": "Official NeurIPS proceedings PDF matching the cited title, authors, and year.",
+    "route_reason": "The bibliography's legacy short NeurIPS URL returns HTTP 404."
+  },
+  "cunningham2023sparseAutoencoders": {
+    "url": "https://web.archive.org/web/20260524140122id_/https://openreview.net/pdf?id=F76bwRSLeK",
+    "identity_note": "Internet Archive capture of the exact cited OpenReview PDF URL, captured before the target paper was submitted.",
+    "route_reason": "OpenReview's live PDF route returned browser-verification HTTP 403."
+  },
+  "higgins2017betavae": {
+    "url": "https://web.archive.org/web/20260430152217id_/https://openreview.net/pdf?id=Sy2fzU9gl",
+    "identity_note": "Internet Archive capture of the exact cited OpenReview PDF URL, captured before the target paper was submitted.",
+    "route_reason": "OpenReview's live PDF route returned browser-verification HTTP 403."
+  },
+  "hu2022lora": {
+    "url": "https://web.archive.org/web/20260402034544id_/https://openreview.net/pdf?id=nZeVKeeFYf9",
+    "identity_note": "Internet Archive capture of the exact cited OpenReview PDF URL, captured before the target paper was submitted.",
+    "route_reason": "OpenReview's live PDF route returned browser-verification HTTP 403."
+  },
+  "sohn2015cvae": {
+    "url": "https://proceedings.neurips.cc/paper/2015/file/8d55a249e6baa5c06772297520da2051-Paper.pdf",
+    "identity_note": "Official NeurIPS proceedings PDF matching the cited title, authors, and year.",
+    "route_reason": "The bibliography's legacy short NeurIPS URL returns HTTP 404."
+  },
+  "tan2024conceptBottlenecks": {
+    "url": "https://arxiv.org/abs/2311.05014",
+    "identity_note": "Author preprint matching the cited chapter title and author list.",
+    "route_reason": "The publisher DOI landing page exposed no retrievable PDF."
+  },
+  "wang2023selfConsistency": {
+    "url": "https://web.archive.org/web/20260616093645id_/https://openreview.net/pdf?id=1PL1NIMMrw",
+    "identity_note": "Internet Archive capture of the exact cited OpenReview PDF URL, captured before the target paper was submitted.",
+    "route_reason": "OpenReview's live PDF route returned browser-verification HTTP 403."
+  }
+}

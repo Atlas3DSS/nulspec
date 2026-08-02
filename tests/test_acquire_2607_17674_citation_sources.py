@@ -47,6 +47,12 @@ def test_pdf_discovery_resolves_relative_and_meta_links() -> None:
     ]
 
 
+def test_relative_https_redirect_is_resolved_before_validation() -> None:
+    assert ACQUISITION.validated_redirect_url(
+        "https://doi.org/10.1214/example", "/journals/example.pdf"
+    ) == "https://doi.org/journals/example.pdf"
+
+
 @pytest.mark.parametrize(
     "url",
     [

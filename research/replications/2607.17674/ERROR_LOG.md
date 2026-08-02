@@ -113,6 +113,25 @@ limitations. Entries are never removed after correction.
   existing requested directory.
 - **Disposition:** subsequent searches use paths confirmed by `rg --files`.
 
+### LRS-LOCAL-013 — relative DOI redirects were validated before resolution
+
+- **State:** corrected; no scientific effect
+- **Observation:** the first citation-acquisition attempt rejected relative
+  redirect targets returned by two Project Euclid DOI routes because the safety
+  check ran before joining them to the public HTTPS origin.
+- **Disposition:** preserve the incomplete attempt, resolve redirects against
+  their requesting HTTPS URL before applying the same public-host validation,
+  and issue a fresh acquisition attempt.
+
+### LRS-LOCAL-014 — ad hoc archive query did not isolate per-item timeouts
+
+- **State:** corrected; no scientific effect
+- **Observation:** a read-only query for four Internet Archive capture records
+  timed out on its third item and stopped before querying the fourth.
+- **Disposition:** retained the partial output and queried the two remaining
+  identifiers separately with bounded retries. No acquisition record or source
+  selection was overwritten.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404
@@ -121,6 +140,32 @@ limitations. Entries are never removed after correction.
 - **Observation:** Hugging Face's paper API returned metadata for 2607.17674,
   but its corresponding `.md` endpoint returned HTTP 404.
 - **Disposition:** used the canonical arXiv v1 PDF and source archive.
+
+### LRS-EXTERNAL-002 — automated OpenReview PDF routes returned 403
+
+- **State:** bypassed with identity-matched archive copies
+- **Observation:** four cited OpenReview landing pages were public, but their
+  PDF and attachment routes returned a browser-verification HTTP 403 to the
+  bounded acquisition client.
+- **Disposition:** use pre-target-paper Internet Archive captures of the exact
+  canonical OpenReview PDF URLs. Record both the cited URL and archival route;
+  do not treat the archive as a different scholarly source.
+
+### LRS-EXTERNAL-003 — two legacy NeurIPS links returned 404
+
+- **State:** bypassed with canonical proceedings PDFs
+- **Observation:** the bibliography's short `papers.nips.cc/paper/{id}` URLs
+  for InfoGAN and the conditional VAE paper now return HTTP 404.
+- **Disposition:** use the matching title/author PDFs on the official NeurIPS
+  proceedings host and retain the failed cited URLs in the acquisition trace.
+
+### LRS-EXTERNAL-004 — Springer landing page exposed no retrievable PDF
+
+- **State:** bypassed with the matching author preprint
+- **Observation:** the DOI landing page for the concept-bottleneck chapter was
+  accessible but exposed no PDF link to the acquisition client.
+- **Disposition:** use arXiv:2311.05014, whose title and author list match the
+  cited chapter, and record the substitution rather than scraping a paywall.
 
 ## Upstream/release limitations
 

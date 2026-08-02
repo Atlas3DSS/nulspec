@@ -84,8 +84,12 @@ and tag `2607.17674-citation-audit-harness-v1.0.3` contain the amendment,
 implementation, focused tests, runbook, and error-ledger update. All 51
 citation tests passed; Ruff lint and formatting passed; the frozen protocol
 validator passed. Read-only live probes against each host's active primary arm
-both received the registered contention rejection. Final resolution remains
-pending an eligible fresh calibration trace and website-side verification.
+both received the registered contention rejection. [Commit
+`a5263c0`](https://github.com/Atlas3DSS/nulspec/commit/a5263c09f98e298abe7d694faf571e16bc74975a)
+and tag `2607.17674-citation-runtime-preflight-v1.0.1` extend the same guard to
+schema preflight; host-specific probes rejected contention without creating a
+trace. Final resolution remains pending an eligible fresh preflight and
+calibration trace plus website-side verification.
 
 ### RF-20260801-02 — Add the recorded human-disposition path for Fable HARD_FAIL
 

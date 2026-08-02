@@ -377,6 +377,16 @@ limitations. Entries are never removed after correction.
   with `sampled_val/*` and `optimization/window/*` names. No run file, process,
   checkpoint, or metric was changed.
 
+### LRS-LOCAL-038 — theory-source search used an incomplete local path
+
+- **State:** corrected immediately; no scientific effect
+- **Observation:** a read-only theory audit first queried
+  `upstream/paper/sections/` at the repository root, although the frozen arXiv
+  source is stored under `research/replications/2607.17674/work/sources/`.
+- **Disposition:** locate the exact ignored source path with a file inventory
+  before continuing the audit. No run file, process, checkpoint, or source was
+  changed.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

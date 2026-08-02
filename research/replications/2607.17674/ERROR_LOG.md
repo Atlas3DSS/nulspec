@@ -646,6 +646,34 @@ limitations. Entries are never removed after correction.
   batch, precision, vocabulary, model count, or objective to make it fit; use a
   fresh exact attempt on the 96 GB card.
 
+### LRS-LOCAL-062 — copied llama-server build was not ABI-portable
+
+- **State:** contained before model load or citation request
+- **Observation:** while staging the idle workstation for citation review, we
+  copied the pinned llama.cpp CUDA build produced on the newer dev-box OS. The
+  executable could not start on the workstation because it required
+  `GLIBC_2.38` and `GLIBCXX_3.4.32`, which that older host does not provide.
+  The registered GGUF copied successfully and its SHA-256 matched; no model was
+  loaded, route opened, evidence packet inspected, trace directory created, or
+  citation request sent.
+- **Disposition:** retain this as our staging error. Build llama.cpp commit
+  `f53577432541bb9edc1588c4ef45c66bf07e4468` natively on the workstation for
+  compute capability 8.9, record the resulting executable hash and version,
+  and require the ordinary uncontended runtime preflight before calibration.
+
+### LRS-LOCAL-063 — first workstation calibration command used the packet subdirectory
+
+- **State:** contained before lock acquisition, trace creation, or model request
+- **Observation:** after the eligible runtime preflight passed, the first
+  calibration invocation supplied the generated `packets/` directory as
+  `--packet-root`. The validator expects its immutable attempt parent because
+  the review plan already stores paths beginning with `packets/`; validation
+  therefore looked for `packets/packets/...` and raised `FileNotFoundError`.
+- **Disposition:** record the failed command as our path-selection error. The
+  requested trace root remained absent and the experiment lock was free. Use a
+  new invocation identifier with the immutable packet-attempt parent as
+  `--packet-root`; do not assign this pre-request failure evidentiary weight.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

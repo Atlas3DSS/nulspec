@@ -98,3 +98,46 @@ raw SSE streams, normalized events, assembled responses, route metadata, and
 the machine-readable completion record. A new scientific calibration attempt
 must use a fresh trace directory, the v1.0.2 runtime contract, and an eligible
 uncontended schema preflight.
+
+## Eligible workstation runtime and preflight
+
+The registered 16,547,400,352-byte GGUF was copied to the idle workstation and
+independently matched SHA-256
+`b62cbed05de4b9e368a19cf0dd575a43bedd0546920a6e31a812e34ff67299e9`.
+The first copied llama-server executable could not start because a build from
+the newer dev-box OS required glibc and libstdc++ symbol versions unavailable
+on the workstation. No model load, route, trace, or request occurred; this is
+our staging error `LRS-LOCAL-062`.
+
+We then built the same pinned llama.cpp commit
+`f53577432541bb9edc1588c4ef45c66bf07e4468` natively for compute capability
+8.9. The release build used CUDA 12.8, GCC 11.4, CMake 4.4, full-attention
+quantization kernels, CUDA graphs, native CPU instructions, and explicit build
+number 8942. The resulting 9,201,200-byte `llama-server` reports version
+`8942 (f535774)` and has SHA-256
+`536f89a58f1e5e27bbe35d12965ae9d741ea121aa4e1b6b3dfcf84f1f7464350`.
+
+The replacement route is loopback-only and retains the registered 50,000-token
+context, full GPU offload, flash attention, one slot, f16 KV cache, batch 2,048,
+microbatch 512, and eight inference threads. The server projected 18,868 MiB of
+device memory, left 3,969 MiB free at launch, and offloaded all 65 layers. Its
+host scope retains the 8/12 GiB high/max memory limits and eight-core CPU cap.
+
+The fresh runtime-v1.0.2 preflight completed at
+`2026-08-02T08:59:30.383200Z` while holding the shared exclusive workstation
+experiment lock. Both exact transport schemas returned HTTP 200, their hashes
+matched the earlier diagnostic, and the server-log slice contained no grammar
+failure marker. The completion-record SHA-256 is
+`ee5aaa8a6fa5b86ac7a4497ad27af0a7272550ff147c1d74b8c6f5c8c5756af7`.
+An 18-file, 45,476-byte preflight inventory has SHA-256
+`c0bedf739a7ac5f61bb91bdb9e1cea6cecb4e335e2188173d89137a16086cd5a`.
+This is the first eligible runtime preflight and authorizes a fresh calibration
+attempt, but is not itself citation evidence.
+
+The first calibration command after preflight supplied one directory level too
+deep for `--packet-root` and failed validation before lock acquisition, trace
+creation, or request. It is retained as our error `LRS-LOCAL-063`. A new
+invocation using the immutable packet-attempt parent acquired the lock, bound
+run-input SHA-256
+`236ec7344f944a4fdc92d7882e2c2e019b87821f9f282f8a00df3fffcf9a1449`,
+and began the six-source calibration at `2026-08-02T09:00:57.893713Z`.

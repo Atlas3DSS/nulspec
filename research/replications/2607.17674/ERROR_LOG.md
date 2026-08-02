@@ -1716,3 +1716,99 @@ limitations. Entries are never removed after correction.
   without implying that 24 GB was claimed to be sufficient. Ask the authors
   which hardware and peak-memory envelope produced the reported runs, and add
   measured peak device memory from an eligible 96 GB retry.
+
+### LRS-LOCAL-141 — one local status probe assumed a Windows bridge binary
+
+- **State:** corrected read-only diagnostic; no experiment effect
+- **Observation:** a combined status command invoked `powershell.exe` from a
+  Linux execution context where that bridge was unavailable and returned 127
+  after the GPU query had already succeeded.
+- **Disposition:** keep workstation-specific process checks on the workstation
+  connection and do not infer process state from that failed subcommand.
+
+### LRS-LOCAL-142 — observer output transport propagated SIGPIPE to R-1.5B evaluation
+
+- **State:** failed primary attempt preserved; runtime correction and narrowly
+  labeled evaluator recovery registered
+- **Observation:** Track R Qwen2.5-1.5B completed all 782 factorization batches,
+  wrote the final checkpoint, and recorded final sampled-test fidelity 0.9750.
+  The separate released evaluator then began loading that checkpoint while its
+  progress output passed through nested `tee` processes to a bounded SSH
+  observer stream. The attempt ended with code 141 and wrote
+  `run.failed.json` SHA-256
+  `ad42225ff31b341779f3e6c6affd577b2a82d39a89e0a097459325881ee4fb82`.
+  The scope journal reports a 12.0 GiB memory peak and no kernel OOM; there was
+  no CUDA exception, Xid, thermal trip, or protected-service restart. The
+  truncated evaluation output and lack of a Python traceback are consistent
+  with SIGPIPE from the observer chain, not a scientific-code failure.
+- **Disposition:** never count the failed attempt as an uninterrupted complete
+  run and never rewrite its terminal evidence. Primary runner output now goes
+  directly to a regular file. Runtime amendment v1.0.1 permits only the
+  authors' unchanged standalone evaluator to be rerun from the hashed final
+  checkpoint, with separate recovery manifests and an explicit
+  `completed_recovered_evaluation` label.
+
+### LRS-LOCAL-143 — one parallel tool wrapper referenced an undeclared variable
+
+- **State:** corrected orchestration helper; no experiment effect
+- **Observation:** after three awaited read-only/plan calls completed, the
+  JavaScript wrapper assigned their results to undeclared `polled` and raised a
+  `ReferenceError`, suppressing the wrapper's displayed output.
+- **Disposition:** reran only the missing read-only displays with a declared
+  constant. The already-completed plan update was not duplicated as compute.
+
+### LRS-LOCAL-144 — one completed-evaluator probe requested a carriage-return-heavy log
+
+- **State:** corrected read-only diagnostic; no experiment effect
+- **Observation:** printing the full prior 0.5B evaluator log expanded progress
+  updates into 41,081 tokens and caused tool-output truncation. The underlying
+  artifact was neither changed nor truncated.
+- **Disposition:** use file timestamps, metrics JSON, and narrowly filtered log
+  tails for future timing checks.
+
+### LRS-LOCAL-145 — the remote host lacks ripgrep
+
+- **State:** corrected read-only diagnostic; no experiment effect
+- **Observation:** a source lookup correctly tried `rg` first, but the remote
+  research host does not provide it and returned 127.
+- **Disposition:** used the available `grep` fallback for that remote checkout;
+  no source or environment package was changed.
+
+### LRS-LOCAL-146 — first recovery guard used a pipefail-unsafe emptiness probe
+
+- **State:** corrected before commit, deployment, or recovery execution
+- **Observation:** the initial recovery draft checked a directory with
+  `find -print -quit | grep -q`. Under `set -o pipefail`, an early reader exit
+  can make a correct nonempty result appear as SIGPIPE.
+- **Disposition:** replaced the pipeline with a bounded command substitution
+  before any recovery was launched and added transport-focused tests.
+
+### LRS-LOCAL-147 — first recovery validation used the wrong Ruff environment
+
+- **State:** corrected before commit or deployment
+- **Observation:** the repository test virtual environment provides pytest but
+  not Ruff. Two validation commands therefore returned "No module named ruff";
+  because that composite shell did not enable fail-fast behavior, the later
+  passing pytest command became the composite exit status.
+- **Disposition:** treated the composite call as failed, invoked the installed
+  pinned Ruff executable directly, and kept lint, format, and pytest results as
+  independently checked gates.
+
+### LRS-LOCAL-148 — first recovery format gate found three files
+
+- **State:** corrected before commit or deployment
+- **Observation:** Ruff's check passed, while its format check identified the
+  analyzer and two new/updated tests.
+- **Disposition:** applied the deterministic formatter and reran lint, format,
+  and the focused seven-test suite successfully.
+
+### LRS-LOCAL-149 — full suite repeated the known unavailable external fixture
+
+- **State:** known unrelated fixture absence; focused recovery tests pass
+- **Observation:** despite the existing LRS-LOCAL-137 record, the recovery
+  validation reran the full local suite. It again found only the untracked
+  `paper_repro/SLM-RL-Agents/results/all_results.json` fixture unavailable:
+  193 tests passed and that one test failed before reading any payload.
+- **Disposition:** do not weaken or skip the test in tracked code. Report the
+  full-suite limitation separately from the seven passing recovery-focused
+  tests and rely on CI's provisioned fixture for the repository-wide gate.

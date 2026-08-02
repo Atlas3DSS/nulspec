@@ -134,7 +134,11 @@ if [[ -e "$RUN_ROOT" ]]; then
   exit 2
 fi
 mkdir -p "$LOG_ROOT"
-exec > >(tee -a "$LOG_ROOT/runner.log") 2>&1
+# Long primary jobs are commonly launched through a bounded remote-output
+# transport.  Write the authoritative runner stream directly to disk so a
+# closed observer pipe cannot deliver SIGPIPE to a scientific subprocess.
+# Phase-specific tee processes still duplicate into this regular file.
+exec >>"$LOG_ROOT/runner.log" 2>&1
 
 invocation="$0 $ARM_ID [GPU_UUID_REDACTED] $EXPECTED_GPU $ARTIFACT_ROOT"
 finish_attempt() {

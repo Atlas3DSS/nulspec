@@ -23,6 +23,17 @@ REQUIRED_ATTEMPT_FILES = (
     "evaluation/metrics.json",
     "evaluation.file-manifest.json",
 )
+RECOVERED_ATTEMPT_FILES = (
+    "run.failed.json",
+    "evaluation-recovery.start.json",
+    "evaluation-recovery.complete.json",
+    "evaluation-recovery.source.json",
+    "factorization/config.json",
+    "factorization/metrics.json",
+    "evaluation/metrics.json",
+    "evaluation.file-manifest.json",
+)
+COMPLETED_EXECUTIONS = {"completed", "completed_recovered_evaluation"}
 
 
 def load_json(path: Path) -> Any:
@@ -47,13 +58,19 @@ def attempts_for(arm: dict[str, str], runs_root: Path) -> list[Path]:
     return sorted(arm_root.glob("attempt-*")) if arm_root.is_dir() else []
 
 
-def terminal_attempt(
-    arm: dict[str, str], runs_root: Path
-) -> tuple[str, Path | None]:
+def terminal_attempt(arm: dict[str, str], runs_root: Path) -> tuple[str, Path | None]:
     attempts = attempts_for(arm, runs_root)
     completed = [path for path in attempts if (path / "run.complete.json").is_file()]
     if completed:
         return "completed", completed[-1]
+    recovered = [
+        path
+        for path in attempts
+        if (path / "run.failed.json").is_file()
+        and (path / "evaluation-recovery.complete.json").is_file()
+    ]
+    if recovered:
+        return "completed_recovered_evaluation", recovered[-1]
     failed = [path for path in attempts if (path / "run.failed.json").is_file()]
     if failed:
         return "failed", failed[-1]
@@ -78,20 +95,34 @@ def validate_file_manifest(attempt: Path, metrics_path: Path) -> list[str]:
 
 
 def validate_primary_artifacts(
-    arm: dict[str, str], attempt: Path
+    arm: dict[str, str], attempt: Path, execution: str = "completed"
 ) -> tuple[list[str], dict[str, float] | None]:
+    required_files = (
+        RECOVERED_ATTEMPT_FILES
+        if execution == "completed_recovered_evaluation"
+        else REQUIRED_ATTEMPT_FILES
+    )
     violations = [
         f"missing {relative}"
-        for relative in REQUIRED_ATTEMPT_FILES
+        for relative in required_files
         if not (attempt / relative).is_file()
     ]
     if violations:
         return violations, None
 
-    run_manifest = load_json(attempt / "run.complete.json")
+    run_manifest_name = (
+        "evaluation-recovery.complete.json"
+        if execution == "completed_recovered_evaluation"
+        else "run.complete.json"
+    )
+    run_manifest = load_json(attempt / run_manifest_name)
     expected_manifest = {
         "arm_id": arm["arm_id"],
-        "phase": "end",
+        "phase": (
+            "evaluation_recovery_end"
+            if execution == "completed_recovered_evaluation"
+            else "end"
+        ),
         "protocol_version": PROTOCOL_VERSION,
         "exit_code": 0,
     }
@@ -101,6 +132,57 @@ def validate_primary_artifacts(
                 f"run manifest {key} is {run_manifest.get(key)!r}, "
                 f"expected {expected!r}"
             )
+
+    if execution == "completed_recovered_evaluation":
+        failed_manifest = load_json(attempt / "run.failed.json")
+        expected_failure = {
+            "arm_id": arm["arm_id"],
+            "phase": "end",
+            "protocol_version": PROTOCOL_VERSION,
+            "exit_code": 141,
+        }
+        for key, expected in expected_failure.items():
+            if failed_manifest.get(key) != expected:
+                violations.append(
+                    f"source failure {key} is {failed_manifest.get(key)!r}, "
+                    f"expected {expected!r}"
+                )
+
+        recovery_start = load_json(attempt / "evaluation-recovery.start.json")
+        if recovery_start.get("phase") != "evaluation_recovery_start":
+            violations.append("recovery start manifest has the wrong phase")
+        source = load_json(attempt / "evaluation-recovery.source.json")
+        expected_source = {
+            "recovery_reason": "observer_output_transport_sigpipe",
+            "scientific_change": False,
+            "source_attempt": attempt.name,
+            "source_exit_code": 141,
+            "source_run_failed_sha256": sha256(attempt / "run.failed.json"),
+            "factorization_config_sha256": sha256(
+                attempt / "factorization/config.json"
+            ),
+            "factorization_metrics_sha256": sha256(
+                attempt / "factorization/metrics.json"
+            ),
+        }
+        for key, expected in expected_source.items():
+            if source.get(key) != expected:
+                violations.append(
+                    f"recovery source {key} is {source.get(key)!r}, "
+                    f"expected {expected!r}"
+                )
+        for key in (
+            "checkpoint_sha256",
+            "evaluation_config_sha256",
+            "evaluator_source_sha256",
+        ):
+            value = source.get(key)
+            if (
+                not isinstance(value, str)
+                or len(value) != 64
+                or any(character not in "0123456789abcdef" for character in value)
+            ):
+                violations.append(f"recovery source {key} is not a SHA-256 digest")
 
     factorization = load_json(attempt / "factorization/config.json")
     expected_factorization: dict[str, Any] = {
@@ -142,13 +224,20 @@ def validate_primary_artifacts(
 
 
 def complete_arm_result(
-    arm: dict[str, str], attempt: Path, protocol: dict[str, Any]
+    arm: dict[str, str],
+    attempt: Path,
+    protocol: dict[str, Any],
+    execution: str = "completed",
 ) -> dict[str, Any]:
-    violations, metrics = validate_primary_artifacts(arm, attempt)
+    violations, metrics = validate_primary_artifacts(arm, attempt, execution)
     if violations or metrics is None:
         return {
             **arm,
-            "execution": "invalid_complete",
+            "execution": (
+                "invalid_recovered_evaluation"
+                if execution == "completed_recovered_evaluation"
+                else "invalid_complete"
+            ),
             "attempt_id": attempt.name,
             "validation_errors": violations,
         }
@@ -171,13 +260,12 @@ def complete_arm_result(
         key: abs(observed[key] - digitized[key]) for key in observed
     }
     close_by_metric = {
-        key: difference <= tolerance
-        for key, difference in absolute_differences.items()
+        key: difference <= tolerance for key, difference in absolute_differences.items()
     }
     metrics_path = attempt / "evaluation/metrics.json"
     return {
         **arm,
-        "execution": "completed",
+        "execution": execution,
         "attempt_id": attempt.name,
         "observed": observed,
         "digitized_reference": digitized,
@@ -200,8 +288,25 @@ def complete_arm_result(
             "analogical_pairs": int(protocol["evaluation"]["num_pairs"]),
             "fresh_training_or_decoding_variance": "not_identified",
         },
+        "operational_recovery": (
+            {
+                "used": True,
+                "reason": "observer_output_transport_sigpipe",
+                "scientific_change": False,
+                "source_failure_exit_code": 141,
+            }
+            if execution == "completed_recovered_evaluation"
+            else {"used": False}
+        ),
         "artifact_sha256": {
-            "run_manifest": sha256(attempt / "run.complete.json"),
+            "run_manifest": sha256(
+                attempt
+                / (
+                    "evaluation-recovery.complete.json"
+                    if execution == "completed_recovered_evaluation"
+                    else "run.complete.json"
+                )
+            ),
             "factorization_config": sha256(attempt / "factorization/config.json"),
             "evaluation_metrics": sha256(metrics_path),
             "evaluation_file_manifest": sha256(
@@ -215,8 +320,8 @@ def arm_result(
     arm: dict[str, str], runs_root: Path, protocol: dict[str, Any]
 ) -> dict[str, Any]:
     execution, attempt = terminal_attempt(arm, runs_root)
-    if execution == "completed" and attempt is not None:
-        return complete_arm_result(arm, attempt, protocol)
+    if execution in COMPLETED_EXECUTIONS and attempt is not None:
+        return complete_arm_result(arm, attempt, protocol, execution)
     result: dict[str, Any] = {**arm, "execution": execution}
     if attempt is not None:
         result["attempt_id"] = attempt.name
@@ -229,9 +334,13 @@ def arm_result(
 
 def released_result_assessment(rows: list[dict[str, Any]]) -> str:
     released = [row for row in rows if row["track"] == "R"]
-    if any(row["execution"] in {"failed", "invalid_complete"} for row in released):
+    if any(
+        row["execution"]
+        in {"failed", "invalid_complete", "invalid_recovered_evaluation"}
+        for row in released
+    ):
         return "released_recipe_not_reproduced"
-    if not all(row["execution"] == "completed" for row in released):
+    if not all(row["execution"] in COMPLETED_EXECUTIONS for row in released):
         return "deferred_until_both_released_arms_complete"
     if all(row["close_numerical_reproduction"] for row in released):
         return "close_numerical_reproduction"
@@ -248,7 +357,7 @@ def response_source_differences(rows: list[dict[str, Any]]) -> dict[str, Any]:
         model_rows = {
             row["track"]: row
             for row in rows
-            if row["model"] == model and row["execution"] == "completed"
+            if row["model"] == model and row["execution"] in COMPLETED_EXECUTIONS
         }
         if set(model_rows) != {"R", "M"}:
             differences[model] = {"status": "pending_both_tracks"}
@@ -257,8 +366,7 @@ def response_source_differences(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "status": "available",
             "manuscript_minus_release": {
                 key: (
-                    model_rows["M"]["observed"][key]
-                    - model_rows["R"]["observed"][key]
+                    model_rows["M"]["observed"][key] - model_rows["R"]["observed"][key]
                 )
                 for key in ("distributional_fidelity", "strategy_alignment")
             },
@@ -269,7 +377,15 @@ def response_source_differences(rows: list[dict[str, Any]]) -> dict[str, Any]:
 def build_payload(runs_root: Path) -> dict[str, Any]:
     protocol = load_json(CONFIG_PATH)
     rows = [arm_result(arm, runs_root, protocol) for arm in load_arms()]
-    states = ("pending", "unterminated", "failed", "invalid_complete", "completed")
+    states = (
+        "pending",
+        "unterminated",
+        "failed",
+        "invalid_complete",
+        "invalid_recovered_evaluation",
+        "completed",
+        "completed_recovered_evaluation",
+    )
     return {
         "schema_version": 1,
         "paper_id": "2607.17674",
@@ -308,13 +424,11 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         "|---|---|---:|---:|---|---|",
     ]
     for row in payload["arms"]:
-        if row["execution"] != "completed":
-            lines.append(
-                f"| {row['arm_id']} | {row['execution']} | — | — | — | — |"
-            )
+        if row["execution"] not in COMPLETED_EXECUTIONS:
+            lines.append(f"| {row['arm_id']} | {row['execution']} | — | — | — | — |")
             continue
         lines.append(
-            f"| {row['arm_id']} | completed | "
+            f"| {row['arm_id']} | {row['execution']} | "
             f"{row['observed']['distributional_fidelity']:.4f} | "
             f"{row['observed']['strategy_alignment']:.4f} | "
             f"{'yes' if row['close_numerical_reproduction'] else 'no'} | "

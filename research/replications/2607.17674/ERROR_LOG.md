@@ -1103,6 +1103,48 @@ limitations. Entries are never removed after correction.
   Rerun the exact live prompt audit before calibration; the 16,384-token draft
   has never been an execution input.
 
+### LRS-LOCAL-097 — first live-context probe conflicted with orchestration parsing
+
+- **State:** corrected before shell execution; no server or research effect
+- **Observation:** a tiny lock-held endpoint probe again placed shell default-
+  value expansion syntax inside a JavaScript template literal. The orchestration
+  parser rejected it before a shell, lock, or HTTP request started.
+- **Disposition:** use the already defined runtime-directory variable directly.
+  The corrected read-only probe held the experiment lock and confirmed the
+  `/apply-template` and `/tokenize` response shapes without generation.
+
+### LRS-LOCAL-098 — context-audit draft selected the wrong workspace ancestor
+
+- **State:** corrected before executing the audit; no research effect
+- **Observation:** manual path counting in the preserved audit script initially
+  selected the `research/` directory rather than the repository root. Inspection
+  caught the off-by-one ancestor before import or endpoint access.
+- **Disposition:** correct the ancestor index, run `--help` as an import check,
+  then execute the audit under the exclusive lock. All 112 requests tokenized
+  and the preserved script is hash-bound with its output.
+
+### LRS-LOCAL-099 — prior context audit reported the upper middle, not the median
+
+- **State:** corrected documentation; no execution or headroom effect
+- **Observation:** the first 112-request context report called 14,394 the
+  median. The sorted middle values are 14,108 and 14,394, so the ordinary
+  even-sample median is 14,251. Minimum, maximum, largest-request identity,
+  rendered-prompt hash, and every context-headroom decision were correct.
+- **Disposition:** recompute the statistic independently from the new 112-row
+  audit, correct the execution record to 14,251, and retain this disclosure.
+
+### LRS-LOCAL-100 — runner identity allowlist omitted frozen runtime v1.0.5
+
+- **State:** contained before trace creation or model request; harness repair
+  frozen prospectively
+- **Observation:** the first calibration invocation after the successful v1.0.5
+  preflights exited with `citation runtime config identity or version differs`.
+  The amendment map already bound v1.0.5, but a separate allowlist in `main()`
+  still ended at v1.0.4. The requested trace root remained absent.
+- **Disposition:** derive supported runtime versions from the amendment map plus
+  v1.0.1 and assert the exact set in a focused test. Commit and tag this as
+  trace-only harness v1.0.4, then use a new invocation ID and trace root.
+
 ## External acquisition limitations
 
 ### LRS-EXTERNAL-001 — Hugging Face paper Markdown returned 404

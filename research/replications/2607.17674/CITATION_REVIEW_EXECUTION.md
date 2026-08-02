@@ -253,7 +253,7 @@ reconstructed their exact pages and preserved full packet coverage. While
 holding the exclusive experiment lock, the registered `b8942-f535774` runtime
 rendered each complete chat through `/apply-template` and tokenized it through
 `/tokenize`. Exact rendered prompts ranged from 1,866 to 35,644 tokens with a
-median of 14,394. The largest packet was
+median of 14,251. The largest packet was
 `yao2023treeOfThoughts:chunk-0001`; after reserving all 8,192 evidence-output
 tokens, its total was 43,836, below the live 50,176-token context. The largest
 rendered prompt has SHA-256
@@ -483,3 +483,35 @@ because no prompt or packet changed. Reserving 12,288 output tokens totals
 reconfirm that maximum before calibration. Thirty-six focused tests, scoped
 Ruff lint and formatting, JSON parsing, Python compilation, repository hygiene,
 whitespace validation, and the frozen primary protocol validator pass.
+
+The fresh live v1.0.5 audit held the exclusive experiment lock and rendered
+and tokenized all 112 exact evidence requests without issuing a generation.
+It reconfirmed the 1,866-token minimum and 35,644-token maximum; the proper
+even-sample median is 14,251, the mean of middle values 14,108 and 14,394. The
+earlier 14,394 report selected only the upper middle value and is corrected
+above. The largest request remains
+`yao2023treeOfThoughts:chunk-0001`, with rendered-prompt SHA-256
+`252edf300a3aca64c9673c366cee9476abcd8201076a866f5990beeeea3a4969`.
+The audit JSON, preserved audit code, and two-file content index have SHA-256
+values
+`81b07085085d2b4fe72d89c59b25acc9d4ecab8e826be717e1285db7fd85e435`,
+`d83e887a8d5992137f070c4a7bf61825b087316fb831fb61a3afbcfbac68fe10`,
+and
+`2651a2059a46174388d1600eef72cc3f5d2af746f8ccdba1f7b6fa66eedff758`.
+
+The subsequent lock-held v1.0.5 schema preflight completed at
+`2026-08-02T11:38:30.608602Z`. Both one-token diagnostics returned HTTP 200 and
+the server-log slice contained no grammar-failure marker. The completion,
+server-log-slice, and 18-file content-index SHA-256 values are respectively
+`9924e72e52687d1eefca70ebdd71dc1131c284b9ec355a57c97fe05856c29cb2`,
+`949af36a0fdbc61d8e3e4e6292daa1489ed99dfd211ea5d615422dc87ccec0b5`,
+and
+`8c5c635c93856612a751972f5a2e86307b73fe0547d37e8e90cbedd713fbd035`.
+
+The first calibration command after that preflight was rejected before trace
+creation or model contact because the runner's duplicated identity allowlist
+still ended at v1.0.4 even though its amendment map already registered v1.0.5.
+Prospective harness v1.0.4 derives the accepted set from that amendment map and
+adds a focused exact-set assertion. It changes no runtime or evidence setting;
+a fresh invocation remains blocked until this harness repair is committed,
+tagged, synchronized, and verified.

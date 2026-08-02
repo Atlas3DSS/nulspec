@@ -82,7 +82,9 @@ The Qwen execution harness has trace-only amendments
 `2607.17674-citation-audit-harness-v1.0.2`, which adds the llama-server binary
 hash, and `2607.17674-citation-audit-harness-v1.0.3`, which fail-closes on the
 same host concurrency lock used by primary arms. Neither changes the v1.0.1
-evidence or generation contract.
+evidence or generation contract. Harness v1.0.4 removes one duplicated runtime-
+version allowlist after it rejected v1.0.5 before trace creation; supported
+runtime versions are now derived from their bound amendment map.
 The first live calibration attempt produced no accepted record: the pinned
 runtime rejected the bounded decoding grammar and both responses exhausted the
 original thinking budget without final content. Its complete zero-weight trace

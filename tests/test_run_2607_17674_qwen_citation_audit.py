@@ -441,6 +441,13 @@ def test_v105_only_expands_evidence_output_ceiling() -> None:
         == prior["primary_reviewer"]["synthesis_generation"]
     )
     assert RUNNER.RUNTIME_AMENDMENTS["1.0.5"].is_file()
+    assert RUNNER.SUPPORTED_RUNTIME_PROTOCOL_VERSIONS == {
+        "1.0.1",
+        "1.0.2",
+        "1.0.3",
+        "1.0.4",
+        "1.0.5",
+    }
 
 
 @pytest.mark.parametrize(

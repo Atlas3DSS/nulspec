@@ -7,7 +7,7 @@ the traces, or send email.
 ## Preconditions
 
 - Use citation-audit evidence contract `2607.17674-citation-audit-v1.0.1` and
-  trace-only harness amendment `2607.17674-citation-audit-harness-v1.0.3`.
+  trace-only harness amendment `2607.17674-citation-audit-harness-v1.0.4`.
 - After the preserved v1.0.1, v1.0.2, and v1.0.3 zero-weight calibration
   failures and the terminal v1.0.4 remaining-phase output-budget failure, use
   prospective runtime amendment

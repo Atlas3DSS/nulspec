@@ -42,6 +42,7 @@ RUNTIME_AMENDMENTS = {
     "1.0.4": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.4.md",
     "1.0.5": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.5.md",
 }
+SUPPORTED_RUNTIME_PROTOCOL_VERSIONS = frozenset({"1.0.1", *RUNTIME_AMENDMENTS})
 EVENT_LOCK = threading.Lock()
 GRAMMAR_ONLY_OMITTED_SCHEMA_KEYS = frozenset(
     {
@@ -1101,12 +1102,10 @@ def main() -> None:
     packet_validation = validate_packet_tree(review_plan_path, packet_root)
     if review_plan.get("protocol_version") != "1.0.1":
         raise SystemExit("review plan is not protocol v1.0.1")
-    if config.get("paper_id") != "2607.17674" or config.get("protocol_version") not in {
-        "1.0.1",
-        "1.0.2",
-        "1.0.3",
-        "1.0.4",
-    }:
+    if (
+        config.get("paper_id") != "2607.17674"
+        or config.get("protocol_version") not in SUPPORTED_RUNTIME_PROTOCOL_VERSIONS
+    ):
         raise SystemExit("citation runtime config identity or version differs")
     for label, binding in review_plan["bindings"].items():
         if label == "acquisition_manifest":

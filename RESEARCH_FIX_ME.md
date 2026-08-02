@@ -30,6 +30,49 @@ queue.
 
 ## Open items
 
+### RF-20260802-01 — Enforce one experimental GPU workload per host
+
+- Status: OPEN
+- Blocking: publication
+- Observed in: [NULSPEC PR #26](https://github.com/Atlas3DSS/nulspec/pull/26),
+  `research/replications/2607.17674/CITATION_REVIEW_EXECUTION.md`
+- Affected study: `2607.17674`
+- Reported by: website
+- Reported at: 2026-08-02T06:46:40Z
+
+#### Observed
+
+The recorded citation-calibration attempt started on the same GPU while the
+paper-faithful factorization arm was still training. The execution note
+correctly preserves this as a runbook departure, but concurrent experimental
+GPU workloads also violate the repository's current one-workload-per-host
+resource policy. Available VRAM and continued operation of unrelated services
+do not satisfy that gate.
+
+#### Expected
+
+The citation-review runner must refuse to start when another experimental GPU
+workload is active on the host. The existing concurrent attempt remains
+immutable but is ineligible as a reference execution. Scientific outputs from
+the primary factorization arm are not changed by this process classification.
+
+#### Requested research change
+
+Classify the concurrent citation attempt explicitly, add a fail-closed
+single-workload preflight with focused tests, and run any required replacement
+only after the active experiment exits and the normal memory, GPU, CPU, nice,
+and I/O controls pass. Do not delete, overwrite, or silently relabel the
+existing attempt.
+
+#### Research response
+
+Pending.
+
+#### Resolution evidence
+
+Pending a research commit, focused tests, and an eligible trace or an explicit
+decision that the affected citation result will not be used.
+
 ### RF-20260801-01 — Correct the invalid PR head reference in the website queue
 
 - Status: ACKNOWLEDGED

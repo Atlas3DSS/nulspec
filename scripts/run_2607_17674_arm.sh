@@ -142,8 +142,34 @@ exec >>"$LOG_ROOT/runner.log" 2>&1
 
 invocation="$0 $ARM_ID [GPU_UUID_REDACTED] $EXPECTED_GPU $ARTIFACT_ROOT"
 finish_attempt() {
-  exit_code=$?
-  trap - EXIT
+  initial_exit_code=$?
+  trap - EXIT HUP INT TERM
+  exit_code=$initial_exit_code
+  artifact_validation="not_run"
+  if (( exit_code == 0 )); then
+    if "$PYTHON_BIN" "$WORKSPACE/scripts/validate_2607_17674_attempt_artifacts.py" \
+      --attempt "$RUN_ROOT" \
+      --arm-id "$ARM_ID" \
+      --output "$RUN_ROOT/artifact-validation.json"
+    then
+      artifact_validation="passed"
+    else
+      artifact_validation="failed"
+      exit_code=70
+    fi
+  fi
+  jq -n \
+    --arg signal "$TERMINATION_SIGNAL" \
+    --arg initial_exit_code "$initial_exit_code" \
+    --arg effective_exit_code "$exit_code" \
+    --arg artifact_validation "$artifact_validation" \
+    '{
+      schema_version: 1,
+      termination_signal: $signal,
+      initial_exit_code: ($initial_exit_code | tonumber),
+      effective_exit_code: ($effective_exit_code | tonumber),
+      artifact_validation: $artifact_validation
+    }' > "$RUN_ROOT/terminal-context.json"
   if (( exit_code == 0 )); then
     terminal_manifest="$RUN_ROOT/run.complete.json"
   else
@@ -160,7 +186,15 @@ finish_attempt() {
     --upstream "$UPSTREAM" || true
   exit "$exit_code"
 }
+TERMINATION_SIGNAL="none"
+handle_signal() {
+  TERMINATION_SIGNAL="$1"
+  exit "$2"
+}
 trap finish_attempt EXIT
+trap 'handle_signal SIGHUP 129' HUP
+trap 'handle_signal SIGINT 130' INT
+trap 'handle_signal SIGTERM 143' TERM
 
 "$PYTHON_BIN" "$WORKSPACE/scripts/capture_run_manifest.py" \
   --output "$RUN_ROOT/run.start.json" \

@@ -2008,3 +2008,91 @@ limitations. Entries are never removed after correction.
 - **Disposition:** used the already verified recovery manifests and canonical
   metric/file-manifest hashes for documentation, and queried live workload
   status separately. No recovery artifact was changed.
+
+### LRS-LOCAL-169 — detached remote execution was actually SSH-scoped
+
+- **State:** two invalid Track M attempts preserved; runtime corrected before
+  fresh execution
+- **Observation:** the guarded launcher used `systemd-run --user --scope` from
+  an SSH session. That scope made the observer transport part of the
+  scientific process lifetime. The 0.5B attempt ended after batch 120 of 782,
+  and the queued 1.5B attempt ended after batch 150. The 1.5B queue journal
+  records `client_loop: send disconnect: Broken pipe`; the 0.5B boundary has
+  the same observer-session termination signature.
+- **Disposition:** runtime v1.0.3 launches each arm as a named, detached target-
+  host user service with `Type=exec` and no `--scope`. Both partial attempts
+  remain immutable and receive zero numerical weight. Both Track M arms will
+  start again from scratch; no partial optimizer state is reused.
+
+### LRS-LOCAL-170 — EXIT-only terminal classification created false success names
+
+- **State:** validator and signal-aware terminal gate added prospectively
+- **Observation:** after transport termination, the old EXIT trap inherited
+  status zero from the last completed child command and wrote
+  `run.complete.json` for both partial attempts. Neither attempt contains
+  `factorization/config.json`, final `factorization/metrics.json`,
+  `epoch-0001.pt`, or released evaluation output. The matrix analyzer rejected
+  both as `invalid_complete`, so the naming error did not contaminate a result.
+- **Disposition:** success now requires a separate artifact validator to
+  confirm all 782 steps, the final checkpoint and configuration, both released
+  evaluation metrics, and their manifest hash. Incomplete zero-status exits are
+  reclassified as local failure 70. SIGHUP, SIGINT, and SIGTERM are explicitly
+  nonzero.
+
+### LRS-LOCAL-171 — overnight queue advanced on a filename instead of evidence
+
+- **State:** target-side artifact-gated queue replaces the old observer loop
+- **Observation:** the first queue treated the existence of
+  `run.complete.json` as sufficient and launched the 1.5B arm even though the
+  0.5B attempt lacked every required final artifact. It then used another
+  attached SSH session for the successor, repeating the same failure mode.
+- **Disposition:** the replacement queue lives as its own detached service on
+  the execution host, calls the scientific artifact validator before advancing,
+  watches the protected service, available memory, and GPU temperature, and
+  permits only a bounded fresh retry for transport/false-terminal classes.
+  Upstream/code failures remain nonretryable and require diagnosis.
+
+### LRS-LOCAL-172 — first format command mistyped one new test pathname
+
+- **State:** corrected in the same verification pass; no runtime effect
+- **Observation:** the initial Ruff format invocation named
+  `test_2607_17674_attempt_artifacts.py` rather than the actual
+  `test_validate_2607_17674_attempt_artifacts.py`. Ruff reported that missing
+  argument while formatting the other two named files.
+- **Disposition:** ran the canonical format check against all three exact paths;
+  all were formatted, lint-clean, and covered by the subsequent test pass.
+
+### LRS-LOCAL-173 — full suite requires an absent released-results fixture
+
+- **State:** unrelated environmental test failure disclosed; focused gates pass
+- **Observation:** the full repository suite completed 199 tests and failed one
+  pre-existing protocol test because
+  `paper_repro/SLM-RL-Agents/results/all_results.json` is absent from this
+  worktree. The failing test does not import or exercise the Track M launcher,
+  queue, terminal validator, or their tests.
+- **Disposition:** retain the full-suite failure in the verification record,
+  run every affected focused test separately, and do not represent the entire
+  suite as green. The missing external fixture is not synthesized or silently
+  skipped.
+
+### LRS-LOCAL-174 — focused gate guessed a nonexistent protocol-test wrapper
+
+- **State:** corrected verification invocation; no runtime or artifact effect
+- **Observation:** a focused pytest command included
+  `tests/test_validate_2607_17674_protocol.py`, but protocol validation is a
+  runtime script in this repository and has no same-named pytest wrapper. Pytest
+  stopped before running the other named files.
+- **Disposition:** enumerated the actual test paths, reran the three affected
+  suites by exact name, and invoked the protocol validator directly where the
+  pinned upstream tree is available.
+
+### LRS-LOCAL-175 — first detached-service self-test expanded its variable locally
+
+- **State:** corrected diagnostic; no study process or artifact effect
+- **Observation:** the first one-millisecond transient-service probe allowed
+  the calling shell to expand its test variable before `systemd-run`, so the
+  disposable command tested an empty value and exited 1 after service creation.
+- **Disposition:** reran with the expression quoted for the service-side shell.
+  The collected `Type=exec` service received its explicit environment, exited
+  zero, and reported `result: success`. Both disposable units were unrelated to
+  the study and carried a 32 MB memory cap.

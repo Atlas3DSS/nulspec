@@ -183,3 +183,40 @@ every paper-level verdict. Its JSON and Markdown hashes are respectively
 `9c7eb64d57f3aa43eaac00cb97227efab6da2b1a6a236b09be8342ef625aa2eb`
 and
 `3659e93e21e509d76ebf0bff795173513ebf44e082586fc208853b929f1eaa22`.
+
+## Invalid Track M transport attempts on 2026-08-03
+
+The fresh 96 GB-card retry of Track M Qwen2.5-0.5B began at
+`2026-08-03T08:18:58.952751Z` under repository revision
+`a25f9af36df3b9c930260d828e856b75187706aa`. Its remote launcher used an
+SSH-owned transient scope rather than a detached service. When that observer
+session ended, training stopped after batch 120 of 782. The attempt contains
+only interim JSONL history and response samples: it has no final factorization
+configuration or metrics, epoch checkpoint, or released evaluation. The old
+EXIT-only trap nevertheless wrote a zero-status `run.complete.json` at
+`2026-08-03T09:33:38.408047Z`. Its start and misleading terminal-manifest
+SHA-256 values are respectively
+`1fbbfc84c08b4ebbac94b03e7b1821d05cbdf2bad6e786be662dfa8291395099`
+and
+`336a14d7c3ad2574b6f5a5844a4535f4a977748b808fde3b421a1f19c5aa3aa7`.
+
+The old observer-side queue then advanced on that filename without validating
+its artifacts. It started Track M Qwen2.5-1.5B at
+`2026-08-03T09:34:11.102357Z` using the same repository revision and the same
+SSH-scoped execution pattern. Its queue journal explicitly records an SSH
+broken pipe. Training stopped after batch 150 of 782, again before every final
+factorization and evaluation artifact, and the same trap wrote a misleading
+zero-status terminal manifest at `2026-08-03T11:37:52.210786Z`. Its start and
+terminal-manifest SHA-256 values are respectively
+`4e23a2615d64985f1d802e0fb2a7f191527a19738daea7b5cfd1c849d96cd255`
+and
+`eec67cd2ccdd05f21eb7c568be8b372d08a95bee3398fdea5b687507c3e9eb1b`.
+
+Both are local orchestration failures, not upstream-paper errors and not
+scientific outcomes. They remain immutable and receive zero numerical weight.
+GPU, host-memory, thermal, and protected-service guards did not trip. Runtime
+amendment v1.0.3 replaces SSH-owned scopes with detached target-host services,
+adds explicit signal classification, gates success on the complete artifact
+set at step 782, and runs successor decisions through the same validator. Both
+registered Track M arms restart from scratch under that prospective runtime;
+no partial samples, optimizer state, metrics, or checkpoints are reused.

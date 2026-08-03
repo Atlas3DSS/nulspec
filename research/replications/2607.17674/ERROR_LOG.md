@@ -2096,3 +2096,84 @@ limitations. Entries are never removed after correction.
   The collected `Type=exec` service received its explicit environment, exited
   zero, and reported `result: success`. Both disposable units were unrelated to
   the study and carried a 32 MB memory cap.
+
+### LRS-LOCAL-176 — first dev-box sync assumed a named branch checkout
+
+- **State:** corrected before fetch, checkout, or launch
+- **Observation:** the first guarded sync required the execution worktree to be
+  on `agent/replicate-2607-17674`, but that host intentionally held the prior
+  runtime tag at detached HEAD. The branch assertion stopped the command with no
+  repository or service change.
+- **Disposition:** verified the worktree was clean and preserved its detached-
+  revision deployment pattern, then switched it directly to the exact new
+  tagged commit.
+
+### LRS-LOCAL-177 — second dev-box sync assumed the controller's remote name
+
+- **State:** corrected before checkout or launch
+- **Observation:** the controller names the NULSPEC remote `nulspec`; the dev
+  worktree names the same URL `origin`. The attempted `git fetch nulspec`
+  failed without changing refs or working files.
+- **Disposition:** enumerated the target worktree's remotes, fetched the exact
+  branch and tag from `origin`, and verified the resulting full commit before
+  launching the detached queue.
+
+### LRS-LOCAL-178 — first reusable-watcher test used unittest's module interface
+
+- **State:** corrected skill-validation invocation; no study effect
+- **Observation:** `python -m unittest` was given an absolute file path, which
+  unittest interpreted as a module name and rejected. The watcher source had
+  already passed Ruff.
+- **Disposition:** executed the test file directly; all three false-completion,
+  valid-completion, and inactive-attempt cases passed, and the skill package
+  passed its structural validator.
+
+### LRS-LOCAL-179 — first v1.0.7 trace-seal command used a worktree-local venv
+
+- **State:** corrected before seal creation
+- **Observation:** the citation worktree has no private `.venv`, so its first
+  hash-tree invocation returned 127. Subsequent unguarded display commands
+  printed the already existing input/event/gate hashes but no tree manifest was
+  created.
+- **Disposition:** reran the standard-library manifest tool with the system
+  Python under `set -euo pipefail`. The resulting 1,877-file seal was then
+  hashed and independently validated by the v1.0.8 continuation code.
+
+### LRS-LOCAL-180 — first synthesis-repair test assumed prose had no line break
+
+- **State:** corrected test assertion; prompt and runtime code unchanged
+- **Observation:** the test searched for `return an empty evidence array` as one
+  contiguous phrase, while the frozen plain-text prompt wraps between `return`
+  and `an`. Thirty-four peer tests passed and this content assertion failed.
+- **Disposition:** assert the semantically decisive contiguous phrase
+  `empty evidence array`; all 35 focused tests then passed.
+
+### LRS-LOCAL-181 — v1.0.7 synthesis exhausted structural retries at source 36
+
+- **State:** immutable zero-weight attempts; versioned six-source continuation
+- **Observation:** v1.0.7 completed 35 source reviews. Both Yakowitz synthesis
+  attempts invented `evidence` objects from a chunk summary even though the
+  validated chunk findings contained empty candidate arrays. The contract
+  rejected both with `evidence[...] was not copied from chunk evidence`, and
+  the remaining phase stopped before the final five sources.
+- **Disposition:** seal the complete v1.0.7 boundary, carry only its 35
+  independently revalidated final reviews, and start the exact six pending
+  sources in runtime v1.0.8. The first synthesis attempt remains unchanged; a
+  frozen candidate-copy repair suffix and one additional structural attempt are
+  available only after failure. This is a local harness/reviewer limitation,
+  not an upstream-paper error.
+
+### LRS-LOCAL-182 — first composite projection changed a frozen teacher dependency
+
+- **State:** reverted byte-for-byte before commit, tag, or teacher input
+- **Observation:** an initial v1.0.8 draft taught the existing Qwen-to-teacher
+  packet builder to resolve reviews across two traces. The repository-wide gate
+  correctly failed both teacher and Codex binding tests because teacher runtime
+  v1.0.3 hash-binds that builder. Formatting alone also changed its bytes.
+- **Disposition:** restore both the builder and its test to their exact committed
+  bytes and confirm SHA-256
+  `eafbbe92bbbdfce80b7c764792780916a7fb4ac70f2914a10b72f40f7f3ff377`,
+  matching the frozen teacher config. Qwen v1.0.8 records a logical composite
+  manifest, but no teacher receives it. After 41/41 Qwen completion, composite
+  projection will be a separately amended, configured, tested, and tagged
+  teacher runtime.

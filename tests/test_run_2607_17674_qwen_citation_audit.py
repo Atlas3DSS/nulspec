@@ -208,6 +208,41 @@ def test_unknown_response_format_mode_fails_closed() -> None:
         )
 
 
+def test_exact_context_gate_counts_rendered_prompt_and_reserved_output(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fake_request(
+        base_url: str,
+        method: str,
+        path: str,
+        payload: object | None = None,
+        timeout: float = 30,
+    ) -> dict[str, object]:
+        del base_url, method, payload, timeout
+        if path == "/apply-template":
+            return {"prompt": "rendered"}
+        if path == "/tokenize":
+            return {"tokens": list(range(100))}
+        raise AssertionError(path)
+
+    monkeypatch.setattr(RUNNER, "request_json", fake_request)
+    route = {
+        "base_url": "http://127.0.0.1:8080",
+        "props": {"default_generation_settings": {"n_ctx": 256}},
+    }
+    request = {
+        "messages": [],
+        "chat_template_kwargs": {"enable_thinking": True},
+        "max_tokens": 128,
+    }
+    gate = RUNNER.request_context_gate(route, request, 250)
+    assert gate["rendered_prompt_tokens"] == 100
+    assert gate["total_reserved_tokens"] == 228
+    assert gate["passed"] is True
+    request["max_tokens"] = 160
+    assert RUNNER.request_context_gate(route, request, 250)["passed"] is False
+
+
 def test_runtime_amendment_preserves_thinking_and_expands_budgets() -> None:
     config = json.loads(
         (
@@ -449,6 +484,7 @@ def test_v105_only_expands_evidence_output_ceiling() -> None:
         "1.0.5",
         "1.0.6",
         "1.0.7",
+        "1.0.8",
     }
 
 
@@ -502,6 +538,71 @@ def test_v107_only_adds_registered_resume_identity_policy() -> None:
         "record_excluded_values_on_resume": True,
     }
     assert RUNNER.RUNTIME_AMENDMENTS["1.0.7"].is_file()
+
+
+def test_v108_only_adds_sealed_tail_and_synthesis_repair() -> None:
+    protocol_root = WORKSPACE / "protocols/2607.17674"
+    prior = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.7.json").read_text()
+    )
+    amended = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.8.json").read_text()
+    )
+    normalized = copy.deepcopy(amended)
+    normalized["protocol_version"] = prior["protocol_version"]
+    normalized["prior_protocol_tag"] = prior["prior_protocol_tag"]
+    normalized["protocol_tag"] = prior["protocol_tag"]
+    normalized["calibration_gate"] = prior["calibration_gate"]
+    normalized.pop("continuation")
+    normalized["primary_reviewer"].pop("synthesis_repair")
+    normalized["primary_reviewer"].pop("maximum_synthesis_attempts_per_call")
+    assert normalized == prior
+    assert amended["protocol_version"] == "1.0.8"
+    assert amended["primary_reviewer"]["maximum_synthesis_attempts_per_call"] == 3
+    assert amended["primary_reviewer"]["maximum_attempts_per_call"] == 2
+    assert amended["continuation"]["mode"] == "sealed_prior_trace_tail_v1"
+    assert RUNNER.RUNTIME_AMENDMENTS["1.0.8"].is_file()
+
+
+def test_v108_binds_synthesis_repair_only_after_synthesis_failure() -> None:
+    protocol_root = WORKSPACE / "protocols/2607.17674"
+    config = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.8.json").read_text()
+    )
+    repair_prompt, binding = RUNNER.effective_synthesis_repair_prompt(config)
+    assert repair_prompt is not None
+    assert binding is not None
+    assert binding["mode"] == "conservative_candidate_copy_v1"
+    assert (
+        binding["sha256"]
+        == config["primary_reviewer"]["synthesis_repair"]["prompt_sha256"]
+    )
+    _, initial_prompt = RUNNER.build_request(
+        "qwen-test",
+        "system",
+        {"validated_chunk_findings": []},
+        {"type": "object"},
+        config["primary_reviewer"]["synthesis_generation"],
+        config["primary_reviewer"]["chat_template_kwargs"],
+        None,
+        repair_prompt,
+    )
+    _, repaired_prompt = RUNNER.build_request(
+        "qwen-test",
+        "system",
+        {"validated_chunk_findings": []},
+        {"type": "object"},
+        config["primary_reviewer"]["synthesis_generation"],
+        config["primary_reviewer"]["chat_template_kwargs"],
+        ["evidence[0] was not copied from chunk evidence"],
+        repair_prompt,
+    )
+    assert "Conservative synthesis-evidence repair policy" not in initial_prompt
+    assert "Conservative synthesis-evidence repair policy" in repaired_prompt
+    assert "empty `evidence` array" in repaired_prompt
+    assert RUNNER.effective_synthesis_repair_prompt(
+        json.loads((protocol_root / "citation_audit_config.v1.0.7.json").read_text())
+    ) == (None, None)
 
 
 def test_v106_binds_repair_prompt_only_after_evidence_failure() -> None:

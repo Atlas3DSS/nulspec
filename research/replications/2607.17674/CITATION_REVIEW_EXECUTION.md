@@ -680,3 +680,58 @@ compilation, whitespace validation, and both scoped protocol validators pass.
 The full local suite passed 189 tests and repeated only the already logged
 different-study ignored-fixture failure; CI must reconstruct that fixture and
 pass before a live v1.0.7 request.
+
+### Prospective v1.0.8 six-source continuation
+
+Runtime v1.0.7 completed its fresh calibration, passed the exact-replay outer
+gate, and produced 35 valid final reviews. It then exhausted two synthesis
+attempts for `yakowitz1968mixtures`: both inserted paraphrased chunk-summary
+text as evidence despite the validated evidence-candidate arrays being empty.
+The contract rejected both, and the final five sources were never started.
+
+The v1.0.7 boundary is now sealed as 1,877 files and 363,164,131 bytes. Its file
+manifest, run input, event stream, and outer-gate hashes are respectively
+`4979458f79c87f77a891d31134e22409c76ab20110db7cca901c2acda75dc91d`,
+`e9a51ba113f7f433ba770e0d00e861feb4bc0d7aff618c4456e723b859d7d2d3`,
+`b873f70a5886ef51ce9f291746cf58bd0002c4c012737e1b43d7f26364d1a906`,
+and
+`c7455705868d4d1d7f03aa60a9f9b929d275c653162682a2c482041d76a364dc`.
+The prior trace is never resumed or edited.
+
+Runtime v1.0.8 binds that full seal and revalidates all 35 carried final reviews
+against their immutable plans, evidence records, and accepted attempts. It
+starts fresh traces for exactly `yakowitz1968mixtures`,
+`yao2023treeOfThoughts`, `yue2025rlvrBeyondBase`,
+`zhang2024graphInducedVae`, `zhao2017dialogCvae`, and `zhao2019infovae`.
+No prior model output is copied into the new trace; logical completion keeps a
+per-source trace path, runtime version, and final-review hash.
+
+The initial synthesis prompt and request remain unchanged. Only a failed
+synthesis receives the frozen candidate-copy suffix, and only validated
+evidence-candidate objects may populate its evidence arrays; an occurrence with
+no candidates must use an empty array and disclose that limitation. The
+synthesis structural-attempt ceiling rises from two to three. All model,
+server, context, offload, KV, thinking, seed, sampling, source, packet, schema,
+evidence, and initial synthesis settings remain unchanged.
+
+Every live evidence or synthesis attempt now records an exact route-rendered
+context gate before generation; prompt tokens plus the full 12,288-token output
+reservation must fit both the registered 50,000-token minimum and observed
+server context. The prospective config, continuation manifest, repair prompt,
+amendment, runner, and grammar-preflight hashes are respectively
+`4ae6e18086be8860b3f2f980986869f009b19ccfcc7eebc5e2c8608174e23bf5`,
+`d9bede40dba6087b13ffe908d259d070beb51275fa047885be3f812716c83890`,
+`28432daddea12ae4eff77c55715bfb20311c54280d303e2c9572226069e9e4ba`,
+`1ddc3b86f5f600c2b15f6ee75bb9e26ebb65abca1ac0a439092b9a5f2a7e254d`,
+`07bcfd3f7cc8299b7386ee0e1ddfc2049518e2814a5f9816640583d2853edb15`,
+and
+`9ae5575809fc5adb438dca65610f559ef05e8554463f9bea673b8b496447e1bd`.
+Thirty-six focused Qwen tests and seven frozen teacher/Codex binding tests pass.
+The repository-wide suite passes 203 tests and repeats only the separately
+logged absent ignored result fixture from the older SLM-RL study.
+
+A separately versioned teacher projection must resolve the logical 35-plus-6
+completion without copying traces. The frozen v1.0.3 teacher builder remains
+byte-identical until then. GLM, Kimi, Codex, Fable, publication, training use,
+and email remain blocked until all 41 Qwen sources validate. The author email
+still requires explicit human approval after every automated gate.

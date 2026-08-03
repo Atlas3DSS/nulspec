@@ -69,6 +69,25 @@ def test_v107_resume_identity_ignores_only_media_marker() -> None:
     assert not RUNNER.run_inputs_match(existing, candidate, config)
 
 
+def test_v108_continuation_retains_the_same_narrow_resume_policy() -> None:
+    config = json.loads(
+        (
+            WORKSPACE / "protocols/2607.17674/citation_audit_config.v1.0.8.json"
+        ).read_text()
+    )
+    existing = {
+        "routes": [{"props": {"media_marker": "first", "n_ctx": 50176}}],
+        "continuation": {"manifest_sha256": "same"},
+    }
+    candidate = {
+        "routes": [{"props": {"media_marker": "second", "n_ctx": 50176}}],
+        "continuation": {"manifest_sha256": "same"},
+    }
+    assert RUNNER.run_inputs_match(existing, candidate, config)
+    candidate["continuation"]["manifest_sha256"] = "changed"
+    assert not RUNNER.run_inputs_match(existing, candidate, config)
+
+
 def test_v106_resume_identity_remains_strict() -> None:
     config = json.loads(
         (

@@ -1,0 +1,11 @@
+Conservative synthesis-evidence repair policy: the prior synthesis attempt has
+zero evidentiary weight. For each listed `evidence` validation error, rebuild
+that occurrence's `evidence` array using only objects already present in
+`validated_chunk_findings[].occurrence_findings[].evidence_candidates` for the
+same `occurrence_id`. Copy every selected object's `chunk_id`, `page_number`,
+`section_or_heading`, and `excerpt` exactly; do not paraphrase, reconstruct, or
+turn a chunk summary or `no_relevant_evidence_explanation` into evidence. If
+the validated findings contain no evidence candidate for an occurrence, return
+an empty `evidence` array and state that limitation in the assessment. Preserve
+all required occurrence assessments and independently reconsider the score,
+support class, confidence, and qualification from the validated findings.

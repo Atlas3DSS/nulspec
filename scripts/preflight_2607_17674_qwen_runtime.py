@@ -17,6 +17,7 @@ from run_2607_17674_qwen_citation_audit import (
     acquire_experiment_lock,
     build_request,
     effective_evidence_repair_prompt,
+    effective_synthesis_repair_prompt,
     experiment_lock_path,
     load_object,
     route_metadata,
@@ -27,7 +28,7 @@ from run_2607_17674_qwen_citation_audit import (
     write_new_text,
 )
 
-DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.7.json"
+DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.8.json"
 GRAMMAR_FAILURE_MARKERS = (
     "error parsing grammar",
     "failed to parse grammar",
@@ -62,12 +63,19 @@ def main() -> None:
         "1.0.5",
         "1.0.6",
         "1.0.7",
+        "1.0.8",
     }:
-        raise SystemExit("runtime preflight requires config v1.0.2 through v1.0.7")
+        raise SystemExit("runtime preflight requires config v1.0.2 through v1.0.8")
 
     try:
         evidence_repair_prompt, evidence_repair_prompt_binding = (
             effective_evidence_repair_prompt(config)
+        )
+    except AuditError as error:
+        raise SystemExit(str(error)) from error
+    try:
+        synthesis_repair_prompt, synthesis_repair_prompt_binding = (
+            effective_synthesis_repair_prompt(config)
         )
     except AuditError as error:
         raise SystemExit(str(error)) from error
@@ -84,6 +92,7 @@ def main() -> None:
             "paper_id": "2607.17674",
             "config_sha256": sha256_file(config_path),
             "evidence_repair_prompt": evidence_repair_prompt_binding,
+            "synthesis_repair_prompt": synthesis_repair_prompt_binding,
             "experiment_lock": {
                 "basename": experiment_lock_path().name,
                 "mechanism": "flock-exclusive-nonblocking",
@@ -125,6 +134,21 @@ def main() -> None:
                 ],
                 evidence_repair_prompt,
             ),
+        )
+    if synthesis_repair_prompt is not None:
+        cases.append(
+            (
+                "synthesis-repair",
+                DEFAULT_REVIEW_SCHEMA,
+                config["primary_reviewer"]["synthesis_generation"],
+                [
+                    (
+                        "occurrence_assessments[0].evidence[0] was not copied "
+                        "from chunk evidence"
+                    )
+                ],
+                synthesis_repair_prompt,
+            )
         )
     case_records: list[dict[str, object]] = []
     for name, schema_path, registered_generation, repair_errors, repair_prompt in cases:

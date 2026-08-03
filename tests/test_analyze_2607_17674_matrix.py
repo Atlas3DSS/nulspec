@@ -166,7 +166,7 @@ def test_recovered_evaluation_is_explicit_and_validated(tmp_path: Path) -> None:
             "arm_id": arm_id,
             "phase": "start",
             "protocol_version": "1.0.0",
-            "exit_code": 0,
+            "exit_code": None,
             "upstream": {"head": "0c0f221d7dc37cd4eb7fb1af3332520bccf4d9fe"},
         },
     )
@@ -261,7 +261,7 @@ def test_recovered_evaluation_rejects_wrong_source_hash(tmp_path: Path) -> None:
     write_json(attempt / "factorization" / "metrics.json", {"global_step": 782})
     for path, phase, exit_code in (
         (attempt / "run.failed.json", "end", 141),
-        (recovery / "recovery.start.json", "start", 0),
+        (recovery / "recovery.start.json", "start", None),
         (recovery / "recovery.complete.json", "end", 0),
     ):
         manifest = {

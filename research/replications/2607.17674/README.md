@@ -8,19 +8,29 @@ The frozen protocol and source manifest live in
 snapshots, checkpoints, and private machine manifests live beneath ignored
 `work/`, `outputs/`, and `private/` directories.
 
-Current state: primary execution is active. The first released-config arm
-completed from the frozen v1.0.0 protocol. Its Distributional Fidelity of
-0.9928 is close to the digitized 0.995 reference, while its Analogical
-Consistency of 0.326171875 is far below the digitized 0.91 reference. The
-second released-config arm remains required before a Track R verdict. Terminal
-status, exact comparisons, limits, and artifact hashes are recorded only from
-the immutable run manifest and post-run analyzer.
+Current state: primary execution is active. Both released-config arms now have
+validated standalone evaluations. Distributional Fidelity is close to the
+digitized 0.995 reference for both model sizes: 0.9928 at 0.5B and 0.9754 at
+1.5B. Analogical Consistency is outside the registered 0.03 numerical tolerance
+for both: 0.326171875 and 0.82421875 versus 0.91. The 1.5B result meets both
+directional thresholds, while the 0.5B result does not. Track R is therefore
+mixed and is not a close numerical reproduction overall. The public v1 matrix
+still cannot test the paper's headline comparison against baseline objectives
+because their executable recipes are absent.
+
+The 1.5B factorization completed unchanged, but the original runner received
+SIGPIPE from its observer-output transport before launching the standalone
+evaluator. A separately labeled operational recovery reran only that unchanged
+evaluator from the hash-bound checkpoint. The failed boundary and recovery
+remain distinct; the analyzer reports `completed_recovered_evaluation`, not an
+ordinary completion.
 
 The first Qwen2.5-0.5B manuscript-method attempt completed all 120,000 frozen
 base-model response generations, then reached a terminal 24 GB device-memory
 failure before its first factorization optimizer step. It has no paper metric
-or scientific weight and will be retried as a fresh exact arm on the 96 GB
-card. Its hashes and disposition are recorded in `PRIMARY_EXECUTION.md`.
+or scientific weight. Its fresh exact retry began on the 96 GB card under the
+same frozen scientific configuration and bounded host-resource envelope. Its
+hashes and disposition are recorded in `PRIMARY_EXECUTION.md`.
 
 Source ordering is fixed: artifact verification, released-code reproduction,
 manuscript-method reproduction, diagnosis, then extension.

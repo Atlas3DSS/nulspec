@@ -171,7 +171,7 @@ def validate_primary_artifacts(
             "arm_id": arm["arm_id"],
             "phase": "start",
             "protocol_version": PROTOCOL_VERSION,
-            "exit_code": 0,
+            "exit_code": None,
         }
         for key, expected in expected_recovery_start.items():
             if recovery_start.get(key) != expected:

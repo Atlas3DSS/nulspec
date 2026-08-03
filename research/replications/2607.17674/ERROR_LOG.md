@@ -1875,3 +1875,136 @@ limitations. Entries are never removed after correction.
   verification failed and applied nothing.
 - **Disposition:** split the analyzer and documentation edits into exact,
   separately verified patches. No runtime artifact was affected.
+
+### LRS-LOCAL-156 — old GitHub CLI rejected a branch-filter flag
+
+- **State:** corrected read-only CI query; no experiment effect
+- **Observation:** this host's installed `gh run list` does not implement the
+  newer `--branch` flag and returned usage text after the PR-state query had
+  succeeded.
+- **Disposition:** requested the supported JSON fields and filtered
+  `headBranch` locally.
+
+### LRS-LOCAL-157 — first fallback CI query requested the wrong name field
+
+- **State:** corrected read-only CI query; no experiment effect
+- **Observation:** the same older client exposes a run's workflow label as
+  `name`, not `workflowName`, and rejected the latter before returning data.
+- **Disposition:** used the client's printed field inventory, selected `name`,
+  bound the result to exact head `a25f9af36df3b9c930260d828e856b75187706aa`,
+  and waited for both checks to pass before compute.
+
+### LRS-LOCAL-158 — first post-recovery analyzer command used the wrong venv path
+
+- **State:** corrected read-only/post-processing command; no artifact effect
+- **Observation:** the command looked for the pinned upstream environment under
+  `work/primary/upstream`, but it lives at `work/upstream`. The shell returned
+  127 before creating either requested analysis file.
+- **Disposition:** corrected the path and reran the analyzer to new,
+  non-overwriting timestamped outputs.
+
+### LRS-LOCAL-159 — first recovered-result analyzer expected zero instead of null
+
+- **State:** analyzer correction required; scientific recovery remains intact
+- **Observation:** `capture_run_manifest.py` records `exit_code: null` at a
+  start boundary because no process has exited. The new analyzer test fixture
+  incorrectly modeled it as zero, so the first real post-recovery analysis
+  labeled the otherwise hash-consistent result `invalid_recovered_evaluation`.
+- **Disposition:** preserve that rejected analyzer snapshot, correct the
+  prospective validator and fixture to require null at start and zero only at
+  terminal completion, then write a new analysis snapshot. No metric, manifest,
+  checkpoint, or recovery log is changed.
+
+### LRS-LOCAL-160 — local verification assumed Ruff was installed in the venv
+
+- **State:** corrected verification command; no artifact effect
+- **Observation:** the first formatting command called `.venv/bin/ruff`, but
+  this repository's lightweight test environment contains pytest while Ruff is
+  installed in the user executable path. The shell returned 127 after printing
+  the intended diff and before formatting or tests ran.
+- **Disposition:** reran Ruff from the discovered executable and pytest from
+  the repository venv; both checks passed.
+
+### LRS-LOCAL-161 — first streamed remote analyzer used a repo-relative venv path
+
+- **State:** corrected post-processing command; no artifact effect
+- **Observation:** the streamed analyzer invocation ran from the repository
+  root but addressed the upstream environment as `work/upstream/.venv`; the
+  actual study-scoped path is
+  `research/replications/2607.17674/work/upstream/.venv`. The shell returned 127
+  before the analyzer could create either requested output.
+- **Disposition:** resolved the interpreter path read-only on the execution
+  host and reran the unchanged corrected analyzer to fresh timestamped paths.
+
+### LRS-LOCAL-162 — streamed analyzer lost its repository-relative source path
+
+- **State:** corrected post-processing invocation; no artifact effect
+- **Observation:** after correcting the interpreter path, invoking the analyzer
+  directly from standard input made Python expose `__file__` as `<stdin>`.
+  The analyzer therefore resolved its protocol root one directory above the
+  repository and stopped on a missing `config.json` before creating output.
+- **Disposition:** retained the streamed, non-mutating execution method but
+  compiled it with the real repository script pathname so its existing
+  `Path(__file__)` contract remains identical to a checked-out invocation.
+
+### LRS-LOCAL-163 — protected-service probe queried the system manager
+
+- **State:** corrected read-only health query; no service or experiment effect
+- **Observation:** the first pre-launch probe queried the system service
+  manager for a unit owned by the user service manager and therefore reported
+  it inactive. A process inventory immediately showed the service was running.
+- **Disposition:** resolved the unit's ownership and repeated the check through
+  `systemctl --user`; it was active with zero restarts.
+
+### LRS-LOCAL-164 — first save-freshness pipeline tripped pipefail
+
+- **State:** corrected read-only health query; no service or experiment effect
+- **Observation:** a `find | sort | head` freshness query ran with pipefail, so
+  `sort` received SIGPIPE after `head` accepted one row and the compound check
+  returned 141 before printing freshness or recent journal output.
+- **Disposition:** replaced the early-closing consumer with one that drains the
+  sorted stream. The corrected query showed a fresh save and no restart.
+
+### LRS-LOCAL-165 — first post-launch attempt selector exposed an escaped sed variable
+
+- **State:** corrected read-only launch verification; no artifact effect
+- **Observation:** nested shell quoting exposed sed's `$p` address to the
+  remote shell under `set -u`, which stopped that status command before reading
+  the new attempt. The primary scope continued independently.
+- **Disposition:** selected the lexicographically latest attempt with a
+  fully-draining `sort | tail` pipeline. The start manifest, immutable revisions,
+  resource limits, process, and protected-service health then verified.
+
+### LRS-LOCAL-166 — first reviewer-binary hash targeted an adjacent build
+
+- **State:** caught before server launch or model request
+- **Observation:** the pre-launch command first hashed a same-commit
+  `build-workstation` executable whose bytes differ from the registered
+  `build-cuda-4090` binary. The mismatch was visible before launch. Its combined
+  model-hash process outlived the output wrapper briefly and then exited
+  normally without holding the experiment lock or GPU.
+- **Disposition:** enumerated the candidate binaries and selected only the one
+  with registered SHA-256
+  `536f89a58f1e5e27bbe35d12965ae9d741ea121aa4e1b6b3dfcf84f1f7464350`.
+
+### LRS-LOCAL-167 — first v1.0.7 context audit added a redundant packet directory
+
+- **State:** corrected before output or generation request
+- **Observation:** the first context-only invocation passed the packet
+  attempt's `packets/` directory, while each immutable review-plan path already
+  begins with `packets/`. It stopped on a nonexistent doubled path before
+  creating `context-audit.json`; the route received no generation request.
+- **Disposition:** passed the packet-attempt root and reran to the same new
+  output path. All 224 initial/repair prompt shapes fit both context limits.
+
+### LRS-LOCAL-168 — recovery detail query assumed the wrong log location
+
+- **State:** corrected read-only documentation query; no artifact effect
+- **Observation:** a compound metadata query correctly printed every requested
+  manifest and hash, then tried to tail `evaluation.log` directly inside the
+  recovery directory. The versioned recovery stores its evaluator stream under
+  its logs subtree, so that final tail returned 1 and skipped later status
+  displays in the same command.
+- **Disposition:** used the already verified recovery manifests and canonical
+  metric/file-manifest hashes for documentation, and queried live workload
+  status separately. No recovery artifact was changed.

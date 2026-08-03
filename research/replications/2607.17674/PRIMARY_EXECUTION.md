@@ -62,6 +62,69 @@ pending arms. Its JSON and Markdown SHA-256 values are respectively
 and
 `fe5e06215998f3a104db718193c769f2ba20bfa78efe94e2c719d5b49f4b2723`.
 
+## Track R Qwen2.5-1.5B recovered evaluation `20260802T093929Z-e506ae76f6ca`
+
+This exact registered released-code arm began at
+`2026-08-02T09:39:29.933519Z` on the RTX PRO 6000. Factorization completed all
+782 batches, wrote its normal checkpoints and metrics, and finished its final
+test evaluation at `2026-08-02T19:08:54Z`. The factorization's best validation
+loss was 0.070696, its test total loss was 0.075813, and its sampled-test
+Distributional Fidelity was 0.9750.
+
+The outer runner then ended at `2026-08-02T19:09:05.441378Z` with exit code
+141, 34,175.508 seconds (9 hours, 29 minutes, 35.508 seconds) after its start.
+The failure was an observer-output transport SIGPIPE, not a CUDA, training,
+checkpoint, or metric failure. It occurred before the standalone evaluator
+could run. The failed boundary remains immutable and is not relabeled as an
+ordinary completion.
+
+Recovery runtime v1.0.2 started a separately labeled attempt at
+`2026-08-02T20:24:48.643241Z`. It verified the failed manifest, factorization
+configuration and metric hashes, exact `epoch-0001.pt` checkpoint hash,
+evaluation config, evaluator source, repository state, and upstream revision.
+It then ran only the unchanged released standalone evaluator with the original
+command semantics. The recovery completed at
+`2026-08-02T21:10:49.856951Z`, an accelerator wall-clock interval of 2,761.214
+seconds (46 minutes, 1.214 seconds), with exit code 0 and no scientific change.
+
+The recovered standalone evaluator returned:
+
+| Metric | Observed | Digitized Figure 3 | Absolute difference | Within 0.03 |
+|---|---:|---:|---:|:---:|
+| Distributional Fidelity | 0.9754 | 0.995 | 0.0196 | yes |
+| Analogical Consistency | 0.82421875 | 0.91 | 0.08578125 | no |
+
+The 1.5B arm therefore supports the registered direction because both metrics
+exceed 0.95 and 0.80 respectively, but it is not a close numerical reproduction
+because Analogical Consistency is outside tolerance. Together, the two Track R
+arms closely reproduce fidelity but not analogical consistency: the 0.5B miss
+is large and the 1.5B miss is smaller but still material under the frozen rule.
+The aggregate analyzer labels released global+token evidence `mixed` and keeps
+the paper's broader objective comparison untestable from the public v1 matrix.
+
+The immutable original start and failed-boundary SHA-256 values are
+`3bd673e0fd29bb957c9b96a6478556586909d853fc1aaaaa82141482bda31738`
+and
+`ad42225ff31b341779f3e6c6affd577b2a82d39a89e0a097459325881ee4fb82`.
+The factorization metrics and recovery source-binding hashes are
+`b3d5f466bd97f8462061972d3839fc7ec747f13873a8c0f541b05175a6b15aa3`
+and
+`57858ed28b2f33bd7539e3ab2c300cbc66b0c879c4db579d882d29bf1d0eb506`.
+The recovery start, recovery completion, evaluation metrics, and evaluation
+file-manifest hashes are respectively
+`23ad0bd8b4028865be7c24cedcdd7757f3d13f14d82f794452dc1f40be56c1ab`,
+`a688aa1a722cbbc87f6a44ff8cc5653d89e1418786bccec593e63490bc61a2ca`,
+`246b27e57e91b4bce37862edc95d0b7e6a2e1ae095a0082e4d0fcfc0c7a210ed`,
+and
+`98a1a9c141565a80a8f733c4637c1d2dd684e879481afb94cc14819901dd0022`.
+
+The corrected append-only matrix snapshot contains one ordinary completion,
+one recovered evaluation, and two pending manuscript-method arms, with no
+invalid terminal records. Its JSON and Markdown SHA-256 values are
+`425fbf209a21ac2d168761e3ed512ef4327b2e757a1a415f4b5b0f9bfde5d7a8`
+and
+`3f65f1aec83d4a1e9dfbfa90d2065373e9c1b9ea707d095e3d09d892ecf782ad`.
+
 ## Track M Qwen2.5-0.5B attempt `20260802T073134Z-382f3d5046a0`
 
 This exact registered manuscript-method arm started at

@@ -735,3 +735,45 @@ completion without copying traces. The frozen v1.0.3 teacher builder remains
 byte-identical until then. GLM, Kimi, Codex, Fable, publication, training use,
 and email remain blocked until all 41 Qwen sources validate. The author email
 still requires explicit human approval after every automated gate.
+
+### Prospective v1.0.9 deterministic grounding prune
+
+The detached v1.0.8 continuation produced valid final reviews for Yakowitz,
+Tree of Thoughts, and RLVR-Beyond-Base. Its first Zhang evidence chunk then
+exhausted all three registered attempts: one response used all 12,288 output
+tokens in reasoning without final content, and two otherwise valid responses
+contained page-ungrounded candidates. The exact grounder rejected two
+candidates in attempt 2 and one in attempt 3. The target-side watcher reported
+the structural failure without treating it as transport loss or creating an
+unregistered restart.
+
+The 218-file, 38,189,877-byte v1.0.8 trace is sealed under manifest SHA-256
+`420db6b750194fb2d40e8312cf0226625441d4b28bbd0f06d0161f78e0451f3b`.
+Its run input and event stream hashes are
+`d11d1b54ecb84c0bc044440d43fca12929e9668a8014f5191762b2b8fa6ffd32`
+and
+`2221d0d5920702e96f6384af4b8c07a245f278e3cb1d39ea6428f2bdfb2cc1f1`.
+No v1.0.8 record is promoted or copied into a fresh trace.
+
+Runtime v1.0.9 reruns the exact six-source tail and changes only one
+post-generation rule. If a parsed evidence object fails solely because one or
+more candidate excerpts are absent from their cited page, the client deletes
+those candidates and reruns the complete frozen validator. It preserves both
+objects and a deletion ledger. It cannot repair any mixed error or create an
+evidence candidate. When deletion empties a finding whose explanation was
+blank, it inserts the single administrative sentence bound in the config.
+
+The prospective config, continuation manifest, amendment, runner, preflight,
+unchanged review contract, and unchanged packet validator hashes are
+respectively
+`288634ffa9c003954134c09537cbea7ca2fac9fe4ac6977de9cc338128dae6e5`,
+`99fe2e5098c10dc8b2cc5c65e2ed7ecf79c689ab1b6262d9dfda35aaf44a2dc6`,
+`8b997710b61aefdd2b578b298019544c4cd1db21b05df07141540973ce4c624f`,
+`ef5a04a241c6b5a96f62e2e3eff9fb5a022eec4ddffdc323a517a39ff59e4eda`,
+`79f6ab060aba1af664b748dbb2a0965e963b025e4ad31a433b40a7acb7fcca5f`,
+`c2d51dcf8fdc2addcf1a86559c743310f8b0b212f24d1c1269e05ed4793b674a`,
+and
+`cb25471a8e604e23d46612745474952f68ff9887f6da1c25f5b6d1261cacff54`.
+Forty-one focused runtime, identity, and contract tests pass. The repository-
+wide suite passes 209 tests and repeats only the separately logged absent
+ignored result fixture from the older SLM-RL study.

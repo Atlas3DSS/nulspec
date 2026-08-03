@@ -10,10 +10,11 @@ the traces, or send email.
   trace-only harness amendment `2607.17674-citation-audit-harness-v1.0.4`.
 - After the preserved v1.0.1, v1.0.2, and v1.0.3 zero-weight calibration
   failures, the terminal v1.0.4 output-budget failure, the terminal v1.0.5
-  exact-line repair failure, and the locally interrupted v1.0.6 trace, use
-  prospective runtime amendment
-  `2607.17674-citation-audit-runtime-v1.0.7` and pass
-  `citation_audit_config.v1.0.7.json` explicitly.
+  exact-line repair failure, the locally interrupted v1.0.6 trace, the sealed
+  v1.0.7 synthesis failure, and the terminal v1.0.8 grounding exhaustion, use
+  runtime amendment `2607.17674-citation-audit-runtime-v1.0.9` and pass
+  `citation_audit_config.v1.0.9.json` explicitly for the six-source
+  continuation.
 - Use teacher hierarchy `2607.17674-citation-teachers-v1.0.3`.
 - Require the exact registered GGUF basename and record its runtime SHA-256.
 - Bind a natively built llama-server from commit
@@ -30,13 +31,16 @@ the traces, or send email.
 - Runtime schema preflight v1.0.1 must acquire that same lock and produce a
   fresh eligible pass before replacement calibration. The earlier concurrent
   parser check is retained as diagnostic-only evidence.
-- Evidence runtime v1.0.7 retains v1.0.6's immutable exact page-labeled
+- Evidence runtime v1.0.9 retains v1.0.6's immutable exact page-labeled
   physical source lines. Every excerpt must come from one line without joining
   a split PDF word. After, and only after, a failed evidence attempt, the runner
   appends the hash-bound conservative repair prompt. Evidence calls have at
-  most three attempts; synthesis calls remain at two. The unchanged client
-  validator grounds every excerpt against the original packet, and every
-  invalid attempt remains immutable with zero weight.
+  most three attempts. If an otherwise valid evidence object fails only page
+  grounding, v1.0.9 deterministically deletes the rejected candidates,
+  preserves both objects plus a deletion ledger, and reruns the full validator.
+  It cannot repair a mixed error or create evidence. Synthesis retains the
+  v1.0.8 candidate-copy repair and three-attempt ceiling. Every invalid attempt
+  remains immutable with zero weight.
 - Resume identity excludes exactly llama.cpp's process-random
   `props.media_marker` from equality and records its observed value. Any other
   runtime difference still fails closed. An unmatched phase emits one
@@ -123,7 +127,9 @@ python scripts/summarize_2607_17674_qwen_trace.py \
 
 ```bash
 python scripts/run_2607_17674_qwen_citation_audit.py \
-  [same bound arguments] --phase remaining
+  [same bound arguments] \
+  --config protocols/2607.17674/citation_audit_config.v1.0.9.json \
+  --phase continuation
 
 python scripts/build_2607_17674_citation_teacher_packet.py \
   --qwen-trace-root research/replications/2607.17674/work/citation-qwen/attempt-ID \

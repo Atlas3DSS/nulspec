@@ -69,10 +69,11 @@ def test_v107_resume_identity_ignores_only_media_marker() -> None:
     assert not RUNNER.run_inputs_match(existing, candidate, config)
 
 
-def test_v108_continuation_retains_the_same_narrow_resume_policy() -> None:
+@pytest.mark.parametrize("version", ("1.0.8", "1.0.9"))
+def test_continuation_retains_the_same_narrow_resume_policy(version: str) -> None:
     config = json.loads(
         (
-            WORKSPACE / "protocols/2607.17674/citation_audit_config.v1.0.8.json"
+            WORKSPACE / f"protocols/2607.17674/citation_audit_config.v{version}.json"
         ).read_text()
     )
     existing = {

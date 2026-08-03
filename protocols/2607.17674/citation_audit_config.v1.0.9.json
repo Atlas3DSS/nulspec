@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "paper_id": "2607.17674",
+  "paper_version": "v1",
+  "protocol_version": "1.0.9",
+  "prior_protocol_tag": "2607.17674-citation-audit-runtime-v1.0.8",
+  "protocol_tag": "2607.17674-citation-audit-runtime-v1.0.9",
+  "inventory_sha256": "471117efcde4eb55e8a6742dc00ffc0c291f30c821e071f56834c433cdabe43a",
+  "chunking": {
+    "algorithm": "contiguous-unicode-line-aware-v1",
+    "maximum_utf8_bytes": 48000,
+    "overlap_characters": 0,
+    "page_delimiter": "form-feed",
+    "page_number_origin": 1,
+    "coverage_requirement": "every extracted character exactly once"
+  },
+  "primary_reviewer": {
+    "logical_family": "Qwen-family 27B local GGUF",
+    "known_gguf_basename": "Qwen3.6-27B-Heretic2-Uncensored-Finetune-Thinking.Q4_K_M.gguf",
+    "official_upstream_release": false,
+    "minimum_context_tokens": 50000,
+    "minimum_gpu_offload_layers": 999,
+    "chat_template_kwargs": {
+      "enable_thinking": true
+    },
+    "seed": 314159,
+    "evidence_packet_presentation": {
+      "mode": "page_labeled_exact_source_lines_v1",
+      "raw_text_field_in_model_view": false,
+      "raw_page_text_field_in_model_view": false,
+      "line_split_algorithm": "python-splitlines-keepends-true-v1",
+      "source_line_representation": "ordered-json-string-array",
+      "line_number_origin": 1,
+      "omitted_characters": "form-feed page delimiters only",
+      "supplemental_prompt_relative_path": "protocols/2607.17674/prompts/citation_evidence_runtime_v1.0.4.txt",
+      "supplemental_prompt_sha256": "08e985e57d86270ad46fe5475ef96580bc8a5257144d1768e665099cd311baab"
+    },
+    "evidence_repair": {
+      "mode": "conservative_exact_line_v1",
+      "prompt_relative_path": "protocols/2607.17674/prompts/citation_repair_runtime_v1.0.6.txt",
+      "prompt_sha256": "32fb144e83ab4f0b272248e8cb54e8a10074e210e598161a353924fc6ee9cf28"
+    },
+    "deterministic_evidence_repair": {
+      "mode": "drop_ungrounded_candidates_v1",
+      "trigger": "grounding_errors_only",
+      "empty_evidence_explanation": "No client-grounded evidence candidate remained after deterministic pruning.",
+      "preserve_original_model_object": true
+    },
+    "synthesis_repair": {
+      "mode": "conservative_candidate_copy_v1",
+      "prompt_relative_path": "protocols/2607.17674/prompts/citation_synthesis_repair_runtime_v1.0.8.txt",
+      "prompt_sha256": "28432daddea12ae4eff77c55715bfb20311c54280d303e2c9572226069e9e4ba"
+    },
+    "evidence_generation": {
+      "temperature": 0,
+      "top_p": 1,
+      "top_k": 0,
+      "maximum_output_tokens": 12288,
+      "response_format_mode": "structure_only_json_schema"
+    },
+    "synthesis_generation": {
+      "temperature": 0,
+      "top_p": 1,
+      "top_k": 0,
+      "maximum_output_tokens": 12288,
+      "response_format_mode": "structure_only_json_schema"
+    },
+    "first_event_timeout_seconds": 120,
+    "stream_idle_timeout_seconds": 120,
+    "total_response_timeout_seconds": 900,
+    "maximum_attempts_per_call": 2,
+    "maximum_evidence_attempts_per_call": 3,
+    "maximum_synthesis_attempts_per_call": 3,
+    "retry_scope": "structural or transport invalidity only"
+  },
+  "resume_identity": {
+    "comparison_mode": "stable-input-minus-registered-volatile-route-props-v1",
+    "volatile_route_props_excluded_from_equality": [
+      "media_marker"
+    ],
+    "record_excluded_values_on_resume": true
+  },
+  "continuation": {
+    "mode": "sealed_prior_trace_tail_v1",
+    "manifest_relative_path": "protocols/2607.17674/citation_continuation_manifest.v1.0.9.json",
+    "manifest_sha256": "99fe2e5098c10dc8b2cc5c65e2ed7ecf79c689ab1b6262d9dfda35aaf44a2dc6"
+  },
+  "calibration_keys": [
+    "allman2009latentStructure",
+    "hu2022lora",
+    "kingma2013vae",
+    "qwen25technicalreport",
+    "tuyls2025representationExploration",
+    "wang2023selfConsistency"
+  ],
+  "calibration_gate": "sealed v1.0.7 calibration plus its exact-replay outer gate must validate before the six-source continuation",
+  "validation": {
+    "evidence_excerpt_match": "Unicode NFKC plus whitespace collapse, exact substring",
+    "occurrence_coverage": "exact set equality",
+    "chunk_coverage": "exact ordered partition of acquired text",
+    "invalid_attempt_weight": 0
+  }
+}

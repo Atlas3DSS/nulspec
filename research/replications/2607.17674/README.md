@@ -144,12 +144,17 @@ retries and permits a third evidence attempt; synthesis remains capped at two.
 Its fresh calibration passed, but the remaining pass was stopped locally when
 an unrelated Windows GPU workload made registered request timeouts likely. The
 restart also exposed that the harness had bound llama.cpp's process-random,
-nonsemantic `props.media_marker` inside stable run identity. Prospective runtime
-v1.0.7 removes exactly that nonce from resume equality, records it on every
-resume, and prevents duplicate phase-start events. Nothing from v1.0.6 will be
-reused; a fresh calibration, context audit, and exclusive-lock preflight are
-required. No teacher input, training projection, publication, or email is yet
-authorized.
+nonsemantic `props.media_marker` inside stable run identity. Runtime v1.0.7
+removes exactly that nonce from resume equality, records it on every resume,
+and prevents duplicate phase-start events. It produced 35 valid final reviews
+before failing synthesis on an evidence-free citation. Runtime v1.0.8 sealed
+those 35, added a conservative synthesis repair, and started an exact
+six-source tail; it completed three before exhausting three page-grounding
+repairs on Zhang et al. Runtime v1.0.9 preserves that failed trace and reruns
+the six. Its only new behavior deterministically deletes evidence candidates
+that fail the unchanged page grounder, records every deletion, and revalidates
+the untouched remainder. It cannot add evidence or repair any mixed error. No
+teacher input, training projection, publication, or email is yet authorized.
 
 The paper-to-code comparison is recorded in `IMPLEMENTATION_AUDIT.md`. It maps
 the equations and headline metrics to the pinned implementation and freezes the

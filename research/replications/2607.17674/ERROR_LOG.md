@@ -2177,3 +2177,33 @@ limitations. Entries are never removed after correction.
   manifest, but no teacher receives it. After 41/41 Qwen completion, composite
   projection will be a separately amended, configured, tested, and tagged
   teacher runtime.
+
+### LRS-LOCAL-189 — v1.0.8 exhausted grounding repairs on source 39
+
+- **State:** immutable zero-weight attempts; v1.0.9 fresh tail pending
+- **Observation:** the v1.0.8 continuation completed valid final reviews for
+  the first three pending sources. On the first
+  `zhang2024graphInducedVae` evidence chunk, attempt 1 spent the full output
+  allowance in reasoning and returned no final content. Attempts 2 and 3
+  returned otherwise valid evidence objects with two and one page-ungrounded
+  candidates. The frozen validator rejected all three and the phase failed
+  closed. The target-side watcher surfaced the structural terminal state and
+  correctly did not reinterpret it as transport failure.
+- **Disposition:** seal all 218 files and 38,189,877 bytes under manifest hash
+  `420db6b750194fb2d40e8312cf0226625441d4b28bbd0f06d0161f78e0451f3b`.
+  Do not resume or promote that trace. Version a fresh six-source v1.0.9 tail
+  whose only new behavior is a fully traced, deterministic deletion of
+  candidates rejected by the existing page grounder. This is a local
+  reviewer/harness limitation, not an upstream-paper error.
+
+### LRS-LOCAL-190 — first deterministic-repair integration fixture lacked a route URL
+
+- **State:** corrected test fixture; no runtime or trace effect
+- **Observation:** the first unit-level integration test replaced the stream
+  transport but supplied only a route label and model alias. Production code
+  resolves the route URL before calling the replaced transport, so the test
+  failed with `KeyError: 'base_url'` before exercising repair behavior.
+- **Disposition:** add the loopback URL required by the real route contract.
+  The integration test then passed and verified preservation of the model
+  object, repair record, accepted hash, terminal attempt record, and repair
+  event.

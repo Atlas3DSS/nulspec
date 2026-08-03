@@ -23,6 +23,8 @@ from typing import Any, TextIO
 from urllib.parse import urlsplit
 
 from citation_review_contract import (
+    normalized_text,
+    page_text,
     validate_evidence_record,
     validate_review_record,
 )
@@ -31,7 +33,7 @@ from validate_2607_17674_citation_packets import validate_packet_tree
 WORKSPACE = Path(__file__).resolve().parents[1]
 PROTOCOL_ROOT = WORKSPACE / "protocols" / "2607.17674"
 STUDY_WORK_ROOT = WORKSPACE / "research" / "replications" / "2607.17674" / "work"
-DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.8.json"
+DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.9.json"
 DEFAULT_EVIDENCE_SCHEMA = PROTOCOL_ROOT / "citation_evidence_chunk.schema.json"
 DEFAULT_REVIEW_SCHEMA = PROTOCOL_ROOT / "citation_review.schema.json"
 DEFAULT_EVIDENCE_PROMPT = PROTOCOL_ROOT / "prompts" / "citation_evidence_system.txt"
@@ -44,6 +46,7 @@ RUNTIME_AMENDMENTS = {
     "1.0.6": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.6.md",
     "1.0.7": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.7.md",
     "1.0.8": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.8.md",
+    "1.0.9": PROTOCOL_ROOT / "CITATION_AUDIT_RUNTIME_AMENDMENT_v1.0.9.md",
 }
 SUPPORTED_RUNTIME_PROTOCOL_VERSIONS = frozenset({"1.0.1", *RUNTIME_AMENDMENTS})
 EVENT_LOCK = threading.Lock()
@@ -272,6 +275,89 @@ def effective_synthesis_repair_prompt(
         "relative_path": relative,
         "sha256": actual_sha256,
     }
+
+
+def deterministic_evidence_repair_policy(
+    config: dict[str, Any],
+) -> dict[str, Any] | None:
+    """Validate the optional non-generative grounding repair registration."""
+
+    repair = config["primary_reviewer"].get("deterministic_evidence_repair")
+    if repair is None:
+        return None
+    expected = {
+        "mode": "drop_ungrounded_candidates_v1",
+        "trigger": "grounding_errors_only",
+        "empty_evidence_explanation": (
+            "No client-grounded evidence candidate remained after deterministic "
+            "pruning."
+        ),
+        "preserve_original_model_object": True,
+    }
+    if repair != expected:
+        raise AuditError("unsupported deterministic evidence repair policy")
+    return copy.deepcopy(repair)
+
+
+def prune_ungrounded_evidence_candidates(
+    value: dict[str, Any],
+    packet: dict[str, Any],
+    policy: dict[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any]] | None:
+    """Drop only candidates rejected by the frozen page-grounding check."""
+
+    initial_errors = validate_evidence_record(value, packet)
+    if not initial_errors or any(
+        not error.startswith("occurrence_findings[")
+        or not error.endswith(".excerpt is not grounded on its page")
+        for error in initial_errors
+    ):
+        return None
+
+    repaired = copy.deepcopy(value)
+    removals: list[dict[str, Any]] = []
+    inserted_explanations: list[str] = []
+    for finding in repaired["occurrence_findings"]:
+        retained: list[dict[str, Any]] = []
+        for candidate_index, candidate in enumerate(finding["evidence_candidates"]):
+            page_number = int(candidate["page_number"])
+            excerpt = str(candidate["excerpt"])
+            if normalized_text(excerpt) in normalized_text(
+                page_text(packet, page_number)
+            ):
+                retained.append(candidate)
+                continue
+            removals.append(
+                {
+                    "occurrence_id": finding["occurrence_id"],
+                    "original_candidate_index": candidate_index,
+                    "page_number": page_number,
+                    "candidate_sha256": sha256_bytes(encoded_json(candidate)),
+                    "excerpt_sha256": sha256_bytes(excerpt.encode("utf-8")),
+                }
+            )
+        finding["evidence_candidates"] = retained
+        if not retained and not finding["no_relevant_evidence_explanation"].strip():
+            finding["no_relevant_evidence_explanation"] = policy[
+                "empty_evidence_explanation"
+            ]
+            inserted_explanations.append(str(finding["occurrence_id"]))
+
+    repaired_errors = validate_evidence_record(repaired, packet)
+    if repaired_errors:
+        return None
+    record = {
+        "schema_version": 1,
+        "mode": policy["mode"],
+        "trigger": policy["trigger"],
+        "input_model_object_sha256": sha256_bytes(encoded_json(value)),
+        "output_repaired_object_sha256": sha256_bytes(encoded_json(repaired)),
+        "initial_errors": initial_errors,
+        "removed_candidates": removals,
+        "inserted_empty_explanations_for_occurrences": inserted_explanations,
+        "model_fields_other_than_recorded_candidate_deletions_or_empty_explanations_changed": False,
+    }
+    return repaired, record
 
 
 def model_facing_evidence_packet(
@@ -803,6 +889,8 @@ def run_validated_call(
     timeouts: dict[str, float],
     maximum_attempts: int,
     repair_prompt: str | None,
+    deterministic_evidence_policy: dict[str, Any] | None,
+    deterministic_evidence_packet: dict[str, Any] | None,
     registered_context_tokens: int,
 ) -> dict[str, Any]:
     accepted_path = stage_root / "accepted.json"
@@ -867,6 +955,7 @@ def run_validated_call(
         started_at = utc_now()
         transport: dict[str, Any] | None = None
         parsed: dict[str, Any] | None = None
+        deterministic_repair: dict[str, Any] | None = None
         errors: list[str] = []
         try:
             context_gate = request_context_gate(
@@ -889,6 +978,36 @@ def run_validated_call(
             write_new_json(attempt_root / "assembled-response.json", transport)
             parsed = parse_exact_object(str(transport["content"]))
             errors = list(validate(parsed))
+            if (
+                errors
+                and deterministic_evidence_policy is not None
+                and deterministic_evidence_packet is not None
+            ):
+                repaired = prune_ungrounded_evidence_candidates(
+                    parsed,
+                    deterministic_evidence_packet,
+                    deterministic_evidence_policy,
+                )
+                if repaired is not None:
+                    write_new_json(attempt_root / "model-parsed.json", parsed)
+                    parsed, deterministic_repair = repaired
+                    write_new_json(
+                        attempt_root / "deterministic-repair.json",
+                        deterministic_repair,
+                    )
+                    append_event(
+                        event_log,
+                        "qwen_deterministic_evidence_repair_applied",
+                        stage=str(stage_root.relative_to(event_log.parent)),
+                        attempt_id=attempt_id,
+                        removed_candidate_count=len(
+                            deterministic_repair["removed_candidates"]
+                        ),
+                        repair_record_sha256=sha256_file(
+                            attempt_root / "deterministic-repair.json"
+                        ),
+                    )
+                    errors = list(validate(parsed))
             if errors:
                 write_new_json(attempt_root / "invalid-parsed.json", parsed)
             else:
@@ -906,6 +1025,7 @@ def run_validated_call(
             "transport": transport,
             "valid": not errors,
             "errors": errors,
+            "deterministic_repair": deterministic_repair,
             "prior_attempt_errors": prior_errors or [],
             "artifacts": artifact_bindings(attempt_root),
         }
@@ -995,6 +1115,7 @@ def review_source(
     source_root = trace_root / "sources" / key
     source_root.mkdir(parents=True, exist_ok=True)
     evidence_records: list[dict[str, Any]] = []
+    deterministic_evidence_policy = deterministic_evidence_repair_policy(config)
     for chunk in source_plan["chunks"]:
         packet_path = packet_root / str(chunk["relative_path"])
         if sha256_file(packet_path) != chunk["packet_sha256"]:
@@ -1036,6 +1157,8 @@ def review_source(
                 )
             ),
             repair_prompt=evidence_repair_prompt,
+            deterministic_evidence_policy=deterministic_evidence_policy,
+            deterministic_evidence_packet=packet,
             registered_context_tokens=int(
                 config["primary_reviewer"]["minimum_context_tokens"]
             ),
@@ -1075,6 +1198,8 @@ def review_source(
             )
         ),
         repair_prompt=synthesis_repair_prompt,
+        deterministic_evidence_policy=None,
+        deterministic_evidence_packet=None,
         registered_context_tokens=int(
             config["primary_reviewer"]["minimum_context_tokens"]
         ),
@@ -1127,7 +1252,10 @@ def resume_identity_policy(config: dict[str, Any]) -> tuple[str, ...]:
         "volatile_route_props_excluded_from_equality": ["media_marker"],
         "record_excluded_values_on_resume": True,
     }
-    if config.get("protocol_version") not in {"1.0.7", "1.0.8"} or policy != expected:
+    if (
+        config.get("protocol_version") not in {"1.0.7", "1.0.8", "1.0.9"}
+        or policy != expected
+    ):
         raise AuditError("resume-identity policy is unregistered")
     return ("media_marker",)
 
@@ -1380,8 +1508,11 @@ def validate_continuation(
     packet_root: Path,
 ) -> dict[str, Any]:
     continuation = config.get("continuation")
-    if config.get("protocol_version") != "1.0.8" or not isinstance(continuation, dict):
-        raise AuditError("continuation requires runtime protocol v1.0.8")
+    runtime_protocol_version = config.get("protocol_version")
+    if runtime_protocol_version not in {"1.0.8", "1.0.9"} or not isinstance(
+        continuation, dict
+    ):
+        raise AuditError("continuation requires runtime protocol v1.0.8 or v1.0.9")
     if continuation.get("mode") != "sealed_prior_trace_tail_v1":
         raise AuditError("citation continuation mode is unregistered")
     relative = continuation.get("manifest_relative_path")
@@ -1404,7 +1535,8 @@ def validate_continuation(
     if (
         manifest.get("schema_version") != 1
         or manifest.get("paper_id") != "2607.17674"
-        or manifest.get("continuation_runtime_protocol_version") != "1.0.8"
+        or manifest.get("continuation_runtime_protocol_version")
+        != runtime_protocol_version
         or manifest.get("prior_runtime_protocol_version") != "1.0.7"
     ):
         raise AuditError("citation continuation manifest identity differs")
@@ -1653,10 +1785,17 @@ def main() -> None:
         or config.get("protocol_version") not in SUPPORTED_RUNTIME_PROTOCOL_VERSIONS
     ):
         raise SystemExit("citation runtime config identity or version differs")
-    if args.phase == "continuation" and config.get("protocol_version") != "1.0.8":
-        raise SystemExit("continuation phase requires citation runtime v1.0.8")
-    if config.get("protocol_version") == "1.0.8" and args.phase != "continuation":
-        raise SystemExit("citation runtime v1.0.8 is registered only for continuation")
+    if args.phase == "continuation" and config.get("protocol_version") not in {
+        "1.0.8",
+        "1.0.9",
+    }:
+        raise SystemExit(
+            "continuation phase requires citation runtime v1.0.8 or v1.0.9"
+        )
+    if config.get("protocol_version") in {"1.0.8", "1.0.9"} and args.phase != (
+        "continuation"
+    ):
+        raise SystemExit("citation runtime v1.0.8/v1.0.9 is continuation-only")
     try:
         volatile_route_props = resume_identity_policy(config)
     except AuditError as error:
@@ -1700,6 +1839,7 @@ def main() -> None:
     synthesis_repair_prompt, synthesis_repair_prompt_binding = (
         effective_synthesis_repair_prompt(config)
     )
+    deterministic_evidence_policy = deterministic_evidence_repair_policy(config)
     synthesis_prompt = DEFAULT_SYNTHESIS_PROMPT.read_text(encoding="utf-8")
 
     trace_root.mkdir(parents=True, exist_ok=True)
@@ -1719,6 +1859,7 @@ def main() -> None:
         "evidence_prompt": evidence_prompt_binding,
         "evidence_repair_prompt": evidence_repair_prompt_binding,
         "synthesis_repair_prompt": synthesis_repair_prompt_binding,
+        "deterministic_evidence_repair": deterministic_evidence_policy,
         "continuation": continuation_binding,
         "review_plan_sha256": sha256_file(review_plan_path),
         "packet_validation": packet_validation,
@@ -1858,8 +1999,11 @@ def main() -> None:
                 config,
                 event_log,
             )
+        current_runtime_version = str(config["protocol_version"])
         current_records = [
-            validate_completed_source(source, packet_root, trace_root, "1.0.8")
+            validate_completed_source(
+                source, packet_root, trace_root, current_runtime_version
+            )
             for source in continuation_sources
         ]
         final_records = sorted(
@@ -1875,7 +2019,7 @@ def main() -> None:
             "schema_version": 2,
             "paper_id": "2607.17674",
             "protocol_version": "1.0.1",
-            "runtime_protocol_version": "1.0.8",
+            "runtime_protocol_version": current_runtime_version,
             "completed_at_utc": utc_now(),
             "completion_mode": "sealed_prior_trace_tail_v1",
             "source_count": len(final_records),

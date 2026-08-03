@@ -485,6 +485,7 @@ def test_v105_only_expands_evidence_output_ceiling() -> None:
         "1.0.6",
         "1.0.7",
         "1.0.8",
+        "1.0.9",
     }
 
 
@@ -562,6 +563,245 @@ def test_v108_only_adds_sealed_tail_and_synthesis_repair() -> None:
     assert amended["primary_reviewer"]["maximum_attempts_per_call"] == 2
     assert amended["continuation"]["mode"] == "sealed_prior_trace_tail_v1"
     assert RUNNER.RUNTIME_AMENDMENTS["1.0.8"].is_file()
+
+
+def test_v109_only_adds_deterministic_grounding_prune() -> None:
+    protocol_root = WORKSPACE / "protocols/2607.17674"
+    prior = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.8.json").read_text()
+    )
+    amended = json.loads(
+        (protocol_root / "citation_audit_config.v1.0.9.json").read_text()
+    )
+    normalized = copy.deepcopy(amended)
+    normalized["protocol_version"] = prior["protocol_version"]
+    normalized["prior_protocol_tag"] = prior["prior_protocol_tag"]
+    normalized["protocol_tag"] = prior["protocol_tag"]
+    normalized["continuation"] = prior["continuation"]
+    normalized["primary_reviewer"].pop("deterministic_evidence_repair")
+    assert normalized == prior
+    assert amended["protocol_version"] == "1.0.9"
+    assert amended["primary_reviewer"]["deterministic_evidence_repair"] == {
+        "mode": "drop_ungrounded_candidates_v1",
+        "trigger": "grounding_errors_only",
+        "empty_evidence_explanation": (
+            "No client-grounded evidence candidate remained after deterministic "
+            "pruning."
+        ),
+        "preserve_original_model_object": True,
+    }
+    assert RUNNER.deterministic_evidence_repair_policy(prior) is None
+    assert RUNNER.RUNTIME_AMENDMENTS["1.0.9"].is_file()
+
+
+def grounding_packet() -> dict:
+    return {
+        "source_identity": {"citation_key": "paper2026"},
+        "target_occurrences": [{"occurrence_id": "paper2026:occurrence-001"}],
+        "source_chunk": {
+            "chunk_id": "paper2026:chunk-0001",
+            "text": "Header\nThe method improves accuracy under condition A.\n",
+            "page_spans": [
+                {
+                    "page_number": 1,
+                    "chunk_character_start": 0,
+                    "chunk_character_end": 55,
+                }
+            ],
+        },
+    }
+
+
+def grounding_record() -> dict:
+    return {
+        "schema_version": 1,
+        "review_type": "citation_evidence_chunk",
+        "citation_key": "paper2026",
+        "chunk_id": "paper2026:chunk-0001",
+        "chunk_summary": "A conditional accuracy result.",
+        "source_identity_observations": "Title fragment is consistent.",
+        "occurrence_findings": [
+            {
+                "occurrence_id": "paper2026:occurrence-001",
+                "claim_focus": "The method improves accuracy.",
+                "evidence_candidates": [
+                    {
+                        "page_number": 1,
+                        "section_or_heading": "Results",
+                        "excerpt": "The method improves accuracy under condition A.",
+                        "relevance": "Direct but qualified support.",
+                        "stance": "qualifies_claim",
+                    },
+                    {
+                        "page_number": 1,
+                        "section_or_heading": "Results",
+                        "excerpt": "This sentence was invented.",
+                        "relevance": "Purported support.",
+                        "stance": "supports_claim",
+                    },
+                ],
+                "no_relevant_evidence_explanation": "",
+            }
+        ],
+        "coverage_confirmation": True,
+        "unreviewable_text_reason": "",
+    }
+
+
+def test_v109_prune_removes_only_ungrounded_candidates_and_preserves_input() -> None:
+    config = json.loads(
+        (
+            WORKSPACE / "protocols/2607.17674/citation_audit_config.v1.0.9.json"
+        ).read_text()
+    )
+    policy = RUNNER.deterministic_evidence_repair_policy(config)
+    assert policy is not None
+    original = grounding_record()
+    untouched = copy.deepcopy(original)
+
+    result = RUNNER.prune_ungrounded_evidence_candidates(
+        original, grounding_packet(), policy
+    )
+
+    assert result is not None
+    repaired, repair_record = result
+    assert original == untouched
+    assert RUNNER.validate_evidence_record(repaired, grounding_packet()) == []
+    candidates = repaired["occurrence_findings"][0]["evidence_candidates"]
+    assert [candidate["excerpt"] for candidate in candidates] == [
+        "The method improves accuracy under condition A."
+    ]
+    assert len(repair_record["removed_candidates"]) == 1
+    assert repair_record["input_model_object_sha256"] == RUNNER.sha256_bytes(
+        RUNNER.encoded_json(original)
+    )
+    assert repair_record["output_repaired_object_sha256"] == RUNNER.sha256_bytes(
+        RUNNER.encoded_json(repaired)
+    )
+
+
+def test_v109_prune_inserts_fixed_explanation_only_when_all_candidates_drop() -> None:
+    config = json.loads(
+        (
+            WORKSPACE / "protocols/2607.17674/citation_audit_config.v1.0.9.json"
+        ).read_text()
+    )
+    policy = RUNNER.deterministic_evidence_repair_policy(config)
+    assert policy is not None
+    value = grounding_record()
+    value["occurrence_findings"][0]["evidence_candidates"] = [
+        value["occurrence_findings"][0]["evidence_candidates"][1]
+    ]
+
+    result = RUNNER.prune_ungrounded_evidence_candidates(
+        value, grounding_packet(), policy
+    )
+
+    assert result is not None
+    repaired, repair_record = result
+    finding = repaired["occurrence_findings"][0]
+    assert finding["evidence_candidates"] == []
+    assert (
+        finding["no_relevant_evidence_explanation"]
+        == policy["empty_evidence_explanation"]
+    )
+    assert repair_record["inserted_empty_explanations_for_occurrences"] == [
+        "paper2026:occurrence-001"
+    ]
+
+
+def test_v109_prune_rejects_mixed_structural_errors() -> None:
+    config = json.loads(
+        (
+            WORKSPACE / "protocols/2607.17674/citation_audit_config.v1.0.9.json"
+        ).read_text()
+    )
+    policy = RUNNER.deterministic_evidence_repair_policy(config)
+    assert policy is not None
+    value = grounding_record()
+    value["citation_key"] = "wrong"
+
+    assert (
+        RUNNER.prune_ungrounded_evidence_candidates(value, grounding_packet(), policy)
+        is None
+    )
+
+
+def test_v109_validated_call_records_deterministic_repair(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = json.loads(
+        (
+            WORKSPACE / "protocols/2607.17674/citation_audit_config.v1.0.9.json"
+        ).read_text()
+    )
+    policy = RUNNER.deterministic_evidence_repair_policy(config)
+    assert policy is not None
+    model_value = grounding_record()
+
+    monkeypatch.setattr(
+        RUNNER,
+        "request_context_gate",
+        lambda route, request, registered: {
+            "passed": True,
+            "registered_context_tokens": registered,
+        },
+    )
+    monkeypatch.setattr(
+        RUNNER,
+        "stream_completion",
+        lambda *args: {
+            "http_status": 200,
+            "model": "qwen-test",
+            "content": json.dumps(model_value),
+            "reasoning_content": "",
+            "finish_reasons": ["stop"],
+            "usage": {"prompt_tokens": 1, "completion_tokens": 1},
+        },
+    )
+    stage_root = tmp_path / "trace/sources/paper/evidence/chunk-0001"
+    event_log = tmp_path / "trace/events.jsonl"
+
+    repaired = RUNNER.run_validated_call(
+        route={
+            "label": "local",
+            "model_alias": "qwen-test",
+            "base_url": "http://127.0.0.1:8080",
+        },
+        packet={"model_view": "does not contain raw source text"},
+        schema={"type": "object"},
+        system_prompt="system",
+        generation={
+            "temperature": 0,
+            "top_p": 1,
+            "top_k": 0,
+            "maximum_output_tokens": 128,
+        },
+        chat_template_kwargs={"enable_thinking": True},
+        stage_root=stage_root,
+        event_log=event_log,
+        validate=lambda value: RUNNER.validate_evidence_record(
+            value, grounding_packet()
+        ),
+        timeouts={"first": 1, "idle": 1, "total": 1},
+        maximum_attempts=1,
+        repair_prompt=None,
+        deterministic_evidence_policy=policy,
+        deterministic_evidence_packet=grounding_packet(),
+        registered_context_tokens=50000,
+    )
+
+    assert RUNNER.validate_evidence_record(repaired, grounding_packet()) == []
+    assert (stage_root / "attempt-01/model-parsed.json").is_file()
+    repair_path = stage_root / "attempt-01/deterministic-repair.json"
+    assert repair_path.is_file()
+    attempt = json.loads((stage_root / "attempt-01/attempt-record.json").read_text())
+    assert attempt["valid"] is True
+    assert attempt["deterministic_repair"] == json.loads(repair_path.read_text())
+    assert json.loads((stage_root / "accepted.json").read_text())["attempt_id"] == (
+        "attempt-01"
+    )
+    assert "qwen_deterministic_evidence_repair_applied" in event_log.read_text()
 
 
 def test_v108_binds_synthesis_repair_only_after_synthesis_failure() -> None:

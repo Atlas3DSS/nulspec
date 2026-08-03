@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "paper_id": "2607.17674",
+  "paper_version": "v1",
+  "continuation_runtime_protocol_version": "1.0.9",
+  "prior_runtime_protocol_version": "1.0.7",
+  "prior_protocol_tag": "2607.17674-citation-audit-runtime-v1.0.7",
+  "prior_trace_relative_path": "citation-qwen/attempt-20260803T083400Z-workstation-native-f535774-runtime-v1.0.7",
+  "prior_trace_tree_manifest": {
+    "relative_path": "citation-qwen/seals/v107-tail-failure.file-manifest.json",
+    "sha256": "4979458f79c87f77a891d31134e22409c76ab20110db7cca901c2acda75dc91d",
+    "file_count": 1877,
+    "total_bytes": 363164131
+  },
+  "prior_run_input_sha256": "e9a51ba113f7f433ba770e0d00e861feb4bc0d7aff618c4456e723b859d7d2d3",
+  "prior_events_sha256": "b873f70a5886ef51ce9f291746cf58bd0002c4c012737e1b43d7f26364d1a906",
+  "prior_terminal_event": {
+    "event": "qwen_phase_failed",
+    "phase": "remaining"
+  },
+  "outer_gate": {
+    "relative_path": "citation-qwen/outer-gate-20260803T-v107-exact-replay.json",
+    "sha256": "c7455705868d4d1d7f03aa60a9f9b929d275c653162682a2c482041d76a364dc",
+    "required_gate": "pass_exact_replay_with_prior_mandatory_outer_corrections",
+    "remaining_phase_authorized": true
+  },
+  "population": {
+    "total_sources": 41,
+    "carried_valid_sources": 35,
+    "pending_sources": 6,
+    "citation_occurrences": 74,
+    "evidence_chunks": 112
+  },
+  "carried_source_selection": "all prior final-review.json records not named in pending_citation_keys, each revalidated against its immutable source plan and accepted evidence records",
+  "pending_citation_keys": [
+    "yakowitz1968mixtures",
+    "yao2023treeOfThoughts",
+    "yue2025rlvrBeyondBase",
+    "zhang2024graphInducedVae",
+    "zhao2017dialogCvae",
+    "zhao2019infovae"
+  ],
+  "continuation_rules": {
+    "copy_prior_model_output_into_new_trace": false,
+    "mutate_prior_trace": false,
+    "rerun_pending_sources_from_immutable_packets": true,
+    "teacher_stage_requires_logical_41_source_completion": true,
+    "prior_invalid_attempt_weight": 0
+  }
+}

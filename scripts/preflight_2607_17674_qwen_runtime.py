@@ -28,7 +28,7 @@ from run_2607_17674_qwen_citation_audit import (
     write_new_text,
 )
 
-DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.8.json"
+DEFAULT_CONFIG = PROTOCOL_ROOT / "citation_audit_config.v1.0.9.json"
 GRAMMAR_FAILURE_MARKERS = (
     "error parsing grammar",
     "failed to parse grammar",
@@ -64,8 +64,9 @@ def main() -> None:
         "1.0.6",
         "1.0.7",
         "1.0.8",
+        "1.0.9",
     }:
-        raise SystemExit("runtime preflight requires config v1.0.2 through v1.0.8")
+        raise SystemExit("runtime preflight requires config v1.0.2 through v1.0.9")
 
     try:
         evidence_repair_prompt, evidence_repair_prompt_binding = (

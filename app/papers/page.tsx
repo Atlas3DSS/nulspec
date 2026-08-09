@@ -9,22 +9,22 @@ import { getLatestStudy } from "@/lib/study";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Candidate papers",
+  title: "Paper nominations",
   description:
-    "Review and vote on papers under consideration for independent computational replication by NULSPEC.",
+    "Review and vote on nominated papers. Votes record interest but do not determine NULSPEC eligibility, selection, protocols, or verdicts.",
   alternates: {
     canonical: "/papers",
   },
   openGraph: {
-    title: "Candidate papers — NULSPEC",
+    title: "Paper nominations — NULSPEC",
     description:
-      "Review and vote on papers under consideration for independent computational replication by NULSPEC.",
+      "Public-interest voting for nominated papers, separate from NULSPEC's documented selection methodology.",
     url: "/papers",
   },
   twitter: {
-    title: "Candidate papers — NULSPEC",
+    title: "Paper nominations — NULSPEC",
     description:
-      "Review and vote on papers under consideration for independent computational replication by NULSPEC.",
+      "Public-interest voting for nominated papers, separate from NULSPEC's documented selection methodology.",
   },
 };
 
@@ -40,16 +40,21 @@ export default function CandidatePapersPage() {
           <div className="shell paper-queue-hero__grid">
             <div>
               <p className="hero__eyebrow">Replication candidates</p>
-              <h1>Candidate papers</h1>
+              <h1>Paper nominations</h1>
               <p className="paper-queue-hero__lede">
-                These papers are being considered for end-to-end computational
-                replication. Votes help measure public interest; feasibility,
-                available evidence, and research value determine which studies
-                enter the replication workflow.
+                These papers have been nominated for end-to-end computational
+                replication. Votes measure public interest only. Objective
+                eligibility, the published selection policy, and recorded
+                priority or random allocation determine which studies start.
               </p>
-              <Link className="paper-queue-hero__link" href="/#nominate">
-                Nominate another paper →
-              </Link>
+              <div className="paper-queue-hero__links">
+                <Link className="paper-queue-hero__link" href="/#nominate">
+                  Nominate another paper →
+                </Link>
+                <Link className="paper-queue-hero__link" href="/selection">
+                  Audit selection decisions →
+                </Link>
+              </div>
             </div>
             <dl className="paper-queue-hero__facts">
               <div>
@@ -62,7 +67,7 @@ export default function CandidatePapersPage() {
               </div>
               <div>
                 <dt>Selection</dt>
-                <dd>Interest informs, but does not determine, priority</dd>
+                <dd>Votes do not determine eligibility or selection</dd>
               </div>
             </dl>
           </div>

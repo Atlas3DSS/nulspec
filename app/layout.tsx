@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: "%s — NULSPEC",
   },
   description:
-    "Independent research replication, beginning with AI and machine learning. Registered protocols, deviations, selected execution records, and reported outcomes are public.",
+    "Independent replication of computational machine-learning claims, with public selection records, protocols, deviations, execution evidence, and outcomes.",
   applicationName: "NULSPEC",
   alternates: {
     canonical: "/",
@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     siteName: "NULSPEC",
     title: "NULSPEC — Independent research replication",
     description:
-      "NULSPEC begins with AI and machine-learning studies using team-operated compute, with a long-term objective of independent replication across research fields.",
+      "Independent replication of computational machine-learning claims, with a public selection denominator and staged statistical escalation.",
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
     title: "NULSPEC — Independent research replication",
     description:
-      "Independent replication beginning with AI and machine learning, with public protocols, deviations, selected execution records, and reported outcomes.",
+      "Independent computational ML replication with public selection records, protocols, deviations, execution evidence, and reported outcomes.",
   },
 };
 

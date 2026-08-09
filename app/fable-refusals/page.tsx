@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getFableRefusalLedger } from "@/lib/fable-refusals";
@@ -6,22 +7,22 @@ import { getFableRefusalLedger } from "@/lib/fable-refusals";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Fable refusals",
+  title: "Archived model-audit incident",
   description:
-    "An evidence-backed ledger of Anthropic Fable refusals, wasted reviewer work, charges, and replacement reviews.",
+    "An archived NULSPEC operations incident preserving a Fable safeguard refusal, integration events, cost, and trace evidence.",
   alternates: {
     canonical: "/fable-refusals",
   },
   openGraph: {
-    title: "Fable refusals — NULSPEC",
+    title: "Archived model-audit incident — NULSPEC",
     description:
-      "Provider messages, costs, hashes, and wasted reviewer work when Anthropic Fable refuses a NULSPEC research-review request.",
+      "Provider messages, integration events, costs, and hashes from a historical release-QA incident.",
     url: "/fable-refusals",
   },
   twitter: {
-    title: "Fable refusals — NULSPEC",
+    title: "Archived model-audit incident — NULSPEC",
     description:
-      "Provider messages, costs, hashes, and wasted reviewer work when Anthropic Fable refuses a NULSPEC research-review request.",
+      "Provider messages, integration events, costs, and hashes from a historical release-QA incident.",
   },
 };
 
@@ -43,16 +44,18 @@ export default function FableRefusalsPage() {
         <section className="refusal-hero">
           <div className="shell refusal-hero__grid">
             <div>
-              <p className="hero__eyebrow">Public accountability record</p>
-              <h1>Fable refusals</h1>
+              <p className="hero__eyebrow">Operations archive · provider incident</p>
+              <h1>Model-audit refusal, 2026-08-01</h1>
               <p className="refusal-hero__lede">
-                This page records every case in which Anthropic&apos;s Fable
-                reviewer refused a NULSPEC research-review request before
-                evaluating it. Each entry preserves the provider response,
-                cost, hashes, and effect on publication. It also records
-                NULSPEC&apos;s own integration errors and recovery attempts under
-                the same standard.
+                This archived operations record preserves a case in which
+                Anthropic&apos;s Fable model refused a release-consistency request
+                before evaluating it. Provider output, costs, hashes, NULSPEC
+                integration errors, and recovery attempts remain available for
+                process audit. None of them carry scientific decision weight.
               </p>
+              <Link className="refusal-hero__backlink" href="/operations">
+                ← Operations ledger
+              </Link>
             </div>
             <dl className="refusal-summary" aria-label="Refusal ledger summary">
               <div>
@@ -60,7 +63,7 @@ export default function FableRefusalsPage() {
                 <dd>{ledger.summary.refusal_count}</dd>
               </div>
               <div>
-                <dt>Review findings</dt>
+                <dt>Audit findings</dt>
                 <dd>{ledger.summary.substantive_review_count}</dd>
               </div>
               <div>
@@ -79,20 +82,18 @@ export default function FableRefusalsPage() {
           <div className="shell refusal-impact__grid">
             <p className="section-kicker">Recorded consequence</p>
             <div>
-              <h2>Anthropic wasted reviewer time and research money.</h2>
+              <h2>A paid audit returned no substantive output.</h2>
               <p>
-                NULSPEC prepared and submitted a complete replication-review
-                packet. Anthropic charged {money.format(ledger.summary.total_charged_usd)},
-                returned zero substantive findings, left the publication gate
-                blocked, and required the same material to be reviewed again by
-                other models and a human. The requested review was not delivered.
+                NULSPEC submitted a complete release packet. The invocation cost
+                {" "}{money.format(ledger.summary.total_charged_usd)}, returned zero
+                substantive findings, left the publication gate blocked, and
+                duplicated operational checking before human disposition.
               </p>
               <p>
-                This is a statement about the recorded outcome, not Anthropic&apos;s
-                intent. Its own response acknowledged that safeguards can flag
-                safe, normal content. Failures are documented so the process can
-                improve; they are not grounds to mock a provider, model, author,
-                or reviewer.
+                This record describes the observed process outcome, not provider
+                intent and not the validity of the replicated paper. The policy was
+                superseded; the event is retained so future release systems can be
+                tested against the same failure mode.
               </p>
             </div>
           </div>
@@ -102,7 +103,7 @@ export default function FableRefusalsPage() {
           <div className="section-heading refusal-ledger__heading">
             <p className="section-kicker">Append-only evidence</p>
             <div>
-              <h2 id="ledger-heading">Recorded refusals</h2>
+              <h2 id="ledger-heading">Recorded provider event</h2>
               <p>
                 Entries are never deleted. Corrections are appended, and every
                 original trace remains bound by SHA-256.
@@ -164,16 +165,16 @@ export default function FableRefusalsPage() {
                   <p className="refusal-record__instruction">
                     The wrapper separately instructed API integrators to
                     configure a fallback model. Fable did not evaluate the
-                    replication or return any scientific finding. Under the
-                    current review policy this is a charged non-response with
-                    decision weight {entry.refusal.decision_weight}, not a
-                    scientific <code>HARD_FAIL</code>.
+                    replication or return any scientific finding. This is a
+                    charged operational non-response with decision weight
+                    {" "}{entry.refusal.decision_weight}, not a scientific
+                    {" "}<code>HARD_FAIL</code>.
                   </p>
                 </section>
 
                 <section aria-labelledby={`${entry.id}-impact`}>
-                  <p className="section-kicker">Cost and reviewer impact</p>
-                  <h3 id={`${entry.id}-impact`}>Reviewer work and funds wasted</h3>
+                  <p className="section-kicker">Cost and process impact</p>
+                  <h3 id={`${entry.id}-impact`}>Observed cost and duplicated work</h3>
                   <p>{entry.impact.explanation}</p>
                   <dl className="refusal-cost-breakdown">
                     <div>
@@ -195,9 +196,9 @@ export default function FableRefusalsPage() {
               <section className="supplemental-review" aria-labelledby={`${entry.id}-supplemental`}>
                 <div className="supplemental-review__heading">
                   <div>
-                    <p className="section-kicker">Independent supplemental review</p>
+                    <p className="section-kicker">Supplemental automated QA</p>
                     <h3 id={`${entry.id}-supplemental`}>
-                      GLM and Kimi completed independent reviews.
+                      GLM and Kimi returned contract-valid audit outputs.
                     </h3>
                   </div>
                   <strong>
@@ -207,14 +208,15 @@ export default function FableRefusalsPage() {
                 </div>
                 <p className="supplemental-review__comparison">
                   Four valid outputs across two model families returned eight-area {" "}
-                  <strong>PASS</strong> decisions. The depth comparison below
-                  preserves three parameter variants for later analysis; it is
-                  not counted as three independent replications. Anthropic&apos;s
-                  refusal returned no review and cost {" "}
+                  <strong>PASS</strong> checks on the release packet. These outputs
+                  are automated consistency audits, not peer review, domain expertise,
+                  or independent replications. The depth comparison preserves three
+                  parameter variants for operations analysis. For cost accounting,
+                  the refused invocation cost {" "}
                   {entry.supplemental_reviews.anthropic_to_high_depth_glm_cost_ratio} times
-                  the high-depth GLM review and {" "}
+                  the high-depth GLM audit and {" "}
                   {entry.supplemental_reviews.anthropic_to_high_depth_kimi_cost_ratio} times
-                  the high-depth Kimi review.
+                  the high-depth Kimi audit.
                 </p>
                 {entry.supplemental_reviews.comparison_sets.map((comparison) => (
                   <section
@@ -227,7 +229,7 @@ export default function FableRefusalsPage() {
                       <div>
                         <p className="section-kicker">Saved comparison set</p>
                         <h4 id={`${comparison.comparison_group}-heading`}>
-                          Reasoning-depth comparison
+                          Audit depth comparison
                         </h4>
                       </div>
                       <a href={comparison.public_index_url}>Comparison JSON ↗</a>
@@ -293,7 +295,7 @@ export default function FableRefusalsPage() {
                               </div>
                             </dl>
                             {"public_result_url" in attempt ? (
-                              <a href={attempt.public_result_url}>Validated review JSON ↗</a>
+                              <a href={attempt.public_result_url}>Validated audit JSON ↗</a>
                             ) : null}
                           </article>
                         );
@@ -343,7 +345,7 @@ export default function FableRefusalsPage() {
                         </dl>
                         <p>{attempt.finding}</p>
                         {"public_result_url" in attempt ? (
-                          <a href={attempt.public_result_url}>Validated review JSON ↗</a>
+                          <a href={attempt.public_result_url}>Validated audit JSON ↗</a>
                         ) : null}
                       </article>
                     ))}
@@ -416,8 +418,9 @@ export default function FableRefusalsPage() {
                 appended record, and never converted into a scientific verdict.
               </p>
               <p>
-                <strong>Replicate to accelerate.</strong> Open failure lets other
-                teams avoid the same mistake; hidden failure does not.
+                An operational incident is useful when it prevents recurrence.
+                Keeping it separate from the scientific program prevents a provider
+                dispute from being mistaken for research evidence.
               </p>
             </div>
           </div>
@@ -426,23 +429,24 @@ export default function FableRefusalsPage() {
         <section className="refusal-fallback">
           <div className="shell refusal-fallback__grid">
             <div>
-              <p className="section-kicker">Current review policy</p>
-              <h2>Per-paper review uses GLM and Kimi.</h2>
+              <p className="section-kicker">Current release-QA policy</p>
+              <h2>Per-paper packet checks use GLM and Kimi.</h2>
             </div>
             <div>
               <p>
-                GLM and Kimi receive the same immutable release packet and
-                review it independently. Both must return a valid PASS to satisfy
-                the model gate; missing, malformed, non-PASS, or disagreeing
-                reviews remain blocked. Publication and email each require a
-                separate human decision.
+                GLM and Kimi receive the same immutable release packet and run
+                separate automated consistency audits. Both must return a valid PASS
+                to satisfy the QA gate; missing, malformed, non-PASS, or disagreeing
+                outputs remain blocked for human inspection. These model outputs have
+                zero scientific weight. Publication and email each require a separate
+                human decision.
               </p>
               <p>
-                Fable is not used for per-paper review, release, repair, fallback,
+                Fable is not used for per-paper audit, release, repair, fallback,
                 or escalation. After ten completed pipelines validate, one Fable
-                call reviews a reproducible random sample of three as a single
-                zero-weight process audit. It cannot change a paper result or
-                authorize publication or email.
+                call checks a reproducible random sample of three as a zero-weight
+                process audit. It cannot change a paper result or authorize
+                publication or email.
               </p>
               <ul>
                 {ledger.review_policy.reviewers.map((reviewer) => (

@@ -9,6 +9,7 @@
     "build": "npm run validate:data && npm run validate:copy && next build",
     "build:static": "NULSPEC_STATIC_EXPORT=1 npm run build && npm run validate:routes",
     "build:sites": "npm run build:static && node scripts/build-sites.mjs",
+    "package:sites": "npm run build:sites && node scripts/package-sites.mjs",
     "build:cloudflare": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "typecheck": "tsc --noEmit",

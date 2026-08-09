@@ -228,6 +228,88 @@ const scenarios = [
     voteResponse: "success",
   },
   {
+    name: "methodology-desktop",
+    path: "/methodology",
+    width: 1440,
+    height: 900,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+  },
+  {
+    name: "methodology-mobile",
+    path: "/methodology",
+    width: 390,
+    height: 844,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+  },
+  {
+    name: "selection-desktop",
+    path: "/selection",
+    width: 1440,
+    height: 900,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+    expectedSelectionRecords: 12,
+  },
+  {
+    name: "selection-mobile",
+    path: "/selection",
+    width: 390,
+    height: 844,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+    expectedSelectionRecords: 12,
+  },
+  {
+    name: "operations-desktop",
+    path: "/operations",
+    width: 1440,
+    height: 900,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+    expectedIncidentRecords: 1,
+  },
+  {
+    name: "operations-mobile",
+    path: "/operations",
+    width: 390,
+    height: 844,
+    expectedLedgerRows: 0,
+    expectedEvidenceLinks: 0,
+    expectedNominationFields: 0,
+    expectedExtensionOptions: 0,
+    expectedSignalVerdicts: 0,
+    expectedArmSections: 0,
+    expectedHorizontalRegions: 0,
+    expectedIncidentRecords: 1,
+  },
+  {
     name: "fable-refusals-desktop",
     path: "/fable-refusals",
     width: 1440,
@@ -466,6 +548,26 @@ for (const scenario of scenarios) {
         ? getComputedStyle(document.querySelector(".site-nav__refusals")).display !==
           "none"
         : false,
+      selectionNavLinks: document.querySelectorAll(
+        '.site-nav a[href^="/selection"]',
+      ).length,
+      selectionNavVisible: document.querySelector('.site-nav a[href^="/selection"]')
+        ? getComputedStyle(document.querySelector('.site-nav a[href^="/selection"]')).display !==
+          "none"
+        : false,
+      selectionRecords: document.querySelectorAll(".selection-record").length,
+      selectionNotice: document.querySelector(".selection-page .policy-notice")
+        ?.textContent?.trim(),
+      selectionSummary: document.querySelector(".selection-summary")
+        ?.textContent?.trim(),
+      methodologyNotice: document.querySelector(".policy-page .policy-notice")
+        ?.textContent?.trim(),
+      methodologyAuditBoundary: document.querySelector(
+        ".policy-page .audit-boundary",
+      )?.textContent?.trim(),
+      incidentRecords: document.querySelectorAll(".incident-record").length,
+      incidentSummary: document.querySelector(".incident-record")
+        ?.textContent?.trim(),
       horizontalRegions: [
         ...document.querySelectorAll(".horizontal-scroll-region"),
       ].map((region) => {
@@ -504,7 +606,7 @@ for (const scenario of scenarios) {
       primaryHeadingFontSize: Number.parseFloat(
         getComputedStyle(
           document.querySelector(
-            ".hero h1, .study-hero h1, .arm-hero h1, .paper-queue-hero h1, .refusal-hero h1",
+            ".hero h1, .study-hero h1, .arm-hero h1, .paper-queue-hero h1, .refusal-hero h1, .policy-hero h1, .selection-hero h1, .operations-hero h1",
           ) ??
             document.body,
         ).fontSize,
@@ -668,25 +770,42 @@ for (const scenario of scenarios) {
     (scenario.path === "/" &&
       diagnostics.nominationButton !== "Submit nomination") ||
     (scenario.path === "/" &&
-      diagnostics.homeHeading !== "No acceleration without replication.") ||
+      diagnostics.homeHeading !== "Published claims, independently tested.") ||
     diagnostics.extensionOptions !== scenario.expectedExtensionOptions ||
     (scenario.expectedExtensionOptions > 0 &&
       diagnostics.extensionButton !== "Vote to extend this paper") ||
     diagnostics.signalVerdicts !== scenario.expectedSignalVerdicts ||
     diagnostics.candidateRows !== (scenario.expectedCandidateRows ?? 0) ||
     diagnostics.refusalRecords !== (scenario.expectedRefusalRecords ?? 0) ||
-    diagnostics.refusalNavLinks !== 1 ||
-    !diagnostics.refusalNavVisible ||
+    diagnostics.refusalNavLinks !== 0 ||
+    diagnostics.refusalNavVisible ||
+    diagnostics.selectionNavLinks !== 1 ||
+    !diagnostics.selectionNavVisible ||
+    diagnostics.selectionRecords !== (scenario.expectedSelectionRecords ?? 0) ||
+    diagnostics.incidentRecords !== (scenario.expectedIncidentRecords ?? 0) ||
+    (scenario.path === "/selection" &&
+      (!diagnostics.selectionNotice?.includes("pre-policy-convenience-v1") ||
+        !diagnostics.selectionSummary?.includes("1 / 20"))) ||
+    (scenario.path === "/methodology" &&
+      (!diagnostics.methodologyNotice?.includes(
+        "Current intake predates this randomized policy",
+      ) ||
+        !diagnostics.methodologyAuditBoundary?.includes(
+          "zero scientific decision weight",
+        ))) ||
+    (scenario.path === "/operations" &&
+      (!diagnostics.incidentSummary?.includes("Scientific effect") ||
+        !diagnostics.incidentSummary?.includes("None"))) ||
     (scenario.expectedRefusalRecords > 0 &&
       (!diagnostics.refusalProviderMessage?.includes(
         "They may flag safe, normal content as well",
       ) ||
         !diagnostics.refusalSummary?.includes("$3.224742") ||
         !diagnostics.refusalImpact?.includes(
-          "Anthropic wasted reviewer time and research money",
+          "A paid audit returned no substantive output",
         ) ||
         !diagnostics.refusalPolicy?.includes(
-          "Fable is not used for per-paper review",
+          "Fable is not used for per-paper audit",
         ) ||
         !diagnostics.refusalPolicy?.includes("zero-weight process audit") ||
         diagnostics.refusalComparisonSets !== 1 ||
@@ -743,6 +862,8 @@ for (const scenario of scenarios) {
       diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 42 : 62)) ||
     (scenario.path === "/fable-refusals" &&
       diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 42 : 71)) ||
+    (["/methodology", "/selection", "/operations"].includes(scenario.path) &&
+      diagnostics.primaryHeadingFontSize > (scenario.width <= 760 ? 46 : 73)) ||
     diagnostics.visibleArmPanels !== (scenario.expectedArmTabs ? 1 : 0) ||
     diagnostics.activeArmTab !== scenario.expectedActiveTab ||
     diagnostics.stickyTabPosition !==

@@ -1,0 +1,555 @@
+{
+  "schema_version": "nulspec-selection-ledger-v1",
+  "methodology_version": "1.0.0",
+  "as_of_utc": "2026-08-09T15:42:50Z",
+  "policy_effective_at_utc": "2026-08-09T15:42:50Z",
+  "scope": {
+    "active_domain": "Computational machine learning",
+    "expansion_policy": "NULSPEC will remain focused on computational machine-learning replication until the program has a mature uniform corpus, stable selection and escalation procedures, and the relevant expertise for any proposed new domain."
+  },
+  "randomized_selection": {
+    "starts_per_block": 3,
+    "random_starts_per_block": 1,
+    "applies_to": "Replication starts authorized after this policy became effective.",
+    "pool_rule": "Before the randomized slot, freeze every eligible, not-yet-started candidate that fits the currently declared compute band. Publish the ordered candidate identifiers and the pool-manifest SHA-256 before obtaining randomness.",
+    "draw_rule": "Sort the frozen pool by paper identifier. Obtain the first public randomness value timestamped after the pool freeze, compute SHA-256(pool_manifest_sha256 + ':' + randomness_value), interpret the digest as an unsigned integer, and select digest modulo pool size.",
+    "replacement_rule": "A selected candidate that later becomes infeasible remains in the ledger with the new exclusion evidence. Any replacement draw is separately recorded from the same frozen pool and digest with an incrementing replacement counter; there are no silent redraws."
+  },
+  "eligibility_rules": [
+    {
+      "id": "EL-01",
+      "label": "External claim",
+      "rule": "The target is an empirical claim published outside NULSPEC. Original NULSPEC experiments and extensions use a separate lane and never count toward the replication quota."
+    },
+    {
+      "id": "EL-02",
+      "label": "Falsifiable endpoint",
+      "rule": "At least one primary claim must map to a measurable endpoint and a verdict rule that can be frozen before the full run."
+    },
+    {
+      "id": "EL-03",
+      "label": "Auditable inputs",
+      "rule": "The paper, available code, data, checkpoints, and dependency evidence must support either an exact reproduction or an explicitly bounded compatible reproduction."
+    },
+    {
+      "id": "EL-04",
+      "label": "Resource fit",
+      "rule": "The smallest claim-complete design must fit a declared hardware, GPU-hour, human-hour, storage, and safety envelope."
+    },
+    {
+      "id": "EL-05",
+      "label": "Current scope",
+      "rule": "The claim must fall within computational machine learning and the expertise NULSPEC currently operates."
+    },
+    {
+      "id": "EL-06",
+      "label": "Publishable either way",
+      "rule": "Confirming, contradictory, null, failed, and inconclusive outcomes must all be acceptable before selection."
+    }
+  ],
+  "summary": {
+    "considered": 12,
+    "completed": 1,
+    "selected": 3,
+    "deferred": 7,
+    "rejected": 1,
+    "quota_counted": 1,
+    "quota_target": 20
+  },
+  "candidates": [
+    {
+      "paper_id": "arxiv:2607.25091",
+      "title": "Towards Robust Reinforcement Learning for Small-Scale Language Model Agents",
+      "url": "https://arxiv.org/abs/2607.25091",
+      "received_at_utc": "2026-07-30T00:00:00Z",
+      "claim_scope": [
+        "Released numerical matrix and PPO convergence behavior.",
+        "Capacity-headroom explanation of reward improvement."
+      ],
+      "decision": "completed",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "The paper exposed falsifiable PPO outcomes across a released model and dataset matrix.",
+        "Confirmation, partial reproduction, and failure were all useful publishable outcomes."
+      ],
+      "why_not_started_or_rejected": [],
+      "estimate": {
+        "gpu_hours": { "min": 20, "likely": 40, "max": 80 },
+        "human_hours": 24,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "The released matrix was locally reproducible; several stronger claims required explicitly bounded compatible inference."
+        }
+      },
+      "process": {
+        "protocol_frozen": true,
+        "terminal_artifact_valid": true,
+        "automated_consistency_audit_complete": true,
+        "human_publication_approved": true,
+        "published": true,
+        "quota_counted": true
+      },
+      "actual_cost": {
+        "status": "audit_pending",
+        "gpu_hours": null,
+        "human_hours": null,
+        "direct_cost_usd": null,
+        "note": "This study predates the uniform cost ledger. Historical accounting is being reconstructed; estimates are not presented as actual cost."
+      }
+    },
+    {
+      "paper_id": "arxiv:2608.03893",
+      "title": "Cross-model KV-cache transfer",
+      "url": "https://arxiv.org/abs/2608.03893",
+      "received_at_utc": "2026-08-07T00:00:00Z",
+      "claim_scope": [
+        "Mapped cross-model KV state preserves accuracy relative to target-native cache.",
+        "Local target-side reconstruction and latency behavior under a declared single-GPU boundary."
+      ],
+      "decision": "selected",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "It tests a concrete published cache-mapping claim with model-compatible released ingredients.",
+        "A clean null or negative result remains informative, and the exact model pair fits the available 96 GB GPU."
+      ],
+      "why_not_started_or_rejected": [],
+      "estimate": {
+        "gpu_hours": { "min": 3, "likely": 8, "max": 24 },
+        "human_hours": 18,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "Accuracy and cache reconstruction use the paper's exact model pair. The local single-GPU topology cannot reproduce the paper's cross-GPU transport-speed claim, so latency is a compatible measurement."
+        }
+      },
+      "process": {
+        "protocol_frozen": true,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "in_progress",
+        "gpu_hours": null,
+        "human_hours": null,
+        "direct_cost_usd": null,
+        "note": "Final cost is published only after the complete attempt set is closed and audited."
+      }
+    },
+    {
+      "paper_id": "arxiv:2607.25572",
+      "title": "Mapping CVEs to MITRE ATT&CK Techniques: A Curated Gold-Set Classifier and the Limits of LLM-Assisted Label Expansion",
+      "url": "https://arxiv.org/abs/2607.25572",
+      "received_at_utc": "2026-08-09T07:00:00Z",
+      "claim_scope": [
+        "Under validation-split checkpoint selection, adding 297 or 984 LLM-labeled rows does not improve recall@5 over gold-only training.",
+        "Adding 984 rows reduces macro-F1 relative to gold-only training."
+      ],
+      "decision": "selected",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "Complete code, a locked environment, versioned datasets, and raw logs are public.",
+        "The corrected five-seed contrast is a cheap, falsifiable external claim whose null result would still be useful."
+      ],
+      "why_not_started_or_rejected": [],
+      "estimate": {
+        "gpu_hours": { "min": 1, "likely": 2, "max": 4 },
+        "human_hours": 8,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "Code, data revisions, seeds, optimization budget, and effective global batch are exact; local hardware and reduction topology differ from the authors' system."
+        }
+      },
+      "process": {
+        "protocol_frozen": true,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "in_progress",
+        "gpu_hours": null,
+        "human_hours": null,
+        "direct_cost_usd": null,
+        "note": "Final cost is published only after the complete attempt set is closed and audited."
+      }
+    },
+    {
+      "paper_id": "arxiv:2607.26627",
+      "title": "Revisiting Lossy Verification in Speculative Decoding",
+      "url": "https://arxiv.org/abs/2607.26627",
+      "received_at_utc": "2026-07-30T00:00:00Z",
+      "claim_scope": [
+        "Lossy speculative-decoding truncation gains disappear against the correct baseline."
+      ],
+      "decision": "deferred",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "A strong released harness exposes a falsifiable baseline-correction claim."
+      ],
+      "why_not_started_or_rejected": [
+        "Deferred because the target and draft model pairs require materially more GPU time than the immediate low-cost replication slots."
+      ],
+      "estimate": {
+        "gpu_hours": { "min": 12, "likely": 24, "max": 36 },
+        "human_hours": 12,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "Released pairs fit the available hardware, but the serving and timing topology differs from the paper."
+        }
+      },
+      "process": {
+        "protocol_frozen": false,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "not_started",
+        "gpu_hours": 0,
+        "human_hours": 0,
+        "direct_cost_usd": 0,
+        "note": "No replication run has started."
+      }
+    },
+    {
+      "paper_id": "arxiv:2605.04956",
+      "title": "KernelBench-X",
+      "url": "https://arxiv.org/abs/2605.04956",
+      "received_at_utc": "2026-07-30T00:00:00Z",
+      "claim_scope": [
+        "Task category and GPU family dominate kernel correctness and speed."
+      ],
+      "decision": "deferred",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "The released corpus and RTX 4090 golden results make hardware-sensitive claims testable."
+      ],
+      "why_not_started_or_rejected": [
+        "Deferred because full kernel replay across hardware is slower and upstream generation implementations are incomplete."
+      ],
+      "estimate": {
+        "gpu_hours": { "min": 12, "likely": 24, "max": 36 },
+        "human_hours": 14,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "Released-corpus replay is feasible; exact full kernel regeneration is blocked by missing upstream generation implementations."
+        }
+      },
+      "process": {
+        "protocol_frozen": false,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "not_started",
+        "gpu_hours": 0,
+        "human_hours": 0,
+        "direct_cost_usd": 0,
+        "note": "No replication run has started."
+      }
+    },
+    {
+      "paper_id": "arxiv:2607.19712",
+      "title": "How Fast Can Reward Models Score?",
+      "url": "https://arxiv.org/abs/2607.19712",
+      "received_at_utc": "2026-07-30T00:00:00Z",
+      "claim_scope": [
+        "ONNX Runtime rather than the C++ language accounts for the native engine's CPU advantage over eager PyTorch.",
+        "On the tested GPU, torch.compile matches or exceeds the native C++ ONNX Runtime median while both beat eager and FastAPI baselines.",
+        "Batching policy materially affects throughput more than caller language."
+      ],
+      "decision": "selected",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "The repository exposes C++ and Python engines, fixed benchmark inputs, correctness gates, configurations, and repeated-launch statistics.",
+        "The runtime-ordering and language-versus-ONNX claims are falsifiable on compatible hardware, including a boring reversal."
+      ],
+      "why_not_started_or_rejected": [],
+      "estimate": {
+        "gpu_hours": { "min": 6, "likely": 12, "max": 20 },
+        "human_hours": 12,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "Correctness and within-machine comparisons are reproducible, but the available Linux GPU system differs from the paper's Windows laptop reference, so absolute timing is compatible rather than exact."
+        }
+      },
+      "process": {
+        "protocol_frozen": true,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "in_progress",
+        "gpu_hours": null,
+        "human_hours": null,
+        "direct_cost_usd": null,
+        "note": "Final cost is published only after the complete attempt set is closed and audited."
+      }
+    },
+    {
+      "paper_id": "arxiv:2607.17674",
+      "title": "Uncovering Latent Reasoning Strategies in Language Models",
+      "url": "https://arxiv.org/abs/2607.17674",
+      "received_at_utc": "2026-07-30T00:00:00Z",
+      "claim_scope": [
+        "Fractional-information-gain weighting avoids posterior collapse and recovers strategy-aligned codes."
+      ],
+      "decision": "deferred",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "Small public Qwen configurations and generated tasks make the core latent-code claim locally testable."
+      ],
+      "why_not_started_or_rejected": [
+        "Deferred because the supplied configurations do not enumerate every paper run and the full objective ablation is a multi-day job."
+      ],
+      "estimate": {
+        "gpu_hours": { "min": 24, "likely": 48, "max": 72 },
+        "human_hours": 18,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "Released 0.5B and 1.5B paths are feasible, but missing table-to-configuration mappings prevent an exact full-paper run."
+        }
+      },
+      "process": {
+        "protocol_frozen": false,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "not_started",
+        "gpu_hours": 0,
+        "human_hours": 0,
+        "direct_cost_usd": 0,
+        "note": "No replication run has started."
+      }
+    },
+    {
+      "paper_id": "arxiv:2605.06788",
+      "title": "Conformal Agent Error Attribution",
+      "url": "https://arxiv.org/abs/2605.06788",
+      "received_at_utc": "2026-07-30T00:00:00Z",
+      "claim_scope": [
+        "Filtration-based conformal prediction localizes decisive trace errors at stated coverage."
+      ],
+      "decision": "rejected",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "A CPU-only reproduction from released scores would have been cheap and directly falsifiable."
+      ],
+      "why_not_started_or_rejected": [
+        "A repository audit found no tracked processed data, scores, results, tags, or releases.",
+        "The proposed cheap exact stage is not publicly runnable because the empirical score artifacts are absent."
+      ],
+      "estimate": {
+        "gpu_hours": { "min": 6, "likely": 12, "max": 18 },
+        "human_hours": 12,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "An end-to-end compatible reconstruction may be possible after separate audits; exact released-score reproduction is infeasible because those artifacts are absent."
+        }
+      },
+      "process": {
+        "protocol_frozen": false,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "final",
+        "gpu_hours": 0,
+        "human_hours": 0.1,
+        "direct_cost_usd": 0,
+        "note": "Final cost covers the intake repository audit; no replication run was launched."
+      }
+    },
+    {
+      "paper_id": "arxiv:2605.06241",
+      "title": "Rethinking RL for LLM Reasoning: It Is Sparse Policy Selection, Not Capability Learning",
+      "url": "https://arxiv.org/abs/2605.06241",
+      "received_at_utc": "2026-07-30T00:00:00Z",
+      "claim_scope": [
+        "RL changes a sparse set of high-entropy token choices and offline correction recovers gains."
+      ],
+      "decision": "deferred",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "Released rollout, scoring, entropy-selection, LoRA, and evaluation paths expose a falsifiable mechanism."
+      ],
+      "why_not_started_or_rejected": [
+        "Deferred because RL baseline code and a resolved environment are missing, increasing audit and compatibility risk."
+      ],
+      "estimate": {
+        "gpu_hours": { "min": 24, "likely": 48, "max": 72 },
+        "human_hours": 20,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "The released method path is runnable, but exact baseline comparison is blocked by omitted internal code."
+        }
+      },
+      "process": {
+        "protocol_frozen": false,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "not_started",
+        "gpu_hours": 0,
+        "human_hours": 0,
+        "direct_cost_usd": 0,
+        "note": "No replication run has started."
+      }
+    },
+    {
+      "paper_id": "arxiv:2607.07964",
+      "title": "KronQ: LLM Quantization via Kronecker-Factored Hessian",
+      "url": "https://arxiv.org/abs/2607.07964",
+      "received_at_utc": "2026-07-30T00:00:00Z",
+      "claim_scope": [
+        "Gradient covariance prevents catastrophic 2-bit quantization failure."
+      ],
+      "decision": "deferred",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "Released caches, CUDA kernels, and 7B-to-70B artifacts expose strong low-bit claims."
+      ],
+      "why_not_started_or_rejected": [
+        "Deferred because gated weights and long 2-bit quantization runs add access and runtime risk."
+      ],
+      "estimate": {
+        "gpu_hours": { "min": 24, "likely": 48, "max": 72 },
+        "human_hours": 14,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "The 7B and 8B comparisons fit local hardware; exact broad scope depends on gated weights and paper-specific hardware."
+        }
+      },
+      "process": {
+        "protocol_frozen": false,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "not_started",
+        "gpu_hours": 0,
+        "human_hours": 0,
+        "direct_cost_usd": 0,
+        "note": "No replication run has started."
+      }
+    },
+    {
+      "paper_id": "arxiv:2605.11182",
+      "title": "The Many Faces of On-Policy Distillation",
+      "url": "https://arxiv.org/abs/2605.11182",
+      "received_at_utc": "2026-07-30T00:00:00Z",
+      "claim_scope": [
+        "On-policy distillation depends on teacher and loss choice, and biased Top-K reverse-KL can destabilize training."
+      ],
+      "decision": "deferred",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "A large released experiment surface and named Qwen launchers make a smallest-model block reproducible."
+      ],
+      "why_not_started_or_rejected": [
+        "Deferred because mapping the paper tables to more than fifty launchers is the dominant audit risk and the study is multi-day."
+      ],
+      "estimate": {
+        "gpu_hours": { "min": 72, "likely": 120, "max": 168 },
+        "human_hours": 24,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "The smallest released block is feasible; exact full-paper reconstruction requires a table-to-launcher map not supplied upstream."
+        }
+      },
+      "process": {
+        "protocol_frozen": false,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "not_started",
+        "gpu_hours": 0,
+        "human_hours": 0,
+        "direct_cost_usd": 0,
+        "note": "No replication run has started."
+      }
+    },
+    {
+      "paper_id": "arxiv:2607.27205",
+      "title": "TurboVLA",
+      "url": "https://arxiv.org/abs/2607.27205",
+      "received_at_utc": "2026-07-30T00:00:00Z",
+      "claim_scope": [
+        "The released 0.2B VLA reaches the reported latency, VRAM, and simulator success."
+      ],
+      "decision": "deferred",
+      "intake_cohort": "pre-policy-convenience-v1",
+      "selection_method": "priority_pre_policy",
+      "why_selected": [
+        "Released-checkpoint evaluation can test the paper's RTX 4090 latency and VRAM claim cheaply."
+      ],
+      "why_not_started_or_rejected": [
+        "Deferred because simulator success adds setup risk and exact training requires four GPUs for 80,000 steps."
+      ],
+      "estimate": {
+        "gpu_hours": { "min": 4, "likely": 8, "max": 12 },
+        "human_hours": 16,
+        "feasibility": {
+          "class": "compatible",
+          "explanation": "Checkpoint latency and VRAM can be tested on matching GPU-class hardware; training is only compatible on the available fleet."
+        }
+      },
+      "process": {
+        "protocol_frozen": false,
+        "terminal_artifact_valid": false,
+        "automated_consistency_audit_complete": false,
+        "human_publication_approved": false,
+        "published": false,
+        "quota_counted": false
+      },
+      "actual_cost": {
+        "status": "not_started",
+        "gpu_hours": 0,
+        "human_hours": 0,
+        "direct_cost_usd": 0,
+        "note": "No replication run has started."
+      }
+    }
+  ]
+}

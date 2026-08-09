@@ -8,11 +8,12 @@ faster.
 
 ## Scope statements
 
-NULSPEC currently replicates AI and machine-learning studies because the team
-operates the compute required for that work. Its long-term objective is
-independent replication across research fields. Public copy must distinguish
-that objective from current capability and must not claim expertise, equipment,
-or capacity that the team does not yet have.
+NULSPEC currently replicates computational machine-learning studies because
+the team operates the compute and expertise required for that work. Public copy
+must not imply a current cross-domain program or claim expertise, equipment, or
+capacity that the team does not yet have. Any later expansion requires a
+versioned policy change after the ML replication corpus and its selection and
+escalation methods are mature.
 
 ## Required style
 
@@ -29,6 +30,9 @@ or capacity that the team does not yet have.
 - Prefer complete sentences, active voice, concrete nouns, and specific verbs.
 - Explain practical significance when it helps the reader understand how a
   result should affect further research or industry decisions.
+- Call model-based packet checks `automated consistency audits` or `release
+  QA`. Do not present agreement between models as peer review, scientific
+  validation, independent domain expertise, or additional replication.
 - Keep a professional human voice. Technical precision does not require dense
   language or an impersonal tone.
 
@@ -48,8 +52,8 @@ or capacity that the team does not yet have.
   when it communicates a real scientific distinction, such as an arm-level
   label versus a study-level classification.
 
-The approved NULSPEC thesis is **No acceleration without replication.** Use it
-once on the home page. Do not create alternate rhyming or slogan-like versions.
+The approved home-page thesis is **Published claims, independently tested.**
+Use it once on the home page. Do not create alternate slogan-like versions.
 
 ## Publication data
 

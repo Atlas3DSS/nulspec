@@ -19,8 +19,10 @@ export function SiteFooter() {
             </p>
           </div>
           <div className="footer-actions">
-            <Link href="/papers">Candidate papers</Link>
-            <Link href="/fable-refusals">Fable refusals</Link>
+            <Link href="/methodology">Methodology</Link>
+            <Link href="/selection">Selection ledger</Link>
+            <Link href="/papers">Paper nominations</Link>
+            <Link href="/operations">Operations ledger</Link>
             <a href={NOMINATE_URL}>Nominate a paper ↗</a>
             <a href={KOFI_URL}>Support replication work ↗</a>
             <a href={GITHUB_URL}>GitHub ↗</a>
@@ -28,9 +30,8 @@ export function SiteFooter() {
         </div>
         <div className="site-footer__bottom">
           <p>
-            NULSPEC begins with AI and machine-learning studies using
-            team-operated compute. Its long-term objective is independent
-            replication across research fields.
+            NULSPEC is focused on independent replication of computational
+            machine-learning claims using team-operated compute.
           </p>
           <Link href={`/studies/${study.study_id}`}>
             View Study {study.study_id}

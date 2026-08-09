@@ -14,12 +14,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: "https://nulspec.com/papers",
       changeFrequency: "daily",
-      priority: 0.9,
+      priority: 0.7,
     },
     {
-      url: "https://nulspec.com/fable-refusals",
+      url: "https://nulspec.com/methodology",
       changeFrequency: "monthly",
-      priority: 0.9,
+      priority: 0.95,
+    },
+    {
+      url: "https://nulspec.com/selection",
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: "https://nulspec.com/operations",
+      changeFrequency: "monthly",
+      priority: 0.3,
     },
     ...studies.map((study) => ({
       url: `https://nulspec.com/studies/${study.study_id}`,

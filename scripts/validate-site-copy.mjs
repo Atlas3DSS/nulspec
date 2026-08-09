@@ -9,6 +9,7 @@ const sourceRoots = [
   "site-data/publications",
 ];
 const prohibitedPhrases = [
+  "accelerationalists",
   "a complete matrix, not a favorable checkpoint",
   "a deviation hidden is a claim faked",
   "a paper is not a vibe",
@@ -53,8 +54,10 @@ const prohibitedPhrases = [
   "you are reading marketing",
 ];
 const requiredPhrases = [
+  "Automated consistency audits have zero scientific decision weight.",
+  "Current intake predates this randomized policy.",
   "Detailed attempt records are not yet public",
-  "No acceleration without replication.",
+  "Published claims, independently tested.",
   "Reward-difference estimates and conditional 95% intervals",
 ];
 

@@ -16,28 +16,28 @@ import {
 const protocolSteps = [
   {
     number: "01",
-    title: "Register the protocol",
-    text: "The protocol, comparison rules, decision criteria, and exclusions are committed before full-matrix execution begins.",
+    title: "Publish the selection record",
+    text: "Every considered paper receives an eligibility result, selection or exclusion reason, resource estimate, and exact-versus-compatible feasibility classification.",
   },
   {
     number: "02",
-    title: "Separate replication from extension",
-    text: "Released-code and manuscript-based reproductions are reported separately from new experiments. Extensions cannot alter the primary result.",
+    title: "Register the protocol",
+    text: "The claim scope, comparison rules, decision criteria, exclusions, and maximum escalation budget are committed before full-matrix execution begins.",
   },
   {
     number: "03",
-    title: "Record material deviations",
-    text: "Hardware, software, and implementation substitutions receive an identifier, justification, and control for their effect on interpretation.",
+    title: "Run a claim-complete first pass",
+    text: "Released-code and manuscript reproductions remain separate from extensions, and every material hardware, software, or implementation deviation is recorded.",
   },
   {
     number: "04",
-    title: "Report every outcome",
-    text: "Confirming, contradictory, null, failed, and inconclusive outcomes have the same evidence requirements.",
+    title: "Escalate consequential disagreements",
+    text: "When stochastic variation could explain a material mismatch, a frozen second stage adds fresh independent repetitions under a predeclared stopping rule.",
   },
   {
     number: "05",
-    title: "Support independent reruns",
-    text: "Commands, dependency locks, digests, checkpoints, and analysis code are retained so other teams can reproduce or extend the work efficiently.",
+    title: "Publish every terminal outcome",
+    text: "Confirming, contradictory, null, failed, and inconclusive outcomes use the same artifact, human-approval, cost-accounting, and independent-rerun requirements.",
   },
 ];
 
@@ -55,15 +55,14 @@ export default function Home() {
             <div className="hero__copy">
               <p className="hero__eyebrow">
                 <span className="live-dot" aria-hidden="true" />
-                Independent study replication
+                Independent computational ML replication
               </p>
-              <h1>No acceleration without replication.</h1>
+              <h1>Published claims, independently tested.</h1>
               <p className="hero__lede">
-                NULSPEC currently reproduces published AI and machine-learning
-                studies on hardware operated by our team. We publish the
-                protocol, deviations, selected execution records, and results so
-                researchers and industry teams can evaluate findings and plan
-                further work more quickly.
+                NULSPEC reproduces published computational machine-learning
+                studies on hardware operated by our team. We publish the full
+                selection denominator, frozen protocol, deviations, execution
+                evidence, costs, and results—including null and inconclusive ones.
               </p>
               <div className="button-row">
                 <a className="button button--primary" href={NOMINATE_URL}>
@@ -129,23 +128,17 @@ export default function Home() {
                 uncertain.
               </h2>
               <p>
-                NULSPEC is an international team of independent researchers
-                and <strong>accelerationalists</strong> working across multiple
-                countries. Our current program focuses on AI and machine
-                learning because compute is the experimental capacity we
-                operate directly. Each study publishes the evidence required to
-                assess its result.
+                NULSPEC is an independent computational ML replication program.
+                We operate the compute directly and publish the evidence needed
+                to assess each result, including why a paper entered the queue
+                and why another paper did not.
               </p>
               <p>
-                The long-term objective is independent replication across
-                research fields, expanding only when the relevant expertise,
-                equipment, and funding are available. To reduce the replication
-                crisis, we test published findings before they shape new
-                research, products, benchmarks, or policy. We perform the
-                labor-intensive verification work early: register the protocol,
-                reproduce the study, document deviations, and publish every
-                outcome. This reduces duplicated effort and helps researchers
-                and industry teams decide what to test or build on next.
+                The near-term objective is deliberately narrow: become very good
+                at computational ML replication and build a uniform corpus of
+                finished external claims. That corpus can eventually test which
+                research practices—code release, dependency locks, evaluation
+                design, paper age, or hardware portability—predict reliability.
               </p>
             </div>
           </div>
@@ -157,9 +150,10 @@ export default function Home() {
               <p className="section-kicker">Replication workflow</p>
               <h2>How each study is specified, executed, and reported</h2>
               <p>
-                Each publication includes a registered protocol, execution
-                status for the selected runs, documented deviations, analysis
-                code, and a verdict tied to the available evidence.
+                Each publication includes its selection provenance, registered
+                protocol, execution status, documented deviations, analysis
+                code, final cost state, and a verdict limited to the available
+                evidence.
               </p>
             </div>
             <ol className="protocol-list">
@@ -172,6 +166,8 @@ export default function Home() {
               ))}
             </ol>
             <div className="plain-link-row">
+              <Link href="/methodology">Read the full methodology →</Link>
+              <Link href="/selection">Audit paper selection →</Link>
               <a href={protocolUrl(study)}>Read the frozen protocol ↗</a>
               <a href={GITHUB_URL}>Audit the repository ↗</a>
             </div>
@@ -231,11 +227,11 @@ export default function Home() {
               <p className="section-kicker">Paper nominations</p>
               <h2>Nominate an arXiv paper for replication</h2>
               <p>
-                We currently prioritize recent AI and machine-learning studies
-                that can be evaluated with the available hardware, data, and
-                compute budget. For accepted nominations, we publish the
-                protocol before execution and document every material
-                deviation.
+                We currently accept computational ML papers that can be assessed
+                against public eligibility and resource rules. Nominations and
+                votes record public interest; they do not determine eligibility,
+                protocols, analysis, or verdicts. Every considered paper enters
+                the public selection ledger.
               </p>
               <p className="request-section__privacy">
                 The form requires an email address and an arXiv URL.
@@ -244,7 +240,9 @@ export default function Home() {
                 use the address to send one email with the result.
               </p>
               <p className="request-section__candidate-link">
-                <Link href="/papers">Review and vote on candidate papers →</Link>
+                <Link href="/papers">Review and vote on nominated papers →</Link>
+                {" · "}
+                <Link href="/selection">Audit selection decisions →</Link>
               </p>
             </div>
             <NominationForm />

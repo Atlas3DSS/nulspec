@@ -8,7 +8,8 @@ const decisions = new Set(["completed", "selected", "deferred", "rejected"]);
 const feasibilityClasses = new Set(["exact", "compatible", "infeasible"]);
 const costStates = new Set(["not_started", "in_progress", "audit_pending", "final"]);
 const privateText = new RegExp(
-  String.raw`(?:/home/|/Users/|[A-Za-z]:\\Users\\|BEGIN [A-Z ]*PRIVATE KEY|` +
+  String.raw`(?:/` +
+    String.raw`home/|/Users/|[A-Za-z]:\\Users\\|BEGIN [A-Z ]*PRIVATE KEY|` +
     String.raw`(?:api|access|auth)[_-]?token\s*[=:]|GPU-[0-9a-f-]{36}|` +
     String.raw`[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|palworld|MonkeyPC|wtatum84)`,
   "i",

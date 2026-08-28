@@ -253,43 +253,47 @@ export default function H3SamplerPaths() {
         </header>
 
         <div className={styles.shell}>
-          <section className={styles.method}>
-            <p className={styles.kicker}>Fixed setup</p>
-            <div>
-              <h2>One first frame, prompt, seed, and base checkpoint</h2>
-              <p>
-                Every sequence renders a requested 15-second clip at 768×768 with Euler and
-                Simple, fixed seed 260827104729, the same supplied first frame, the exact prompt
-                reproduced below, and no user LoRAs. The four- and eight-step groups use their
-                matching H3 Turbo adapters and shift profiles.
-              </p>
-              <p>
-                All six files contain H.264 video at 24 fps and stereo AAC audio at 32 kHz.
-                The output duration is 15.08 seconds in every case.
-              </p>
-            </div>
-          </section>
+          <div className={styles.articleLayout}>
+            <aside className={styles.method} aria-labelledby="fixed-setup-heading">
+              <p className={styles.kicker}>Fixed setup</p>
+              <div>
+                <h2 id="fixed-setup-heading">One first frame, prompt, seed, and base checkpoint</h2>
+                <p>
+                  Every sequence renders a requested 15-second clip at 768×768 with Euler and
+                  Simple, fixed seed 260827104729, the same supplied first frame, the exact prompt
+                  reproduced below, and no user LoRAs. The four- and eight-step groups use their
+                  matching H3 Turbo adapters and shift profiles.
+                </p>
+                <p>
+                  All six files contain H.264 video at 24 fps and stereo AAC audio at 32 kHz.
+                  The output duration is 15.08 seconds in every case.
+                </p>
+              </div>
+            </aside>
 
-          <Family family="4-step" />
-          <Family family="8-step" />
-
-          <section className={styles.timing}>
-            <p className={styles.kicker}>Wall-time result</p>
-            <div>
-              <h2>What each sparse sequence returned to the clock</h2>
-              <p>
-                In the four-step family, sparse 2 → dense 2 reduced the dense baseline from
-                99.8 to 75.2 seconds, returning 24.5 seconds. Sparse 2 → dense 4 completed in
-                94.7 seconds, returning 5.0 seconds while spending two additional evaluations
-                over the final half.
-              </p>
-              <p>
-                In the eight-step family, all-sparse attention reduced the dense baseline from
-                184.3 to 126.8 seconds, returning 57.6 seconds. The sparse 4 → dense 4 midpoint
-                handoff completed in 149.1 seconds, returning 35.2 seconds.
-              </p>
+            <div className={styles.comparisons}>
+              <Family family="4-step" />
+              <Family family="8-step" />
             </div>
-          </section>
+
+            <aside className={styles.timing} aria-labelledby="wall-time-heading">
+              <p className={styles.kicker}>Wall-time result</p>
+              <div>
+                <h2 id="wall-time-heading">What each sparse sequence returned to the clock</h2>
+                <p>
+                  In the four-step family, sparse 2 → dense 2 reduced the dense baseline from
+                  99.8 to 75.2 seconds, returning 24.5 seconds. Sparse 2 → dense 4 completed in
+                  94.7 seconds, returning 5.0 seconds while spending two additional evaluations
+                  over the final half.
+                </p>
+                <p>
+                  In the eight-step family, all-sparse attention reduced the dense baseline from
+                  184.3 to 126.8 seconds, returning 57.6 seconds. The sparse 4 → dense 4 midpoint
+                  handoff completed in 149.1 seconds, returning 35.2 seconds.
+                </p>
+              </div>
+            </aside>
+          </div>
 
           <details className={styles.prompt}>
             <summary>Exact fixed prompt</summary>

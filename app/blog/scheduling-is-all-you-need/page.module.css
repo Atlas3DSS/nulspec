@@ -115,6 +115,10 @@
   margin-top: 18px;
 }
 
+.comparisons {
+  min-width: 0;
+}
+
 .family {
   padding: 82px 0 14px;
 }
@@ -457,6 +461,102 @@
 
   .prompt {
     margin: 46px 0 64px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .shell {
+    width: min(calc(100% - 48px), 1380px);
+  }
+
+  .articleLayout {
+    display: grid;
+    grid-template-columns: minmax(175px, 200px) minmax(0, 1fr) minmax(175px, 200px);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .comparisons {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .method,
+  .timing {
+    position: sticky;
+    top: 74px;
+    display: block;
+    height: fit-content;
+    margin-top: 52px;
+    padding: 17px 14px 19px;
+    border: 1px solid var(--rule);
+    border-top: 5px solid var(--accent);
+    background:
+      linear-gradient(145deg, rgb(92 232 255 / 5%), transparent 42%),
+      var(--surface);
+    box-shadow: 6px 6px 0 rgb(38 55 68 / 58%);
+  }
+
+  .method {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .timing {
+    grid-column: 3;
+    grid-row: 1;
+    border-top-color: var(--green);
+    background:
+      linear-gradient(145deg, rgb(114 228 173 / 5%), transparent 42%),
+      var(--surface);
+  }
+
+  .timing .kicker {
+    color: var(--green);
+  }
+
+  .method .kicker,
+  .timing .kicker {
+    margin-bottom: 11px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+  }
+
+  .method h2,
+  .timing h2 {
+    margin-bottom: 12px;
+    font-size: 1.18rem;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+  }
+
+  .method p:not(.kicker),
+  .timing p:not(.kicker) {
+    font-size: 0.7rem;
+    line-height: 1.48;
+  }
+
+  .method p + p,
+  .timing p + p {
+    margin-top: 12px;
+    padding-top: 11px;
+    border-top: 1px dashed var(--rule);
+  }
+
+  .method div > p:first-of-type::first-letter,
+  .timing div > p:first-of-type::first-letter {
+    float: left;
+    margin: 0.05em 0.12em 0 0;
+    color: var(--text);
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 0.78;
+  }
+
+  .grid {
+    gap: 10px;
   }
 }
 

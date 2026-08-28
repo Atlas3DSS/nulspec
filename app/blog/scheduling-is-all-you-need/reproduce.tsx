@@ -42,6 +42,7 @@ export function ReproduceStudy() {
             <Image
               alt={chart.alt}
               height={chart.height}
+              loading="eager"
               src={`${postPath}/${chart.file}`}
               unoptimized
               width={chart.width}

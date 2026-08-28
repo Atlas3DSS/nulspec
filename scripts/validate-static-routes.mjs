@@ -70,6 +70,8 @@ for (const phrase of [
   "pauses the other so their audio never overlaps",
   "Every integer handoff, three at a time",
   "-step Turbo gallery",
+  "Generation time at every handoff",
+  "Exact wall time for all 55 integer-boundary renders",
 ]) {
   if (!post.includes(phrase)) {
     throw new Error(`generated H3 post omits required copy: ${phrase}`);
@@ -111,6 +113,13 @@ if (
     post.indexOf("Every integer handoff, three at a time")
 ) {
   throw new Error("the focused one-dense gallery must sit between the prompt and full sweep");
+}
+if (
+  post.indexOf("Generation time at every handoff") < post.indexOf("Exact fixed prompt") ||
+  post.indexOf("Generation time at every handoff") >
+    post.indexOf("What one final dense step changes")
+) {
+  throw new Error("the timing overview must sit between the prompt and focused comparison");
 }
 
 for (const retiredPath of retiredTopLevelPaths) {
@@ -157,6 +166,9 @@ if (
   throw new Error("generated integer boundary gallery manifest is invalid");
 }
 for (const item of sweepCases) {
+  if (!post.includes(`data-case-id="${item.id}"`)) {
+    throw new Error(`integer boundary timing table omits case: ${item.id}`);
+  }
   const path = resolve(sweepDirectory, item.file);
   const metadata = await stat(path);
   if (!metadata.isFile() || metadata.size !== item.bytes) {

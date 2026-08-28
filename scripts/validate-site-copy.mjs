@@ -84,6 +84,10 @@ const oneDenseComparisons = await readFile(
   resolve(appDirectory, postRoute, "one-dense-comparisons.tsx"),
   "utf8",
 );
+const timingOverview = await readFile(
+  resolve(appDirectory, postRoute, "timing-overview.tsx"),
+  "utf8",
+);
 const errors = [];
 
 for (const phrase of [
@@ -126,6 +130,20 @@ if (!gallery.includes("<CompareToggle")) {
   errors.push("integer boundary videos are not connected to the comparison drawer");
 }
 for (const phrase of [
+  "Generation time at every handoff",
+  "Lower is faster.",
+  "SHARE OF EVALUATIONS USING SPARSE ATTENTION",
+  "Exact wall time for all 55 integer-boundary renders",
+  "data-case-id={item.id}",
+]) {
+  if (!timingOverview.includes(phrase)) {
+    errors.push(`timing overview omits required data or copy: ${phrase}`);
+  }
+}
+if (!post.includes("<TimingOverview")) {
+  errors.push("H3 post does not render the timing overview");
+}
+for (const phrase of [
   "What one final dense step changes",
   "starting one automatically",
   "pauses the other so their audio never overlaps",
@@ -143,10 +161,12 @@ if (
   gallery.includes("<track") ||
   comparison.includes("<track") ||
   oneDenseComparisons.includes("<track") ||
+  timingOverview.includes("<track") ||
   post.includes("atlas-caption.vtt") ||
   gallery.includes("atlas-caption.vtt") ||
   comparison.includes("atlas-caption.vtt") ||
-  oneDenseComparisons.includes("atlas-caption.vtt")
+  oneDenseComparisons.includes("atlas-caption.vtt") ||
+  timingOverview.includes("atlas-caption.vtt")
 ) {
   errors.push("H3 post contains an unsolicited caption track");
 }

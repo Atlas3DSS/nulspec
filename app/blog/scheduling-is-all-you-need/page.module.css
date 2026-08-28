@@ -283,6 +283,228 @@
   font: 0.77rem/1.65 ui-monospace, "SFMono-Regular", Consolas, monospace;
 }
 
+.timingOverview {
+  margin: 68px 0 82px;
+  padding-top: 72px;
+  border-top: 1px solid var(--rule);
+}
+
+.timingOverviewHeading {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  gap: 48px;
+  align-items: end;
+  margin-bottom: 28px;
+}
+
+.timingOverviewHeading h2 {
+  max-width: 15ch;
+  margin: 0;
+  font-size: clamp(2.35rem, 4.8vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.timingOverviewHeading > p {
+  max-width: 74ch;
+  margin: 0 0 5px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.timingCharts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.timingChart {
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background:
+    linear-gradient(145deg, rgb(92 232 255 / 4%), transparent 34%),
+    var(--surface);
+}
+
+.timingChart:nth-child(2) {
+  background:
+    linear-gradient(145deg, rgb(114 228 173 / 4%), transparent 34%),
+    var(--surface);
+}
+
+.timingChart > header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 17px 13px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.timingChart > header p {
+  margin: 0 0 3px;
+  color: var(--accent);
+  font: 750 0.58rem/1.3 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.065em;
+  text-transform: uppercase;
+}
+
+.timingChart:nth-child(2) > header p {
+  color: var(--green);
+}
+
+.timingChart > header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.timingLegend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px 12px;
+}
+
+.timingLegend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font: 700 0.58rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  white-space: nowrap;
+}
+
+.timingLegend i {
+  display: block;
+  width: 18px;
+  height: 3px;
+}
+
+.timingChart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: rgb(7 11 15 / 70%);
+}
+
+.timingChartGridline {
+  stroke: #283640;
+  stroke-width: 1;
+}
+
+.timingChartAxis,
+.timingChartTickMark {
+  stroke: #71808b;
+  stroke-width: 1;
+}
+
+.timingChartTick,
+.timingChartAxisLabel {
+  fill: #94a2ad;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 11px;
+}
+
+.timingChartAxisLabel {
+  fill: #c3ced5;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.065em;
+}
+
+.timingChartPoint {
+  transition: filter 120ms ease, r 120ms ease;
+}
+
+.timingChartPoint:hover {
+  filter: brightness(1.35);
+  r: 7px;
+}
+
+.timingTableWrap {
+  max-height: 560px;
+  margin-top: 18px;
+  overflow: auto;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+
+.timingTable {
+  width: 100%;
+  min-width: 760px;
+  border-spacing: 0;
+  color: var(--text);
+  font-size: 0.76rem;
+  line-height: 1.25;
+}
+
+.timingTable caption {
+  padding: 11px 13px;
+  color: var(--muted);
+  background: var(--background);
+  font: 700 0.62rem/1.3 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.055em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.timingTable thead {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+}
+
+.timingTable th,
+.timingTable td {
+  padding: 7px 10px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.timingTable th:last-child,
+.timingTable td:last-child {
+  border-right: 0;
+}
+
+.timingTable thead th {
+  color: var(--background);
+  background: var(--accent);
+  font: 800 0.61rem/1.2 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.timingTable tbody:nth-of-type(even) td {
+  background: rgb(255 255 255 / 1.5%);
+}
+
+.timingTable tbody + tbody tr:first-child > * {
+  border-top: 3px solid #3a4b57;
+}
+
+.timingTable tbody th[scope="rowgroup"] {
+  color: var(--text);
+  background: var(--surface-raised);
+  font: 800 0.67rem/1.3 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  vertical-align: top;
+}
+
+.timingTable td strong {
+  font-size: 0.8rem;
+}
+
+.timingSaved {
+  color: var(--green);
+}
+
+.timingSlower {
+  color: #ffc66d;
+}
+
 .focusPairs {
   margin: 68px 0 76px;
   padding: 28px;
@@ -1240,7 +1462,8 @@
   .familyHeading,
   .method,
   .timing,
-  .sweepHeading {
+  .sweepHeading,
+  .timingOverviewHeading {
     grid-template-columns: 1fr;
   }
 
@@ -1264,6 +1487,14 @@
   .focusPairsHeading {
     grid-template-columns: 1fr;
     gap: 18px;
+  }
+
+  .timingOverviewHeading {
+    gap: 18px;
+  }
+
+  .timingCharts {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1304,6 +1535,44 @@
   .sampling div {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+
+  .timingOverview {
+    margin: 52px 0 60px;
+    padding-top: 52px;
+  }
+
+  .timingOverviewHeading h2 {
+    font-size: clamp(2rem, 11vw, 3.25rem);
+  }
+
+  .timingChart > header {
+    display: grid;
+    align-items: start;
+  }
+
+  .timingLegend {
+    justify-content: flex-start;
+  }
+
+  .timingChartTick {
+    font-size: 21px;
+  }
+
+  .timingChartAxisLabel {
+    font-size: 18px;
+  }
+
+  .timingChart svg > .timingChartAxisLabel:last-child {
+    display: none;
+  }
+
+  .timingChartPoint {
+    r: 7px;
+  }
+
+  .timingTableWrap {
+    max-height: 480px;
   }
 
   .focusPairs {

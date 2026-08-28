@@ -7,6 +7,7 @@ import {
 } from "./integer-boundary-galleries";
 import { CompareToggle, ComparisonProvider } from "./comparison";
 import { OneDenseComparisons } from "./one-dense-comparisons";
+import { ReproduceStudy } from "./reproduce";
 import { TimingOverview } from "./timing-overview";
 import styles from "./page.module.css";
 
@@ -313,6 +314,8 @@ export default function H3SamplerPaths() {
           <TimingOverview
             manifest={integerBoundaryManifest as unknown as IntegerBoundaryManifest}
           />
+
+          <ReproduceStudy />
 
           <OneDenseComparisons
             manifest={integerBoundaryManifest as unknown as IntegerBoundaryManifest}

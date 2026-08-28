@@ -505,6 +505,151 @@
   color: #ffc66d;
 }
 
+.reproduce {
+  margin: 68px 0 82px;
+  padding-top: 72px;
+  border-top: 1px solid var(--rule);
+}
+
+.reproduceHeading {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  gap: 48px;
+  align-items: end;
+  margin-bottom: 28px;
+}
+
+.reproduceHeading h2 {
+  max-width: 15ch;
+  margin: 0;
+  font-size: clamp(2.35rem, 4.8vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.reproduceHeading > p {
+  max-width: 74ch;
+  margin: 0 0 5px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.equivalenceCharts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.equivalenceCharts figure {
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid var(--rule);
+  background: #05080b;
+}
+
+.equivalenceCharts img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.equivalenceCharts figcaption {
+  padding: 11px 14px;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font: 700 0.62rem/1.35 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.replicationCard {
+  display: grid;
+  grid-template-columns: minmax(280px, 1.1fr) minmax(260px, 0.9fr);
+  gap: 28px 42px;
+  margin-top: 18px;
+  padding: 28px;
+  border: 1px solid var(--rule);
+  border-top: 6px solid var(--accent);
+  background:
+    linear-gradient(145deg, rgb(92 232 255 / 5%), transparent 36%),
+    var(--surface);
+  box-shadow: 8px 8px 0 rgb(38 55 68 / 50%);
+}
+
+.replicationLead h3 {
+  max-width: 20ch;
+  margin: 0;
+  font-size: clamp(1.8rem, 3.3vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.replicationLead > p:last-child {
+  max-width: 68ch;
+  margin: 18px 0 0;
+  color: var(--muted);
+  line-height: 1.62;
+}
+
+.replicationLead code {
+  color: var(--text);
+  font-size: 0.9em;
+}
+
+.replicationContract {
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.replicationContract div {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.42fr) minmax(0, 0.58fr);
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.replicationContract dt {
+  color: var(--muted);
+  font: 700 0.62rem/1.4 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.replicationContract dd {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.replicationLinks {
+  display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.replicationLinks a {
+  padding: 11px 13px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: var(--background);
+  font: 800 0.65rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.045em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.replicationLinks a:hover,
+.replicationLinks a:focus-visible {
+  color: var(--background);
+  background: var(--accent);
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
+}
+
 .focusPairs {
   margin: 68px 0 76px;
   padding: 28px;
@@ -1496,6 +1641,19 @@
   .timingCharts {
     grid-template-columns: 1fr;
   }
+
+  .reproduceHeading,
+  .replicationCard {
+    grid-template-columns: 1fr;
+  }
+
+  .reproduceHeading {
+    gap: 18px;
+  }
+
+  .equivalenceCharts {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 650px) {
@@ -1573,6 +1731,29 @@
 
   .timingTableWrap {
     max-height: 480px;
+  }
+
+  .reproduce {
+    margin: 52px 0 60px;
+    padding-top: 52px;
+  }
+
+  .reproduceHeading h2 {
+    font-size: clamp(2rem, 11vw, 3.25rem);
+  }
+
+  .replicationCard {
+    padding: 16px;
+    box-shadow: 5px 5px 0 rgb(38 55 68 / 50%);
+  }
+
+  .replicationContract div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .replicationLinks {
+    display: grid;
   }
 
   .focusPairs {

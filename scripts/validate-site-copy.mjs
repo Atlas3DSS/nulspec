@@ -43,6 +43,8 @@ const expectedAssets = [
   "current_sage_4_00001_.mp4",
   "current_sage_8_00001_.mp4",
   "h3-sparsity-timing.svg",
+  "h3-turbo4-time-equivalence.png",
+  "h3-turbo8-time-equivalence.png",
   "manifest.json",
   "sparse2_dense2_4nfe_00001_.mp4",
   "sparse2_dense4_6nfe_00001_.mp4",
@@ -86,6 +88,10 @@ const oneDenseComparisons = await readFile(
 );
 const timingOverview = await readFile(
   resolve(appDirectory, postRoute, "timing-overview.tsx"),
+  "utf8",
+);
+const reproduce = await readFile(
+  resolve(appDirectory, postRoute, "reproduce.tsx"),
   "utf8",
 );
 const errors = [];
@@ -142,6 +148,20 @@ for (const phrase of [
 }
 if (!post.includes("<TimingOverview")) {
   errors.push("H3 post does not render the timing overview");
+}
+for (const phrase of [
+  "Time-equivalent depth",
+  "One custom sampler. Everything around it stays stock.",
+  "https://github.com/Zironic/H3-Optimizations",
+  "h3_sparse_dense_exact_turbo4.json",
+  "h3_sparse_dense_exact_turbo8.json",
+]) {
+  if (!reproduce.includes(phrase)) {
+    errors.push(`replication section omits required copy or link: ${phrase}`);
+  }
+}
+if (!post.includes("<ReproduceStudy")) {
+  errors.push("H3 post does not render the replication section");
 }
 for (const phrase of [
   "What one final dense step changes",

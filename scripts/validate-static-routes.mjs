@@ -72,6 +72,9 @@ for (const phrase of [
   "-step Turbo gallery",
   "Generation time at every handoff",
   "Exact wall time for all 55 integer-boundary renders",
+  "Time-equivalent depth",
+  "One custom sampler. Everything around it stays stock.",
+  "https://github.com/Zironic/H3-Optimizations",
 ]) {
   if (!post.includes(phrase)) {
     throw new Error(`generated H3 post omits required copy: ${phrase}`);
@@ -187,6 +190,16 @@ const graph = await readFile(
 for (const marker of ["−24.5 s", "−57.6 s", "H3 WALL TIME"]) {
   if (!graph.includes(marker)) {
     throw new Error(`H3 timing graph omits marker: ${marker}`);
+  }
+}
+
+for (const chart of [
+  "h3-turbo4-time-equivalence.png",
+  "h3-turbo8-time-equivalence.png",
+]) {
+  const metadata = await stat(resolve(postDirectory, chart));
+  if (!metadata.isFile() || metadata.size < 100_000) {
+    throw new Error(`time-equivalence chart is absent or truncated: ${chart}`);
   }
 }
 

@@ -74,7 +74,7 @@ for (const phrase of [
   "Exact wall time for all 55 integer-boundary renders",
   "Time-equivalent depth",
   "One custom sampler. Everything around it stays stock.",
-  "https://github.com/Zironic/H3-Optimizations",
+  "https://github.com/Atlas3DSS/H3-Optimizations",
   "Related work",
   "MiniMax H3</a> was trained with native sparse attention",
   "complete output set for direct comparison",

@@ -2,7 +2,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 
 const postPath = "/blog/scheduling-is-all-you-need";
-const repository = "https://github.com/Zironic/H3-Optimizations";
+const repository = "https://github.com/Atlas3DSS/H3-Optimizations";
 
 const charts = [
   {

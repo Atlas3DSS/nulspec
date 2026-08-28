@@ -156,7 +156,7 @@ if (!post.includes("<TimingOverview")) {
 for (const phrase of [
   "Time-equivalent depth",
   "One custom sampler. Everything around it stays stock.",
-  "https://github.com/Zironic/H3-Optimizations",
+  "https://github.com/Atlas3DSS/H3-Optimizations",
   "h3_sparse_dense_exact_turbo4.json",
   "h3_sparse_dense_exact_turbo8.json",
 ]) {

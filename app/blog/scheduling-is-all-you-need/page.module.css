@@ -279,6 +279,173 @@
   font: 0.77rem/1.65 ui-monospace, "SFMono-Regular", Consolas, monospace;
 }
 
+@media (min-width: 861px) {
+  .siteBanner {
+    min-height: 54px;
+  }
+
+  .page {
+    min-height: calc(100vh - 54px);
+  }
+
+  .shell {
+    width: min(calc(100% - 48px), 1260px);
+  }
+
+  .hero {
+    padding: clamp(52px, 6vw, 82px) 0 42px;
+  }
+
+  .hero h1 {
+    max-width: 21ch;
+    font-size: clamp(2.75rem, 5vw, 5.25rem);
+  }
+
+  .lede {
+    margin-top: 20px;
+    font-size: clamp(0.96rem, 1.35vw, 1.08rem);
+    line-height: 1.52;
+  }
+
+  .facts {
+    margin-top: 28px;
+  }
+
+  .facts div {
+    padding: 13px 15px;
+  }
+
+  .facts dd {
+    margin-top: 4px;
+    font-size: 0.88rem;
+  }
+
+  .method,
+  .timing {
+    grid-template-columns: minmax(160px, 0.28fr) minmax(0, 1fr);
+    gap: 30px;
+    padding: 48px 0;
+  }
+
+  .method h2,
+  .timing h2,
+  .familyHeading h2 {
+    margin-bottom: 13px;
+    font-size: clamp(1.65rem, 2.6vw, 2.65rem);
+  }
+
+  .method p:not(.kicker),
+  .timing p:not(.kicker),
+  .familyHeading > p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .method p + p,
+  .timing p + p {
+    margin-top: 11px;
+  }
+
+  .family {
+    padding: 52px 0 10px;
+  }
+
+  .familyHeading {
+    gap: 30px;
+    margin-bottom: 18px;
+  }
+
+  .grid {
+    gap: 13px;
+  }
+
+  .cardBody {
+    padding: 11px 12px 12px;
+  }
+
+  .cardTop {
+    gap: 8px;
+  }
+
+  .cardTop p {
+    margin-bottom: 3px;
+    font-size: 0.56rem;
+  }
+
+  .cardTop h3 {
+    font-size: 0.98rem;
+    line-height: 1.1;
+  }
+
+  .cardTop > span {
+    padding: 3px 5px;
+    font-size: 0.56rem;
+  }
+
+  .runtime {
+    gap: 8px;
+    margin-top: 9px;
+  }
+
+  .runtime strong {
+    font-size: 1.05rem;
+  }
+
+  .runtime span {
+    font-size: 0.56rem;
+  }
+
+  .bar {
+    height: 3px;
+    margin-top: 5px;
+  }
+
+  .sampling {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 9px;
+  }
+
+  .sampling div {
+    display: block;
+    min-width: 0;
+    padding: 5px 6px;
+  }
+
+  .sampling div:nth-child(odd) {
+    border-right: 1px solid var(--rule);
+  }
+
+  .sampling div:last-child {
+    grid-column: 1 / -1;
+    border-right: 0;
+  }
+
+  .sampling dt {
+    margin-bottom: 1px;
+    font-size: 0.52rem;
+    line-height: 1.2;
+  }
+
+  .sampling dd {
+    font-size: 0.65rem;
+    line-height: 1.22;
+  }
+
+  .narrative {
+    margin-top: 8px;
+    font-size: 0.67rem;
+    line-height: 1.35;
+  }
+
+  .timing {
+    margin-top: 42px;
+  }
+
+  .prompt {
+    margin: 46px 0 64px;
+  }
+}
+
 @media (max-width: 1080px) {
   .grid {
     grid-template-columns: 1fr 1fr;

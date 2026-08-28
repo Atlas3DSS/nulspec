@@ -75,6 +75,9 @@ for (const phrase of [
   "Time-equivalent depth",
   "One custom sampler. Everything around it stays stock.",
   "https://github.com/Zironic/H3-Optimizations",
+  "Related work",
+  "MiniMax H3</a> was trained with native sparse attention",
+  "complete output set for direct comparison",
 ]) {
   if (!post.includes(phrase)) {
     throw new Error(`generated H3 post omits required copy: ${phrase}`);
@@ -123,6 +126,9 @@ if (
     post.indexOf("What one final dense step changes")
 ) {
   throw new Error("the timing overview must sit between the prompt and focused comparison");
+}
+if (post.indexOf("Related work") < post.indexOf("Every integer handoff, three at a time")) {
+  throw new Error("related work must remain at the bottom after the integer boundary galleries");
 }
 
 for (const retiredPath of retiredTopLevelPaths) {

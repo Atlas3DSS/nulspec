@@ -94,6 +94,10 @@ const reproduce = await readFile(
   resolve(appDirectory, postRoute, "reproduce.tsx"),
   "utf8",
 );
+const relatedWork = await readFile(
+  resolve(appDirectory, postRoute, "related-work.tsx"),
+  "utf8",
+);
 const errors = [];
 
 for (const phrase of [
@@ -162,6 +166,23 @@ for (const phrase of [
 }
 if (!post.includes("<ReproduceStudy")) {
   errors.push("H3 post does not render the replication section");
+}
+for (const phrase of [
+  "Related work",
+  "https://huggingface.co/MiniMaxAI/MiniMax-H3",
+  "https://arxiv.org/abs/2607.24027",
+  "https://arxiv.org/abs/2505.21036",
+  "https://arxiv.org/abs/2604.12219",
+  "https://arxiv.org/abs/2509.24006",
+  "every integer",
+  "complete output set",
+]) {
+  if (!relatedWork.includes(phrase)) {
+    errors.push(`related-work section omits required copy or link: ${phrase}`);
+  }
+}
+if (!post.includes("<RelatedWork")) {
+  errors.push("H3 post does not render related work");
 }
 for (const phrase of [
   "What one final dense step changes",

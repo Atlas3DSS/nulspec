@@ -1090,6 +1090,54 @@
   text-transform: uppercase;
 }
 
+.relatedWork {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
+  gap: 54px;
+  margin: 0 0 100px;
+  padding: 72px 0 0;
+  border-top: 1px solid var(--rule);
+}
+
+.relatedWork h2 {
+  margin: 0;
+  font-size: clamp(2.35rem, 4.8vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.relatedWorkCopy {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.relatedWorkCopy p {
+  margin: 0;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.91rem;
+  line-height: 1.68;
+}
+
+.relatedWorkCopy a {
+  color: var(--accent);
+  text-decoration-color: rgb(92 232 255 / 48%);
+  text-underline-offset: 0.18em;
+}
+
+.relatedWorkCopy a:hover,
+.relatedWorkCopy a:focus-visible {
+  color: var(--text);
+  text-decoration-color: var(--text);
+}
+
+.relatedWorkCopy .relatedWorkContribution {
+  color: var(--text);
+  font-weight: 700;
+}
+
 .compareToggle {
   display: flex;
   min-height: 38px;
@@ -1643,11 +1691,16 @@
   }
 
   .reproduceHeading,
-  .replicationCard {
+  .replicationCard,
+  .relatedWork {
     grid-template-columns: 1fr;
   }
 
   .reproduceHeading {
+    gap: 18px;
+  }
+
+  .relatedWork {
     gap: 18px;
   }
 
@@ -1754,6 +1807,15 @@
 
   .replicationLinks {
     display: grid;
+  }
+
+  .relatedWork {
+    margin-bottom: 72px;
+    padding-top: 52px;
+  }
+
+  .relatedWork h2 {
+    font-size: clamp(2rem, 11vw, 3.25rem);
   }
 
   .focusPairs {

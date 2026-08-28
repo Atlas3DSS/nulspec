@@ -6,6 +6,7 @@ const root = process.cwd();
 const outputDirectory = resolve(root, "out");
 const postRoute = "blog/scheduling-is-all-you-need";
 const postDirectory = resolve(outputDirectory, postRoute);
+const sweepDirectory = resolve(postDirectory, "integer-boundary-sweep");
 const title =
   "Scheduling is all you need: use sparsity to save time while controlling loss.";
 const retiredTopLevelPaths = [
@@ -65,14 +66,21 @@ for (const phrase of [
   "Sparse Kitchen at 30% video KV",
   "Exact fixed prompt",
   "What each sparse sequence returned to the clock",
+  "Every integer handoff, three at a time",
+  "-step Turbo gallery",
 ]) {
   if (!post.includes(phrase)) {
     throw new Error(`generated H3 post omits required copy: ${phrase}`);
   }
 }
+for (const turbo of [4, 8]) {
+  if (!post.includes(`id="sweep-turbo-${turbo}"`)) {
+    throw new Error(`generated H3 post omits the Turbo ${turbo} gallery`);
+  }
+}
 
-if ((post.match(/<video/g) ?? []).length !== 6) {
-  throw new Error("generated H3 post must contain exactly six videos");
+if ((post.match(/<video/g) ?? []).length !== 12) {
+  throw new Error("generated H3 post must contain six headline and six active gallery videos");
 }
 
 for (const phrase of prohibitedPostCopy) {
@@ -83,6 +91,9 @@ for (const phrase of prohibitedPostCopy) {
 
 if (post.indexOf("Exact fixed prompt") < post.indexOf("What each sparse sequence returned to the clock")) {
   throw new Error("the exact fixed prompt must remain at the bottom of the post");
+}
+if (post.indexOf("Every integer handoff, three at a time") < post.indexOf("Exact fixed prompt")) {
+  throw new Error("the integer boundary galleries must follow the fixed prompt at the bottom");
 }
 
 for (const retiredPath of retiredTopLevelPaths) {
@@ -114,6 +125,32 @@ for (const item of manifest.cases) {
   }
 }
 
+const sweepManifest = JSON.parse(
+  await readFile(resolve(sweepDirectory, "manifest.json"), "utf8"),
+);
+const sweepFamilies = sweepManifest.families ?? [];
+const sweepCases = sweepFamilies.flatMap((family) => family.cases ?? []);
+if (
+  sweepManifest.schema !== "nulspec_h3_integer_boundary_gallery_v1" ||
+  sweepManifest.case_count !== 55 ||
+  sweepCases.length !== 55 ||
+  JSON.stringify(sweepFamilies.map((family) => family.case_count)) !==
+    JSON.stringify([21, 34])
+) {
+  throw new Error("generated integer boundary gallery manifest is invalid");
+}
+for (const item of sweepCases) {
+  const path = resolve(sweepDirectory, item.file);
+  const metadata = await stat(path);
+  if (!metadata.isFile() || metadata.size !== item.bytes) {
+    throw new Error(`integer boundary video is absent or has the wrong size: ${item.file}`);
+  }
+  const digest = createHash("sha256").update(await readFile(path)).digest("hex");
+  if (digest !== item.sha256) {
+    throw new Error(`integer boundary video digest mismatch: ${item.file}`);
+  }
+}
+
 const graph = await readFile(
   resolve(postDirectory, "h3-sparsity-timing.svg"),
   "utf8",
@@ -139,5 +176,5 @@ if (/Disallow:\s*\//i.test(robots)) {
 }
 
 console.log(
-  `validated minimal journal output in ${relativeFiles.length} files with six hash-bound H3 videos`,
+  `validated minimal journal output in ${relativeFiles.length} files with 61 hash-bound H3 videos`,
 );

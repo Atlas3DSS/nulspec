@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 
@@ -6,6 +7,8 @@ const appDirectory = resolve(root, "app");
 const publicDirectory = resolve(root, "public");
 const postRoute = "blog/scheduling-is-all-you-need";
 const postPublicDirectory = resolve(publicDirectory, postRoute);
+const sweepPublicDirectory = resolve(postPublicDirectory, "integer-boundary-sweep");
+const sweepManifestPath = resolve(sweepPublicDirectory, "manifest.json");
 const title =
   "Scheduling is all you need: use sparsity to save time while controlling loss.";
 const retiredRoutes = [
@@ -70,6 +73,10 @@ async function collectFiles(directory) {
 
 const home = await readFile(resolve(appDirectory, "site-home.tsx"), "utf8");
 const post = await readFile(resolve(appDirectory, postRoute, "page.tsx"), "utf8");
+const gallery = await readFile(
+  resolve(appDirectory, postRoute, "integer-boundary-galleries.tsx"),
+  "utf8",
+);
 const errors = [];
 
 for (const phrase of [
@@ -79,6 +86,18 @@ for (const phrase of [
 ]) {
   if (!home.includes(phrase)) {
     errors.push(`home page omits required copy or link: ${phrase}`);
+  }
+}
+
+for (const phrase of [
+  "55-render addendum",
+  "-step Turbo gallery",
+  "const pageSize = 3",
+  "Previous three",
+  "Next three",
+]) {
+  if (!gallery.includes(phrase)) {
+    errors.push(`integer boundary gallery omits required copy or behavior: ${phrase}`);
   }
 }
 
@@ -140,11 +159,52 @@ if (JSON.stringify(postAssets) !== JSON.stringify(expectedAssets)) {
   );
 }
 
+const sweepManifest = JSON.parse(await readFile(sweepManifestPath, "utf8"));
+const sweepFamilies = sweepManifest.families ?? [];
+const sweepCases = sweepFamilies.flatMap((family) => family.cases ?? []);
+if (
+  sweepManifest.schema !== "nulspec_h3_integer_boundary_gallery_v1" ||
+  sweepManifest.case_count !== 55 ||
+  sweepCases.length !== 55 ||
+  JSON.stringify(sweepFamilies.map((family) => family.case_count)) !==
+    JSON.stringify([21, 34])
+) {
+  errors.push("integer boundary sweep manifest has the wrong schema or family counts");
+}
+
+const sweepFiles = (await readdir(sweepPublicDirectory, { withFileTypes: true }))
+  .filter((entry) => entry.isFile())
+  .map((entry) => entry.name)
+  .sort();
+const expectedSweepFiles = ["manifest.json", ...sweepCases.map((item) => item.file)].sort();
+if (JSON.stringify(sweepFiles) !== JSON.stringify(expectedSweepFiles)) {
+  errors.push("integer boundary sweep assets differ from its public manifest");
+}
+
+const seenSweepIds = new Set();
+for (const item of sweepCases) {
+  if (
+    seenSweepIds.has(item.id) ||
+    !/^t[48]_n(?:04|06|08|12)_s\d{2}_d\d{2}$/.test(item.id) ||
+    item.file !== `${item.id}.mp4` ||
+    item.sparse_nfe + item.dense_nfe !== item.total_nfe
+  ) {
+    errors.push(`invalid integer boundary case metadata: ${item.id}`);
+    continue;
+  }
+  seenSweepIds.add(item.id);
+  const bytes = await readFile(resolve(sweepPublicDirectory, item.file));
+  const digest = createHash("sha256").update(bytes).digest("hex");
+  if (bytes.length !== item.bytes || digest !== item.sha256) {
+    errors.push(`integer boundary video failed byte/hash validation: ${item.file}`);
+  }
+}
+
 if (errors.length > 0) {
   console.error(errors.join("\n"));
   process.exitCode = 1;
 } else {
   console.log(
-    `validated minimal NULSPEC home and H3 post across ${appFiles.length} app files`,
+    `validated minimal NULSPEC home, H3 post, and 55-case gallery across ${appFiles.length} app files`,
   );
 }

@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import integerBoundaryManifest from "@/public/blog/scheduling-is-all-you-need/integer-boundary-sweep/manifest.json";
+import {
+  IntegerBoundaryGalleries,
+  type IntegerBoundaryManifest,
+} from "./integer-boundary-galleries";
 import styles from "./page.module.css";
 
 const postPath = "/blog/scheduling-is-all-you-need";
@@ -8,7 +13,7 @@ const title = "Scheduling is all you need: use sparsity to save time while contr
 export const metadata: Metadata = {
   title,
   description:
-    "Six fixed-seed MiniMax H3 sequences compare dense, sparse, and sparse-to-dense attention schedules by measured wall time.",
+    "Six headline MiniMax H3 sequences and a 55-render integer handoff sweep compare dense, sparse, and sparse-to-dense attention schedules by measured wall time.",
   alternates: {
     canonical: `${postPath}/`,
   },
@@ -16,7 +21,7 @@ export const metadata: Metadata = {
     type: "article",
     title,
     description:
-      "Six fixed-seed H3 sequences, one controlled setup, and the wall time saved by different attention schedules.",
+      "Six headline H3 sequences, a 55-render integer handoff sweep, and the wall time returned by different attention schedules.",
     url: `${postPath}/`,
     publishedTime: "2026-08-28T00:00:00Z",
     images: [
@@ -241,10 +246,11 @@ export default function H3SamplerPaths() {
             <p className={styles.lede}>
               Six MiniMax H3 execution paths receive the same first frame, prompt, seed,
               checkpoint, resolution, and duration. The Turbo profile and attention schedule
-              change; measured wall time is reported for every sequence.
+              change; measured wall time is reported for every sequence. A complete 55-render
+              integer handoff sweep follows at the bottom.
             </p>
             <dl className={styles.facts}>
-              <div><dt>Sequences</dt><dd>6</dd></div>
+              <div><dt>Sequences</dt><dd>6 + 55 sweep</dd></div>
               <div><dt>Seed</dt><dd>260827104729</dd></div>
               <div><dt>Format</dt><dd>768² · 15.08 s</dd></div>
               <div><dt>Base</dt><dd>MiniMax H3 FL2VA</dd></div>
@@ -299,6 +305,10 @@ export default function H3SamplerPaths() {
             <summary>Exact fixed prompt</summary>
             <pre>{fixedPrompt}</pre>
           </details>
+
+          <IntegerBoundaryGalleries
+            manifest={integerBoundaryManifest as unknown as IntegerBoundaryManifest}
+          />
         </div>
       </main>
     </>

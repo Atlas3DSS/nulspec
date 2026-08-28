@@ -283,6 +283,274 @@
   font: 0.77rem/1.65 ui-monospace, "SFMono-Regular", Consolas, monospace;
 }
 
+.sweep {
+  padding: 78px 0 96px;
+  border-top: 1px solid var(--rule);
+}
+
+.sweepHeading {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+  column-gap: 54px;
+  align-items: end;
+  margin-bottom: 34px;
+}
+
+.sweepHeading .kicker {
+  grid-column: 1 / -1;
+}
+
+.sweepHeading h2 {
+  max-width: 13ch;
+  margin: 0;
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.sweepHeading > p:last-child {
+  max-width: 74ch;
+  margin: 0 0 5px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.sweepFamilies {
+  display: grid;
+  gap: 28px;
+}
+
+.sweepFamily {
+  padding: 24px;
+  border: 1px solid var(--rule);
+  border-top: 5px solid var(--accent);
+  background:
+    linear-gradient(145deg, rgb(92 232 255 / 4%), transparent 32%),
+    var(--surface);
+  box-shadow: 8px 8px 0 rgb(38 55 68 / 50%);
+}
+
+.sweepFamily:nth-child(2) {
+  border-top-color: var(--green);
+  background:
+    linear-gradient(145deg, rgb(114 228 173 / 4%), transparent 32%),
+    var(--surface);
+}
+
+.sweepFamilyHeading {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: end;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.sweepFamilyHeading .kicker {
+  margin-bottom: 5px;
+  font-size: 0.62rem;
+}
+
+.sweepFamily:nth-child(2) .sweepFamilyHeading .kicker {
+  color: var(--green);
+}
+
+.sweepFamilyHeading h3 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  letter-spacing: -0.04em;
+}
+
+.nfeTabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.nfeTab,
+.nfeTabActive,
+.sweepPager button {
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  background: var(--background);
+  cursor: pointer;
+  font: 750 0.66rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.nfeTab,
+.nfeTabActive {
+  padding: 9px 11px;
+}
+
+.nfeTabActive,
+.nfeTab:hover,
+.sweepPager button:hover:not(:disabled),
+.sweepPager button[aria-current="page"] {
+  border-color: var(--accent);
+  color: var(--background);
+  background: var(--accent);
+}
+
+.sweepFamily:nth-child(2) .nfeTabActive,
+.sweepFamily:nth-child(2) .nfeTab:hover,
+.sweepFamily:nth-child(2) .sweepPager button:hover:not(:disabled),
+.sweepFamily:nth-child(2) .sweepPager button[aria-current="page"] {
+  border-color: var(--green);
+  background: var(--green);
+}
+
+.nfeTab:focus-visible,
+.nfeTabActive:focus-visible,
+.sweepPager button:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
+}
+
+.sweepGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.sweepCard {
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--background);
+}
+
+.sweepVideo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #000;
+}
+
+.sweepCardBody {
+  padding: 14px;
+}
+
+.sweepCardHeading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+}
+
+.sweepCardHeading p {
+  margin: 0 0 4px;
+  color: var(--accent);
+  font: 700 0.58rem/1.3 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.sweepFamily:nth-child(2) .sweepCardHeading p {
+  color: var(--green);
+}
+
+.sweepCardHeading h4 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+}
+
+.sweepCardHeading strong {
+  flex: 0 0 auto;
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+.sweepSplit {
+  display: flex;
+  height: 24px;
+  margin-top: 13px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--surface-raised);
+}
+
+.sweepSplit .sparsePhase,
+.sweepSplit .densePhase {
+  display: grid;
+  min-width: fit-content;
+  padding: 0 8px;
+  place-items: center;
+  color: var(--background);
+  background: var(--accent);
+  font: 800 0.55rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.sweepSplit .sparsePhase {
+  background: var(--accent);
+}
+
+.sweepSplit .densePhase {
+  color: var(--background);
+  background: var(--green);
+}
+
+.sweepDelta,
+.sweepSaved {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font: 700 0.62rem/1.35 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  text-align: right;
+}
+
+.sweepSaved {
+  color: var(--green);
+}
+
+.sweepPager {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) auto minmax(140px, 1fr);
+  gap: 16px;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.sweepPager > button {
+  width: fit-content;
+  padding: 11px 13px;
+}
+
+.sweepPager > button:last-child {
+  justify-self: end;
+}
+
+.sweepPager button:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.sweepPageNumbers {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.sweepPageNumbers button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+.sweepPosition {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font: 0.58rem/1.4 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.045em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 @media (min-width: 861px) {
   .siteBanner {
     min-height: 54px;
@@ -561,7 +829,8 @@
 }
 
 @media (max-width: 1080px) {
-  .grid {
+  .grid,
+  .sweepGrid {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -569,8 +838,22 @@
 @media (max-width: 860px) {
   .familyHeading,
   .method,
-  .timing {
+  .timing,
+  .sweepHeading {
     grid-template-columns: 1fr;
+  }
+
+  .sweepHeading {
+    gap: 18px;
+  }
+
+  .sweepFamilyHeading {
+    display: grid;
+    align-items: start;
+  }
+
+  .nfeTabs {
+    justify-content: flex-start;
   }
 
   .facts {
@@ -584,8 +867,32 @@
   }
 
   .grid,
-  .facts {
+  .facts,
+  .sweepGrid {
     grid-template-columns: 1fr;
+  }
+
+  .sweep {
+    padding: 56px 0 70px;
+  }
+
+  .sweepFamily {
+    padding: 16px;
+    box-shadow: 5px 5px 0 rgb(38 55 68 / 50%);
+  }
+
+  .sweepPager {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .sweepPageNumbers {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .sweepPager > button {
+    width: 100%;
   }
 
   .sampling div {

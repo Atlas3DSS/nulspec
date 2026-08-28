@@ -5,6 +5,7 @@ import {
   IntegerBoundaryGalleries,
   type IntegerBoundaryManifest,
 } from "./integer-boundary-galleries";
+import { CompareToggle, ComparisonProvider } from "./comparison";
 import styles from "./page.module.css";
 
 const postPath = "/blog/scheduling-is-all-you-need";
@@ -164,6 +165,15 @@ function CaseCard({ item }: { item: BatteryCase }) {
         preload="metadata"
         src={`${postPath}/${item.file}`}
       />
+      <CompareToggle
+        item={{
+          id: `headline:${item.id}`,
+          title: item.name,
+          context: `${item.turbo} · ${item.nfe} NFE`,
+          runtime: `${item.elapsed.toFixed(1)} s`,
+          video: `${postPath}/${item.file}`,
+        }}
+      />
       <div className={styles.cardBody}>
         <div className={styles.cardTop}>
           <div>
@@ -226,7 +236,7 @@ function Family({ family }: { family: BatteryCase["family"] }) {
 
 export default function H3SamplerPaths() {
   return (
-    <>
+    <ComparisonProvider>
       <header className={styles.siteBanner}>
         <Link href="/">NULSPEC</Link>
       </header>
@@ -303,6 +313,6 @@ export default function H3SamplerPaths() {
           />
         </div>
       </main>
-    </>
+    </ComparisonProvider>
   );
 }

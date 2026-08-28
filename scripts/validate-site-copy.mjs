@@ -76,6 +76,10 @@ const gallery = await readFile(
   resolve(appDirectory, postRoute, "integer-boundary-galleries.tsx"),
   "utf8",
 );
+const comparison = await readFile(
+  resolve(appDirectory, postRoute, "comparison.tsx"),
+  "utf8",
+);
 const errors = [];
 
 for (const phrase of [
@@ -100,11 +104,31 @@ for (const phrase of [
   }
 }
 
+for (const phrase of [
+  "const comparisonLimit = 3",
+  "1 selected · choose one more",
+  "Compare variants",
+  "Pick another",
+  "Selections stay checked while you change NFE tabs and gallery pages.",
+]) {
+  if (!comparison.includes(phrase)) {
+    errors.push(`comparison drawer omits required behavior or copy: ${phrase}`);
+  }
+}
+if (!post.includes("<ComparisonProvider>") || !post.includes("<CompareToggle")) {
+  errors.push("headline videos are not connected to the comparison drawer");
+}
+if (!gallery.includes("<CompareToggle")) {
+  errors.push("integer boundary videos are not connected to the comparison drawer");
+}
+
 if (
   post.includes("<track") ||
   gallery.includes("<track") ||
+  comparison.includes("<track") ||
   post.includes("atlas-caption.vtt") ||
-  gallery.includes("atlas-caption.vtt")
+  gallery.includes("atlas-caption.vtt") ||
+  comparison.includes("atlas-caption.vtt")
 ) {
   errors.push("H3 post contains an unsolicited caption track");
 }

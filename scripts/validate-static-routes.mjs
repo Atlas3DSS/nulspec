@@ -82,6 +82,12 @@ for (const turbo of [4, 8]) {
 if ((post.match(/<video/g) ?? []).length !== 12) {
   throw new Error("generated H3 post must contain six headline and six active gallery videos");
 }
+if ((post.match(/type="checkbox"/g) ?? []).length !== 12) {
+  throw new Error("every generated H3 video card must expose a comparison checkbox");
+}
+if ((post.match(/<track/g) ?? []).length !== 0) {
+  throw new Error("generated H3 post must not contain caption tracks");
+}
 
 for (const phrase of prohibitedPostCopy) {
   if (post.toLowerCase().includes(phrase)) {

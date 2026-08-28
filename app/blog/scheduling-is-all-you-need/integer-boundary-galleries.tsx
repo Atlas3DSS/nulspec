@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { CompareToggle } from "./comparison";
 import styles from "./page.module.css";
 
 const postPath = "/blog/scheduling-is-all-you-need";
@@ -59,6 +60,15 @@ function SweepCard({ item, baseline }: { item: SweepCase; baseline: SweepCase })
         playsInline
         preload="metadata"
         src={`${assetPath}/${item.file}`}
+      />
+      <CompareToggle
+        item={{
+          id: `sweep:${item.id}`,
+          title: pathLabel(item),
+          context: `H3 Turbo ${item.turbo_profile}-step · ${item.total_nfe} NFE`,
+          runtime: `${item.elapsed_seconds.toFixed(1)} s`,
+          video: `${assetPath}/${item.file}`,
+        }}
       />
       <div className={styles.sweepCardBody}>
         <div className={styles.sweepCardHeading}>

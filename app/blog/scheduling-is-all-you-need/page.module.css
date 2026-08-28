@@ -551,6 +551,235 @@
   text-transform: uppercase;
 }
 
+.compareToggle {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  color: var(--muted);
+  background: rgb(10 14 18 / 88%);
+  cursor: pointer;
+  font: 750 0.64rem/1.2 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.compareToggle input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.compareToggle:hover,
+.compareToggleSelected {
+  color: var(--text);
+  background: rgb(92 232 255 / 9%);
+}
+
+.compareToggleSelected {
+  border-color: var(--accent);
+}
+
+.compareToggle[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.compareToggle:focus-within {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.compareHint,
+.compareLauncher {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 45;
+  padding: 13px 16px;
+  border: 1px solid var(--accent);
+  color: var(--background);
+  background: var(--accent);
+  box-shadow: 5px 5px 0 rgb(0 0 0 / 42%);
+  font: 800 0.7rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.compareLauncher {
+  cursor: pointer;
+}
+
+.compareLauncher:hover,
+.compareLauncher:focus-visible {
+  color: var(--text);
+  background: var(--surface-raised);
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
+}
+
+.compareScrim {
+  position: fixed;
+  z-index: 60;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: rgb(3 7 10 / 78%);
+  cursor: default;
+}
+
+.compareWindow {
+  position: fixed;
+  z-index: 61;
+  top: 18px;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  width: min(1120px, calc(100vw - 54px));
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+  border-top: 6px solid var(--accent);
+  color: var(--text);
+  background:
+    linear-gradient(145deg, rgb(92 232 255 / 6%), transparent 34%),
+    var(--background);
+  box-shadow: 12px 12px 0 rgb(0 0 0 / 48%);
+}
+
+.compareWindowHeader,
+.compareWindowFooter {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 17px 20px;
+  border-bottom: 1px solid var(--rule);
+  background: rgb(17 24 31 / 94%);
+}
+
+.compareWindowHeader p,
+.compareItem p,
+.compareWindowFooter p {
+  margin: 0;
+  color: var(--accent);
+  font: 750 0.62rem/1.4 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.compareWindowHeader h2 {
+  margin: 3px 0 0;
+  font-size: clamp(1.6rem, 3vw, 2.45rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.compareWindowHeader button,
+.compareWindowFooter button,
+.compareItem button {
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  background: var(--background);
+  cursor: pointer;
+  font: 750 0.64rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.compareWindowHeader button:hover,
+.compareWindowFooter button:hover,
+.compareItem button:hover,
+.compareWindowHeader button:focus-visible,
+.compareWindowFooter button:focus-visible,
+.compareItem button:focus-visible {
+  border-color: var(--accent);
+  color: var(--background);
+  background: var(--accent);
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.compareGrid {
+  display: grid;
+  min-height: 0;
+  flex: 1 1 auto;
+  gap: 14px;
+  padding: 18px;
+  overflow: auto;
+}
+
+.compareGridTwo {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.compareGridThree {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.compareItem {
+  align-self: start;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+
+.compareItem video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #000;
+}
+
+.compareItem > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px 12px;
+  align-items: center;
+  padding: 13px;
+}
+
+.compareItem p,
+.compareItem h3 {
+  grid-column: 1 / -1;
+}
+
+.compareItem h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.compareItem span {
+  color: var(--green);
+  font: 800 0.76rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+
+.compareItem button {
+  padding: 7px 9px;
+  font-size: 0.58rem;
+}
+
+.compareWindowFooter {
+  border-top: 1px solid var(--rule);
+  border-bottom: 0;
+}
+
+.compareWindowFooter p {
+  color: var(--muted);
+  text-transform: none;
+}
+
 @media (min-width: 861px) {
   .siteBanner {
     min-height: 54px;
@@ -898,5 +1127,44 @@
   .sampling div {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+
+  .compareHint,
+  .compareLauncher {
+    right: 12px;
+    bottom: 12px;
+    max-width: calc(100vw - 24px);
+  }
+
+  .compareWindow {
+    inset: 0;
+    width: 100%;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    box-shadow: none;
+  }
+
+  .compareWindowHeader,
+  .compareWindowFooter {
+    padding: 13px 14px;
+  }
+
+  .compareGrid {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .compareItem {
+    width: min(82vw, 350px);
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  .compareWindowFooter p {
+    display: none;
   }
 }

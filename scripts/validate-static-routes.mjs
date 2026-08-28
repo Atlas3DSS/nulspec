@@ -66,6 +66,8 @@ for (const phrase of [
   "Sparse Kitchen at 30% video KV",
   "Exact fixed prompt",
   "What each sparse sequence returned to the clock",
+  "What one final dense step changes",
+  "pauses the other so their audio never overlaps",
   "Every integer handoff, three at a time",
   "-step Turbo gallery",
 ]) {
@@ -79,8 +81,10 @@ for (const turbo of [4, 8]) {
   }
 }
 
-if ((post.match(/<video/g) ?? []).length !== 12) {
-  throw new Error("generated H3 post must contain six headline and six active gallery videos");
+if ((post.match(/<video/g) ?? []).length !== 14) {
+  throw new Error(
+    "generated H3 post must contain six headline, two focused-pair, and six sweep videos",
+  );
 }
 if ((post.match(/type="checkbox"/g) ?? []).length !== 12) {
   throw new Error("every generated H3 video card must expose a comparison checkbox");
@@ -100,6 +104,13 @@ if (post.indexOf("Exact fixed prompt") < post.indexOf("What each sparse sequence
 }
 if (post.indexOf("Every integer handoff, three at a time") < post.indexOf("Exact fixed prompt")) {
   throw new Error("the integer boundary galleries must follow the fixed prompt at the bottom");
+}
+if (
+  post.indexOf("What one final dense step changes") < post.indexOf("Exact fixed prompt") ||
+  post.indexOf("What one final dense step changes") >
+    post.indexOf("Every integer handoff, three at a time")
+) {
+  throw new Error("the focused one-dense gallery must sit between the prompt and full sweep");
 }
 
 for (const retiredPath of retiredTopLevelPaths) {

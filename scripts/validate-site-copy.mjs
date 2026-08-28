@@ -80,6 +80,10 @@ const comparison = await readFile(
   resolve(appDirectory, postRoute, "comparison.tsx"),
   "utf8",
 );
+const oneDenseComparisons = await readFile(
+  resolve(appDirectory, postRoute, "one-dense-comparisons.tsx"),
+  "utf8",
+);
 const errors = [];
 
 for (const phrase of [
@@ -121,14 +125,28 @@ if (!post.includes("<ComparisonProvider>") || !post.includes("<CompareToggle")) 
 if (!gallery.includes("<CompareToggle")) {
   errors.push("integer boundary videos are not connected to the comparison drawer");
 }
+for (const phrase of [
+  "What one final dense step changes",
+  "starting one automatically",
+  "pauses the other so their audio never overlaps",
+  "A · All dense",
+  "B · Sparse → dense",
+  "focusPairCardMobileHidden",
+]) {
+  if (!oneDenseComparisons.includes(phrase)) {
+    errors.push(`one-dense comparison gallery omits required behavior or copy: ${phrase}`);
+  }
+}
 
 if (
   post.includes("<track") ||
   gallery.includes("<track") ||
   comparison.includes("<track") ||
+  oneDenseComparisons.includes("<track") ||
   post.includes("atlas-caption.vtt") ||
   gallery.includes("atlas-caption.vtt") ||
-  comparison.includes("atlas-caption.vtt")
+  comparison.includes("atlas-caption.vtt") ||
+  oneDenseComparisons.includes("atlas-caption.vtt")
 ) {
   errors.push("H3 post contains an unsolicited caption track");
 }

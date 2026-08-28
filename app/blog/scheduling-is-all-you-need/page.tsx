@@ -6,6 +6,7 @@ import {
   type IntegerBoundaryManifest,
 } from "./integer-boundary-galleries";
 import { CompareToggle, ComparisonProvider } from "./comparison";
+import { OneDenseComparisons } from "./one-dense-comparisons";
 import styles from "./page.module.css";
 
 const postPath = "/blog/scheduling-is-all-you-need";
@@ -307,6 +308,10 @@ export default function H3SamplerPaths() {
             <summary>Exact fixed prompt</summary>
             <pre>{fixedPrompt}</pre>
           </details>
+
+          <OneDenseComparisons
+            manifest={integerBoundaryManifest as unknown as IntegerBoundaryManifest}
+          />
 
           <IntegerBoundaryGalleries
             manifest={integerBoundaryManifest as unknown as IntegerBoundaryManifest}

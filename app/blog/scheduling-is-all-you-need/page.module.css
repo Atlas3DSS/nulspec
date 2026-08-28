@@ -283,6 +283,178 @@
   font: 0.77rem/1.65 ui-monospace, "SFMono-Regular", Consolas, monospace;
 }
 
+.focusPairs {
+  margin: 68px 0 76px;
+  padding: 28px;
+  border: 1px solid var(--rule);
+  border-top: 6px solid var(--green);
+  background:
+    linear-gradient(145deg, rgb(114 228 173 / 5%), transparent 36%),
+    var(--surface);
+  box-shadow: 8px 8px 0 rgb(38 55 68 / 50%);
+}
+
+.focusPairsHeading {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.85fr) minmax(0, 1.15fr);
+  gap: 44px;
+  align-items: end;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.focusPairsHeading h2 {
+  max-width: 15ch;
+  margin: 0;
+  font-size: clamp(2.2rem, 4.5vw, 4.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.focusPairsHeading > p {
+  max-width: 70ch;
+  margin: 0 0 5px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.focusPairControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 0;
+}
+
+.focusPairTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.focusPairTabs button,
+.focusMobileSwitch button {
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  background: var(--background);
+  cursor: pointer;
+  font: 750 0.66rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.focusPairTabs button:hover,
+.focusPairTabs button[aria-pressed="true"],
+.focusMobileSwitch button:hover,
+.focusMobileSwitch button[aria-pressed="true"] {
+  border-color: var(--green);
+  color: var(--background);
+  background: var(--green);
+}
+
+.focusPairTabs button:focus-visible,
+.focusMobileSwitch button:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
+}
+
+.focusMobileSwitch {
+  display: none;
+}
+
+.focusPairStage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.focusPairCard {
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-top: 5px solid var(--accent);
+  background: var(--background);
+}
+
+.focusPairCardOneDense {
+  border-top-color: var(--green);
+}
+
+.focusPairCard video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #000;
+}
+
+.focusPairCard > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px 14px;
+  align-items: end;
+  padding: 15px 17px 17px;
+}
+
+.focusPairCard p,
+.focusPairCard h3 {
+  grid-column: 1;
+}
+
+.focusPairCard p {
+  margin: 0;
+  color: var(--accent);
+  font: 750 0.62rem/1.35 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.focusPairCardOneDense p {
+  color: var(--green);
+}
+
+.focusPairCard h3 {
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.focusPairCard strong {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  color: var(--text);
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.focusPairCard span {
+  grid-column: 2;
+  color: var(--muted);
+  font: 700 0.58rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.focusPairResult {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  padding: 15px 18px 0;
+  color: var(--green);
+}
+
+.focusPairResult strong {
+  font-size: 1.2rem;
+}
+
+.focusPairResult span {
+  color: var(--muted);
+  font: 700 0.66rem/1.4 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  text-transform: uppercase;
+}
+
 .sweep {
   padding: 78px 0 96px;
   border-top: 1px solid var(--rule);
@@ -1088,6 +1260,11 @@
   .facts {
     grid-template-columns: 1fr 1fr;
   }
+
+  .focusPairsHeading {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
 }
 
 @media (max-width: 650px) {
@@ -1127,6 +1304,63 @@
   .sampling div {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+
+  .focusPairs {
+    margin: 50px 0 58px;
+    padding: 16px;
+    box-shadow: 5px 5px 0 rgb(38 55 68 / 50%);
+  }
+
+  .focusPairsHeading h2 {
+    font-size: clamp(2rem, 11vw, 3.25rem);
+  }
+
+  .focusPairControls {
+    display: grid;
+    justify-content: stretch;
+  }
+
+  .focusPairTabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .focusPairTabs:last-child {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .focusPairTabs button,
+  .focusMobileSwitch button {
+    min-width: 0;
+    padding: 10px 7px;
+    font-size: 0.6rem;
+  }
+
+  .focusMobileSwitch {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin-bottom: 10px;
+  }
+
+  .focusPairStage {
+    grid-template-columns: 1fr;
+  }
+
+  .focusPairCardMobileHidden {
+    display: none;
+  }
+
+  .focusPairCard > div {
+    padding: 13px;
+  }
+
+  .focusPairResult {
+    display: grid;
+    gap: 4px;
+    justify-items: center;
+    text-align: center;
   }
 
   .compareHint,

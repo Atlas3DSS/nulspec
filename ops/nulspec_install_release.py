@@ -142,6 +142,9 @@ def validate_release(directory: Path) -> dict[str, object]:
         raise DeployError(f"cannot read release manifest: {exc}") from exc
     if not isinstance(manifest, dict) or manifest.get("schema_version") != 1:
         raise DeployError("release manifest schema_version must be 1")
+    site_mode = manifest.get("site_mode", "research")
+    if site_mode not in {"journal", "placeholder", "research"}:
+        raise DeployError("release manifest has an invalid site mode")
     commit = manifest.get("git_commit")
     expected_tree = manifest.get("tree_sha256")
     expected_count = manifest.get("file_count")
@@ -178,6 +181,22 @@ def validate_release(directory: Path) -> dict[str, object]:
         if not health_target(directory, path).is_file():
             raise DeployError(f"health path is absent from release: {path}")
     publications = manifest.get("publications")
+    if site_mode in {"journal", "placeholder"}:
+        if publications != []:
+            raise DeployError(
+                f"{site_mode} release must not contain publication provenance"
+            )
+    if site_mode == "placeholder":
+        if len(health_paths) != 2 or set(health_paths) != {"/", "/release.json"}:
+            raise DeployError(
+                "placeholder release health paths must contain only required endpoints"
+            )
+        return manifest
+    if site_mode == "journal":
+        post_path = "/blog/scheduling-is-all-you-need/"
+        if post_path not in health_paths:
+            raise DeployError("journal release health paths omit the H3 post")
+        return manifest
     if not isinstance(publications, list) or not publications:
         raise DeployError("release manifest has no publication provenance")
     seen_studies: set[str] = set()
@@ -309,7 +328,14 @@ def verify_live(manifest: dict[str, object]) -> None:
                 live_manifest = json.loads(result.stdout)
             except json.JSONDecodeError as exc:
                 raise DeployError("live release manifest is invalid JSON") from exc
-            for key in ("git_commit", "tree_sha256", "file_count"):
+            for key in (
+                "site_mode",
+                "git_commit",
+                "tree_sha256",
+                "file_count",
+                "health_paths",
+                "publications",
+            ):
                 if live_manifest.get(key) != manifest.get(key):
                     raise DeployError(f"live release manifest mismatch for {key}")
 

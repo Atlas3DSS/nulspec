@@ -1,7 +1,10 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-const ledgerPath = resolve(process.cwd(), "public/data/selection-ledger.json");
+const ledgerPath = resolve(
+  process.cwd(),
+  "site-data/public-archive/data/selection-ledger.json",
+);
 const ledgerText = await readFile(ledgerPath, "utf8");
 const ledger = JSON.parse(ledgerText);
 const decisions = new Set(["completed", "selected", "deferred", "rejected"]);

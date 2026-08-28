@@ -1,0 +1,84 @@
+{
+  "schema": "nulspec_h3_schedule_note_v1",
+  "published_at_utc": "2026-08-28T00:00:00Z",
+  "title": "Scheduling is all you need: use sparsity to save time while controlling loss.",
+  "route": "/blog/scheduling-is-all-you-need/",
+  "model_family": "MiniMax H3 FL2VA",
+  "resolution": [
+    768,
+    768
+  ],
+  "duration_seconds": 15.083333,
+  "seed": 260827104729,
+  "controls": [
+    "same supplied first frame",
+    "same fixed prompt",
+    "same seed",
+    "same base checkpoint",
+    "Euler sampler",
+    "Simple scheduler",
+    "no user LoRAs"
+  ],
+  "cases": [
+    {
+      "id": "current_sage_4",
+      "profile": "H3 Turbo 4-step",
+      "nfe": 4,
+      "shifts": "6 / 3",
+      "attention_path": "SageAttention x4",
+      "elapsed_seconds": 99.76,
+      "file": "current_sage_4_00001_.mp4",
+      "sha256": "921fe8ab41a608e7f1c15cc852a1ed44025ada2d52276beb038610a7e99fe20e"
+    },
+    {
+      "id": "sparse2_dense2_4nfe",
+      "profile": "H3 Turbo 4-step",
+      "nfe": 4,
+      "shifts": "6 / 3",
+      "attention_path": "Sparse Kitchen at 30% video KV x2 then SageAttention x2",
+      "elapsed_seconds": 75.236,
+      "file": "sparse2_dense2_4nfe_00001_.mp4",
+      "sha256": "81921011bd99927df5a002e8ed6880738b990de8ce9dbe2c1506c512e5d0ed7a"
+    },
+    {
+      "id": "sparse2_dense4_6nfe",
+      "profile": "H3 Turbo 4-step",
+      "nfe": 6,
+      "shifts": "6 / 3",
+      "attention_path": "Sparse Kitchen at 30% video KV x2 then SageAttention x4 over the final half",
+      "elapsed_seconds": 94.744,
+      "file": "sparse2_dense4_6nfe_00001_.mp4",
+      "sha256": "a1c02863ad2d4bc52d55fef5941edcaf1724cc14fabfc2ed6bd20f1bd35b2bc8"
+    },
+    {
+      "id": "current_sage_8",
+      "profile": "H3 Turbo 8-step",
+      "nfe": 8,
+      "shifts": "12 / 3",
+      "attention_path": "SageAttention x8",
+      "elapsed_seconds": 184.311,
+      "file": "current_sage_8_00001_.mp4",
+      "sha256": "be09b813af06c408548bf85527aa0db5c751ef423e075f95c0d8625976268d2d"
+    },
+    {
+      "id": "all_sparse_8",
+      "profile": "H3 Turbo 8-step",
+      "nfe": 8,
+      "shifts": "12 / 3",
+      "attention_path": "Sparse Kitchen at 30% video KV x8",
+      "elapsed_seconds": 126.759,
+      "file": "all_sparse_8_00001_.mp4",
+      "sha256": "cbdb48a947edfecf9e6a4265aac21e1b4c2be292eacf4f75df3217cecec91971"
+    },
+    {
+      "id": "sparse4_dense4_8nfe",
+      "profile": "H3 Turbo 8-step",
+      "nfe": 8,
+      "shifts": "12 / 3",
+      "attention_path": "Sparse Kitchen at 30% video KV x4 then SageAttention x4",
+      "elapsed_seconds": 149.117,
+      "file": "sparse4_dense4_8nfe_00001_.mp4",
+      "sha256": "3efe61a0c14f8f211b975fd04228c37a6e971fd65e1a39bf26dffafc00ef7a1b"
+    }
+  ]
+}

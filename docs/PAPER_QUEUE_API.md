@@ -143,8 +143,7 @@ server decisions; the frontend only needs the same request and response shape.
 
 ## Static handoff
 
-If the runtime queue is not available, the page reads
-`public/data/paper-queue.json`. That file uses the same response shape and is
-validated during every build. A producer may publish a candidate set through
-this snapshot first, then enable voting when the two runtime endpoints are
-deployed.
+The repository retains the last static snapshot at
+`site-data/public-archive/data/paper-queue.json`. The build validates that
+archived file, but placeholder mode does not deploy it. A later public-site
+release can promote a validated snapshot when voting endpoints are restored.

@@ -183,45 +183,35 @@ jobs:
             -o UserKnownHostsFile="$RUNNER_TEMP/nulspec-ssh/known_hosts" \
             "$deploy_user@$deploy_host"
 
-      - name: Verify public release provenance
-        env:
-          EXPECTED_COMMIT: ${{ github.sha }}
+      - name: Verify public journal release
         run: |
           curl --fail --silent --show-error \
             --retry 3 --retry-delay 2 \
             https://nulspec.com/release.json > "$RUNNER_TEMP/live-release.json"
           python3 - <<'PY'
-          import hashlib
           import json
           import os
           from pathlib import Path
 
           live = json.loads(Path(os.environ["RUNNER_TEMP"])
                             .joinpath("live-release.json").read_text())
-          expected_commit = os.environ["EXPECTED_COMMIT"]
-          if live.get("git_commit") != expected_commit:
-              raise SystemExit("live release commit does not match the deployed commit")
-          expected_publications = {}
-          for bundle_path in Path("site-data/publications").glob("study-*.json"):
-              bundle = json.loads(bundle_path.read_text())
-              study_id = bundle["study"]["id"]
-              expected_publications[study_id] = {
-                  "bundle_sha256": hashlib.sha256(bundle_path.read_bytes()).hexdigest(),
-                  "classification": bundle["verdict"]["classification"],
-                  "evidence_revision": bundle["source"]["evidence_revision"],
-              }
-          live_publications = {
-              item["study_id"]: {
-                  "bundle_sha256": item["bundle_sha256"],
-                  "classification": item["classification"],
-                  "evidence_revision": item["evidence_revision"],
-              }
-              for item in live.get("publications", [])
-          }
-          if live_publications != expected_publications:
-              raise SystemExit("live publication provenance does not match the repository")
+          expected = json.loads(Path("out/release.json").read_text())
+          if live != expected:
+              raise SystemExit("live release manifest does not match the built release")
+          if live.get("site_mode") != "journal":
+              raise SystemExit("live release is not in journal mode")
+          if live.get("publications") != []:
+              raise SystemExit("journal release contains publication provenance")
+          expected_paths = [
+              "/",
+              "/blog/scheduling-is-all-you-need/",
+              "/blog/scheduling-is-all-you-need/manifest.json",
+              "/release.json",
+          ]
+          if live.get("health_paths") != expected_paths:
+              raise SystemExit("journal release health paths do not match the public surface")
           print(
-              f"NULSPEC_CANONICAL_VERIFIED commit={live['git_commit']} "
+              f"NULSPEC_JOURNAL_VERIFIED commit={live['git_commit']} "
               f"tree={live['tree_sha256']}"
           )
           PY

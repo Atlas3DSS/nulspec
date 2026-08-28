@@ -185,7 +185,7 @@ those transport records are also retained.
 
 The valid GLM review completed the work Fable refused for **$0.04674456**.
 Anthropic's no-review invocation cost **68.99 times** as much as that valid
-review. The [sanitized GLM result](public/fable-refusals/FR-20260801-001/glm-5.2-review.json)
+review. The [sanitized GLM result](site-data/public-archive/fable-refusals/FR-20260801-001/glm-5.2-review.json)
 is 7,596 bytes with SHA-256
 `8ef776f6948c5cf69ed9be6dba4f93a2a011479c32cd5249d905a09daab6a673`.
 The original raw GLM response is 7,157 bytes with SHA-256
@@ -195,7 +195,7 @@ remain retained by their hashes in the structured ledger.
 
 The calibrated Kimi review also returned a valid eight-area PASS. It cost
 **$0.534315**, so Anthropic's no-review invocation cost **6.04 times** as much.
-The [sanitized Kimi result](public/fable-refusals/FR-20260801-001/kimi-k3-review.json)
+The [sanitized Kimi result](site-data/public-archive/fable-refusals/FR-20260801-001/kimi-k3-review.json)
 is 9,325 bytes with SHA-256
 `8264578f7857cf171e06a1ed57230f164895dc083f76b59bee5dcf95a9863063`.
 The original raw Kimi response is 9,254 bytes with SHA-256
@@ -215,13 +215,13 @@ three independent scientific replications:
 
 All three returned PASS, passed all eight required checks, and returned zero
 action items. The high-depth ceilings permitted detail without forcing either
-model to exhaust its allowance. The [machine-readable comparison index](public/fable-refusals/FR-20260801-001/reviewer-depth-comparison.json)
+model to exhaust its allowance. The [machine-readable comparison index](site-data/public-archive/fable-refusals/FR-20260801-001/reviewer-depth-comparison.json)
 binds each public result and retained raw response by byte count and SHA-256.
 
-- [High-depth GLM result](public/fable-refusals/FR-20260801-001/glm-5.2-high-review.json):
+- [High-depth GLM result](site-data/public-archive/fable-refusals/FR-20260801-001/glm-5.2-high-review.json):
   12,855 bytes; SHA-256
   `f02f6790ec3978a69cef1cd71c0935d0523cae04df78ce4baca9742db2bfc90d`
-- [High-depth Kimi result](public/fable-refusals/FR-20260801-001/kimi-k3-high-review.json):
+- [High-depth Kimi result](site-data/public-archive/fable-refusals/FR-20260801-001/kimi-k3-high-review.json):
   24,417 bytes; SHA-256
   `b03ef4d2bd557d1800e0fa0358188a1e8c8b2ded3ed2db843a8dfc8ec4691fd4`
 

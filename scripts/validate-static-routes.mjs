@@ -1,119 +1,143 @@
-import { readdir, readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { createHash } from "node:crypto";
+import { readdir, readFile, stat } from "node:fs/promises";
+import { join, relative, resolve } from "node:path";
 
 const root = process.cwd();
-const publicationsDirectory = resolve(root, "site-data", "publications");
 const outputDirectory = resolve(root, "out");
-const routeComponent = /^[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*$/;
-const expectedRoutes = new Set();
-
-for (const file of (await readdir(publicationsDirectory)).sort()) {
-  if (!/^study-[0-9]{3,}\.json$/.test(file)) continue;
-  const bundle = JSON.parse(
-    await readFile(resolve(publicationsDirectory, file), "utf8"),
-  );
-  const studyId = bundle?.study?.id;
-  if (typeof studyId !== "string" || !/^[0-9]{3,}$/.test(studyId)) {
-    throw new Error("publication has an unsafe study route component: " + file);
-  }
-  for (const arm of bundle.arms ?? []) {
-    if (
-      typeof arm.arm_id !== "string" ||
-      !routeComponent.test(arm.arm_id)
-    ) {
-      throw new Error(
-        "publication has an unsafe arm route component: " +
-          String(arm?.arm_id),
-      );
-    }
-    const route = "/studies/" + studyId + "/arms/" + arm.arm_id;
-    if (expectedRoutes.has(route)) {
-      throw new Error("duplicate expected arm route: " + route);
-    }
-    expectedRoutes.add(route);
-    const page = resolve(outputDirectory, route.slice(1), "index.html");
-    const html = await readFile(page, "utf8");
-    if (
-      !html.includes(arm.arm_id) ||
-      !html.includes("Detailed attempt records are not yet public")
-    ) {
-      throw new Error("arm page does not identify its bound evidence: " + route);
-    }
-  }
-}
-
-const actualRoutes = new Set();
-const studiesRoot = resolve(outputDirectory, "studies");
-for (const studyEntry of await readdir(studiesRoot, { withFileTypes: true })) {
-  if (!studyEntry.isDirectory()) continue;
-  const armsRoot = resolve(studiesRoot, studyEntry.name, "arms");
-  let armEntries;
-  try {
-    armEntries = await readdir(armsRoot, { withFileTypes: true });
-  } catch (error) {
-    if (error?.code === "ENOENT") continue;
-    throw error;
-  }
-  for (const armEntry of armEntries) {
-    if (!armEntry.isDirectory()) continue;
-    const route =
-      "/studies/" + studyEntry.name + "/arms/" + armEntry.name;
-    await readFile(resolve(armsRoot, armEntry.name, "index.html"));
-    actualRoutes.add(route);
-  }
-}
-
-const missing = [...expectedRoutes].filter((route) => !actualRoutes.has(route));
-const unknown = [...actualRoutes].filter((route) => !expectedRoutes.has(route));
-if (missing.length > 0 || unknown.length > 0) {
-  throw new Error(
-    "arm route manifest mismatch; missing=" +
-      JSON.stringify(missing) +
-      " unknown=" +
-      JSON.stringify(unknown),
-  );
-}
-
-const reviewPages = [
-  {
-    path: resolve(outputDirectory, "review", "index.html"),
-    title: "Human review inbox",
-  },
-  {
-    path: resolve(outputDirectory, "review", "login", "index.html"),
-    title: "Reviewer login",
-  },
+const postRoute = "blog/scheduling-is-all-you-need";
+const postDirectory = resolve(outputDirectory, postRoute);
+const title =
+  "Scheduling is all you need: use sparsity to save time while controlling loss.";
+const retiredTopLevelPaths = [
+  "data",
+  "fable-refusals",
+  "methodology",
+  "operations",
+  "papers",
+  "review",
+  "selection",
+  "sitemap.xml",
+  "studies",
 ];
-for (const page of reviewPages) {
-  const html = await readFile(page.path, "utf8");
-  if (
-    !html.includes(page.title) ||
-    !html.includes("noindex, nofollow, noarchive")
-  ) {
-    throw new Error("private review route lacks required metadata: " + page.path);
-  }
-  for (const prohibited of [
-    "NULSPEC_REVIEW_ACCOUNTS_B64",
-    "NULSPEC_REVIEW_PEPPER_B64",
-    "data-review-task=",
-    "author@example",
-    "reviewer.one",
-  ]) {
-    if (html.includes(prohibited)) {
-      throw new Error(
-        "private material entered the static review shell: " + prohibited,
-      );
+const prohibitedPostCopy = [
+  "human review",
+  "private review notes",
+  "interpretation boundary",
+  "what this page does not claim",
+  "quality conclusions",
+  "human verdict",
+  "publication disabled",
+  "unpublished",
+];
+
+async function collectFiles(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await collectFiles(path)));
+    } else if (entry.isFile()) {
+      files.push(path);
     }
+  }
+  return files;
+}
+
+const files = await collectFiles(outputDirectory);
+const relativeFiles = files.map((path) => relative(outputDirectory, path));
+const home = await readFile(resolve(outputDirectory, "index.html"), "utf8");
+const post = await readFile(resolve(postDirectory, "index.html"), "utf8");
+
+for (const phrase of [
+  "AI enthusiasts doing things.",
+  "/blog/scheduling-is-all-you-need/",
+  "h3-sparsity-timing.svg",
+]) {
+  if (!home.includes(phrase)) {
+    throw new Error(`generated home page omits required copy or link: ${phrase}`);
+  }
+}
+
+for (const phrase of [
+  title,
+  "Euler / Simple",
+  "Sparse Kitchen at 30% video KV",
+  "Exact fixed prompt",
+  "What each sparse sequence returned to the clock",
+]) {
+  if (!post.includes(phrase)) {
+    throw new Error(`generated H3 post omits required copy: ${phrase}`);
+  }
+}
+
+if ((post.match(/<video/g) ?? []).length !== 6) {
+  throw new Error("generated H3 post must contain exactly six videos");
+}
+
+for (const phrase of prohibitedPostCopy) {
+  if (post.toLowerCase().includes(phrase)) {
+    throw new Error(`generated H3 post contains removed meta commentary: ${phrase}`);
+  }
+}
+
+if (post.indexOf("Exact fixed prompt") < post.indexOf("What each sparse sequence returned to the clock")) {
+  throw new Error("the exact fixed prompt must remain at the bottom of the post");
+}
+
+for (const retiredPath of retiredTopLevelPaths) {
+  if (
+    relativeFiles.some(
+      (path) => path === retiredPath || path.startsWith(`${retiredPath}/`),
+    )
+  ) {
+    throw new Error(`retired public output remains: ${retiredPath}`);
+  }
+}
+
+const manifest = JSON.parse(
+  await readFile(resolve(postDirectory, "manifest.json"), "utf8"),
+);
+if (manifest.schema !== "nulspec_h3_schedule_note_v1" || manifest.cases?.length !== 6) {
+  throw new Error("H3 manifest has an invalid schema or case count");
+}
+
+for (const item of manifest.cases) {
+  const path = resolve(postDirectory, item.file);
+  const metadata = await stat(path);
+  if (!metadata.isFile() || metadata.size === 0) {
+    throw new Error(`H3 video is absent or empty: ${item.file}`);
+  }
+  const digest = createHash("sha256").update(await readFile(path)).digest("hex");
+  if (digest !== item.sha256) {
+    throw new Error(`H3 video digest mismatch: ${item.file}`);
+  }
+}
+
+const graph = await readFile(
+  resolve(postDirectory, "h3-sparsity-timing.svg"),
+  "utf8",
+);
+for (const marker of ["−24.5 s", "−57.6 s", "H3 WALL TIME"]) {
+  if (!graph.includes(marker)) {
+    throw new Error(`H3 timing graph omits marker: ${marker}`);
+  }
+}
+
+for (const [label, html] of [["home", home], ["post", post]]) {
+  if (/noindex|nofollow/i.test(html)) {
+    throw new Error(`${label} unexpectedly blocks search indexing`);
   }
 }
 
 const robots = await readFile(resolve(outputDirectory, "robots.txt"), "utf8");
-if (!robots.includes("Disallow: /review")) {
-  throw new Error("robots.txt does not exclude the private review routes");
+if (!/User-agent:\s*\*/i.test(robots) || !/Allow:\s*\//i.test(robots)) {
+  throw new Error("robots.txt does not permit crawling");
+}
+if (/Disallow:\s*\//i.test(robots)) {
+  throw new Error("robots.txt still disallows the public site");
 }
 
 console.log(
-  "validated " +
-    actualRoutes.size +
-    " static arm evidence routes and 2 data-free review shells",
+  `validated minimal journal output in ${relativeFiles.length} files with six hash-bound H3 videos`,
 );

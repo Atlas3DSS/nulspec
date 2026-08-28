@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create the deterministic manifest embedded in a static NULSPEC release."""
+"""Create the deterministic manifest for the static NULSPEC journal."""
 
 from __future__ import annotations
 
@@ -16,7 +16,8 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 COMMIT = re.compile(r"^[0-9a-f]{40}$")
 MANIFEST_NAME = "release.json"
-PUBLIC_ORIGIN = "https://nulspec.com"
+SITE_MODE = "journal"
+POST_PATH = "/blog/scheduling-is-all-you-need/"
 
 
 class ManifestError(Exception):
@@ -43,19 +44,6 @@ def tree_digest(directory: Path, files: list[Path]) -> str:
         relative = path.relative_to(directory).as_posix()
         tree.update(f"{sha256(path.read_bytes())}  {relative}\n".encode())
     return tree.hexdigest()
-
-
-def load_publications() -> list[tuple[dict[str, Any], bytes]]:
-    publications: list[tuple[dict[str, Any], bytes]] = []
-    for path in sorted((ROOT / "site-data/publications").glob("study-*.json")):
-        raw = path.read_bytes()
-        value = json.loads(raw)
-        if value.get("publication_status") != "ready":
-            raise ManifestError(f"publication is not ready: {path.name}")
-        publications.append((value, raw))
-    if not publications:
-        raise ManifestError("no ready publication bundles found")
-    return publications
 
 
 def health_target(static_directory: Path, path: str) -> Path:
@@ -87,48 +75,28 @@ def build_manifest(static_directory: Path, commit: str) -> dict[str, Any]:
         raise ManifestError("commit must be a full lowercase Git SHA")
     if not static_directory.is_dir():
         raise ManifestError(f"static output does not exist: {static_directory}")
-    publications = load_publications()
-    health_paths = {"/", "/release.json"}
-    publication_records = []
-    for bundle, raw in publications:
-        study_id = bundle["study"]["id"]
-        artifact_paths = {
-            artifact["role"]: artifact["public_path"]
-            for artifact in bundle["artifacts"]
-        }
-        full_report_path = artifact_paths["full_report"]
-        health_paths.add(f"/studies/{study_id}/")
-        for artifact in bundle["artifacts"]:
-            health_paths.add(f"/{artifact['public_path']}")
-        publication_records.append(
-            {
-                "study_id": study_id,
-                "study_title": bundle["study"]["title"],
-                "paper": bundle["study"]["paper"],
-                "classification": bundle["verdict"]["classification"],
-                "bundle_sha256": sha256(raw),
-                "evidence_revision": bundle["source"]["evidence_revision"],
-                "extension_vote": bundle["extension_call_to_action"],
-                "result_notification": {
-                    "study_url": f"{PUBLIC_ORIGIN}/studies/{study_id}/",
-                    "full_report_url": f"{PUBLIC_ORIGIN}/{full_report_path}",
-                    "headline": bundle["verdict"]["headline"],
-                    "summary": bundle["verdict"]["summary"],
-                    "key_findings": bundle["verdict"]["key_findings"],
-                },
-            }
-        )
-    for path in health_paths - {"/release.json"}:
+
+    health_paths = [
+        "/",
+        POST_PATH,
+        f"{POST_PATH}manifest.json",
+        "/release.json",
+    ]
+    for path in health_paths:
+        if path == "/release.json":
+            continue
         if not health_target(static_directory, path).is_file():
-            raise ManifestError(f"health path is absent from static output: {path}")
+            raise ManifestError(f"journal health path is absent: {path}")
+
     files = files_below(static_directory)
     return {
         "schema_version": 1,
+        "site_mode": SITE_MODE,
         "git_commit": commit,
         "tree_sha256": tree_digest(static_directory, files),
         "file_count": len(files),
-        "health_paths": sorted(health_paths),
-        "publications": publication_records,
+        "health_paths": health_paths,
+        "publications": [],
     }
 
 
@@ -142,13 +110,13 @@ def main() -> int:
         manifest = build_manifest(static_directory, args.commit)
         content = (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode()
         atomic_write(static_directory / MANIFEST_NAME, content)
-    except (ManifestError, OSError, KeyError, TypeError, json.JSONDecodeError) as exc:
+    except (ManifestError, OSError, TypeError, json.JSONDecodeError) as exc:
         print(f"NULSPEC_RELEASE_MANIFEST_FAILED: {exc}")
         return 1
     print(
         "NULSPEC_RELEASE_MANIFEST_READY "
-        f"commit={manifest['git_commit']} files={manifest['file_count']} "
-        f"tree={manifest['tree_sha256']}"
+        f"mode={manifest['site_mode']} commit={manifest['git_commit']} "
+        f"files={manifest['file_count']} tree={manifest['tree_sha256']}"
     )
     return 0
 

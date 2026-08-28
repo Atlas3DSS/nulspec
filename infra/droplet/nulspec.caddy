@@ -6,6 +6,8 @@ nulspec.com {
 	encode zstd gzip
 
 	header {
+		Cache-Control "public, max-age=300"
+		Content-Security-Policy "default-src 'self'; base-uri 'none'; connect-src 'none'; font-src 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data:; media-src 'self'; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
 		Strict-Transport-Security "max-age=31536000; includeSubDomains"
 		X-Content-Type-Options "nosniff"
 		X-Frame-Options "DENY"
@@ -14,54 +16,8 @@ nulspec.com {
 		-Server
 	}
 
-	@immutable path /_next/static/*
+	@immutable path /_next/static/* /blog/scheduling-is-all-you-need/*.mp4 /blog/scheduling-is-all-you-need/*.vtt /blog/scheduling-is-all-you-need/*.svg
 	header @immutable Cache-Control "public, max-age=31536000, immutable"
-
-	@review_pages path /review /review/*
-	header @review_pages {
-		Cache-Control "no-store, private, max-age=0"
-		Content-Security-Policy "default-src 'self'; base-uri 'none'; connect-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data:; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
-		>Referrer-Policy "no-referrer"
-		X-Robots-Tag "noindex, nofollow, noarchive"
-	}
-
-	@review_api {
-		method GET POST
-		path /api/review/*
-	}
-	handle @review_api {
-		request_body {
-			max_size 16KB
-		}
-		reverse_proxy 127.0.0.1:8080 {
-			header_up X-Nulspec-Client-IP {remote_host}
-		}
-	}
-
-	@review_api_wrong_method path /api/review/*
-	handle @review_api_wrong_method {
-		header Allow "GET, POST"
-		respond 405
-	}
-
-	@nomination_api {
-		method POST OPTIONS
-		path /api/nominations /api/extension-votes
-	}
-	handle @nomination_api {
-		request_body {
-			max_size 4KB
-		}
-		reverse_proxy 127.0.0.1:8080 {
-			header_up X-Nulspec-Client-IP {remote_host}
-		}
-	}
-
-	@nomination_api_wrong_method path /api/nominations /api/extension-votes
-	handle @nomination_api_wrong_method {
-		header Allow "POST, OPTIONS"
-		respond 405
-	}
 
 	@not_read not method GET HEAD
 	handle @not_read {

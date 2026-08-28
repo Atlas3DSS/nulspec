@@ -1,7 +1,10 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-const queuePath = resolve(process.cwd(), "public/data/paper-queue.json");
+const queuePath = resolve(
+  process.cwd(),
+  "site-data/public-archive/data/paper-queue.json",
+);
 const queue = JSON.parse(await readFile(queuePath, "utf8"));
 
 const fail = (message) => {

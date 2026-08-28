@@ -211,39 +211,32 @@ def test_mail_settings_pin_credentials_to_expected_hosts_and_channel(
         MailSettings.from_environment()
 
 
-def test_static_release_manifest_contains_reviewed_result_notice(
+def test_static_release_manifest_contains_minimal_journal_health_paths(
     tmp_path: Path,
 ) -> None:
     (tmp_path / "index.html").write_text("home")
-    publication_path = ROOT / "site-data/publications/study-260725091.json"
-    publication = json.loads(publication_path.read_text())
-    study_id = publication["study"]["id"]
-    study_directory = tmp_path / "studies" / study_id
-    study_directory.mkdir(parents=True)
-    (study_directory / "index.html").write_text("study")
-    for artifact in publication["artifacts"]:
-        target = tmp_path / artifact["public_path"]
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(artifact["role"])
+    post_directory = tmp_path / "blog" / "scheduling-is-all-you-need"
+    post_directory.mkdir(parents=True)
+    (post_directory / "index.html").write_text("post")
+    (post_directory / "manifest.json").write_text("{}")
 
     manifest = build_manifest(tmp_path, "a" * 40)
-    record = manifest["publications"][0]
-    result = record["result_notification"]
-
-    assert result["headline"] == publication["verdict"]["headline"]
-    assert result["summary"] == publication["verdict"]["summary"]
-    assert result["key_findings"] == publication["verdict"]["key_findings"]
-    assert result["study_url"] == ("https://nulspec.com/studies/260725091/")
+    assert manifest["site_mode"] == "journal"
+    assert manifest["publications"] == []
+    assert manifest["health_paths"] == [
+        "/",
+        "/blog/scheduling-is-all-you-need/",
+        "/blog/scheduling-is-all-you-need/manifest.json",
+        "/release.json",
+    ]
 
     release_path = tmp_path / "release.json"
     release_path.write_text(json.dumps(manifest))
     assert validate_release(tmp_path)["git_commit"] == "a" * 40
 
-    manifest["publications"][0]["result_notification"]["full_report_url"] = (
-        "https://nulspec.com/studies/260725091/artifacts/../../private"
-    )
+    manifest["publications"] = [{}]
     release_path.write_text(json.dumps(manifest))
-    with pytest.raises(DeployError, match="invalid result notice"):
+    with pytest.raises(DeployError, match="must not contain publication"):
         validate_release(tmp_path)
 
 

@@ -41,6 +41,17 @@ async function fetchAsset(request, env, pathname) {
   return env.ASSETS.fetch(new Request(url, request));
 }
 
+function withJournalHeaders(response) {
+  const headers = new Headers(response.headers);
+  headers.set("Cache-Control", "public, max-age=300");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request, env) {
     if (request.method !== "GET" && request.method !== "HEAD") {
@@ -54,14 +65,16 @@ export default {
     const response = await fetchAsset(request, env, resolveAssetPath(pathname));
 
     if (response.status !== 404) {
-      return response;
+      return withJournalHeaders(response);
     }
 
     const fallback = await fetchAsset(request, env, "/404/");
-    return new Response(fallback.body, {
-      status: 404,
-      headers: fallback.headers,
-    });
+    return withJournalHeaders(
+      new Response(fallback.body, {
+        status: 404,
+        headers: fallback.headers,
+      }),
+    );
   },
 };
 `;

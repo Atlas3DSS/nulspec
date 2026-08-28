@@ -260,7 +260,12 @@ for (const [index, entry] of (ledger.refusals ?? []).entries()) {
           attempt.public_result_url.startsWith(`/fable-refusals/${entry.id}/`),
         `${attemptLabel} has an invalid public result URL`,
       );
-      const resultPath = resolve(root, "public", attempt.public_result_url.slice(1));
+      const resultPath = resolve(
+        root,
+        "site-data",
+        "public-archive",
+        attempt.public_result_url.slice(1),
+      );
       const resultBytes = await readFile(resultPath);
       const resultText = resultBytes.toString("utf8");
       const result = JSON.parse(resultText);
@@ -370,7 +375,8 @@ for (const [index, entry] of (ledger.refusals ?? []).entries()) {
     );
     const comparisonPath = resolve(
       root,
-      "public",
+      "site-data",
+      "public-archive",
       comparison.public_index_url.slice(1),
     );
     const comparisonBytes = await readFile(comparisonPath);

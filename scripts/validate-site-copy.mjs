@@ -1,105 +1,143 @@
 import { readdir, readFile } from "node:fs/promises";
-import { join, relative } from "node:path";
+import { join, relative, resolve } from "node:path";
 
-const sourceRoots = [
-  "app",
-  "components",
-  "lib",
-  "public",
-  "site-data/publications",
+const root = process.cwd();
+const appDirectory = resolve(root, "app");
+const publicDirectory = resolve(root, "public");
+const postRoute = "blog/scheduling-is-all-you-need";
+const postPublicDirectory = resolve(publicDirectory, postRoute);
+const title =
+  "Scheduling is all you need: use sparsity to save time while controlling loss.";
+const retiredRoutes = [
+  "fable-refusals/page.tsx",
+  "methodology/page.tsx",
+  "operations/page.tsx",
+  "papers/page.tsx",
+  "review/login/page.tsx",
+  "review/page.tsx",
+  "selection/page.tsx",
+  "sitemap.ts",
+  "studies/[id]/arms/[armId]/page.tsx",
+  "studies/[id]/page.tsx",
 ];
-const prohibitedPhrases = [
-  "accelerationalists",
-  "a complete matrix, not a favorable checkpoint",
-  "a deviation hidden is a claim faked",
-  "a paper is not a vibe",
-  "artifact is the argument",
-  "buy the lab monkey",
-  "checking the work",
-  "curious enough to check",
-  "deeper evidence is not yet public",
-  "deterministic comparison, reported independently",
-  "every useful objection should become a reproducible test",
-  "is a versioned statement",
-  "extensions remain fenced",
-  "fastest route runs through",
-  "follow or challenge the work",
-  "hash-bound artifacts supporting this selected arm",
-  "keep the apparatus alive",
-  "little more runway",
-  "make rerunning cheaper",
-  "material differences stay attached to the result",
-  "new evidence may extend this record",
-  "no hidden reruns",
-  "no pay-to-confirm",
-  "no success-only drawer",
-  "null result is a result",
-  "null reference",
-  "number every deviation",
-  "observed hardware, neutral lab identities",
-  "paper intake",
-  "publish the miss",
-  "put a claim on the bench",
-  "relaying…",
-  "result cooperates",
-  "see the spread before reading the decimals",
-  "seen a result you want tested",
-  "silently imputed",
-  "success-only drawer",
-  "support buys compute, not conclusions",
-  "the terminal state and recovery flag stay visible",
-  "this page narrows the evidence; it does not widen the claim",
-  "vote relay",
-  "we rerun the experiments",
-  "you are reading marketing",
+const retiredPublicDirectories = [
+  "data",
+  "fable-refusals",
+  "studies",
 ];
-const requiredPhrases = [
-  "Automated consistency audits have zero scientific decision weight.",
-  "Current intake predates this randomized policy.",
-  "Detailed attempt records are not yet public",
-  "Published claims, independently tested.",
-  "Reward-difference estimates and conditional 95% intervals",
+const prohibitedPostCopy = [
+  "human review",
+  "private review notes",
+  "interpretation boundary",
+  "what this page does not claim",
+  "quality conclusions",
+  "human verdict",
+  "publication disabled",
+  "unpublished",
+];
+const expectedAssets = [
+  "all_sparse_8_00001_.mp4",
+  "atlas-caption.vtt",
+  "current_sage_4_00001_.mp4",
+  "current_sage_8_00001_.mp4",
+  "h3-sparsity-timing.svg",
+  "manifest.json",
+  "sparse2_dense2_4nfe_00001_.mp4",
+  "sparse2_dense4_6nfe_00001_.mp4",
+  "sparse4_dense4_8nfe_00001_.mp4",
 ];
 
-async function collectSourceFiles(directory) {
-  const entries = await readdir(directory, { withFileTypes: true });
+async function collectFiles(directory) {
+  let entries;
+  try {
+    entries = await readdir(directory, { withFileTypes: true });
+  } catch (error) {
+    if (error?.code === "ENOENT") return [];
+    throw error;
+  }
+
   const files = [];
   for (const entry of entries) {
     const path = join(directory, entry.name);
     if (entry.isDirectory()) {
-      files.push(...(await collectSourceFiles(path)));
-    } else if (entry.isFile() && /\.(?:tsx?|md|json)$/.test(path)) {
+      files.push(...(await collectFiles(path)));
+    } else if (entry.isFile()) {
       files.push(path);
     }
   }
   return files;
 }
 
-const files = (
-  await Promise.all(sourceRoots.map((root) => collectSourceFiles(root)))
-).flat();
-const sources = await Promise.all(
-  files.map(async (path) => ({ path, text: await readFile(path, "utf8") })),
-);
+const home = await readFile(resolve(appDirectory, "site-home.tsx"), "utf8");
+const post = await readFile(resolve(appDirectory, postRoute, "page.tsx"), "utf8");
 const errors = [];
 
-for (const source of sources) {
-  const normalized = source.text.toLowerCase();
-  for (const phrase of prohibitedPhrases) {
-    if (normalized.includes(phrase.toLowerCase())) {
-      errors.push(
-        `${relative(process.cwd(), source.path)} contains prohibited public copy: ${phrase}`,
-      );
-    }
+for (const phrase of [
+  "AI enthusiasts doing things.",
+  "/blog/scheduling-is-all-you-need/",
+  "h3-sparsity-timing.svg",
+]) {
+  if (!home.includes(phrase)) {
+    errors.push(`home page omits required copy or link: ${phrase}`);
   }
 }
 
-const combined = sources.map((source) => source.text).join("\n");
-for (const phrase of requiredPhrases) {
-  const count = combined.split(phrase).length - 1;
-  if (count !== 1) {
-    errors.push(`required public copy must appear exactly once: ${phrase} (found ${count})`);
+for (const phrase of [
+  title,
+  "Euler / Simple",
+  "Sparse Kitchen at 30% video KV",
+  "Exact fixed prompt",
+  "What each sparse sequence returned to the clock",
+]) {
+  if (!post.includes(phrase)) {
+    errors.push(`H3 post omits required copy: ${phrase}`);
   }
+}
+
+const normalizedPost = post.toLowerCase();
+for (const phrase of prohibitedPostCopy) {
+  if (normalizedPost.includes(phrase)) {
+    errors.push(`H3 post contains removed meta commentary: ${phrase}`);
+  }
+}
+
+for (const control of ["<select", "<textarea", "localStorage", "Export review JSON"]) {
+  if (post.includes(control)) {
+    errors.push(`H3 post contains removed review control: ${control}`);
+  }
+}
+
+const appFiles = (await collectFiles(appDirectory)).filter((path) =>
+  /\.(?:css|tsx?)$/.test(path),
+);
+const activeAppPaths = new Set(
+  appFiles.map((path) => relative(appDirectory, path)),
+);
+for (const retiredRoute of retiredRoutes) {
+  if (activeAppPaths.has(retiredRoute)) {
+    errors.push(`retired public route remains in app/: ${retiredRoute}`);
+  }
+}
+
+for (const retiredDirectory of retiredPublicDirectories) {
+  const retiredFiles = await collectFiles(
+    resolve(publicDirectory, retiredDirectory),
+  );
+  if (retiredFiles.length > 0) {
+    errors.push(
+      `retired public directory still contains deployable files: ${retiredDirectory}`,
+    );
+  }
+}
+
+const postAssets = (await readdir(postPublicDirectory, { withFileTypes: true }))
+  .filter((entry) => entry.isFile())
+  .map((entry) => entry.name)
+  .sort();
+if (JSON.stringify(postAssets) !== JSON.stringify(expectedAssets)) {
+  errors.push(
+    `H3 public assets differ from the expected set: ${postAssets.join(", ")}`,
+  );
 }
 
 if (errors.length > 0) {
@@ -107,6 +145,6 @@ if (errors.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `validated public copy in ${files.length} source and artifact files: no prohibited phrases`,
+    `validated minimal NULSPEC home and H3 post across ${appFiles.length} app files`,
   );
 }

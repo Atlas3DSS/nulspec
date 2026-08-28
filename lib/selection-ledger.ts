@@ -1,4 +1,4 @@
-import ledger from "@/public/data/selection-ledger.json";
+import ledger from "@/site-data/public-archive/data/selection-ledger.json";
 
 export type SelectionCandidate = (typeof ledger.candidates)[number];
 

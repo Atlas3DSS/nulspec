@@ -4,7 +4,7 @@ import { basename, resolve, sep } from "node:path";
 
 const root = process.cwd();
 const publicationsDirectory = resolve(root, "site-data/publications");
-const publicDirectory = resolve(root, "public");
+const publicDirectory = resolve(root, "site-data", "public-archive");
 const terminalExecutions = new Set([
   "completed",
   "completed_with_recovery",

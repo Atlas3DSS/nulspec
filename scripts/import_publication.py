@@ -181,7 +181,7 @@ def import_publication(bundle_path: Path, source_root: Path, site_root: Path) ->
     destinations: set[str] = set()
     staged: list[tuple[Path, bytes]] = []
     source_root = source_root.resolve()
-    public_root = (site_root / "public").resolve()
+    archive_root = (site_root / "site-data" / "public-archive").resolve()
     prefix = f"studies/{study_id}/artifacts/"
     for item in artifacts:
         if not isinstance(item, dict):
@@ -213,9 +213,11 @@ def import_publication(bundle_path: Path, source_root: Path, site_root: Path) ->
         ):
             if PRIVATE_TEXT.search(content.decode("utf-8", errors="replace")):
                 raise ImportError(f"private or unrelated operational text in {source_relative}")
-        destination = (public_root / Path(*public_relative.parts)).resolve()
-        if public_root not in destination.parents:
-            raise ImportError(f"artifact destination escaped public root: {public_value}")
+        destination = (archive_root / Path(*public_relative.parts)).resolve()
+        if archive_root not in destination.parents:
+            raise ImportError(
+                f"artifact destination escaped publication archive: {public_value}"
+            )
         staged.append((destination, content))
 
     required = {
@@ -226,7 +228,7 @@ def import_publication(bundle_path: Path, source_root: Path, site_root: Path) ->
         "website_handoff",
     }
     if not required.issubset(roles):
-        raise ImportError("ready bundle is missing required public artifact roles")
+        raise ImportError("ready bundle is missing required publication artifact roles")
 
     bundle_destination = site_root / "site-data" / "publications" / f"study-{study_id}.json"
     for destination, content in staged:

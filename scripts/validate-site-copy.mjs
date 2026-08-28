@@ -40,7 +40,6 @@ const prohibitedPostCopy = [
 ];
 const expectedAssets = [
   "all_sparse_8_00001_.mp4",
-  "atlas-caption.vtt",
   "current_sage_4_00001_.mp4",
   "current_sage_8_00001_.mp4",
   "h3-sparsity-timing.svg",
@@ -101,8 +100,13 @@ for (const phrase of [
   }
 }
 
-if (gallery.includes("<track") || gallery.includes("atlas-caption.vtt")) {
-  errors.push("integer boundary gallery reuses the original clip caption track");
+if (
+  post.includes("<track") ||
+  gallery.includes("<track") ||
+  post.includes("atlas-caption.vtt") ||
+  gallery.includes("atlas-caption.vtt")
+) {
+  errors.push("H3 post contains an unsolicited caption track");
 }
 
 for (const phrase of [

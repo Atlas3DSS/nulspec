@@ -163,15 +163,7 @@ function CaseCard({ item }: { item: BatteryCase }) {
         playsInline
         preload="metadata"
         src={`${postPath}/${item.file}`}
-      >
-        <track
-          default
-          kind="captions"
-          label="English"
-          src={`${postPath}/atlas-caption.vtt`}
-          srcLang="en"
-        />
-      </video>
+      />
       <div className={styles.cardBody}>
         <div className={styles.cardTop}>
           <div>

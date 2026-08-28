@@ -162,6 +162,7 @@ if (JSON.stringify(postAssets) !== JSON.stringify(expectedAssets)) {
 const sweepManifest = JSON.parse(await readFile(sweepManifestPath, "utf8"));
 const sweepFamilies = sweepManifest.families ?? [];
 const sweepCases = sweepFamilies.flatMap((family) => family.cases ?? []);
+const sweepDelivery = sweepManifest.delivery_encoding ?? {};
 if (
   sweepManifest.schema !== "nulspec_h3_integer_boundary_gallery_v1" ||
   sweepManifest.case_count !== 55 ||
@@ -170,6 +171,16 @@ if (
     JSON.stringify([21, 34])
 ) {
   errors.push("integer boundary sweep manifest has the wrong schema or family counts");
+}
+if (
+  sweepDelivery.video_codec !== "H.264/AVC" ||
+  sweepDelivery.video_crf !== 27 ||
+  sweepDelivery.audio_codec !== "AAC" ||
+  sweepDelivery.audio_bitrate_kbps !== 64 ||
+  JSON.stringify(sweepDelivery.resolution) !== JSON.stringify([768, 768]) ||
+  sweepDelivery.frame_rate !== 24
+) {
+  errors.push("integer boundary sweep manifest omits its web delivery encoding");
 }
 
 const sweepFiles = (await readdir(sweepPublicDirectory, { withFileTypes: true }))
@@ -187,7 +198,10 @@ for (const item of sweepCases) {
     seenSweepIds.has(item.id) ||
     !/^t[48]_n(?:04|06|08|12)_s\d{2}_d\d{2}$/.test(item.id) ||
     item.file !== `${item.id}.mp4` ||
-    item.sparse_nfe + item.dense_nfe !== item.total_nfe
+    item.sparse_nfe + item.dense_nfe !== item.total_nfe ||
+    !Number.isSafeInteger(item.source_bytes) ||
+    item.source_bytes < item.bytes ||
+    !/^[0-9a-f]{64}$/.test(item.source_sha256 ?? "")
   ) {
     errors.push(`invalid integer boundary case metadata: ${item.id}`);
     continue;

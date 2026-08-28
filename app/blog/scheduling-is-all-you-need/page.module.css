@@ -360,10 +360,13 @@
   }
 
   .cardBody {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     padding: 11px 12px 12px;
   }
 
   .cardTop {
+    grid-column: 1;
     gap: 8px;
   }
 
@@ -383,8 +386,12 @@
   }
 
   .runtime {
-    gap: 8px;
-    margin-top: 9px;
+    grid-column: 2;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1px;
+    margin: 0 0 0 8px;
   }
 
   .runtime strong {
@@ -396,12 +403,14 @@
   }
 
   .bar {
+    grid-column: 1 / -1;
     height: 3px;
     margin-top: 5px;
   }
 
   .sampling {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     margin-top: 9px;
   }
 
@@ -411,13 +420,17 @@
     padding: 5px 6px;
   }
 
-  .sampling div:nth-child(odd) {
+  .sampling div {
     border-right: 1px solid var(--rule);
   }
 
+  .sampling div:nth-child(3),
   .sampling div:last-child {
-    grid-column: 1 / -1;
     border-right: 0;
+  }
+
+  .sampling div:nth-child(4) {
+    grid-column: span 2;
   }
 
   .sampling dt {
@@ -432,6 +445,7 @@
   }
 
   .narrative {
+    grid-column: 1 / -1;
     margin-top: 8px;
     font-size: 0.67rem;
     line-height: 1.35;

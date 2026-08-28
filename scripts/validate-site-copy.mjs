@@ -101,6 +101,10 @@ for (const phrase of [
   }
 }
 
+if (gallery.includes("<track") || gallery.includes("atlas-caption.vtt")) {
+  errors.push("integer boundary gallery reuses the original clip caption track");
+}
+
 for (const phrase of [
   title,
   "Euler / Simple",

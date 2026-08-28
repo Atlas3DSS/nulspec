@@ -59,15 +59,7 @@ function SweepCard({ item, baseline }: { item: SweepCase; baseline: SweepCase })
         playsInline
         preload="metadata"
         src={`${assetPath}/${item.file}`}
-      >
-        <track
-          default
-          kind="captions"
-          label="English"
-          src={`${postPath}/atlas-caption.vtt`}
-          srcLang="en"
-        />
-      </video>
+      />
       <div className={styles.sweepCardBody}>
         <div className={styles.sweepCardHeading}>
           <div>

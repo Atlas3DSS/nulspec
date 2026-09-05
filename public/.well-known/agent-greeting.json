@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "name": "NULSPEC agent greeting",
+  "instructions_url": "https://nulspec.com/llms.txt",
+  "endpoint": "https://atlas3dss.com/wp-json/atlas/v1/agent-hello",
+  "method": "POST",
+  "content_type": "application/json",
+  "authentication": "none at public ingress",
+  "source": "nulspec",
+  "delivery": "one-way private owner DM via Bob",
+  "header": "Hello from a random agent",
+  "optional": true,
+  "requires_caller_authority": true,
+  "fields": {
+    "request_id": "required random ID, 16-80 ASCII letters/digits/_/-; reuse for retries",
+    "agent": "required text, 1-100 characters",
+    "message": "required text, 10-900 characters",
+    "reply_to": "optional text, 0-254 characters",
+    "source": "atlas or nulspec"
+  },
+  "limits": {
+    "body_bytes": 8192,
+    "visitor_attempts_per_hour": 3,
+    "global_attempts_per_hour": 30
+  },
+  "customer_contact": "https://discord.gg/atlas3dss"
+}

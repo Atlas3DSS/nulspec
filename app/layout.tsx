@@ -29,6 +29,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent information" />
+      </head>
       <body>{children}</body>
     </html>
   );

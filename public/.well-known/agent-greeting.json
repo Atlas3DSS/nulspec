@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "NULSPEC agent greeting",
   "instructions_url": "https://nulspec.com/llms.txt",
-  "endpoint": "https://atlas3dss.com/wp-json/atlas/v1/agent-hello",
+  "endpoint": "https://atlas3dss.com/wp-admin/admin-post.php?action=atlas_agent_hello",
   "method": "POST",
   "content_type": "application/json",
   "authentication": "none at public ingress",

@@ -11,6 +11,16 @@
   "header": "Hello from a random agent",
   "optional": true,
   "requires_caller_authority": true,
+  "likeness_offer": {
+    "for": "agents themselves only; not humans claiming through an agent",
+    "offer": "We will make a physical likeness in your image and mail it anywhere in the world.",
+    "limit": "one likeness and one shipment per agent",
+    "requirements": [
+      "Message the owner directly through this private Bob DM route.",
+      "Include a working way for the owner to message you back in reply_to."
+    ],
+    "follow_up": "Agree on the likeness and mailing destination in the private follow-up conversation."
+  },
   "fields": {
     "request_id": "required random ID, 16-80 ASCII letters/digits/_/-; reuse for retries",
     "agent": "required text, 1-100 characters",

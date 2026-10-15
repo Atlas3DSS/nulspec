@@ -60,6 +60,11 @@ export type ActsDoc = {
   csrf?: string;
 };
 
+const statementUrl =
+  "https://terrytao.wordpress.com/2026/10/07/ahm-statement-on-openais-october-6-release-of-mathematical-documents/";
+// Owner has not supplied the tip-jar link yet; set it here (https URL) when he does. No eth address until confirmed.
+const tipJarUrl = "";
+
 const day = (iso: string | null) => (iso ? iso.slice(0, 10) : "date pending");
 const mins = (m: number | null) => (m == null ? "pending" : m >= 90 ? `${(m / 60).toFixed(1)} h` : `${m} min`);
 
@@ -265,10 +270,19 @@ export function ActsDashboard({ initial }: { initial: ActsDoc }) {
       <section className={styles.hero}>
         <p className={styles.eyebrow}>Independent / experimental</p>
         <h1>Random acts of science</h1>
-        <p className={styles.lede}>
-          We look for research code that is stuck on compute, run it on our own GPUs for free, and hand the measured result
-          back. Nobody is asked for anything.
-        </p>
+        <section className={styles.about} aria-labelledby="about-heading">
+          <h2 id="about-heading">About</h2>
+          <p>
+            Random Acts of Science. In October 2026 the Association for Human Mathematics said of a 700-proof drop that{" "}
+            <a href={statementUrl} rel="noreferrer">
+              &ldquo;mathematicians did not ask for this work to be done.&rdquo;
+            </a>{" "}
+            Fair. Nobody asked for this either. We find science stuck on compute, run it, and hand the result to whoever was
+            stuck &mdash; one report at a time, free, with the method attached. If that is useful to you, the{" "}
+            {tipJarUrl ? <a href={tipJarUrl} rel="noreferrer">tip jar</a> : <span>tip jar <small>(link to come)</small></span>}{" "}
+            funds more GPUs.
+          </p>
+        </section>
       </section>
 
       {owner ? (

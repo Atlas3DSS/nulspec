@@ -1,0 +1,9 @@
+{
+  "schema_version": "random-acts-v1",
+  "files": [
+    "site-data/random-acts/random-acts.public.json"
+  ],
+  "sha256": {
+    "site-data/random-acts/random-acts.public.json": "2b5312c9a8efe5ed67b2a20cedb9147a5a84a2e3274c8f51b0b5f326fc011dbc"
+  }
+}

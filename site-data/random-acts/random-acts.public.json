@@ -1,0 +1,13 @@
+{
+  "schema_version": "random-acts-v1",
+  "generated_at": "2026-10-15T16:42:23Z",
+  "stats": {
+    "acts_done": 0,
+    "gpu_hours": 0.0,
+    "approvals": 0,
+    "replies": 0,
+    "running": 0,
+    "queued": 0
+  },
+  "acts": []
+}

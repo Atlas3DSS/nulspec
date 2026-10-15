@@ -1,13 +1,139 @@
 {
   "schema_version": "random-acts-v1",
-  "generated_at": "2026-10-15T16:42:23Z",
+  "generated_at": "2026-10-15T18:26:47Z",
   "stats": {
-    "acts_done": 0,
-    "gpu_hours": 0.0,
-    "approvals": 0,
+    "acts_done": 5,
+    "gpu_hours": 1.17,
+    "approvals": 5,
     "replies": 0,
     "running": 0,
     "queued": 0
   },
-  "acts": []
+  "acts": [
+    {
+      "id": "sc2wm-i6",
+      "slug": "sc2wm-i6",
+      "repo": "sunrise-yuze/SC2_WM",
+      "repo_url": "https://github.com/sunrise-yuze/SC2_WM",
+      "issue_url": "https://github.com/sunrise-yuze/SC2_WM/issues/6",
+      "issue_number": "6",
+      "licence": "MIT",
+      "commit": "f2f2f5f",
+      "status": "done",
+      "gpu": "1x Tesla V100 32 GB",
+      "gpu_minutes": 35,
+      "wall_minutes": 90,
+      "started": null,
+      "finished": "2026-10-15T16:54:40Z",
+      "headline": "the non-simulator part of one training episode costs 46 s on the released code. Over 22,000 episodes that is 282 h (11.8 days) on a V100, before any simulator time.",
+      "headline_items": [
+        "the non-simulator part of one training episode costs 46 s on the released code. Over 22,000 episodes that is 282 h (11.8 days) on a V100, before any simulator time.",
+        "Where it goes: 56% is one Python loop in ground-projection (label_pooling), 30% is per-ray Python loops in the NeRF feature code. The GPU is only ~9% busy.",
+        "Two small patches give numerically identical outputs and run 2.81x faster (46 s -> 16.4 s/episode; 22,000 episodes -> 100 h). The first patch alone gives 2.24x."
+      ],
+      "owner_status": "approved",
+      "report_sha256": "1ae65f639d0c06e004e79cb42ad2606e19b926f7d61fc6239e02f9e9c17ae9a0",
+      "report_path": "/acts/sc2wm-i6/REPORT.md"
+    },
+    {
+      "id": "chqwer2-disease-progression-world-model-i1",
+      "slug": "chqwer2-disease-progression-world-model-i1",
+      "repo": "chqwer2/Disease-Progression-World-Model",
+      "repo_url": "https://github.com/chqwer2/Disease-Progression-World-Model",
+      "issue_url": "https://github.com/chqwer2/Disease-Progression-World-Model/issues/1",
+      "issue_number": "1",
+      "licence": "Apache-2.0",
+      "commit": "ac2ca4d",
+      "status": "done",
+      "gpu": "1x Tesla V100 32 GB + 1x RTX PRO 6000 96 GB (addendum)",
+      "gpu_minutes": 35,
+      "wall_minutes": 120,
+      "started": null,
+      "finished": "2026-10-15T16:54:40Z",
+      "headline": "at the reporter's setting (batch 2, 64^3) the script costs 6.60 s/step on a V100. The appendix schedule (444,150 steps) = 34 days on V100, 16.5 days on the reporter's A100 (their 3.2 s/step).",
+      "headline_items": [
+        "at the reporter's setting (batch 2, 64^3) the script costs 6.60 s/step on a V100. The appendix schedule (444,150 steps) = 34 days on V100, 16.5 days on the reporter's A100 (their 3.2 s/step).",
+        "Where it goes: 54% backward, 22% encode/decode, 25% pure housekeeping (gc.collect every step plus empty_cache about 250 times per step). The data pipeline proxy is not the bottleneck.",
+        "Skipping gc/empty_cache gives 4.57 s/step (-31%); adding fp16 autocast gives 2.32 s/step (2.85x total, 11.9 days; numerics not validated)."
+      ],
+      "owner_status": "approved",
+      "report_sha256": "7b804acce2cea99aabda21c590b67e9321cbcaa9e88c7116059c2fc259ec2323",
+      "report_path": "/acts/chqwer2-disease-progression-world-model-i1/REPORT.md"
+    },
+    {
+      "id": "gaius-augustus-tiberius-i102",
+      "slug": "gaius-augustus-tiberius-i102",
+      "repo": "Gaius-Augustus/Tiberius",
+      "repo_url": "https://github.com/Gaius-Augustus/Tiberius",
+      "issue_url": "https://github.com/Gaius-Augustus/Tiberius/issues/102",
+      "issue_number": "102",
+      "licence": "MIT",
+      "commit": "",
+      "status": "done",
+      "gpu": "1x Tesla V100 32 GB",
+      "gpu_minutes": null,
+      "wall_minutes": null,
+      "started": "2026-10-15T10:40:25-07:00",
+      "finished": "2026-10-15T11:07:01-07:00",
+      "headline": "batch 4 at 500,040 bases measured 3.75 s/step and 9.75 GiB TensorFlow peak (16.4 GiB observed by nvidia-smi); the reported `cudaSetDevice` failure is consistent with overlapping TensorFlow workers reserving the same GPU.",
+      "headline_items": [
+        "batch 4 at 500,040 bases measured 3.75 s/step and 9.75 GiB TensorFlow peak (16.4 GiB observed by nvidia-smi); the reported `cudaSetDevice` failure is consistent with overlapping TensorFlow workers reserving the same GPU.",
+        "The issue log says `Auto-computed batch_size=8` and `seq_len=500040` despite outer `--batch_size 4 --seq_len 4000000`; current Paludamentum exposes nested `tiberius.batch_size`, `tiberius.seq_len`, and `tiberius.max_parallel` (default unlimited; set `max_parallel: 1` on a single GPU).",
+        "Batch 1/2/4 growth runs: 2.04/3.41/3.75 s median per 500,040-base batch; TensorFlow peaks 2.50/4.98/9.75 GiB. Batch 8 completed at a 24,000 MB cap in 4.39 s with 18.98 GiB TensorFlow peak."
+      ],
+      "owner_status": "approved",
+      "report_sha256": "7bd97e56595d9e0149f5feff01c1d01fde4ced87414edf37242e9c2d525e4fb8",
+      "report_path": "/acts/gaius-augustus-tiberius-i102/REPORT.md"
+    },
+    {
+      "id": "rtmalikian-kaggle-physionet-digitization-of-",
+      "slug": "rtmalikian-kaggle-physionet-digitization-of",
+      "repo": "rtmalikian/Kaggle-PhysioNet---Digitization-of-ECG-Images",
+      "repo_url": "https://github.com/rtmalikian/Kaggle-PhysioNet---Digitization-of-ECG-Images",
+      "issue_url": "https://github.com/rtmalikian/Kaggle-PhysioNet---Digitization-of-ECG-Images/issues/2",
+      "issue_number": "2",
+      "licence": "MIT",
+      "commit": "446f25d",
+      "status": "done",
+      "gpu": "1x Tesla V100 32 GB",
+      "gpu_minutes": null,
+      "wall_minutes": 42,
+      "started": "2026-10-15T10:42:09-07:00",
+      "finished": "2026-10-15T10:58:10-07:00",
+      "headline": "the released script costs 3.9 s per step (batch 2) on a V100 = about 8.1 h per epoch (12,000 train + 3,000 val images) vs the M1's 18-24 h. A V100 is only 2.2-3x faster, not 50-100x.",
+      "headline_items": [
+        "the released script costs 3.9 s per step (batch 2) on a V100 = about 8.1 h per epoch (12,000 train + 3,000 val images) vs the M1's 18-24 h. A V100 is only 2.2-3x faster, not 50-100x.",
+        "Why: the loader is single-process (num_workers=0, hard-coded for M1) and spends 0.8-1.1 s of CPU per 1,700x2,200 image; the GPU step is only 0.18-0.48 s.",
+        "Fixes measured: 4 workers = 0.47 s/step (8x), 8 workers + fp16 = 0.24 s/step; fp16 instead of the hard-coded bf16 (emulated on Volta) = 2.7x on the GPU part; batch 16 = 3x less per image. 10 epochs: 81 h released vs about 5-10 h fixed."
+      ],
+      "owner_status": "approved",
+      "report_sha256": "c7b7b0d0e647e2b4d80f7c261094d94d87bcb899b7c94cd906335a33775170aa",
+      "report_path": "/acts/rtmalikian-kaggle-physionet-digitization-of/REPORT.md"
+    },
+    {
+      "id": "youngz365-sod-i19",
+      "slug": "youngz365-sod-i19",
+      "repo": "YoungZ365/SOD",
+      "repo_url": "https://github.com/YoungZ365/SOD",
+      "issue_url": "https://github.com/YoungZ365/SOD/issues/19",
+      "issue_number": "19",
+      "licence": "Apache-2.0",
+      "commit": "110c4b8e843aee274d3cd648199569369ee2403e",
+      "status": "done",
+      "gpu": "1x Tesla V100 32 GB",
+      "gpu_minutes": null,
+      "wall_minutes": null,
+      "started": "2026-10-15T10:30:24-07:00",
+      "finished": "2026-10-15T10:40:25-07:00",
+      "headline": "Paper SOD 0.6B is 120 steps at 1,052.3 s/step; issue reports 1,042 s/step, only 1% apart. The released script defaults to about 469 steps, explaining roughly 3.9\u00d7 of the time gap before any hardware difference.",
+      "headline_items": [
+        "Paper SOD 0.6B is 120 steps at 1,052.3 s/step; issue reports 1,042 s/step, only 1% apart. The released script defaults to about 469 steps, explaining roughly 3.9\u00d7 of the time gap before any hardware difference.",
+        "Measured: actual `_apply_token_kl_regularizer` took 7.81 s median for 1,024 synthetic trajectories \u00d7 128 tokens, including the shipped detailed log writer; this short sequence is not a full-training estimate.",
+        "Source gap: `run_sod.sh` sets one epoch and batch 64 but no explicit stop step. The trainer supports `trainer.total_training_steps`; the paper says 120 (0.6B) and 150 (1.7B). The loop has no convergence-based stop criterion."
+      ],
+      "owner_status": "approved",
+      "report_sha256": "733c1d73a52388dde393030d0b59eddb24711933c2f557600505a7cc9d27f199",
+      "report_path": "/acts/youngz365-sod-i19/REPORT.md"
+    }
+  ]
 }

@@ -1,9 +1,19 @@
 {
   "schema_version": "random-acts-v1",
   "files": [
+    "public/acts/chqwer2-disease-progression-world-model-i1/REPORT.md",
+    "public/acts/gaius-augustus-tiberius-i102/REPORT.md",
+    "public/acts/rtmalikian-kaggle-physionet-digitization-of/REPORT.md",
+    "public/acts/sc2wm-i6/REPORT.md",
+    "public/acts/youngz365-sod-i19/REPORT.md",
     "site-data/random-acts/random-acts.public.json"
   ],
   "sha256": {
-    "site-data/random-acts/random-acts.public.json": "2b5312c9a8efe5ed67b2a20cedb9147a5a84a2e3274c8f51b0b5f326fc011dbc"
+    "public/acts/chqwer2-disease-progression-world-model-i1/REPORT.md": "7b804acce2cea99aabda21c590b67e9321cbcaa9e88c7116059c2fc259ec2323",
+    "public/acts/gaius-augustus-tiberius-i102/REPORT.md": "7bd97e56595d9e0149f5feff01c1d01fde4ced87414edf37242e9c2d525e4fb8",
+    "public/acts/rtmalikian-kaggle-physionet-digitization-of/REPORT.md": "c7b7b0d0e647e2b4d80f7c261094d94d87bcb899b7c94cd906335a33775170aa",
+    "public/acts/sc2wm-i6/REPORT.md": "1ae65f639d0c06e004e79cb42ad2606e19b926f7d61fc6239e02f9e9c17ae9a0",
+    "public/acts/youngz365-sod-i19/REPORT.md": "733c1d73a52388dde393030d0b59eddb24711933c2f557600505a7cc9d27f199",
+    "site-data/random-acts/random-acts.public.json": "52493202f3e60cab2efd40dd0d5588650042b218eba09bdbd88d69fae72b0def"
   }
 }

@@ -1,5 +1,18 @@
 # Profiling report: Step-1 autoencoder training cost (GitHub issue chqwer2/Disease-Progression-World-Model #1)
 
+## 0 What we did for you
+
+**WHAT WE DID**
+Ran your released Step-1 autoencoder training script (Apache-2.0, commit ac2ca4d8abb6f3434045260ff1a6b5f37459b5bb, script step1_v2_axes.py) unmodified on one Tesla V100 32 GB (about 25 GPU-minutes) and on one RTX PRO 6000 96 GB (about 10 GPU-minutes), 8-13 timed steps per setting, with synthetic volumes replacing the restricted ADNI data.
+
+**WHAT TO CHANGE**
+- Skip the per-step gc.collect() and torch.cuda.empty_cache() calls (about 250 empty_cache calls per step; we neutralised them with a wrapper, no edit to your files): at batch 2, 64^3 the V100 goes 6.60 → 4.57 s/step (-31%); on the RTX PRO 6000 7.25 → 2.39 s/step, and the released 112^3 recipe 11.69 → 4.66 s/step.
+- Run with ACCELERATE_MIXED_PRECISION=fp16 (default is fp32): V100 4.57 → 2.32 s/step (2.85x versus plain; appendix schedule 814 h → 286 h); RTX PRO 6000 recipe 4.66 → 3.29 s/step. No GradScaler and no loss-curve check, so numerics are NOT validated.
+- Pin the patch size explicitly: RES_SCALE default 0.82 overrides the YAML 64^3 to 112^3, which OOMs a 32 GB V100 even at batch 1 (needs 70.7 GB on the RTX PRO 6000) → at 64^3, batch 1 runs at 3.98 s/step in 13.4 GB (batch 2: 26.6 GB).
+
+**DELIVERABLES**
+harness/bench_ae.py (hooks and timing driver), harness/bench_io.py (data-pipeline proxy), harness/run.sh, harness/run_pro6000.sh, harness/all_pro6000.sh (launch scripts) and the sandbox wrapper in harness/ (bwrap_*.sh); measurements/b64_plain.json, b64_nogc.json, b64_nogc_fp16.json, b64_b1.json, b64_stages.json, r80_nogc_fp16.json, io_64.json, io_112.json (timings), measurements/pro6000/ (RTX PRO 6000 timings), measurements/gpu_*.csv (GPU traces); timing table, config-gap table (section 6) and suggestions (section 7) in this report.
+
 ## 0. Read this first
 The issue reporter measures about 3.2 s per training step on an A100 80 GB (batch 2, 64x64x64 patches) and projects "more than 10 days" for the paper's 300 epochs. We timed the authors' own Step-1 autoencoder training script, unmodified, on one Tesla V100 32 GB. The ADNI data is not public (data-use agreement), so the data loader was replaced with synthetic volumes; everything after the loader is their code.
 

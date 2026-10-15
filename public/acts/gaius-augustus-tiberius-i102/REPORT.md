@@ -1,5 +1,18 @@
 # Profiling report: Tiberius issue #102 (GPU out of memory in evidence workflow)
 
+## 0 What we did for you
+
+**WHAT WE DID**
+Ran your released Tiberius CNN/bLSTM core and HMM block construction (MIT, commit 2562badaba40f1fbaf76cb3046d09e6cab24aef5, package 2.0.9, random weights) on one Tesla V100-PCIE-32GB with synthetic 500,040-base batches (1-5 timed forwards per batch size, TensorFlow 2.17.1); no pretrained weights or real data were downloaded and the full evidence pipeline was not run.
+
+**WHAT TO CHANGE**
+- Set tiberius.max_parallel: 1 in the Paludamentum params file (default unlimited; TensorFlow maps nearly all GPU memory per process): one worker at batch 4 uses 16.4 GiB per nvidia-smi (9.75 GiB TensorFlow peak), so two overlapping workers cannot share a 24 GB card; the cudaSetDevice failure itself was not reproduced.
+- Set tiberius.batch_size: 4 and tiberius.seq_len: 500040 (your log shows Auto-computed batch_size=8 and seq_len=500040 despite --batch_size 4 --seq_len 4000000, so the outer flags did not reach the worker): TensorFlow peak 18.98 GiB → 9.75 GiB (nvidia-smi 24,334 → 16,796 MiB), forward 4.39 s per 8-sequence batch → 3.75 s per 4-sequence batch.
+- Set NXF_SINGULARITY_CACHEDIR to a persistent directory so the container image is not downloaded again for each work directory (documented by Paludamentum; effect not measured here).
+
+**DELIVERABLES**
+harness/bench_tiberius_core.py (synthetic-input benchmark of the pinned model core and HMM block); measurements/b1_500040_growth_hmm_5steps.json, b2_500040_growth_hmm.json, b4_500040_growth_hmm.json, b8_500040_hmm_cap24g.json (per-batch timings and memory), measurements/tf220_cudnn_failure.json (TensorFlow 2.20.0 Conv1D failure on V100); timing table and config-gap table in this report.
+
 ## 0. Read this first
 
 The public issue reports that standalone Tiberius works at batch 8 on a 24 GB RTX 4090, while the RNA-Seq + protein evidence workflow fails in TensorFlow `cudaSetDevice()` before prediction begins. The failure is consistent with multiple TensorFlow workers starting on one GPU: TensorFlow's documented default is to map nearly all visible GPU memory, and current Paludamentum documentation leaves `tiberius.max_parallel` unlimited unless configured. This is a strong, source-supported explanation, not a reproduced multi-process failure. [Issue #102](https://github.com/Gaius-Augustus/Tiberius/issues/102), [TensorFlow GPU memory guide](https://www.tensorflow.org/guide/gpu), [Paludamentum parameters](https://github.com/Gaius-Augustus/Paludamentum/blob/main/docs/parameters.md).

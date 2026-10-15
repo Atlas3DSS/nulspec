@@ -1,5 +1,17 @@
 # Profiling report: YoungZ365/SOD issue #19 (training time and step count)
 
+## 0 What we did for you
+
+**WHAT WE DID**
+Ran the repository's own stepwise regularizer code (_apply_token_kl_regularizer and its helpers from verl/trainer/ppo/ray_trainer.py; Apache-2.0, commit 110c4b8e843aee274d3cd648199569369ee2403e) on one Tesla V100-PCIE-32GB for under one GPU-minute (44.7 s wall) with synthetic tensors; full training, data and weights were not run or downloaded.
+
+**WHAT TO CHANGE**
+- Set trainer.total_training_steps=120 (0.6B) or 150 (1.7B) in run_sod.sh, which sets one epoch at batch 64 and no stop step (about 469 steps): at the paper's 1,052.3 s/step, ~137.1 h → 35.1 h (0.6B). Calculated from the paper and issue figures, not measured here; no matched A800/H20 run was done.
+- In _extract_step_boundaries, replace the per-token .item() scan (a host-GPU sync per mask position) with bulk boundary extraction and batched reductions: before measured at 7.81 s per call (1,024 trajectories x 128 tokens, with the per-sample log write), 3.62 s at batch 64 x 1,024 tokens; after NOT measured (untested suggestion).
+
+**DELIVERABLES**
+harness/profile_sod_regularizer.py (extracts and times the pinned repository functions on synthetic tensors), measurements/regularizer.json (timings, peak allocated memory, GPU/runtime, source hash); timing table, projection table and config-vs-paper gap table in this report.
+
 ## 0. Read this first
 
 The public report is consistent on time per update: Table 4 gives **1,052.3 s/step** for SOD 0.6B, while the issue reporter says about **1,042 s/step** on 8×A800. That is a roughly 1% difference. The paper reports 120 updates for the 0.6B SOD run, while the released [run_sod.sh](https://github.com/YoungZ365/SOD/blob/110c4b8e843aee274d3cd648199569369ee2403e/examples/SOD/run_sod.sh) defaults to one pass over the roughly 30K RL set at batch size 64 (about 469 batches). The update-count difference is about 3.9× and explains most of the reported wall-time gap. The issue’s stated multiplication, 1,042 seconds × 470 steps, works out to about 136 hours rather than 150.

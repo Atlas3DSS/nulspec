@@ -1,5 +1,18 @@
 # Profiling report: ECG digitization training time (GitHub issue rtmalikian/Kaggle-PhysioNet---Digitization-of-ECG-Images #2)
 
+## 0 What we did for you
+
+**WHAT WE DID**
+Ran your real dataset class, model and trainer (train_ecg_model.py; MIT, commit 446f25dcbc62678a58dec5f2ae01d7ee0e900c9b) on one Tesla V100 32 GB for about 6 GPU-minutes (12-28 timed batches per setting) with a synthetic ECG image/signal tree, because the competition data was not downloaded.
+
+**WHAT TO CHANGE**
+- Change the hard-coded num_workers=0 in the full-dataset trainer to 4-8 (the comment is about M1 segfaults; it also applies on CUDA): 3.90 → 0.47 s/step with 4 workers (8x), 0.24 s/step with 8 workers + fp16; 10 epochs 81 h → 9.8 h (4 workers) or 4.9 h (8 workers + fp16), projected from the measured step.
+- Replace the hard-coded bf16 autocast with fp16 on Volta GPUs (bf16 is emulated on V100; the GradScaler is only needed for fp16): GPU-only step 0.48 → 0.18 s (2.7x); end-to-end with 4 workers 0.47 → 0.40 s/step.
+- Raise the batch size from 2 to 16 (peak memory only 12.6 → 13.6 GB because parameters and AdamW state dominate): GPU-only fp16 cost per image 0.09 s → 0.030 s (3x less).
+
+**DELIVERABLES**
+harness/bench_ecg.py (synthetic data builder and timing driver around your dataset class and trainer), harness/run8.sh (launch script); measurements/data.json, data2.json (loader cost), measurements/model_*.json (GPU-only step: fp32, bf16, fp16, batch 2/8/16), measurements/e2e_*.json (end-to-end with 0, 4, 8 workers, bf16 and fp16), measurements/gpu_*.csv (GPU traces); timing table, config-observation table and suggestions in this report.
+
 ## 0. Read this first
 The issue reports that training on a 2021 M1 iMac takes 18-24 hours per epoch (100-200+ days in total), and proposes "use a cloud GPU (50-100x)". We ran the authors' real dataset class, model and trainer (`train_ecg_model.py`) on one Tesla V100 32 GB with a synthetic ECG image/signal tree (the Kaggle/PhysioNet competition data was not downloaded).
 

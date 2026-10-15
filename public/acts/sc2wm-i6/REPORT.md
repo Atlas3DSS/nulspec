@@ -2,6 +2,19 @@
 
 Prepared 2026-10-14. Nothing in this report has been sent to, posted to, or discussed with the repository authors.
 
+## 0 What we did for you
+
+**WHAT WE DID**
+Ran your released training code (MIT, commit f2f2f5ff2e1f21a08f7d7c51fbbd5c17b0d6778b, released weights, main.bash arguments) unmodified on one Tesla V100-PCIE-32GB for about 35 GPU-minutes (12 timed episodes per run), with the Habitat simulator replaced by synthetic frames because Matterport3D terms were not accepted.
+
+**WHAT TO CHANGE**
+- In label_pooling (ground projection), replace the per-cell Python loop with one unique + index_put_(accumulate=True) histogram: segmentation stage 309.9 s → 6.4 s over 12 episodes, whole episode 46.2 s → 20.6 s (2.24x), output max abs difference 6e-8.
+- In run_nerf_feature, do one device-to-host copy of the ray densities for all 64 rays and build sample indices on the CPU instead of per-ray .cpu() and re-upload: 20.6 s → 16.4 s per episode (a further 1.25x, 2.81x combined; 22,000 episodes 282 h → 100 h, simulator excluded), outputs bit-identical with a fixed seed.
+- Build torch_kdtree with 70-real prepended to its CUDA arch list (default list starts at sm_75): V100 fails with "no kernel image is available" → runs (all V100 numbers above); also place bert-base-uncased config.json at vlnce_baselines/bert-base-uncased, the path the code reads (README says bert_config/), or model construction fails.
+
+**DELIVERABLES**
+harness/bench.py (benchmark driver; contains both patch bodies label_pooling_vec and the batched ray selection, with equivalence checks), harness/fakeenv.py (synthetic stand-in for the simulator), harness/stubs.py (habitat import stubs), harness/run1.sh (launch script); measurements/timing_baseline.json, timing_patch1.json, timing_patch1+2.json (per-episode and per-stage timings); measurements/gpu_trace_baseline.csv, gpu_trace_patch1.csv, gpu_trace_patch1+2.csv (2 Hz GPU traces); timing table, config-gap table (section 6) and suggestion table (section 7) in this report.
+
 ## 0. Read this first
 
 1. **"SC2" here is not StarCraft II.** SC²-WM is "Self-Correcting World Model" for Vision-and-Language Navigation in Continuous Environments (VLN-CE). The training loop drives Habitat-Sim on Matterport3D scenes. No Blizzard binary or licence is involved.

@@ -1,6 +1,6 @@
 {
   "schema_version": "random-acts-v1",
-  "generated_at": "2026-10-15T18:26:47Z",
+  "generated_at": "2026-10-15T18:31:17Z",
   "stats": {
     "acts_done": 5,
     "gpu_hours": 1.17,
@@ -24,7 +24,7 @@
       "gpu_minutes": 35,
       "wall_minutes": 90,
       "started": null,
-      "finished": "2026-10-15T16:54:40Z",
+      "finished": "2026-10-15T18:30:24Z",
       "headline": "the non-simulator part of one training episode costs 46 s on the released code. Over 22,000 episodes that is 282 h (11.8 days) on a V100, before any simulator time.",
       "headline_items": [
         "the non-simulator part of one training episode costs 46 s on the released code. Over 22,000 episodes that is 282 h (11.8 days) on a V100, before any simulator time.",
@@ -32,7 +32,7 @@
         "Two small patches give numerically identical outputs and run 2.81x faster (46 s -> 16.4 s/episode; 22,000 episodes -> 100 h). The first patch alone gives 2.24x."
       ],
       "owner_status": "approved",
-      "report_sha256": "1ae65f639d0c06e004e79cb42ad2606e19b926f7d61fc6239e02f9e9c17ae9a0",
+      "report_sha256": "91d7ac3360d6791bc27522709b3105e7a5df1da9c2e7b3667cfca9a7ea3dee5c",
       "report_path": "/acts/sc2wm-i6/REPORT.md"
     },
     {
@@ -49,7 +49,7 @@
       "gpu_minutes": 35,
       "wall_minutes": 120,
       "started": null,
-      "finished": "2026-10-15T16:54:40Z",
+      "finished": "2026-10-15T18:30:24Z",
       "headline": "at the reporter's setting (batch 2, 64^3) the script costs 6.60 s/step on a V100. The appendix schedule (444,150 steps) = 34 days on V100, 16.5 days on the reporter's A100 (their 3.2 s/step).",
       "headline_items": [
         "at the reporter's setting (batch 2, 64^3) the script costs 6.60 s/step on a V100. The appendix schedule (444,150 steps) = 34 days on V100, 16.5 days on the reporter's A100 (their 3.2 s/step).",
@@ -57,7 +57,7 @@
         "Skipping gc/empty_cache gives 4.57 s/step (-31%); adding fp16 autocast gives 2.32 s/step (2.85x total, 11.9 days; numerics not validated)."
       ],
       "owner_status": "approved",
-      "report_sha256": "7b804acce2cea99aabda21c590b67e9321cbcaa9e88c7116059c2fc259ec2323",
+      "report_sha256": "b15ff857ec39112057c149ba0468346bfd723c06a7fbc2917de47c06017990b7",
       "report_path": "/acts/chqwer2-disease-progression-world-model-i1/REPORT.md"
     },
     {
@@ -82,7 +82,7 @@
         "Batch 1/2/4 growth runs: 2.04/3.41/3.75 s median per 500,040-base batch; TensorFlow peaks 2.50/4.98/9.75 GiB. Batch 8 completed at a 24,000 MB cap in 4.39 s with 18.98 GiB TensorFlow peak."
       ],
       "owner_status": "approved",
-      "report_sha256": "7bd97e56595d9e0149f5feff01c1d01fde4ced87414edf37242e9c2d525e4fb8",
+      "report_sha256": "8d66618784ece5daab087aac55c6ced7f30304b6ce7293eb8f8a5c3c34899960",
       "report_path": "/acts/gaius-augustus-tiberius-i102/REPORT.md"
     },
     {
@@ -107,7 +107,7 @@
         "Fixes measured: 4 workers = 0.47 s/step (8x), 8 workers + fp16 = 0.24 s/step; fp16 instead of the hard-coded bf16 (emulated on Volta) = 2.7x on the GPU part; batch 16 = 3x less per image. 10 epochs: 81 h released vs about 5-10 h fixed."
       ],
       "owner_status": "approved",
-      "report_sha256": "c7b7b0d0e647e2b4d80f7c261094d94d87bcb899b7c94cd906335a33775170aa",
+      "report_sha256": "7bba1b3a74f78f2fcc64585a5be12e9cb78af9de34a27cdf0771459cb2ad908e",
       "report_path": "/acts/rtmalikian-kaggle-physionet-digitization-of/REPORT.md"
     },
     {
@@ -132,7 +132,7 @@
         "Source gap: `run_sod.sh` sets one epoch and batch 64 but no explicit stop step. The trainer supports `trainer.total_training_steps`; the paper says 120 (0.6B) and 150 (1.7B). The loop has no convergence-based stop criterion."
       ],
       "owner_status": "approved",
-      "report_sha256": "733c1d73a52388dde393030d0b59eddb24711933c2f557600505a7cc9d27f199",
+      "report_sha256": "8729bcb45c84d067b0b19ebf238d89356f5ec5c65d1c891901a2ff09b7ce0441",
       "report_path": "/acts/youngz365-sod-i19/REPORT.md"
     }
   ]

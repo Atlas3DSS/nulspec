@@ -9,11 +9,11 @@
     "site-data/random-acts/random-acts.public.json"
   ],
   "sha256": {
-    "public/acts/chqwer2-disease-progression-world-model-i1/REPORT.md": "7b804acce2cea99aabda21c590b67e9321cbcaa9e88c7116059c2fc259ec2323",
-    "public/acts/gaius-augustus-tiberius-i102/REPORT.md": "7bd97e56595d9e0149f5feff01c1d01fde4ced87414edf37242e9c2d525e4fb8",
-    "public/acts/rtmalikian-kaggle-physionet-digitization-of/REPORT.md": "c7b7b0d0e647e2b4d80f7c261094d94d87bcb899b7c94cd906335a33775170aa",
-    "public/acts/sc2wm-i6/REPORT.md": "1ae65f639d0c06e004e79cb42ad2606e19b926f7d61fc6239e02f9e9c17ae9a0",
-    "public/acts/youngz365-sod-i19/REPORT.md": "733c1d73a52388dde393030d0b59eddb24711933c2f557600505a7cc9d27f199",
-    "site-data/random-acts/random-acts.public.json": "52493202f3e60cab2efd40dd0d5588650042b218eba09bdbd88d69fae72b0def"
+    "public/acts/chqwer2-disease-progression-world-model-i1/REPORT.md": "b15ff857ec39112057c149ba0468346bfd723c06a7fbc2917de47c06017990b7",
+    "public/acts/gaius-augustus-tiberius-i102/REPORT.md": "8d66618784ece5daab087aac55c6ced7f30304b6ce7293eb8f8a5c3c34899960",
+    "public/acts/rtmalikian-kaggle-physionet-digitization-of/REPORT.md": "7bba1b3a74f78f2fcc64585a5be12e9cb78af9de34a27cdf0771459cb2ad908e",
+    "public/acts/sc2wm-i6/REPORT.md": "91d7ac3360d6791bc27522709b3105e7a5df1da9c2e7b3667cfca9a7ea3dee5c",
+    "public/acts/youngz365-sod-i19/REPORT.md": "8729bcb45c84d067b0b19ebf238d89356f5ec5c65d1c891901a2ff09b7ce0441",
+    "site-data/random-acts/random-acts.public.json": "b6698846584b6e8e62316cb2502a34915b758153abf9222974916ab6c8d733a4"
   }
 }

@@ -68,3 +68,4 @@
 .about p { margin: 0; color: var(--muted); font-size: 1.05rem; line-height: 1.65; }
 .about a { color: var(--accent); }
 .about small { font-size: 0.8em; }
+.queue, .qItem, .qItem blockquote { min-width: 0; overflow-wrap: anywhere; }
